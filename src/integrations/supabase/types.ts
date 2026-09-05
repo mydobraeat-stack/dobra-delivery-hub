@@ -14,6 +14,208 @@ export type Database = {
   }
   public: {
     Tables: {
+      driver_locations: {
+        Row: {
+          driver_id: string
+          lat: number
+          lng: number
+          updated_at: string
+        }
+        Insert: {
+          driver_id: string
+          lat: number
+          lng: number
+          updated_at?: string
+        }
+        Update: {
+          driver_id?: string
+          lat?: number
+          lng?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "driver_locations_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: true
+            referencedRelation: "drivers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      drivers: {
+        Row: {
+          country: string | null
+          created_at: string
+          id: string
+          status: string
+          vehicle_type: string | null
+        }
+        Insert: {
+          country?: string | null
+          created_at?: string
+          id: string
+          status?: string
+          vehicle_type?: string | null
+        }
+        Update: {
+          country?: string | null
+          created_at?: string
+          id?: string
+          status?: string
+          vehicle_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "drivers_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      menu_items: {
+        Row: {
+          available: boolean
+          created_at: string
+          currency: string
+          id: string
+          image_url: string | null
+          name: string
+          price: number
+          restaurant_id: string
+        }
+        Insert: {
+          available?: boolean
+          created_at?: string
+          currency?: string
+          id?: string
+          image_url?: string | null
+          name: string
+          price?: number
+          restaurant_id: string
+        }
+        Update: {
+          available?: boolean
+          created_at?: string
+          currency?: string
+          id?: string
+          image_url?: string | null
+          name?: string
+          price?: number
+          restaurant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "menu_items_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      order_items: {
+        Row: {
+          created_at: string
+          id: string
+          menu_item_id: string | null
+          order_id: string
+          price: number
+          quantity: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          menu_item_id?: string | null
+          order_id: string
+          price?: number
+          quantity?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          menu_item_id?: string | null
+          order_id?: string
+          price?: number
+          quantity?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_menu_item_id_fkey"
+            columns: ["menu_item_id"]
+            isOneToOne: false
+            referencedRelation: "menu_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          country: string | null
+          created_at: string
+          currency: string
+          customer_id: string
+          driver_id: string | null
+          id: string
+          restaurant_id: string
+          status: string
+          total: number
+        }
+        Insert: {
+          country?: string | null
+          created_at?: string
+          currency?: string
+          customer_id: string
+          driver_id?: string | null
+          id?: string
+          restaurant_id: string
+          status?: string
+          total?: number
+        }
+        Update: {
+          country?: string | null
+          created_at?: string
+          currency?: string
+          customer_id?: string
+          driver_id?: string | null
+          id?: string
+          restaurant_id?: string
+          status?: string
+          total?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           approval_status: string
@@ -40,6 +242,47 @@ export type Database = {
           id?: string
         }
         Relationships: []
+      }
+      restaurants: {
+        Row: {
+          city: string | null
+          country: string | null
+          created_at: string
+          id: string
+          logo_url: string | null
+          name: string
+          owner_id: string
+          status: string
+        }
+        Insert: {
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          id?: string
+          logo_url?: string | null
+          name: string
+          owner_id: string
+          status?: string
+        }
+        Update: {
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          id?: string
+          logo_url?: string | null
+          name?: string
+          owner_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "restaurants_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
@@ -76,7 +319,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "customer" | "vendor" | "driver"
+      app_role: "customer" | "vendor" | "driver" | "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -204,7 +447,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["customer", "vendor", "driver"],
+      app_role: ["customer", "vendor", "driver", "admin"],
     },
   },
 } as const
