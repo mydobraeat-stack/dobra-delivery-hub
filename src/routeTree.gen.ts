@@ -17,6 +17,7 @@ import { Route as AuthenticatedCustomerRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedDriverRouteImport } from './routes/_authenticated/driver'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
 import { Route as AuthenticatedVendorRouteImport } from './routes/_authenticated/vendor'
+import { Route as AuthenticatedOrdersOrderIdRouteImport } from './routes/_authenticated/orders.$orderId'
 import { Route as AuthenticatedRestaurantRestaurantIdRouteImport } from './routes/_authenticated/restaurant.$restaurantId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -58,6 +59,12 @@ const AuthenticatedVendorRoute = AuthenticatedVendorRouteImport.update({
   path: '/vendor',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedOrdersOrderIdRoute =
+  AuthenticatedOrdersOrderIdRouteImport.update({
+    id: '/orders/$orderId',
+    path: '/orders/$orderId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedRestaurantRestaurantIdRoute =
   AuthenticatedRestaurantRestaurantIdRouteImport.update({
     id: '/restaurant/$restaurantId',
@@ -73,6 +80,7 @@ export interface FileRoutesByFullPath {
   '/driver': typeof AuthenticatedDriverRoute
   '/home': typeof AuthenticatedHomeRoute
   '/vendor': typeof AuthenticatedVendorRoute
+  '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
 }
 export interface FileRoutesByTo {
@@ -83,6 +91,7 @@ export interface FileRoutesByTo {
   '/driver': typeof AuthenticatedDriverRoute
   '/home': typeof AuthenticatedHomeRoute
   '/vendor': typeof AuthenticatedVendorRoute
+  '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
 }
 export interface FileRoutesById {
@@ -95,6 +104,7 @@ export interface FileRoutesById {
   '/_authenticated/driver': typeof AuthenticatedDriverRoute
   '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/vendor': typeof AuthenticatedVendorRoute
+  '/_authenticated/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/_authenticated/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
 }
 export interface FileRouteTypes {
@@ -107,6 +117,7 @@ export interface FileRouteTypes {
     | '/driver'
     | '/home'
     | '/vendor'
+    | '/orders/$orderId'
     | '/restaurant/$restaurantId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -117,6 +128,7 @@ export interface FileRouteTypes {
     | '/driver'
     | '/home'
     | '/vendor'
+    | '/orders/$orderId'
     | '/restaurant/$restaurantId'
   id:
     | '__root__'
@@ -128,6 +140,7 @@ export interface FileRouteTypes {
     | '/_authenticated/driver'
     | '/_authenticated/home'
     | '/_authenticated/vendor'
+    | '/_authenticated/orders/$orderId'
     | '/_authenticated/restaurant/$restaurantId'
   fileRoutesById: FileRoutesById
 }
@@ -195,6 +208,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedVendorRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/orders/$orderId': {
+      id: '/_authenticated/orders/$orderId'
+      path: '/orders/$orderId'
+      fullPath: '/orders/$orderId'
+      preLoaderRoute: typeof AuthenticatedOrdersOrderIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/restaurant/$restaurantId': {
       id: '/_authenticated/restaurant/$restaurantId'
       path: '/restaurant/$restaurantId'
@@ -211,6 +231,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDriverRoute: typeof AuthenticatedDriverRoute
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedVendorRoute: typeof AuthenticatedVendorRoute
+  AuthenticatedOrdersOrderIdRoute: typeof AuthenticatedOrdersOrderIdRoute
   AuthenticatedRestaurantRestaurantIdRoute: typeof AuthenticatedRestaurantRestaurantIdRoute
 }
 
@@ -220,6 +241,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDriverRoute: AuthenticatedDriverRoute,
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
   AuthenticatedVendorRoute: AuthenticatedVendorRoute,
+  AuthenticatedOrdersOrderIdRoute: AuthenticatedOrdersOrderIdRoute,
   AuthenticatedRestaurantRestaurantIdRoute:
     AuthenticatedRestaurantRestaurantIdRoute,
 }
