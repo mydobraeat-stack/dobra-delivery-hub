@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { AppHeader } from "@/components/dobra/AppHeader";
 import { ImageUpload } from "@/components/dobra/ImageUpload";
 import { accountQueryOptions } from "@/lib/profile";
-import { myOrdersQuery, driverProfileQuery, myRestaurantsQuery, money } from "@/lib/dobra";
+import { myOrdersQuery, myDriverQuery, vendorRestaurantsQuery, money } from "@/lib/dobra";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -150,8 +150,8 @@ function ProfilePage() {
         </Card>
 
         {role === "customer" ? <CustomerSection /> : null}
-        {role === "vendor" ? <VendorSection status={profile?.approval_status} /> : null}
-        {role === "driver" ? <DriverSection status={profile?.approval_status} /> : null}
+        {role === "vendor" ? <VendorSection status={profile?.approval_status ?? null} /> : null}
+        {role === "driver" ? <DriverSection status={profile?.approval_status ?? null} /> : null}
       </main>
     </div>
   );
@@ -191,8 +191,8 @@ function CustomerSection() {
   );
 }
 
-function VendorSection({ status }: { status?: string | null }) {
-  const { data: restaurants } = useQuery(myRestaurantsQuery);
+function VendorSection({ status }: { status: string | null | undefined }) {
+  const { data: restaurants } = useQuery(vendorRestaurantsQuery);
   const list = restaurants ?? [];
 
   return (
@@ -222,9 +222,9 @@ function VendorSection({ status }: { status?: string | null }) {
   );
 }
 
-function DriverSection({ status }: { status?: string | null }) {
+function DriverSection({ status }: { status: string | null | undefined }) {
   const queryClient = useQueryClient();
-  const { data: driver } = useQuery(driverProfileQuery);
+  const { data: driver } = useQuery(myDriverQuery);
   const [vehicle, setVehicle] = useState("");
   const [saving, setSaving] = useState(false);
 
@@ -242,7 +242,7 @@ function DriverSection({ status }: { status?: string | null }) {
         .from("drivers")
         .upsert({ id, vehicle_type: vehicle.trim() || null }, { onConflict: "id" });
       if (error) throw error;
-      await queryClient.invalidateQueries({ queryKey: ["driver-profile"] });
+      await queryClient.invalidateQueries({ queryKey: ["driver", "me"] });
       toast.success("Vehicle saved.");
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Could not save vehicle.");
