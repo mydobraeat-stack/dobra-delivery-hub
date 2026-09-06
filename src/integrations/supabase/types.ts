@@ -248,30 +248,42 @@ export type Database = {
           city: string | null
           country: string | null
           created_at: string
+          cuisine: string | null
+          delivery_fee: number
+          eta_minutes: number
           id: string
           logo_url: string | null
           name: string
           owner_id: string
+          rating: number
           status: string
         }
         Insert: {
           city?: string | null
           country?: string | null
           created_at?: string
+          cuisine?: string | null
+          delivery_fee?: number
+          eta_minutes?: number
           id?: string
           logo_url?: string | null
           name: string
           owner_id: string
+          rating?: number
           status?: string
         }
         Update: {
           city?: string | null
           country?: string | null
           created_at?: string
+          cuisine?: string | null
+          delivery_fee?: number
+          eta_minutes?: number
           id?: string
           logo_url?: string | null
           name?: string
           owner_id?: string
+          rating?: number
           status?: string
         }
         Relationships: [
