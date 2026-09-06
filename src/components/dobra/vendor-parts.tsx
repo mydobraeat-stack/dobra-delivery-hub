@@ -368,6 +368,7 @@ export function RestaurantDialog({
   editing: Restaurant | null;
   onOpenChange: (open: boolean) => void;
 }) {
+  const t = useT();
   const queryClient = useQueryClient();
   const [form, setForm] = useState<RestaurantInput>(EMPTY_RESTAURANT);
 
@@ -391,7 +392,7 @@ export function RestaurantDialog({
 
   const save = useMutation({
     mutationFn: async () => {
-      if (!form.name.trim()) throw new Error("Please enter a restaurant name.");
+      if (!form.name.trim()) throw new Error(t("vendor.restaurantDialog.nameRequired"));
       if (editing) {
         await updateRestaurant(editing.id, form);
         return editing.id;
@@ -399,7 +400,7 @@ export function RestaurantDialog({
       return createRestaurant(form);
     },
     onSuccess: (id) => {
-      toast.success(editing ? "Restaurant updated." : "Restaurant created.");
+      toast.success(editing ? t("vendor.restaurantDialog.updated") : t("vendor.restaurantDialog.created"));
       queryClient.invalidateQueries({ queryKey: ["restaurants"] });
       queryClient.invalidateQueries({ queryKey: ["restaurant"] });
       if (!editing) setSelectedRestaurant(id);
@@ -412,50 +413,52 @@ export function RestaurantDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{editing ? "Edit restaurant" : "Create your restaurant"}</DialogTitle>
+          <DialogTitle>
+            {editing ? t("vendor.restaurantDialog.editTitle") : t("vendor.restaurantDialog.createTitle")}
+          </DialogTitle>
           <DialogDescription>
             {editing
-              ? "Update how your restaurant appears to customers."
-              : "New restaurants go live once the Dobra team approves them."}
+              ? t("vendor.restaurantDialog.editDescription")
+              : t("vendor.restaurantDialog.createDescription")}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
           <ImageUpload
             bucket="restaurant-logos"
-            label="Restaurant photo"
+            label={t("vendor.restaurantDialog.photoLabel")}
             value={form.logo_url}
             onChange={(logo_url) => setForm((f) => ({ ...f, logo_url }))}
           />
-          <Field label="Name">
+          <Field label={t("vendor.restaurantDialog.nameLabel")}>
             <Input
               value={form.name}
               onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-              placeholder="Forno Rosso"
+              placeholder={t("vendor.restaurantDialog.namePlaceholder")}
             />
           </Field>
-          <Field label="Cuisine">
+          <Field label={t("vendor.restaurantDialog.cuisineLabel")}>
             <Input
               value={form.cuisine}
               onChange={(e) => setForm((f) => ({ ...f, cuisine: e.target.value }))}
-              placeholder="Pizza · Italian"
+              placeholder={t("vendor.restaurantDialog.cuisinePlaceholder")}
             />
           </Field>
           <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="City">
+            <Field label={t("vendor.restaurantDialog.cityLabel")}>
               <Input
                 value={form.city}
                 onChange={(e) => setForm((f) => ({ ...f, city: e.target.value }))}
-                placeholder="Warsaw"
+                placeholder={t("vendor.restaurantDialog.cityPlaceholder")}
               />
             </Field>
-            <Field label="Country">
+            <Field label={t("vendor.restaurantDialog.countryLabel")}>
               <Input
                 value={form.country}
                 onChange={(e) => setForm((f) => ({ ...f, country: e.target.value }))}
               />
             </Field>
-            <Field label="Delivery time (min)">
+            <Field label={t("vendor.restaurantDialog.etaLabel")}>
               <Input
                 type="number"
                 min={5}
@@ -465,7 +468,7 @@ export function RestaurantDialog({
                 }
               />
             </Field>
-            <Field label="Delivery fee (PLN)">
+            <Field label={t("vendor.restaurantDialog.deliveryFeeLabel")}>
               <Input
                 type="number"
                 min={0}
@@ -476,7 +479,7 @@ export function RestaurantDialog({
                 }
               />
             </Field>
-            <Field label="Minimum order (PLN)">
+            <Field label={t("vendor.restaurantDialog.minOrderLabel")}>
               <Input
                 type="number"
                 min={0}
@@ -490,10 +493,10 @@ export function RestaurantDialog({
 
         <DialogFooter>
           <Button variant="ghost" onClick={() => onOpenChange(false)}>
-            Cancel
+            {t("vendor.restaurantDialog.cancel")}
           </Button>
           <Button disabled={save.isPending} onClick={() => save.mutate()}>
-            {editing ? "Save changes" : "Create restaurant"}
+            {editing ? t("vendor.restaurantDialog.saveChanges") : t("vendor.restaurantDialog.createButton")}
           </Button>
         </DialogFooter>
       </DialogContent>
