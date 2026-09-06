@@ -14,7 +14,8 @@ function RoleRouter() {
 
   useEffect(() => {
     if (!data) return;
-    if (data.role === "vendor") navigate({ to: "/vendor", replace: true });
+    if (data.role === "admin") navigate({ to: "/admin", replace: true });
+    else if (data.role === "vendor") navigate({ to: "/vendor", replace: true });
     else if (data.role === "driver") navigate({ to: "/driver", replace: true });
     else navigate({ to: "/customer", replace: true });
   }, [data, navigate]);
