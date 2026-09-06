@@ -156,7 +156,6 @@ export function restaurantQuery(id: string) {
 
 export const myOrdersQuery = queryOptions({
   queryKey: ["orders", "mine"],
-  refetchInterval: 20_000,
   queryFn: async (): Promise<OrderRow[]> => {
     const userId = await currentUserId();
     const { data, error } = await supabase
@@ -172,7 +171,6 @@ export const myOrdersQuery = queryOptions({
 export function orderQuery(orderId: string) {
   return queryOptions({
     queryKey: ["order", orderId],
-    refetchInterval: 15_000,
     queryFn: async (): Promise<OrderRow | null> => {
       const { data, error } = await supabase
         .from("orders")
@@ -203,7 +201,6 @@ export function vendorOrdersQuery(restaurantId: string | undefined) {
   return queryOptions({
     queryKey: ["orders", "vendor", restaurantId ?? "none"],
     enabled: Boolean(restaurantId),
-    refetchInterval: 15_000,
     queryFn: async (): Promise<OrderRow[]> => {
       const { data, error } = await supabase
         .from("orders")
@@ -218,7 +215,6 @@ export function vendorOrdersQuery(restaurantId: string | undefined) {
 
 export const driverOrdersQuery = queryOptions({
   queryKey: ["orders", "driver"],
-  refetchInterval: 15_000,
   queryFn: async (): Promise<{ available: OrderRow[]; mine: OrderRow[] }> => {
     const userId = await currentUserId();
     const { data, error } = await supabase
@@ -284,7 +280,6 @@ export function driverLocationQuery(driverId: string | null | undefined) {
   return queryOptions({
     queryKey: ["driver-location", driverId ?? "none"],
     enabled: Boolean(driverId),
-    refetchInterval: 20_000,
     queryFn: async (): Promise<{ lat: number; lng: number; updated_at: string } | null> => {
       const { data, error } = await supabase
         .from("driver_locations")
@@ -388,14 +383,23 @@ export async function saveDriverLocation(lat: number, lng: number) {
   if (error) throw error;
 }
 
+export type PaymentMethod = "cash" | "card";
+
 export type CheckoutInput = {
   restaurant: Restaurant;
   lines: CartLine[];
   address: string;
   note: string;
+  paymentMethod: PaymentMethod;
 };
 
-export async function placeOrder({ restaurant, lines, address, note }: CheckoutInput) {
+export async function placeOrder({
+  restaurant,
+  lines,
+  address,
+  note,
+  paymentMethod,
+}: CheckoutInput) {
   if (lines.length === 0) throw new Error("Your basket is empty.");
   const userId = await currentUserId();
   const subtotal = lines.reduce((sum, l) => sum + l.price * l.quantity, 0);
@@ -416,6 +420,8 @@ export async function placeOrder({ restaurant, lines, address, note }: CheckoutI
       address,
       note: note || null,
       eta_minutes: restaurant.eta_minutes,
+      payment_method: paymentMethod,
+      payment_status: paymentMethod === "cash" ? "cash" : "pending",
     })
     .select("id")
     .single();

@@ -29,6 +29,8 @@
   --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
   --font-script: "Pacifico", "Brush Script MT", cursive;
   --color-brand: var(--brand);
+  --color-sun: var(--sun);
+  --color-sun-foreground: var(--ink);
   --color-ink: var(--ink);
   --shadow-soft: 0 8px 24px -12px color-mix(in oklab, var(--ink) 45%, transparent);
   --color-background: var(--background);
@@ -77,8 +79,9 @@
   --card-foreground: oklch(0.22 0.01 90);
   --popover: oklch(0.995 0.008 96);
   --popover-foreground: oklch(0.22 0.01 90);
-  --primary: oklch(0.22 0.01 90);
-  --primary-foreground: oklch(0.98 0.02 96);
+  --sun: oklch(0.88 0.17 96);
+  --primary: oklch(0.53 0.22 27);
+  --primary-foreground: oklch(0.99 0.01 96);
   --secondary: oklch(0.96 0.03 96);
   --secondary-foreground: oklch(0.22 0.01 90);
   --muted: oklch(0.95 0.02 96);
@@ -107,6 +110,7 @@
 }
 
 .dark {
+  --sun: oklch(0.88 0.17 96);
   --background: oklch(0.129 0.042 264.695);
   --foreground: oklch(0.984 0.003 247.858);
   --card: oklch(0.208 0.042 265.755);

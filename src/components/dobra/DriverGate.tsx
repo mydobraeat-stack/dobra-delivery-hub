@@ -36,7 +36,7 @@ export function ApplicationUnderReview({ driver }: { driver: DriverRecord | null
   return (
     <main className="mx-auto max-w-lg space-y-5 px-5 py-8">
       <div className="flex items-center gap-3">
-        <span className="flex size-11 items-center justify-center rounded-full bg-primary/30">
+        <span className="flex size-11 items-center justify-center rounded-full bg-sun/30">
           <Clock className="size-5 text-foreground" aria-hidden />
         </span>
         <h1 className="text-2xl font-bold text-foreground">Application under review</h1>
