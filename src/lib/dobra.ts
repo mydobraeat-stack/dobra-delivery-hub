@@ -297,19 +297,38 @@ export function driverLocationQuery(driverId: string | null | undefined) {
   });
 }
 
+export type DriverRecord = {
+  id: string;
+  status: string;
+  vehicle_type: string | null;
+  vehicle_model: string | null;
+  plate: string | null;
+  docs_status: string;
+  country: string | null;
+  submitted_at: string | null;
+};
+
 export const myDriverQuery = queryOptions({
   queryKey: ["driver", "me"],
-  queryFn: async (): Promise<{ id: string; status: string; vehicle_type: string | null } | null> => {
+  queryFn: async (): Promise<DriverRecord | null> => {
     const userId = await currentUserId();
     const { data, error } = await supabase
       .from("drivers")
-      .select("id,status,vehicle_type")
+      .select("id,status,vehicle_type,vehicle_model,plate,docs_status,country,submitted_at")
       .eq("id", userId)
       .maybeSingle();
     if (error) throw error;
-    return data ?? null;
+    return (data as DriverRecord) ?? null;
   },
 });
+
+/** Local currency for a driver based on their country. */
+export function driverCurrency(country: string | null | undefined) {
+  const c = (country ?? "").trim().toLowerCase();
+  if (["cm", "cameroon", "cg", "ga", "td", "cf", "gq"].includes(c)) return "XAF";
+  return "PLN";
+}
+
 
 /* -------------------------------- mutations ------------------------------- */
 
