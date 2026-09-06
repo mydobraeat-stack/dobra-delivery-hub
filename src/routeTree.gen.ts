@@ -21,8 +21,10 @@ import { Route as AuthenticatedVendorRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedCustomerIndexRouteImport } from './routes/_authenticated/customer.index'
 import { Route as AuthenticatedCustomerOrdersRouteImport } from './routes/_authenticated/customer.orders'
 import { Route as AuthenticatedDriverIndexRouteImport } from './routes/_authenticated/driver.index'
+import { Route as AuthenticatedDriverDeliveriesRouteImport } from './routes/_authenticated/driver.deliveries'
 import { Route as AuthenticatedDriverDocumentsRouteImport } from './routes/_authenticated/driver.documents'
 import { Route as AuthenticatedDriverEarningsRouteImport } from './routes/_authenticated/driver.earnings'
+import { Route as AuthenticatedDriverHelpRouteImport } from './routes/_authenticated/driver.help'
 import { Route as AuthenticatedOrdersOrderIdRouteImport } from './routes/_authenticated/orders.$orderId'
 import { Route as AuthenticatedRestaurantRestaurantIdRouteImport } from './routes/_authenticated/restaurant.$restaurantId'
 import { Route as AuthenticatedVendorIndexRouteImport } from './routes/_authenticated/vendor.index'
@@ -91,6 +93,12 @@ const AuthenticatedDriverIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedDriverRoute,
   } as any)
+const AuthenticatedDriverDeliveriesRoute =
+  AuthenticatedDriverDeliveriesRouteImport.update({
+    id: '/deliveries',
+    path: '/deliveries',
+    getParentRoute: () => AuthenticatedDriverRoute,
+  } as any)
 const AuthenticatedDriverDocumentsRoute =
   AuthenticatedDriverDocumentsRouteImport.update({
     id: '/documents',
@@ -103,6 +111,11 @@ const AuthenticatedDriverEarningsRoute =
     path: '/earnings',
     getParentRoute: () => AuthenticatedDriverRoute,
   } as any)
+const AuthenticatedDriverHelpRoute = AuthenticatedDriverHelpRouteImport.update({
+  id: '/help',
+  path: '/help',
+  getParentRoute: () => AuthenticatedDriverRoute,
+} as any)
 const AuthenticatedOrdersOrderIdRoute =
   AuthenticatedOrdersOrderIdRouteImport.update({
     id: '/orders/$orderId',
@@ -143,8 +156,10 @@ export interface FileRoutesByFullPath {
   '/profile': typeof AuthenticatedProfileRoute
   '/vendor': typeof AuthenticatedVendorRouteWithChildren
   '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
+  '/driver/deliveries': typeof AuthenticatedDriverDeliveriesRoute
   '/driver/documents': typeof AuthenticatedDriverDocumentsRoute
   '/driver/earnings': typeof AuthenticatedDriverEarningsRoute
+  '/driver/help': typeof AuthenticatedDriverHelpRoute
   '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
   '/vendor/menu': typeof AuthenticatedVendorMenuRoute
@@ -160,8 +175,10 @@ export interface FileRoutesByTo {
   '/home': typeof AuthenticatedHomeRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
+  '/driver/deliveries': typeof AuthenticatedDriverDeliveriesRoute
   '/driver/documents': typeof AuthenticatedDriverDocumentsRoute
   '/driver/earnings': typeof AuthenticatedDriverEarningsRoute
+  '/driver/help': typeof AuthenticatedDriverHelpRoute
   '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
   '/vendor/menu': typeof AuthenticatedVendorMenuRoute
@@ -182,8 +199,10 @@ export interface FileRoutesById {
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/vendor': typeof AuthenticatedVendorRouteWithChildren
   '/_authenticated/customer/orders': typeof AuthenticatedCustomerOrdersRoute
+  '/_authenticated/driver/deliveries': typeof AuthenticatedDriverDeliveriesRoute
   '/_authenticated/driver/documents': typeof AuthenticatedDriverDocumentsRoute
   '/_authenticated/driver/earnings': typeof AuthenticatedDriverEarningsRoute
+  '/_authenticated/driver/help': typeof AuthenticatedDriverHelpRoute
   '/_authenticated/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/_authenticated/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
   '/_authenticated/vendor/menu': typeof AuthenticatedVendorMenuRoute
@@ -204,8 +223,10 @@ export interface FileRouteTypes {
     | '/profile'
     | '/vendor'
     | '/customer/orders'
+    | '/driver/deliveries'
     | '/driver/documents'
     | '/driver/earnings'
+    | '/driver/help'
     | '/orders/$orderId'
     | '/restaurant/$restaurantId'
     | '/vendor/menu'
@@ -221,8 +242,10 @@ export interface FileRouteTypes {
     | '/home'
     | '/profile'
     | '/customer/orders'
+    | '/driver/deliveries'
     | '/driver/documents'
     | '/driver/earnings'
+    | '/driver/help'
     | '/orders/$orderId'
     | '/restaurant/$restaurantId'
     | '/vendor/menu'
@@ -242,8 +265,10 @@ export interface FileRouteTypes {
     | '/_authenticated/profile'
     | '/_authenticated/vendor'
     | '/_authenticated/customer/orders'
+    | '/_authenticated/driver/deliveries'
     | '/_authenticated/driver/documents'
     | '/_authenticated/driver/earnings'
+    | '/_authenticated/driver/help'
     | '/_authenticated/orders/$orderId'
     | '/_authenticated/restaurant/$restaurantId'
     | '/_authenticated/vendor/menu'
@@ -345,6 +370,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDriverIndexRouteImport
       parentRoute: typeof AuthenticatedDriverRoute
     }
+    '/_authenticated/driver/deliveries': {
+      id: '/_authenticated/driver/deliveries'
+      path: '/deliveries'
+      fullPath: '/driver/deliveries'
+      preLoaderRoute: typeof AuthenticatedDriverDeliveriesRouteImport
+      parentRoute: typeof AuthenticatedDriverRoute
+    }
     '/_authenticated/driver/documents': {
       id: '/_authenticated/driver/documents'
       path: '/documents'
@@ -357,6 +389,13 @@ declare module '@tanstack/react-router' {
       path: '/earnings'
       fullPath: '/driver/earnings'
       preLoaderRoute: typeof AuthenticatedDriverEarningsRouteImport
+      parentRoute: typeof AuthenticatedDriverRoute
+    }
+    '/_authenticated/driver/help': {
+      id: '/_authenticated/driver/help'
+      path: '/help'
+      fullPath: '/driver/help'
+      preLoaderRoute: typeof AuthenticatedDriverHelpRouteImport
       parentRoute: typeof AuthenticatedDriverRoute
     }
     '/_authenticated/orders/$orderId': {
@@ -413,14 +452,18 @@ const AuthenticatedCustomerRouteWithChildren =
   )
 
 interface AuthenticatedDriverRouteChildren {
+  AuthenticatedDriverDeliveriesRoute: typeof AuthenticatedDriverDeliveriesRoute
   AuthenticatedDriverDocumentsRoute: typeof AuthenticatedDriverDocumentsRoute
   AuthenticatedDriverEarningsRoute: typeof AuthenticatedDriverEarningsRoute
+  AuthenticatedDriverHelpRoute: typeof AuthenticatedDriverHelpRoute
   AuthenticatedDriverIndexRoute: typeof AuthenticatedDriverIndexRoute
 }
 
 const AuthenticatedDriverRouteChildren: AuthenticatedDriverRouteChildren = {
+  AuthenticatedDriverDeliveriesRoute: AuthenticatedDriverDeliveriesRoute,
   AuthenticatedDriverDocumentsRoute: AuthenticatedDriverDocumentsRoute,
   AuthenticatedDriverEarningsRoute: AuthenticatedDriverEarningsRoute,
+  AuthenticatedDriverHelpRoute: AuthenticatedDriverHelpRoute,
   AuthenticatedDriverIndexRoute: AuthenticatedDriverIndexRoute,
 }
 
