@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChevronDown, ChevronUp, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { StatusBadge } from "@/components/dobra/StatusBadge";
+import { useI18n, useT } from "@/lib/i18n";
 import { StoredImage } from "@/components/dobra/StoredImage";
 import { ImageUpload } from "@/components/dobra/ImageUpload";
 import { Button } from "@/components/ui/button";
@@ -41,10 +42,10 @@ import {
   type RestaurantInput,
 } from "@/lib/dobra";
 
-const NEXT_LABEL: Record<string, string> = {
-  pending: "Accept order",
-  accepted: "Start preparing",
-  preparing: "Mark ready",
+const NEXT_LABEL_KEY: Record<string, string> = {
+  pending: "vendor.items.acceptOrder",
+  accepted: "vendor.items.startPreparing",
+  preparing: "vendor.items.markReady",
 };
 
 export const EMPTY_RESTAURANT: RestaurantInput = {
