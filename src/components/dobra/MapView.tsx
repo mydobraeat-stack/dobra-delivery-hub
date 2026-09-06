@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 export type MapPoint = { lat: number; lng: number; label?: string };
@@ -39,6 +40,7 @@ export function MapView({ points, className, zoom = 14 }: Props) {
   const mapRef = useRef<any>(null);
   const markersRef = useRef<any[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const t = useT();
 
   useEffect(() => {
     let cancelled = false;
