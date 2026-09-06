@@ -489,7 +489,6 @@ export type Database = {
         }
         Returns: boolean
       }
-      is_platform_admin: { Args: never; Returns: boolean }
     }
     Enums: {
       app_role: "customer" | "vendor" | "driver" | "admin"
