@@ -116,7 +116,7 @@ function CustomerHome() {
     <main className="mx-auto max-w-4xl space-y-8 px-5 py-6">
       <h1 className="text-2xl font-bold text-foreground">
         {account?.fullName
-          ? t("customer.home.greetingNamed", { name: account.fullName.split(" ")[0] })
+          ? t("customer.home.greetingNamed", { name: account.fullName.split(" ")[0] ?? "" })
           : t("customer.home.greeting")}
       </h1>
 
