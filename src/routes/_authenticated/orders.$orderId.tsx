@@ -150,23 +150,11 @@ function OrderTracking() {
               </Card>
             )}
 
-            {order.driver_id && location ? (
-              <Card className="border-ink/10">
-                <CardContent className="space-y-2 py-4">
-                  <p className="inline-flex items-center gap-2 text-sm font-semibold text-foreground">
-                    <MapPin className="size-4" aria-hidden /> Driver location
-                  </p>
-                  <iframe
-                    title="Driver location map"
-                    className="h-56 w-full rounded-xl border border-ink/10"
-                    src={`https://www.openstreetmap.org/export/embed.html?bbox=${location.lng - 0.01}%2C${location.lat - 0.01}%2C${location.lng + 0.01}%2C${location.lat + 0.01}&layer=mapnik&marker=${location.lat}%2C${location.lng}`}
-                  />
-                  <p className="text-xs text-foreground/60">
-                    Updated {new Date(location.updated_at).toLocaleTimeString()}
-                  </p>
-                </CardContent>
-              </Card>
-            ) : null}
+            <DeliveryMap
+              driver={location ? { lat: location.lat, lng: location.lng } : null}
+              updatedAt={location?.updated_at ?? null}
+              address={order.address}
+            />
 
             <Card className="border-ink/10">
               <CardContent className="space-y-3 py-4">
