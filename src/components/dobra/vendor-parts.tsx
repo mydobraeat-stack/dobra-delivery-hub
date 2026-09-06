@@ -516,6 +516,7 @@ export function DishDialog({
   onOpenChange: (open: boolean) => void;
 }) {
   const queryClient = useQueryClient();
+  const t = useT();
   const [name, setName] = useState("");
   const [price, setPrice] = useState("0");
   const [description, setDescription] = useState("");
@@ -533,7 +534,7 @@ export function DishDialog({
 
   const save = useMutation({
     mutationFn: async () => {
-      if (!name.trim()) throw new Error("Please enter a dish name.");
+      if (!name.trim()) throw new Error(t("vendor.dishDialog.nameRequired"));
       const payload = {
         name: name.trim(),
         price: Number(price) || 0,
@@ -546,7 +547,7 @@ export function DishDialog({
       return createMenuItem(restaurantId, payload);
     },
     onSuccess: () => {
-      toast.success(editing ? "Dish updated." : "Dish added.");
+      toast.success(t(editing ? "vendor.dishDialog.updated" : "vendor.dishDialog.created"));
       queryClient.invalidateQueries({ queryKey: ["restaurant"] });
       queryClient.invalidateQueries({ queryKey: ["menu-items"] });
       onOpenChange(false);
@@ -558,46 +559,46 @@ export function DishDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{editing ? "Edit dish" : "Add a dish"}</DialogTitle>
-          <DialogDescription>Photos help customers order more.</DialogDescription>
+          <DialogTitle>{t(editing ? "vendor.dishDialog.editTitle" : "vendor.dishDialog.createTitle")}</DialogTitle>
+          <DialogDescription>{t("vendor.dishDialog.description")}</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
           <ImageUpload
             bucket="menu-images"
-            label="Dish photo"
+            label={t("vendor.dishDialog.photoLabel")}
             value={imageUrl}
             onChange={setImageUrl}
           />
-          <Field label="Dish name">
+          <Field label={t("vendor.dishDialog.nameLabel")}>
             <Input
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Margherita Pizza"
+              placeholder={t("vendor.dishDialog.namePlaceholder")}
             />
           </Field>
-          <Field label="Description">
+          <Field label={t("vendor.dishDialog.descriptionLabel")}>
             <Input
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Tomato, mozzarella, fresh basil"
+              placeholder={t("vendor.dishDialog.descriptionPlaceholder")}
             />
           </Field>
-          <Field label="Section">
+          <Field label={t("vendor.dishDialog.sectionLabel")}>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
-              aria-label="Menu section"
+              aria-label={t("vendor.dishDialog.sectionAria")}
             >
               {MENU_CATEGORIES.map((c) => (
                 <option key={c} value={c}>
-                  {c}
+                  {t(`common.categories.${c}`)}
                 </option>
               ))}
             </select>
           </Field>
-          <Field label="Price (PLN)">
+          <Field label={t("vendor.dishDialog.priceLabel")}>
             <Input
               type="number"
               min={0}
@@ -610,10 +611,10 @@ export function DishDialog({
 
         <DialogFooter>
           <Button variant="ghost" onClick={() => onOpenChange(false)}>
-            Cancel
+            {t("vendor.dishDialog.cancel")}
           </Button>
           <Button disabled={save.isPending} onClick={() => save.mutate()}>
-            {editing ? "Save changes" : "Add dish"}
+            {t(editing ? "vendor.dishDialog.saveChanges" : "vendor.dishDialog.addButton")}
           </Button>
         </DialogFooter>
       </DialogContent>
