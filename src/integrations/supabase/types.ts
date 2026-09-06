@@ -232,6 +232,9 @@ export type Database = {
           eta_minutes: number
           id: string
           note: string | null
+          payment_method: string
+          payment_reference: string | null
+          payment_status: string
           restaurant_id: string
           status: string
           subtotal: number
@@ -248,6 +251,9 @@ export type Database = {
           eta_minutes?: number
           id?: string
           note?: string | null
+          payment_method?: string
+          payment_reference?: string | null
+          payment_status?: string
           restaurant_id: string
           status?: string
           subtotal?: number
@@ -264,6 +270,9 @@ export type Database = {
           eta_minutes?: number
           id?: string
           note?: string | null
+          payment_method?: string
+          payment_reference?: string | null
+          payment_status?: string
           restaurant_id?: string
           status?: string
           subtotal?: number
