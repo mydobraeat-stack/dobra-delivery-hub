@@ -2,31 +2,21 @@ import { queryOptions } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
 export const DOC_TYPES = [
-  {
-    id: "drivers_licence",
-    label: "Driving licence",
-    hint: "Front side, clearly readable.",
-    required: true,
-  },
-  { id: "id_card", label: "ID card or passport", hint: "Photo page.", required: true },
-  {
-    id: "insurance",
-    label: "Insurance certificate",
-    hint: "Valid third-party insurance.",
-    required: true,
-  },
+  { id: "drivers_licence", labelKey: "driver.documents.types.drivers_licence.label", hintKey: "driver.documents.types.drivers_licence.hint", required: true },
+  { id: "id_card", labelKey: "driver.documents.types.id_card.label", hintKey: "driver.documents.types.id_card.hint", required: true },
+  { id: "insurance", labelKey: "driver.documents.types.insurance.label", hintKey: "driver.documents.types.insurance.hint", required: true },
   {
     id: "vehicle_registration",
-    label: "Vehicle registration",
-    hint: "Only for scooter, motorbike or car.",
+    labelKey: "driver.documents.types.vehicle_registration.label",
+    hintKey: "driver.documents.types.vehicle_registration.hint",
     required: false,
   },
-  { id: "profile_photo", label: "Profile photo", hint: "Clear photo of your face.", required: true },
+  { id: "profile_photo", labelKey: "driver.documents.types.profile_photo.label", hintKey: "driver.documents.types.profile_photo.hint", required: true },
 ] as const;
 
 export type DocType = (typeof DOC_TYPES)[number]["id"];
 
-export const VEHICLE_TYPES = ["Bicycle", "E-bike", "Scooter", "Motorbike", "Car", "On foot"];
+export const VEHICLE_TYPES = ["Bicycle", "E-bike", "Scooter", "Motorbike", "Car", "On foot"] as const;
 
 export type DriverDocument = {
   id: string;
@@ -106,9 +96,9 @@ export async function submitDriverApplication() {
   if (error) throw error;
 }
 
-export const DOCS_STATUS_LABEL: Record<string, string> = {
-  draft: "Not submitted",
-  in_review: "In review",
-  approved: "Approved",
-  rejected: "Needs changes",
+export const DOCS_STATUS_LABEL_KEY: Record<string, string> = {
+  draft: "driver.documents.status.draft",
+  in_review: "driver.documents.status.in_review",
+  approved: "driver.documents.status.approved",
+  rejected: "driver.documents.status.rejected",
 };
