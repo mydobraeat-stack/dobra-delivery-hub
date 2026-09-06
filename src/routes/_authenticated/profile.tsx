@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { queryOptions } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -52,10 +52,19 @@ const myProfileQuery = queryOptions({
 
 function ProfilePage() {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const { data: account } = useQuery(accountQueryOptions);
   const { data: profile } = useQuery(myProfileQuery);
   const t = useT();
   const role = account?.role ?? "customer";
+
+  async function handleSignOut() {
+    await queryClient.cancelQueries();
+    queryClient.clear();
+    await supabase.auth.signOut();
+    navigate({ to: "/auth", replace: true });
+  }
+
 
   const [fullName, setFullName] = useState("");
   const [country, setCountry] = useState("");
@@ -156,7 +165,16 @@ function ProfilePage() {
         {role === "customer" ? <CustomerSection /> : null}
         {role === "vendor" ? <VendorSection status={profile?.approval_status ?? null} /> : null}
         {role === "driver" ? <DriverSection status={profile?.approval_status ?? null} /> : null}
+
+        <Card className="border-ink/10">
+          <CardContent className="pt-6">
+            <Button variant="outline" className="w-full" onClick={handleSignOut}>
+              {t("common.actions.signOut")}
+            </Button>
+          </CardContent>
+        </Card>
       </main>
+
       {role === "customer" || role === "vendor" || role === "driver" ? (
         <TabBar role={role} />
       ) : null}

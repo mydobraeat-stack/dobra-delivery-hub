@@ -1,23 +1,11 @@
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { User } from "lucide-react";
-import { useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useT } from "@/lib/i18n";
 import { DobraLogo } from "./Logo";
 
 export function AppHeader({ subtitle }: { subtitle?: string }) {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const t = useT();
-
-
-  async function handleSignOut() {
-    await queryClient.cancelQueries();
-    queryClient.clear();
-    await supabase.auth.signOut();
-    navigate({ to: "/auth", replace: true });
-  }
 
   return (
     <header className="sticky top-0 z-20 border-b border-ink/10 bg-background/95 backdrop-blur">
@@ -35,11 +23,9 @@ export function AppHeader({ subtitle }: { subtitle?: string }) {
               <span className="hidden sm:inline">{t("common.actions.profile")}</span>
             </Link>
           </Button>
-          <Button variant="ghost" size="sm" onClick={handleSignOut}>
-            {t("common.actions.signOut")}
-          </Button>
         </div>
       </div>
     </header>
   );
 }
+
