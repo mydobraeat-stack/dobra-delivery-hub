@@ -1,9 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import {
-  BikeIcon,
   ClipboardList,
-  FileText,
   Home,
+  LifeBuoy,
+  Package,
   Receipt,
   Store,
   User,
@@ -27,10 +27,10 @@ const TABS: Record<"customer" | "vendor" | "driver", Tab[]> = {
     { to: "/profile", label: "Account", icon: User },
   ],
   driver: [
-    { to: "/driver", label: "Jobs", icon: BikeIcon },
+    { to: "/driver", label: "Home", icon: Home },
     { to: "/driver/earnings", label: "Earnings", icon: Wallet },
-    { to: "/driver/documents", label: "Documents", icon: FileText },
-    { to: "/profile", label: "Account", icon: User },
+    { to: "/driver/deliveries", label: "Deliveries", icon: Package },
+    { to: "/driver/help", label: "Help", icon: LifeBuoy },
   ],
 };
 
