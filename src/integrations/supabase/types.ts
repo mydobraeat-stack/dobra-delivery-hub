@@ -78,8 +78,10 @@ export type Database = {
       menu_items: {
         Row: {
           available: boolean
+          category: string
           created_at: string
           currency: string
+          description: string | null
           id: string
           image_url: string | null
           name: string
@@ -88,8 +90,10 @@ export type Database = {
         }
         Insert: {
           available?: boolean
+          category?: string
           created_at?: string
           currency?: string
+          description?: string | null
           id?: string
           image_url?: string | null
           name: string
@@ -98,8 +102,10 @@ export type Database = {
         }
         Update: {
           available?: boolean
+          category?: string
           created_at?: string
           currency?: string
+          description?: string | null
           id?: string
           image_url?: string | null
           name?: string
@@ -160,36 +166,51 @@ export type Database = {
       }
       orders: {
         Row: {
+          address: string | null
           country: string | null
           created_at: string
           currency: string
           customer_id: string
+          delivery_fee: number
           driver_id: string | null
+          eta_minutes: number
           id: string
+          note: string | null
           restaurant_id: string
           status: string
+          subtotal: number
           total: number
         }
         Insert: {
+          address?: string | null
           country?: string | null
           created_at?: string
           currency?: string
           customer_id: string
+          delivery_fee?: number
           driver_id?: string | null
+          eta_minutes?: number
           id?: string
+          note?: string | null
           restaurant_id: string
           status?: string
+          subtotal?: number
           total?: number
         }
         Update: {
+          address?: string | null
           country?: string | null
           created_at?: string
           currency?: string
           customer_id?: string
+          delivery_fee?: number
           driver_id?: string | null
+          eta_minutes?: number
           id?: string
+          note?: string | null
           restaurant_id?: string
           status?: string
+          subtotal?: number
           total?: number
         }
         Relationships: [
@@ -252,11 +273,14 @@ export type Database = {
           delivery_fee: number
           eta_minutes: number
           id: string
+          is_open: boolean
           logo_url: string | null
+          min_order: number
           name: string
           owner_id: string
           rating: number
           status: string
+          tags: string[]
         }
         Insert: {
           city?: string | null
@@ -266,11 +290,14 @@ export type Database = {
           delivery_fee?: number
           eta_minutes?: number
           id?: string
+          is_open?: boolean
           logo_url?: string | null
+          min_order?: number
           name: string
           owner_id: string
           rating?: number
           status?: string
+          tags?: string[]
         }
         Update: {
           city?: string | null
@@ -280,11 +307,14 @@ export type Database = {
           delivery_fee?: number
           eta_minutes?: number
           id?: string
+          is_open?: boolean
           logo_url?: string | null
+          min_order?: number
           name?: string
           owner_id?: string
           rating?: number
           status?: string
+          tags?: string[]
         }
         Relationships: [
           {
@@ -292,6 +322,74 @@ export type Database = {
             columns: ["owner_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reviews: {
+        Row: {
+          comment: string | null
+          created_at: string
+          customer_id: string
+          driver_id: string | null
+          driver_rating: number | null
+          id: string
+          order_id: string
+          restaurant_id: string
+          restaurant_rating: number
+          updated_at: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          customer_id: string
+          driver_id?: string | null
+          driver_rating?: number | null
+          id?: string
+          order_id: string
+          restaurant_id: string
+          restaurant_rating: number
+          updated_at?: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          customer_id?: string
+          driver_id?: string | null
+          driver_rating?: number | null
+          id?: string
+          order_id?: string
+          restaurant_id?: string
+          restaurant_rating?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: true
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants"
             referencedColumns: ["id"]
           },
         ]
