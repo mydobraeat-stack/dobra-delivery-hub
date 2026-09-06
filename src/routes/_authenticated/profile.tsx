@@ -153,6 +153,9 @@ function ProfilePage() {
         {role === "vendor" ? <VendorSection status={profile?.approval_status ?? null} /> : null}
         {role === "driver" ? <DriverSection status={profile?.approval_status ?? null} /> : null}
       </main>
+      {role === "customer" || role === "vendor" || role === "driver" ? (
+        <TabBar role={role} />
+      ) : null}
     </div>
   );
 }
