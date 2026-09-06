@@ -16,6 +16,7 @@ import { Route as AuthenticatedCustomerRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedDriverRouteImport } from './routes/_authenticated/driver'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
 import { Route as AuthenticatedVendorRouteImport } from './routes/_authenticated/vendor'
+import { Route as AuthenticatedRestaurantRestaurantIdRouteImport } from './routes/_authenticated/restaurant.$restaurantId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -51,6 +52,12 @@ const AuthenticatedVendorRoute = AuthenticatedVendorRouteImport.update({
   path: '/vendor',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedRestaurantRestaurantIdRoute =
+  AuthenticatedRestaurantRestaurantIdRouteImport.update({
+    id: '/restaurant/$restaurantId',
+    path: '/restaurant/$restaurantId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByFullPath {
   '/driver': typeof AuthenticatedDriverRoute
   '/home': typeof AuthenticatedHomeRoute
   '/vendor': typeof AuthenticatedVendorRoute
+  '/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -67,6 +75,7 @@ export interface FileRoutesByTo {
   '/driver': typeof AuthenticatedDriverRoute
   '/home': typeof AuthenticatedHomeRoute
   '/vendor': typeof AuthenticatedVendorRoute
+  '/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -77,12 +86,27 @@ export interface FileRoutesById {
   '/_authenticated/driver': typeof AuthenticatedDriverRoute
   '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/vendor': typeof AuthenticatedVendorRoute
+  '/_authenticated/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/customer' | '/driver' | '/home' | '/vendor'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/customer'
+    | '/driver'
+    | '/home'
+    | '/vendor'
+    | '/restaurant/$restaurantId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/customer' | '/driver' | '/home' | '/vendor'
+  to:
+    | '/'
+    | '/auth'
+    | '/customer'
+    | '/driver'
+    | '/home'
+    | '/vendor'
+    | '/restaurant/$restaurantId'
   id:
     | '__root__'
     | '/'
@@ -92,6 +116,7 @@ export interface FileRouteTypes {
     | '/_authenticated/driver'
     | '/_authenticated/home'
     | '/_authenticated/vendor'
+    | '/_authenticated/restaurant/$restaurantId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -151,6 +176,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedVendorRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/restaurant/$restaurantId': {
+      id: '/_authenticated/restaurant/$restaurantId'
+      path: '/restaurant/$restaurantId'
+      fullPath: '/restaurant/$restaurantId'
+      preLoaderRoute: typeof AuthenticatedRestaurantRestaurantIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -159,6 +191,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDriverRoute: typeof AuthenticatedDriverRoute
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedVendorRoute: typeof AuthenticatedVendorRoute
+  AuthenticatedRestaurantRestaurantIdRoute: typeof AuthenticatedRestaurantRestaurantIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -166,6 +199,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDriverRoute: AuthenticatedDriverRoute,
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
   AuthenticatedVendorRoute: AuthenticatedVendorRoute,
+  AuthenticatedRestaurantRestaurantIdRoute:
+    AuthenticatedRestaurantRestaurantIdRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
