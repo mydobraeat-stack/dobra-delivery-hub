@@ -1,4 +1,5 @@
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { User } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -24,9 +25,17 @@ export function AppHeader({ subtitle }: { subtitle?: string }) {
             <span className="text-sm font-medium text-foreground/70">{subtitle}</span>
           ) : null}
         </div>
-        <Button variant="ghost" size="sm" onClick={handleSignOut}>
-          Sign out
-        </Button>
+        <div className="flex items-center gap-1">
+          <Button asChild variant="ghost" size="sm">
+            <Link to="/profile" aria-label="Your profile">
+              <User className="size-4" aria-hidden />
+              <span className="hidden sm:inline">Profile</span>
+            </Link>
+          </Button>
+          <Button variant="ghost" size="sm" onClick={handleSignOut}>
+            Sign out
+          </Button>
+        </div>
       </div>
     </header>
   );

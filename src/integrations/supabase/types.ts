@@ -240,27 +240,33 @@ export type Database = {
       profiles: {
         Row: {
           approval_status: string
+          avatar_url: string | null
           country: string | null
           created_at: string
           email: string | null
           full_name: string | null
           id: string
+          phone: string | null
         }
         Insert: {
           approval_status?: string
+          avatar_url?: string | null
           country?: string | null
           created_at?: string
           email?: string | null
           full_name?: string | null
           id: string
+          phone?: string | null
         }
         Update: {
           approval_status?: string
+          avatar_url?: string | null
           country?: string | null
           created_at?: string
           email?: string | null
           full_name?: string | null
           id?: string
+          phone?: string | null
         }
         Relationships: []
       }
