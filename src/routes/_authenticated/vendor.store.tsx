@@ -16,7 +16,8 @@ import {
   useVendorOrders,
   useVendorRestaurant,
 } from "@/components/dobra/vendor-parts";
-import { money, setRestaurantOpen, type Restaurant } from "@/lib/dobra";
+import { setRestaurantOpen, type Restaurant } from "@/lib/dobra";
+import { useI18n, useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/_authenticated/vendor/store")({
   head: () => ({
@@ -36,6 +37,8 @@ export const Route = createFileRoute("/_authenticated/vendor/store")({
 });
 
 function VendorStorePage() {
+  const t = useT();
+  const { formatMoney } = useI18n();
   const { restaurants, restaurant, restaurantId, isLoading } = useVendorRestaurant();
   const { data: orders = [] } = useVendorOrders(restaurantId);
   const queryClient = useQueryClient();
@@ -47,7 +50,7 @@ function VendorStorePage() {
   const toggleOpen = useMutation({
     mutationFn: (isOpen: boolean) => setRestaurantOpen(restaurant!.id, isOpen),
     onSuccess: (_d, isOpen) => {
-      toast.success(isOpen ? "You are open for orders." : "You are closed — new orders paused.");
+      toast.success(isOpen ? t("vendor.store.openToast") : t("vendor.store.closedToast"));
       queryClient.invalidateQueries({ queryKey: ["restaurant"] });
       queryClient.invalidateQueries({ queryKey: ["restaurants"] });
     },
@@ -61,25 +64,23 @@ function VendorStorePage() {
   return (
     <main className="mx-auto max-w-4xl space-y-6 px-5 py-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold text-foreground">Your store</h1>
+        <h1 className="text-2xl font-bold text-foreground">{t("vendor.store.title")}</h1>
         <Button size="sm" variant="outline" onClick={() => setForm({ open: true, editing: null })}>
-          <Plus className="size-4" aria-hidden /> Add restaurant
+          <Plus className="size-4" aria-hidden /> {t("vendor.store.addRestaurant")}
         </Button>
       </div>
 
       <RestaurantSwitcher />
 
       {isLoading ? (
-        <p className="text-sm text-foreground/60">Loading…</p>
+        <p className="text-sm text-foreground/60">{t("vendor.store.loading")}</p>
       ) : restaurants.length === 0 ? (
         <Card className="border-ink/10">
           <CardContent className="space-y-3 py-6 text-center">
-            <h2 className="text-lg font-bold text-foreground">Create your restaurant</h2>
-            <p className="text-sm text-foreground/60">
-              Add your name, city and logo to start taking orders.
-            </p>
+            <h2 className="text-lg font-bold text-foreground">{t("vendor.store.createTitle")}</h2>
+            <p className="text-sm text-foreground/60">{t("vendor.store.createHint")}</p>
             <Button onClick={() => setForm({ open: true, editing: null })}>
-              <Plus className="size-4" aria-hidden /> Create restaurant
+              <Plus className="size-4" aria-hidden /> {t("vendor.store.createButton")}
             </Button>
           </CardContent>
         </Card>
@@ -98,15 +99,18 @@ function VendorStorePage() {
                 <div className="flex flex-wrap items-center gap-2">
                   <p className="font-bold text-foreground">{restaurant.name}</p>
                   <Badge variant={restaurant.status === "approved" ? "default" : "secondary"}>
-                    {restaurant.status === "approved" ? "Live" : "Pending approval"}
+                    {restaurant.status === "approved"
+                      ? t("common.approval.live")
+                      : t("common.approval.pending")}
                   </Badge>
                 </div>
                 <p className="text-sm text-foreground/60">
                   {restaurant.cuisine} · {restaurant.city}, {restaurant.country}
                 </p>
                 <p className="pt-1 text-xs text-foreground/70">
-                  {restaurant.eta_minutes} min · delivery {money(restaurant.delivery_fee)} · minimum{" "}
-                  {money(restaurant.min_order ?? 0)}
+                  {restaurant.eta_minutes} {t("vendor.store.minAbbrev")} ·{" "}
+                  {t("vendor.store.delivery")} {formatMoney(restaurant.delivery_fee)} ·{" "}
+                  {t("vendor.store.minimum")} {formatMoney(restaurant.min_order ?? 0)}
                 </p>
               </div>
               <div className="flex items-center gap-4">
@@ -118,7 +122,7 @@ function VendorStorePage() {
                     onCheckedChange={(v) => toggleOpen.mutate(v)}
                   />
                   <Label htmlFor="open-toggle" className="text-xs">
-                    {restaurant.is_open ? "Open" : "Closed"}
+                    {restaurant.is_open ? t("vendor.store.open") : t("vendor.store.closed")}
                   </Label>
                 </div>
                 <Button
@@ -126,16 +130,16 @@ function VendorStorePage() {
                   variant="outline"
                   onClick={() => setForm({ open: true, editing: restaurant })}
                 >
-                  Edit details
+                  {t("vendor.store.editDetails")}
                 </Button>
               </div>
             </CardContent>
           </Card>
 
           <section className="grid gap-3 sm:grid-cols-3">
-            <StatCard label="Delivered all time" value={String(delivered.length)} />
-            <StatCard label="Delivered revenue" value={money(revenue)} />
-            <StatCard label="Average order" value={money(avgOrder)} />
+            <StatCard label={t("vendor.store.deliveredAllTime")} value={String(delivered.length)} />
+            <StatCard label={t("vendor.store.deliveredRevenue")} value={formatMoney(revenue)} />
+            <StatCard label={t("vendor.store.averageOrder")} value={formatMoney(avgOrder)} />
           </section>
         </>
       ) : null}

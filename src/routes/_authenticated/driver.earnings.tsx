@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useI18n } from "@/lib/i18n";
 import { accountQueryOptions } from "@/lib/profile";
 import { PendingApproval } from "@/components/dobra/PendingApproval";
 import { Card, CardContent } from "@/components/ui/card";
-import { driverOrdersQuery, money, orderRef, payout, restaurantsQuery } from "@/lib/dobra";
+import { driverOrdersQuery, orderRef, payout, restaurantsQuery } from "@/lib/dobra";
 
 export const Route = createFileRoute("/_authenticated/driver/earnings")({
   head: () => ({
@@ -23,6 +24,7 @@ export const Route = createFileRoute("/_authenticated/driver/earnings")({
 });
 
 function DriverEarnings() {
+  const { t, formatMoney, formatDate } = useI18n();
   const { data: account } = useQuery(accountQueryOptions);
   const approved = account?.approvalStatus === "approved";
   const { data } = useQuery({ ...driverOrdersQuery, enabled: approved });
@@ -31,13 +33,13 @@ function DriverEarnings() {
   if (!approved) {
     return (
       <main className="mx-auto max-w-4xl space-y-6 px-5 py-6">
-        <h1 className="text-2xl font-bold text-foreground">Earnings</h1>
+        <h1 className="text-2xl font-bold text-foreground">{t("driver.earnings.title")}</h1>
         <PendingApproval what="driver" />
       </main>
     );
   }
 
-  const restaurantName = (id: string) => restaurants.find((r) => r.id === id)?.name ?? "Restaurant";
+  const restaurantName = (id: string) => restaurants.find((r) => r.id === id)?.name ?? t("driver.home.restaurantFallback");
   const completed = (data?.mine ?? []).filter((o) => o.status === "delivered");
   const total = completed.reduce((sum, o) => sum + payout(Number(o.total)), 0);
   const today = new Date().toDateString();
@@ -51,19 +53,19 @@ function DriverEarnings() {
 
   return (
     <main className="mx-auto max-w-4xl space-y-6 px-5 py-6">
-      <h1 className="text-2xl font-bold text-foreground">Earnings</h1>
+      <h1 className="text-2xl font-bold text-foreground">{t("driver.earnings.title")}</h1>
 
       <section className="grid gap-3 sm:grid-cols-4">
-        <Stat label="Today" value={money(todayTotal)} />
-        <Stat label="Last 7 days" value={money(weekTotal)} />
-        <Stat label="All time" value={money(total)} />
-        <Stat label="Deliveries done" value={String(completed.length)} />
+        <Stat label={t("driver.earnings.today")} value={formatMoney(todayTotal)} />
+        <Stat label={t("driver.earnings.last7")} value={formatMoney(weekTotal)} />
+        <Stat label={t("driver.earnings.allTime")} value={formatMoney(total)} />
+        <Stat label={t("driver.earnings.deliveriesDone")} value={String(completed.length)} />
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-lg font-bold text-foreground">Payment history</h2>
+        <h2 className="text-lg font-bold text-foreground">{t("driver.earnings.paymentHistory")}</h2>
         {completed.length === 0 ? (
-          <p className="text-sm text-foreground/60">No completed deliveries yet.</p>
+          <p className="text-sm text-foreground/60">{t("driver.earnings.noneCompleted")}</p>
         ) : (
           completed.map((o) => (
             <Card key={o.id} className="border-ink/10">
@@ -73,11 +75,11 @@ function DriverEarnings() {
                     {restaurantName(o.restaurant_id)}
                   </p>
                   <p className="text-xs text-foreground/60">
-                    {orderRef(o.id)} · {new Date(o.created_at).toLocaleString()}
+                    {orderRef(o.id)} · {formatDate(o.created_at)}
                   </p>
                 </div>
                 <p className="text-sm font-semibold text-foreground">
-                  {money(payout(Number(o.total)), o.currency)}
+                  {formatMoney(payout(Number(o.total)), o.currency)}
                 </p>
               </CardContent>
             </Card>

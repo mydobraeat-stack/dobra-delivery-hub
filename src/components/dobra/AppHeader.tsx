@@ -3,11 +3,14 @@ import { User } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { useT } from "@/lib/i18n";
 import { DobraLogo } from "./Logo";
 
 export function AppHeader({ subtitle }: { subtitle?: string }) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const t = useT();
+
 
   async function handleSignOut() {
     await queryClient.cancelQueries();
@@ -27,13 +30,13 @@ export function AppHeader({ subtitle }: { subtitle?: string }) {
         </div>
         <div className="flex items-center gap-1">
           <Button asChild variant="ghost" size="sm">
-            <Link to="/profile" aria-label="Your profile">
+            <Link to="/profile" aria-label={t("common.actions.profile")}>
               <User className="size-4" aria-hidden />
-              <span className="hidden sm:inline">Profile</span>
+              <span className="hidden sm:inline">{t("common.actions.profile")}</span>
             </Link>
           </Button>
           <Button variant="ghost" size="sm" onClick={handleSignOut}>
-            Sign out
+            {t("common.actions.signOut")}
           </Button>
         </div>
       </div>

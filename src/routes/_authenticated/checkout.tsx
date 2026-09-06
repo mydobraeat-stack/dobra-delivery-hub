@@ -8,7 +8,8 @@ import { AppHeader } from "@/components/dobra/AppHeader";
 import { StoredImage } from "@/components/dobra/StoredImage";
 import { cartSubtotal, clearCart, setQuantity, useCart } from "@/lib/cart";
 import { createCardCheckoutSession } from "@/lib/payments.functions";
-import { money, placeOrder, restaurantQuery, type PaymentMethod } from "@/lib/dobra";
+import { placeOrder, restaurantQuery, type PaymentMethod } from "@/lib/dobra";
+import { useI18n } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -33,6 +34,7 @@ export const Route = createFileRoute("/_authenticated/checkout")({
 });
 
 function CheckoutPage() {
+  const { t, formatMoney } = useI18n();
   const cart = useCart();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -75,7 +77,7 @@ function CheckoutPage() {
           window.location.href = session.url;
           return null;
         }
-        toast.message("Card payments are in test mode — the order was saved as unpaid.");
+        toast.message(t("customer.checkout.cardTestModeToast"));
       }
       return orderId;
     },
@@ -85,8 +87,8 @@ function CheckoutPage() {
       queryClient.invalidateQueries({ queryKey: ["orders"] });
       toast.success(
         paymentMethod === "cash"
-          ? "Order placed — pay the driver on delivery."
-          : "Order placed.",
+          ? t("customer.checkout.orderPlacedCash")
+          : t("customer.checkout.orderPlacedCard"),
       );
       navigate({ to: "/orders/$orderId", params: { orderId } });
     },
@@ -95,18 +97,18 @@ function CheckoutPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <AppHeader subtitle="Customer" />
+      <AppHeader subtitle={t("common.roles.customer")} />
       <main className="mx-auto max-w-2xl space-y-6 px-5 py-6">
         <Link
           to="/customer"
           className="inline-flex items-center gap-2 text-sm font-medium text-foreground/70 hover:text-foreground"
         >
-          <ArrowLeft className="size-4" aria-hidden /> Keep browsing
+          <ArrowLeft className="size-4" aria-hidden /> {t("customer.checkout.keepBrowsing")}
         </Link>
-        <h1 className="text-2xl font-bold text-foreground">Your basket</h1>
+        <h1 className="text-2xl font-bold text-foreground">{t("customer.checkout.basketTitle")}</h1>
 
         {cart.lines.length === 0 ? (
-          <p className="text-sm text-foreground/60">Your basket is empty.</p>
+          <p className="text-sm text-foreground/60">{t("customer.checkout.basketEmpty")}</p>
         ) : (
           <>
             <Card className="border-ink/10">
@@ -124,14 +126,14 @@ function CheckoutPage() {
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-sm font-medium text-foreground">{line.name}</p>
                       <p className="text-xs text-foreground/60">
-                        {money(line.price * line.quantity, line.currency)}
+                        {formatMoney(line.price * line.quantity, line.currency)}
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
                       <Button
                         size="icon"
                         variant="outline"
-                        aria-label={`Remove one ${line.name}`}
+                        aria-label={t("customer.cart.removeOneAria", { name: line.name })}
                         onClick={() => setQuantity(line.itemId, line.quantity - 1)}
                       >
                         {line.quantity === 1 ? (
@@ -143,7 +145,7 @@ function CheckoutPage() {
                       <span className="w-4 text-center text-sm font-semibold">{line.quantity}</span>
                       <Button
                         size="icon"
-                        aria-label={`Add one ${line.name}`}
+                        aria-label={t("customer.cart.addOneAria", { name: line.name })}
                         onClick={() => setQuantity(line.itemId, line.quantity + 1)}
                       >
                         <Plus className="size-4" />
@@ -157,21 +159,21 @@ function CheckoutPage() {
             <Card className="border-ink/10">
               <CardContent className="space-y-4 py-4">
                 <div className="space-y-2">
-                  <Label htmlFor="address">Delivery address</Label>
+                  <Label htmlFor="address">{t("customer.checkout.addressLabel")}</Label>
                   <Input
                     id="address"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
-                    placeholder="Street, building, flat"
+                    placeholder={t("customer.checkout.addressPlaceholder")}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="note">Note for the restaurant (optional)</Label>
+                  <Label htmlFor="note">{t("customer.checkout.noteLabel")}</Label>
                   <Textarea
                     id="note"
                     value={note}
                     onChange={(e) => setNote(e.target.value)}
-                    placeholder="Ring the bell, no onions…"
+                    placeholder={t("customer.checkout.notePlaceholder")}
                   />
                 </div>
               </CardContent>
@@ -179,11 +181,11 @@ function CheckoutPage() {
 
             <Card className="border-ink/10">
               <CardContent className="space-y-3 py-4">
-                <p className="font-semibold text-foreground">How would you like to pay?</p>
+                <p className="font-semibold text-foreground">{t("customer.checkout.paymentTitle")}</p>
                 {(
                   [
-                    { id: "cash", title: "Cash on delivery", copy: "Pay the driver when your food arrives." },
-                    { id: "card", title: "Card / online payment", copy: "Pay securely now by card." },
+                    { id: "cash", titleKey: "customer.checkout.cashTitle", copyKey: "customer.checkout.cashCopy" },
+                    { id: "card", titleKey: "customer.checkout.cardTitle", copyKey: "customer.checkout.cardCopy" },
                   ] as const
                 ).map((option) => (
                   <button
@@ -197,14 +199,14 @@ function CheckoutPage() {
                     }`}
                   >
                     <span className="block text-sm font-semibold text-foreground">
-                      {option.title}
+                      {t(option.titleKey)}
                     </span>
-                    <span className="block text-xs text-foreground/60">{option.copy}</span>
+                    <span className="block text-xs text-foreground/60">{t(option.copyKey)}</span>
                   </button>
                 ))}
                 {/* TODO: Mobile Money (Flutterwave / Notch Pay) for Cameroon — not built yet. */}
                 <p className="text-xs text-foreground/50">
-                  Mobile Money coming soon for Cameroon.
+                  {t("customer.checkout.mobileMoneySoon")}
                 </p>
               </CardContent>
             </Card>
@@ -212,23 +214,23 @@ function CheckoutPage() {
             <Card className="border-ink/10">
               <CardContent className="space-y-2 py-4 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-foreground/70">Subtotal</span>
-                  <span>{money(subtotal)}</span>
+                  <span className="text-foreground/70">{t("customer.checkout.subtotal")}</span>
+                  <span>{formatMoney(subtotal)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-foreground/70">Delivery</span>
-                  <span>{money(fee)}</span>
+                  <span className="text-foreground/70">{t("customer.checkout.delivery")}</span>
+                  <span>{formatMoney(fee)}</span>
                 </div>
                 <div className="flex justify-between border-t border-ink/10 pt-2 text-base font-bold">
-                  <span>Total</span>
-                  <span>{money(total)}</span>
+                  <span>{t("customer.checkout.total")}</span>
+                  <span>{formatMoney(total)}</span>
                 </div>
               </CardContent>
             </Card>
 
             {belowMinimum ? (
               <p className="text-sm text-destructive">
-                Minimum order for this restaurant is {money(Number(restaurant?.min_order ?? 0))}.
+                {t("customer.checkout.minOrderWarning", { price: formatMoney(Number(restaurant?.min_order ?? 0)) })}
               </p>
             ) : null}
 
@@ -240,7 +242,7 @@ function CheckoutPage() {
               }
               onClick={() => submit.mutate()}
             >
-              {submit.isPending ? "Placing order…" : `Place order · ${money(total)}`}
+              {submit.isPending ? t("customer.checkout.placingOrder") : t("customer.checkout.placeOrder", { price: formatMoney(total) })}
             </Button>
           </>
         )}

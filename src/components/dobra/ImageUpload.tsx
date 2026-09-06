@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { StoredImage } from "@/components/dobra/StoredImage";
 import { uploadImage, type ImageBucket } from "@/lib/storage";
+import { useT } from "@/lib/i18n";
 
 type Props = {
   bucket: ImageBucket;
@@ -15,25 +16,26 @@ type Props = {
 const MAX_BYTES = 5 * 1024 * 1024;
 
 export function ImageUpload({ bucket, value, onChange, label }: Props) {
+  const t = useT();
   const inputRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
 
   async function handleFile(file: File | undefined) {
     if (!file) return;
     if (!file.type.startsWith("image/")) {
-      toast.error("Please choose an image file.");
+      toast.error(t("vendor.imageUpload.invalidFile"));
       return;
     }
     if (file.size > MAX_BYTES) {
-      toast.error("Image must be smaller than 5 MB.");
+      toast.error(t("vendor.imageUpload.tooLarge"));
       return;
     }
     setBusy(true);
     try {
       onChange(await uploadImage(bucket, file));
-      toast.success("Photo uploaded.");
+      toast.success(t("vendor.imageUpload.uploaded"));
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Upload failed.");
+      toast.error(e instanceof Error ? e.message : t("vendor.imageUpload.uploadFailed"));
     } finally {
       setBusy(false);
       if (inputRef.current) inputRef.current.value = "";
@@ -71,7 +73,7 @@ export function ImageUpload({ bucket, value, onChange, label }: Props) {
           ) : (
             <Upload className="size-4" aria-hidden />
           )}
-          {value ? "Replace photo" : "Upload photo"}
+          {value ? t("vendor.imageUpload.replacePhoto") : t("vendor.imageUpload.uploadPhoto")}
         </Button>
       </div>
     </div>

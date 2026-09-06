@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useI18n } from "@/lib/i18n";
 import { accountQueryOptions } from "@/lib/profile";
 import { PendingApproval } from "@/components/dobra/PendingApproval";
 import { StatusBadge } from "@/components/dobra/StatusBadge";
 import { Card, CardContent } from "@/components/ui/card";
-import { driverOrdersQuery, isFinished, money, orderRef, payout, restaurantsQuery } from "@/lib/dobra";
+import { driverOrdersQuery, isFinished, orderRef, payout, restaurantsQuery } from "@/lib/dobra";
 
 export const Route = createFileRoute("/_authenticated/driver/deliveries")({
   head: () => ({
@@ -21,6 +22,7 @@ export const Route = createFileRoute("/_authenticated/driver/deliveries")({
 });
 
 function DriverDeliveries() {
+  const { t, formatMoney, formatDate } = useI18n();
   const { data: account } = useQuery(accountQueryOptions);
   const approved = account?.approvalStatus === "approved";
   const { data } = useQuery({ ...driverOrdersQuery, enabled: approved });
@@ -29,7 +31,7 @@ function DriverDeliveries() {
   if (!approved) {
     return (
       <main className="mx-auto max-w-4xl space-y-6 px-5 py-6">
-        <h1 className="text-2xl font-bold text-foreground">My deliveries</h1>
+        <h1 className="text-2xl font-bold text-foreground">{t("driver.deliveries.title")}</h1>
         <PendingApproval what="driver" />
       </main>
     );
@@ -38,7 +40,7 @@ function DriverDeliveries() {
   const mine = data?.mine ?? [];
   const active = mine.filter((o) => !isFinished(o.status));
   const past = mine.filter((o) => isFinished(o.status));
-  const name = (id: string) => restaurants.find((r) => r.id === id)?.name ?? "Restaurant";
+  const name = (id: string) => restaurants.find((r) => r.id === id)?.name ?? t("driver.home.restaurantFallback");
 
   const row = (o: (typeof mine)[number]) => (
     <Card key={o.id} className="border-ink/10">
@@ -46,8 +48,8 @@ function DriverDeliveries() {
         <div className="min-w-0">
           <p className="font-semibold text-foreground">{name(o.restaurant_id)}</p>
           <p className="text-xs text-foreground/60">
-            {orderRef(o.id)} · {new Date(o.created_at).toLocaleString()} ·{" "}
-            {money(payout(Number(o.total)), o.currency)}
+            {orderRef(o.id)} · {formatDate(o.created_at)} ·{" "}
+            {formatMoney(payout(Number(o.total)), o.currency)}
           </p>
           {o.address ? <p className="text-xs text-foreground/60">{o.address}</p> : null}
         </div>
@@ -58,21 +60,21 @@ function DriverDeliveries() {
 
   return (
     <main className="mx-auto max-w-4xl space-y-6 px-5 py-6">
-      <h1 className="text-2xl font-bold text-foreground">My deliveries</h1>
+      <h1 className="text-2xl font-bold text-foreground">{t("driver.deliveries.title")}</h1>
 
       <section className="space-y-3">
-        <h2 className="text-lg font-bold text-foreground">Active</h2>
+        <h2 className="text-lg font-bold text-foreground">{t("driver.deliveries.active")}</h2>
         {active.length === 0 ? (
-          <p className="text-sm text-foreground/60">Nothing in progress.</p>
+          <p className="text-sm text-foreground/60">{t("driver.deliveries.noneInProgress")}</p>
         ) : (
           active.map(row)
         )}
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-lg font-bold text-foreground">Past deliveries</h2>
+        <h2 className="text-lg font-bold text-foreground">{t("driver.deliveries.past")}</h2>
         {past.length === 0 ? (
-          <p className="text-sm text-foreground/60">No completed deliveries yet.</p>
+          <p className="text-sm text-foreground/60">{t("driver.deliveries.noneCompleted")}</p>
         ) : (
           past.map(row)
         )}

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DobraLogo } from "@/components/dobra/Logo";
+import { useT } from "@/lib/i18n";
 
 const searchSchema = z.object({
   mode: z.enum(["signup", "login"]).catch("login"),
@@ -34,15 +35,10 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
-const roleLabels = {
-  customer: "Customer",
-  vendor: "Vendor",
-  driver: "Driver",
-} as const;
-
 function AuthPage() {
   const { mode, role } = Route.useSearch();
   const navigate = useNavigate();
+  const t = useT();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -81,7 +77,7 @@ function AuthPage() {
         return;
       }
       if (!data.session) {
-        setMessage("Almost there — check your email to confirm your account.");
+        setMessage(t("auth.confirmEmail"));
         return;
       }
       navigate({ to: "/home", replace: true });
@@ -103,7 +99,7 @@ function AuthPage() {
       redirect_uri: window.location.origin,
     });
     if (result.error) {
-      setError("Google sign-in didn't work. Please try again.");
+      setError(t("auth.googleFailed"));
       return;
     }
     if (result.redirected) return;
@@ -118,19 +114,21 @@ function AuthPage() {
 
       <div className="w-full max-w-md rounded-3xl bg-card p-6 shadow-soft sm:p-8">
         <h1 className="text-2xl font-bold text-foreground">
-          {isSignup ? `Sign up as a ${roleLabels[role]}` : "Welcome back"}
+          {isSignup
+            ? t("auth.signupTitle", { role: t(`common.roles.${role}`) })
+            : t("auth.loginTitle")}
         </h1>
         <p className="mt-1 text-sm text-foreground/60">
           {isSignup
-            ? "Create your Dobra account in a few seconds."
-            : "Log in to continue ordering, cooking or delivering."}
+            ? t("auth.signupSubtitle")
+            : t("auth.loginSubtitle")}
         </p>
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           {isSignup ? (
             <>
               <div className="space-y-2">
-                <Label htmlFor="fullName">Full name</Label>
+                <Label htmlFor="fullName">{t("auth.fullName")}</Label>
                 <Input
                   id="fullName"
                   value={fullName}
@@ -140,7 +138,7 @@ function AuthPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="country">Country</Label>
+                <Label htmlFor="country">{t("auth.country")}</Label>
                 <Input
                   id="country"
                   value={country}
@@ -153,7 +151,7 @@ function AuthPage() {
           ) : null}
 
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">{t("auth.email")}</Label>
             <Input
               id="email"
               type="email"
@@ -165,7 +163,7 @@ function AuthPage() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">{t("auth.password")}</Label>
             <div className="relative">
               <Input
                 id="password"
@@ -180,7 +178,7 @@ function AuthPage() {
               <button
                 type="button"
                 onClick={() => setShowPassword((v) => !v)}
-                aria-label={showPassword ? "Hide password" : "Show password"}
+                aria-label={showPassword ? t("auth.hidePassword") : t("auth.showPassword")}
                 className="absolute inset-y-0 right-0 flex w-10 items-center justify-center text-foreground/50 hover:text-foreground"
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -192,28 +190,28 @@ function AuthPage() {
           {message ? <p className="text-sm text-foreground/70">{message}</p> : null}
 
           <Button type="submit" className="w-full" size="lg" disabled={loading}>
-            {loading ? "Please wait…" : isSignup ? "Create account" : "Log in"}
+            {loading ? t("auth.pleaseWait") : isSignup ? t("auth.createAccount") : t("auth.logIn")}
           </Button>
         </form>
 
         <div className="my-5 flex items-center gap-3 text-xs uppercase tracking-wide text-foreground/40">
           <span className="h-px flex-1 bg-ink/10" />
-          or
+          {t("auth.or")}
           <span className="h-px flex-1 bg-ink/10" />
         </div>
 
         <Button variant="outline" className="w-full" size="lg" onClick={handleGoogle}>
-          Continue with Google
+          {t("auth.google")}
         </Button>
 
         <p className="mt-6 text-center text-sm text-foreground/60">
-          {isSignup ? "Already have an account?" : "New to Dobra?"}{" "}
+          {isSignup ? t("auth.haveAccount") : t("auth.newHere")}{" "}
           <Link
             to="/auth"
             search={{ mode: isSignup ? "login" : "signup", role }}
             className="font-semibold text-brand underline-offset-4 hover:underline"
           >
-            {isSignup ? "Log in" : "Sign up"}
+            {isSignup ? t("auth.logIn") : t("auth.signUp")}
           </Link>
         </p>
       </div>

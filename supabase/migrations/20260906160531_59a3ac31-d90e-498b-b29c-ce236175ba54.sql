@@ -1,0 +1,2 @@
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS language text;
+ALTER TABLE public.profiles ADD CONSTRAINT profiles_language_check CHECK (language IS NULL OR language IN ('en','pl','uk','fr')) NOT VALID;

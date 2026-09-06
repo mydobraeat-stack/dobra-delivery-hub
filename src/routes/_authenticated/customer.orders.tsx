@@ -2,7 +2,8 @@ import { useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { StatusBadge } from "@/components/dobra/StatusBadge";
-import { isFinished, money, myOrdersQuery, orderRef, restaurantsQuery } from "@/lib/dobra";
+import { isFinished, myOrdersQuery, orderRef, restaurantsQuery } from "@/lib/dobra";
+import { useI18n } from "@/lib/i18n";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -24,6 +25,7 @@ export const Route = createFileRoute("/_authenticated/customer/orders")({
 });
 
 function CustomerOrders() {
+  const { t, formatMoney, formatDate } = useI18n();
   const { data: orders = [], isLoading } = useQuery(myOrdersQuery);
   const { data: restaurants = [] } = useQuery(restaurantsQuery);
   const byRestaurant = useMemo(
@@ -40,11 +42,11 @@ function CustomerOrders() {
         <CardContent className="flex items-center justify-between gap-3 py-4">
           <div className="min-w-0">
             <p className="truncate font-semibold text-foreground">
-              {byRestaurant[o.restaurant_id]?.name ?? "Restaurant"}
+              {byRestaurant[o.restaurant_id]?.name ?? t("customer.home.restaurantFallback")}
             </p>
             <p className="text-xs text-foreground/60">
-              {orderRef(o.id)} · {new Date(o.created_at).toLocaleString()} ·{" "}
-              {money(o.total, o.currency)}
+              {orderRef(o.id)} · {formatDate(o.created_at)} ·{" "}
+              {formatMoney(o.total, o.currency)}
             </p>
           </div>
           <StatusBadge status={o.status} />
@@ -55,17 +57,17 @@ function CustomerOrders() {
 
   return (
     <main className="mx-auto max-w-4xl space-y-8 px-5 py-6">
-      <h1 className="text-2xl font-bold text-foreground">Your orders</h1>
+      <h1 className="text-2xl font-bold text-foreground">{t("customer.orders.title")}</h1>
 
       <section className="space-y-3">
-        <h2 className="text-lg font-bold text-foreground">Live now</h2>
+        <h2 className="text-lg font-bold text-foreground">{t("customer.orders.liveNow")}</h2>
         {isLoading ? (
-          <p className="text-sm text-foreground/60">Loading…</p>
+          <p className="text-sm text-foreground/60">{t("common.state.loading")}</p>
         ) : live.length === 0 ? (
           <div className="space-y-3">
-            <p className="text-sm text-foreground/60">No deliveries on the way.</p>
+            <p className="text-sm text-foreground/60">{t("customer.orders.noLiveOrders")}</p>
             <Button asChild size="sm">
-              <Link to="/customer">Order something</Link>
+              <Link to="/customer">{t("customer.orders.orderSomething")}</Link>
             </Button>
           </div>
         ) : (
@@ -74,9 +76,9 @@ function CustomerOrders() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-lg font-bold text-foreground">Past orders</h2>
+        <h2 className="text-lg font-bold text-foreground">{t("customer.orders.pastOrders")}</h2>
         {past.length === 0 ? (
-          <p className="text-sm text-foreground/60">Your finished orders will appear here.</p>
+          <p className="text-sm text-foreground/60">{t("customer.orders.noPastOrders")}</p>
         ) : (
           <div className="space-y-3">{past.map(row)}</div>
         )}

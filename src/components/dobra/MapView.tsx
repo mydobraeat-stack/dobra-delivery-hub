@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 export type MapPoint = { lat: number; lng: number; label?: string };
@@ -39,6 +40,7 @@ export function MapView({ points, className, zoom = 14 }: Props) {
   const mapRef = useRef<any>(null);
   const markersRef = useRef<any[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const t = useT();
 
   useEffect(() => {
     let cancelled = false;
@@ -94,5 +96,5 @@ gestureHandling: "greedy",
     );
   }
 
-  return <div ref={ref} className={cn("rounded-xl bg-muted", className)} role="img" aria-label="Map" />;
+  return <div ref={ref} className={cn("rounded-xl bg-muted", className)} role="img" aria-label={t("common.mapAria")} />;
 }

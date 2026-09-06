@@ -7,6 +7,7 @@ import {
   useVendorRestaurant,
 } from "@/components/dobra/vendor-parts";
 import type { MenuItem } from "@/lib/dobra";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/_authenticated/vendor/menu")({
   head: () => ({
@@ -23,6 +24,7 @@ export const Route = createFileRoute("/_authenticated/vendor/menu")({
 });
 
 function VendorMenuPage() {
+  const t = useT();
   const { restaurantId, items, isLoading } = useVendorRestaurant();
   const [dishForm, setDishForm] = useState<{ open: boolean; editing: MenuItem | null }>({
     open: false,
@@ -31,13 +33,13 @@ function VendorMenuPage() {
 
   return (
     <main className="mx-auto max-w-4xl space-y-6 px-5 py-6">
-      <h1 className="text-2xl font-bold text-foreground">Menu</h1>
+      <h1 className="text-2xl font-bold text-foreground">{t("vendor.menu.title")}</h1>
       <RestaurantSwitcher />
 
       {isLoading ? (
-        <p className="text-sm text-foreground/60">Loading…</p>
+        <p className="text-sm text-foreground/60">{t("vendor.menu.loading")}</p>
       ) : !restaurantId ? (
-        <p className="text-sm text-foreground/60">Create your restaurant first on the Store tab.</p>
+        <p className="text-sm text-foreground/60">{t("vendor.menu.createRestaurantFirst")}</p>
       ) : (
         <>
           <MenuSection

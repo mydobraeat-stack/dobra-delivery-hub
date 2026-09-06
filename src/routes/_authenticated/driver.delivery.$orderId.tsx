@@ -7,11 +7,11 @@ import { StatusBadge } from "@/components/dobra/StatusBadge";
 import { MapView, type MapPoint } from "@/components/dobra/MapView";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useI18n } from "@/lib/i18n";
 import { addressPointQuery } from "@/lib/maps";
 import {
   claimOrder,
   driverOrdersQuery,
-  money,
   orderItemsQuery,
   orderRef,
   payout,
@@ -40,6 +40,7 @@ export const Route = createFileRoute("/_authenticated/driver/delivery/$orderId")
 });
 
 function DeliveryDetail() {
+  const { t, formatMoney } = useI18n();
   const { orderId } = Route.useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -64,10 +65,10 @@ function DeliveryDetail() {
   const accept = useMutation({
     mutationFn: () => claimOrder(orderId),
     onSuccess: () => {
-      toast.success("Delivery accepted — head to the restaurant.");
+      toast.success(t("driver.delivery.acceptedToast"));
       invalidate();
     },
-    onError: () => toast.error("Someone else accepted this delivery."),
+    onError: () => toast.error(t("driver.delivery.acceptedError")),
   });
 
   const advance = useMutation({
@@ -75,28 +76,26 @@ function DeliveryDetail() {
     onSuccess: (_d, status) => {
       invalidate();
       if (status === "delivered") {
-        toast.success("Delivered. Nice work!");
+        toast.success(t("driver.delivery.deliveredToast"));
         void navigate({ to: "/driver" });
       } else {
-        toast.success("Marked as picked up.");
+        toast.success(t("driver.delivery.pickedUpToast"));
       }
     },
     onError: (e: Error) => toast.error(e.message),
   });
 
   if (isLoading) {
-    return <main className="px-5 py-6 text-sm text-foreground/60">Loading delivery…</main>;
+    return <main className="px-5 py-6 text-sm text-foreground/60">{t("driver.delivery.loading")}</main>;
   }
 
   if (!order) {
     return (
       <main className="mx-auto max-w-2xl space-y-4 px-5 py-6">
-        <h1 className="text-xl font-bold text-foreground">Delivery not available</h1>
-        <p className="text-sm text-foreground/70">
-          This delivery is no longer open — another driver may have taken it.
-        </p>
+        <h1 className="text-xl font-bold text-foreground">{t("driver.delivery.notAvailableTitle")}</h1>
+        <p className="text-sm text-foreground/70">{t("driver.delivery.notAvailableBody")}</p>
         <Button asChild>
-          <Link to="/driver">Back to jobs</Link>
+          <Link to="/driver">{t("driver.delivery.backToJobs")}</Link>
         </Button>
       </main>
     );
@@ -108,7 +107,7 @@ function DeliveryDetail() {
   return (
     <main className="mx-auto max-w-2xl space-y-5 px-5 pb-32 pt-4">
       <div className="flex items-center gap-2">
-        <Button size="icon" variant="ghost" aria-label="Back" asChild>
+        <Button size="icon" variant="ghost" aria-label={t("common.actions.back")} asChild>
           <Link to="/driver">
             <ArrowLeft className="size-5" aria-hidden />
           </Link>
@@ -122,19 +121,19 @@ function DeliveryDetail() {
           <div className="flex items-start gap-3">
             <Store className="mt-0.5 size-5 shrink-0 text-foreground/60" aria-hidden />
             <div>
-              <p className="font-semibold text-foreground">{restaurant?.name ?? "Restaurant"}</p>
+              <p className="font-semibold text-foreground">{restaurant?.name ?? t("driver.delivery.restaurantFallback")}</p>
               <p className="text-xs text-foreground/60">
-                Pick-up{restaurant?.city ? ` · ${restaurant.city}` : ""}
+                {t("driver.delivery.pickup", { city: restaurant?.city ? ` · ${restaurant.city}` : "" })}
               </p>
             </div>
           </div>
           <div className="flex items-start gap-3">
             <MapPin className="mt-0.5 size-5 shrink-0 text-foreground/60" aria-hidden />
             <div>
-              <p className="font-semibold text-foreground">{order.address ?? "Address on the way"}</p>
-              <p className="text-xs text-foreground/60">Drop-off</p>
+              <p className="font-semibold text-foreground">{order.address ?? t("driver.delivery.addressFallback")}</p>
+              <p className="text-xs text-foreground/60">{t("driver.delivery.dropoff")}</p>
               {order.note ? (
-                <p className="mt-1 text-xs text-foreground/70">Note: {order.note}</p>
+                <p className="mt-1 text-xs text-foreground/70">{t("driver.delivery.note", { note: order.note })}</p>
               ) : null}
             </div>
           </div>
@@ -146,16 +145,16 @@ function DeliveryDetail() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <Navigation className="size-4" aria-hidden /> Navigate
+                  <Navigation className="size-4" aria-hidden /> {t("driver.delivery.navigate")}
                 </a>
               </Button>
             ) : null}
             <Button
               size="sm"
               variant="outline"
-              onClick={() => toast("In-app calling is coming soon.")}
+              onClick={() => toast(t("driver.delivery.contactToast"))}
             >
-              <Phone className="size-4" aria-hidden /> Contact customer
+              <Phone className="size-4" aria-hidden /> {t("driver.delivery.contactCustomer")}
             </Button>
           </div>
         </CardContent>
@@ -165,29 +164,29 @@ function DeliveryDetail() {
 
       <Card className="border-ink/10">
         <CardContent className="space-y-2 py-4">
-          <p className="font-semibold text-foreground">Order</p>
+          <p className="font-semibold text-foreground">{t("driver.delivery.order")}</p>
           {items.length === 0 ? (
-            <p className="text-sm text-foreground/60">No items to show.</p>
+            <p className="text-sm text-foreground/60">{t("driver.delivery.noItems")}</p>
           ) : (
             items.map((it: any) => (
               <div key={it.id} className="flex justify-between text-sm text-foreground/80">
                 <span>
                   {it.quantity} × {it.menu_items?.name ?? "Item"}
                 </span>
-                <span>{money(Number(it.price) * it.quantity, order.currency)}</span>
+                <span>{formatMoney(Number(it.price) * it.quantity, order.currency)}</span>
               </div>
             ))
           )}
           <div className="flex justify-between border-t border-ink/10 pt-2 text-sm">
-            <span className="text-foreground/70">Order total</span>
+            <span className="text-foreground/70">{t("driver.delivery.orderTotal")}</span>
             <span className="font-semibold text-foreground">
-              {money(Number(order.total), order.currency)}
+              {formatMoney(Number(order.total), order.currency)}
             </span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-foreground/70">Your payout</span>
+            <span className="text-foreground/70">{t("driver.delivery.yourPayout")}</span>
             <span className="font-bold text-foreground">
-              {money(payout(Number(order.total)), order.currency)}
+              {formatMoney(payout(Number(order.total)), order.currency)}
             </span>
           </div>
         </CardContent>
@@ -203,7 +202,7 @@ function DeliveryDetail() {
               disabled={accept.isPending}
               onClick={() => accept.mutate()}
             >
-              Accept delivery · {money(payout(Number(order.total)), order.currency)}
+              {t("driver.delivery.acceptDelivery", { amount: formatMoney(payout(Number(order.total)), order.currency) })}
             </Button>
           ) : order.status === "ready" ? (
             <Button
@@ -212,7 +211,7 @@ function DeliveryDetail() {
               disabled={advance.isPending}
               onClick={() => advance.mutate("picked_up")}
             >
-              Mark as picked up
+              {t("driver.delivery.markPickedUp")}
             </Button>
           ) : order.status === "picked_up" ? (
             <Button
@@ -221,11 +220,11 @@ function DeliveryDetail() {
               disabled={advance.isPending}
               onClick={() => advance.mutate("delivered")}
             >
-              Mark as delivered
+              {t("driver.delivery.markDelivered")}
             </Button>
           ) : (
             <p className="text-center text-sm text-foreground/60">
-              Waiting for the restaurant to finish this order.
+              {t("driver.delivery.waitingRestaurant")}
             </p>
           )}
         </div>

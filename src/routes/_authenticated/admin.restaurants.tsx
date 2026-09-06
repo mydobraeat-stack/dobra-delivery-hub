@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { adminRestaurantsQuery, setRestaurantStatus } from "@/lib/admin";
 import { StoredImage } from "@/components/dobra/StoredImage";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/_authenticated/admin/restaurants")({
   component: AdminRestaurants,
@@ -17,6 +18,7 @@ const TONE: Record<string, string> = {
 };
 
 function AdminRestaurants() {
+  const t = useT();
   const queryClient = useQueryClient();
   const { data, isPending } = useQuery(adminRestaurantsQuery);
 
@@ -24,7 +26,7 @@ function AdminRestaurants() {
     mutationFn: ({ id, status }: { id: string; status: "approved" | "pending" | "suspended" }) =>
       setRestaurantStatus(id, status),
     onSuccess: () => {
-      toast.success("Restaurant updated");
+      toast.success(t("admin.restaurants.updated"));
       queryClient.invalidateQueries({ queryKey: ["admin"] });
       queryClient.invalidateQueries({ queryKey: ["restaurants"] });
     },
@@ -34,11 +36,11 @@ function AdminRestaurants() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-2xl font-bold">Restaurants</h1>
-        <p className="text-sm text-foreground/60">Approve new stores or suspend existing ones.</p>
+        <h1 className="text-2xl font-bold">{t("admin.restaurants.title")}</h1>
+        <p className="text-sm text-foreground/60">{t("admin.restaurants.subtitle")}</p>
       </div>
 
-      {isPending ? <p className="text-foreground/60">Loading…</p> : null}
+      {isPending ? <p className="text-foreground/60">{t("admin.loading")}</p> : null}
 
       {(data ?? []).map((r) => (
         <Card key={r.id} className="flex flex-wrap items-center gap-4 p-4">
@@ -53,7 +55,7 @@ function AdminRestaurants() {
               {r.cuisine || "—"} · {r.city || "?"}, {r.country || "?"}
             </p>
             <p className="text-xs text-foreground/50">
-              Owner: {r.owner?.full_name || r.owner?.email || "unknown"}
+              {t("admin.restaurants.owner")}: {r.owner?.full_name || r.owner?.email || t("admin.restaurants.unknownOwner")}
             </p>
           </div>
           <span
@@ -68,7 +70,7 @@ function AdminRestaurants() {
                 onClick={() => change.mutate({ id: r.id, status: "approved" })}
                 disabled={change.isPending}
               >
-                Approve
+                {t("admin.restaurants.approve")}
               </Button>
             ) : null}
             {r.status !== "suspended" ? (
@@ -78,7 +80,7 @@ function AdminRestaurants() {
                 onClick={() => change.mutate({ id: r.id, status: "suspended" })}
                 disabled={change.isPending}
               >
-                Suspend
+                {t("admin.restaurants.suspend")}
               </Button>
             ) : null}
           </div>

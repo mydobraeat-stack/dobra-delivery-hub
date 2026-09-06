@@ -11,13 +11,15 @@ import {
   setProfileApproval,
 } from "@/lib/admin";
 import { resolveImageUrl } from "@/lib/storage";
-import { DOCS_STATUS_LABEL } from "@/lib/driver-docs";
+import { DOCS_STATUS_LABEL_KEY } from "@/lib/driver-docs";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/_authenticated/admin/drivers")({
   component: AdminDrivers,
 });
 
 function AdminDrivers() {
+  const t = useT();
   const queryClient = useQueryClient();
   const { data, isPending } = useQuery(adminDriversQuery);
   const [open, setOpen] = useState<string | null>(null);
@@ -30,7 +32,7 @@ function AdminDrivers() {
       await setProfileApproval(id, approve ? "approved" : "rejected");
     },
     onSuccess: (_d, v) => {
-      toast.success(v.approve ? "Driver approved" : "Driver rejected");
+      toast.success(v.approve ? t("admin.drivers.driverApproved") : t("admin.drivers.driverRejected"));
       invalidate();
     },
     onError: (e: Error) => toast.error(e.message),
@@ -40,7 +42,7 @@ function AdminDrivers() {
     mutationFn: ({ id, status }: { id: string; status: "approved" | "rejected" }) =>
       setDocumentStatus(id, status),
     onSuccess: () => {
-      toast.success("Document reviewed");
+      toast.success(t("admin.drivers.documentReviewed"));
       invalidate();
     },
     onError: (e: Error) => toast.error(e.message),
@@ -58,15 +60,13 @@ function AdminDrivers() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-2xl font-bold">Drivers</h1>
-        <p className="text-sm text-foreground/60">
-          Review uploaded documents and vehicle details, then approve or reject.
-        </p>
+        <h1 className="text-2xl font-bold">{t("admin.drivers.title")}</h1>
+        <p className="text-sm text-foreground/60">{t("admin.drivers.subtitle")}</p>
       </div>
 
-      {isPending ? <p className="text-foreground/60">Loading…</p> : null}
+      {isPending ? <p className="text-foreground/60">{t("admin.loading")}</p> : null}
       {!isPending && (data ?? []).length === 0 ? (
-        <Card className="p-8 text-center text-foreground/60">No drivers yet.</Card>
+        <Card className="p-8 text-center text-foreground/60">{t("admin.drivers.empty")}</Card>
       ) : null}
 
       {(data ?? []).map((d) => (
@@ -74,35 +74,35 @@ function AdminDrivers() {
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
               <p className="text-lg font-semibold">
-                {d.profile?.full_name || d.profile?.email || "Unnamed driver"}
+                {d.profile?.full_name || d.profile?.email || t("admin.drivers.unnamedDriver")}
               </p>
               <p className="text-sm text-foreground/60">
-                {d.profile?.email} · {d.country || d.profile?.country || "no country"}
+                {d.profile?.email} · {d.country || d.profile?.country || t("admin.drivers.noCountry")}
               </p>
               <p className="text-sm text-foreground/60">
-                {d.vehicle_type || "No vehicle"}
+                {d.vehicle_type || t("admin.drivers.noVehicle")}
                 {d.vehicle_model ? ` · ${d.vehicle_model}` : ""}
                 {d.plate ? ` · ${d.plate}` : ""}
               </p>
             </div>
             <div className="flex flex-col items-end gap-1 text-xs">
               <span className="rounded-full bg-sun/30 px-3 py-1 font-semibold">
-                Docs: {DOCS_STATUS_LABEL[d.docs_status] ?? d.docs_status}
+                {t("admin.drivers.docs")}: {DOCS_STATUS_LABEL_KEY[d.docs_status] ? t(DOCS_STATUS_LABEL_KEY[d.docs_status]!) : d.docs_status}
               </span>
               <span className="text-foreground/60">
-                Account: {d.profile?.approval_status ?? "unknown"}
+                {t("admin.drivers.account")}: {d.profile?.approval_status ?? t("admin.drivers.unknown")}
               </span>
             </div>
           </div>
 
           <Button variant="ghost" size="sm" onClick={() => setOpen(open === d.id ? null : d.id)}>
-            {open === d.id ? "Hide documents" : `Documents (${d.documents.length})`}
+            {open === d.id ? t("admin.drivers.hideDocuments") : t("admin.drivers.documentsCount", { n: d.documents.length })}
           </Button>
 
           {open === d.id ? (
             <ul className="space-y-2">
               {d.documents.length === 0 ? (
-                <li className="text-sm text-foreground/60">No documents uploaded.</li>
+                <li className="text-sm text-foreground/60">{t("admin.drivers.noDocumentsUploaded")}</li>
               ) : null}
               {d.documents.map((doc) => (
                 <li
@@ -113,25 +113,25 @@ function AdminDrivers() {
                     <p className="font-medium capitalize">{doc.doc_type.replace(/_/g, " ")}</p>
                     <p className="text-xs text-foreground/60">
                       {doc.status}
-                      {doc.expires_on ? ` · expires ${doc.expires_on}` : ""}
+                      {doc.expires_on ? ` · ${t("admin.drivers.expires", { date: doc.expires_on })}` : ""}
                     </p>
                   </div>
                   <div className="flex gap-2">
                     <Button size="sm" variant="ghost" onClick={() => openDoc(doc.file_path)}>
-                      View
+                      {t("admin.drivers.view")}
                     </Button>
                     <Button
                       size="sm"
                       onClick={() => decideDoc.mutate({ id: doc.id, status: "approved" })}
                     >
-                      Approve
+                      {t("admin.drivers.approve")}
                     </Button>
                     <Button
                       size="sm"
                       variant="outline"
                       onClick={() => decideDoc.mutate({ id: doc.id, status: "rejected" })}
                     >
-                      Reject
+                      {t("admin.drivers.reject")}
                     </Button>
                   </div>
                 </li>
@@ -144,14 +144,14 @@ function AdminDrivers() {
               onClick={() => decideDriver.mutate({ id: d.id, approve: true })}
               disabled={decideDriver.isPending}
             >
-              Approve driver
+              {t("admin.drivers.approveDriver")}
             </Button>
             <Button
               variant="outline"
               onClick={() => decideDriver.mutate({ id: d.id, approve: false })}
               disabled={decideDriver.isPending}
             >
-              Reject driver
+              {t("admin.drivers.rejectDriver")}
             </Button>
           </div>
         </Card>

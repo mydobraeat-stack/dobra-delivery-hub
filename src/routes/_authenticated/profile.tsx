@@ -7,8 +7,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { AppHeader } from "@/components/dobra/AppHeader";
 import { TabBar } from "@/components/dobra/TabBar";
 import { ImageUpload } from "@/components/dobra/ImageUpload";
+import { LanguageSwitcher } from "@/components/dobra/LanguageSwitcher";
+import { useT, useI18n } from "@/lib/i18n";
 import { accountQueryOptions } from "@/lib/profile";
-import { myOrdersQuery, myDriverQuery, vendorRestaurantsQuery, money } from "@/lib/dobra";
+import { myOrdersQuery, myDriverQuery, vendorRestaurantsQuery } from "@/lib/dobra";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -52,6 +54,7 @@ function ProfilePage() {
   const queryClient = useQueryClient();
   const { data: account } = useQuery(accountQueryOptions);
   const { data: profile } = useQuery(myProfileQuery);
+  const t = useT();
   const role = account?.role ?? "customer";
 
   const [fullName, setFullName] = useState("");
@@ -83,9 +86,9 @@ function ProfilePage() {
       if (error) throw error;
       await queryClient.invalidateQueries({ queryKey: ["my-profile"] });
       await queryClient.invalidateQueries({ queryKey: ["account"] });
-      toast.success("Profile saved.");
+      toast.success(t("common.profile.saved"));
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Could not save profile.");
+      toast.error(e instanceof Error ? e.message : t("common.profile.saveFailed"));
     } finally {
       setSaving(false);
     }
@@ -93,37 +96,35 @@ function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      <AppHeader subtitle="Profile" />
+      <AppHeader subtitle={t("common.actions.profile")} />
       <main className="mx-auto max-w-2xl space-y-5 px-5 py-6">
         <div className="flex items-center justify-between gap-3">
-          <h1 className="text-2xl font-bold text-foreground">Your profile</h1>
-          <Badge variant="secondary" className="capitalize">
-            {role}
-          </Badge>
+          <h1 className="text-2xl font-bold text-foreground">{t("common.profile.title")}</h1>
+          <Badge variant="secondary">{t(`common.roles.${role}`)}</Badge>
         </div>
 
         <Card className="border-ink/10">
           <CardHeader>
-            <CardTitle className="text-lg">Personal details</CardTitle>
+            <CardTitle className="text-lg">{t("common.profile.personal")}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <ImageUpload
               bucket="profile-photos"
               value={avatar}
               onChange={setAvatar}
-              label="Profile photo"
+              label={t("common.profile.photo")}
             />
             <div className="space-y-2">
-              <Label htmlFor="full-name">Full name</Label>
+              <Label htmlFor="full-name">{t("common.profile.fullName")}</Label>
               <Input
                 id="full-name"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                placeholder="Your name"
+                placeholder={t("common.profile.namePlaceholder")}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="phone">Phone</Label>
+              <Label htmlFor="phone">{t("common.profile.phone")}</Label>
               <Input
                 id="phone"
                 value={phone}
@@ -132,23 +133,25 @@ function ProfilePage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="country">Country</Label>
+              <Label htmlFor="country">{t("common.profile.country")}</Label>
               <Input
                 id="country"
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
-                placeholder="Poland"
+                placeholder={t("common.profile.countryPlaceholder")}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t("common.profile.email")}</Label>
               <Input id="email" value={profile?.email ?? ""} readOnly disabled />
             </div>
             <Button onClick={save} disabled={saving || !profile}>
-              {saving ? "Saving…" : "Save changes"}
+              {saving ? t("common.actions.saving") : t("common.profile.saveChanges")}
             </Button>
           </CardContent>
         </Card>
+
+        <LanguageSwitcher />
 
         {role === "customer" ? <CustomerSection /> : null}
         {role === "vendor" ? <VendorSection status={profile?.approval_status ?? null} /> : null}
@@ -172,6 +175,8 @@ function Stat({ label, value }: { label: string; value: string }) {
 
 function CustomerSection() {
   const { data: orders } = useQuery(myOrdersQuery);
+  const t = useT();
+  const { formatMoney } = useI18n();
   const list = orders ?? [];
   const spent = list
     .filter((o) => o.status === "delivered")
@@ -180,15 +185,18 @@ function CustomerSection() {
   return (
     <Card className="border-ink/10">
       <CardHeader>
-        <CardTitle className="text-lg">Your ordering</CardTitle>
+        <CardTitle className="text-lg">{t("common.profile.ordering")}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid grid-cols-2 gap-3">
-          <Stat label="Orders placed" value={String(list.length)} />
-          <Stat label="Total spent" value={money(spent, list[0]?.currency ?? "EUR")} />
+          <Stat label={t("common.profile.ordersPlaced")} value={String(list.length)} />
+          <Stat
+            label={t("common.profile.totalSpent")}
+            value={formatMoney(spent, list[0]?.currency ?? "EUR")}
+          />
         </div>
         <Button asChild variant="outline">
-          <Link to="/customer">Browse restaurants</Link>
+          <Link to="/customer">{t("common.profile.browse")}</Link>
         </Button>
       </CardContent>
     </Card>
@@ -197,17 +205,21 @@ function CustomerSection() {
 
 function VendorSection({ status }: { status: string | null | undefined }) {
   const { data: restaurants } = useQuery(vendorRestaurantsQuery);
+  const t = useT();
   const list = restaurants ?? [];
 
   return (
     <Card className="border-ink/10">
       <CardHeader>
-        <CardTitle className="text-lg">Your business</CardTitle>
+        <CardTitle className="text-lg">{t("common.profile.business")}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid grid-cols-2 gap-3">
-          <Stat label="Restaurants" value={String(list.length)} />
-          <Stat label="Account status" value={status === "approved" ? "Approved" : "Pending"} />
+          <Stat label={t("common.profile.restaurants")} value={String(list.length)} />
+          <Stat
+            label={t("common.profile.accountStatus")}
+            value={status === "approved" ? t("common.approval.approved") : t("common.approval.pending")}
+          />
         </div>
         {list.length ? (
           <ul className="space-y-1 text-sm text-foreground/70">
@@ -219,7 +231,7 @@ function VendorSection({ status }: { status: string | null | undefined }) {
           </ul>
         ) : null}
         <Button asChild variant="outline">
-          <Link to="/vendor">Open dashboard</Link>
+          <Link to="/vendor">{t("common.profile.openDashboard")}</Link>
         </Button>
       </CardContent>
     </Card>
@@ -229,6 +241,7 @@ function VendorSection({ status }: { status: string | null | undefined }) {
 function DriverSection({ status }: { status: string | null | undefined }) {
   const queryClient = useQueryClient();
   const { data: driver } = useQuery(myDriverQuery);
+  const t = useT();
   const [vehicle, setVehicle] = useState("");
   const [saving, setSaving] = useState(false);
 
@@ -247,9 +260,9 @@ function DriverSection({ status }: { status: string | null | undefined }) {
         .upsert({ id, vehicle_type: vehicle.trim() || null }, { onConflict: "id" });
       if (error) throw error;
       await queryClient.invalidateQueries({ queryKey: ["driver", "me"] });
-      toast.success("Vehicle saved.");
+      toast.success(t("common.profile.vehicleSaved"));
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Could not save vehicle.");
+      toast.error(e instanceof Error ? e.message : t("common.profile.vehicleFailed"));
     } finally {
       setSaving(false);
     }
@@ -258,28 +271,34 @@ function DriverSection({ status }: { status: string | null | undefined }) {
   return (
     <Card className="border-ink/10">
       <CardHeader>
-        <CardTitle className="text-lg">Driver details</CardTitle>
+        <CardTitle className="text-lg">{t("common.profile.driverDetails")}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid grid-cols-2 gap-3">
-          <Stat label="Availability" value={driver?.status === "online" ? "Online" : "Offline"} />
-          <Stat label="Account status" value={status === "approved" ? "Approved" : "Pending"} />
+          <Stat
+            label={t("common.profile.availability")}
+            value={driver?.status === "online" ? t("common.profile.online") : t("common.profile.offline")}
+          />
+          <Stat
+            label={t("common.profile.accountStatus")}
+            value={status === "approved" ? t("common.approval.approved") : t("common.approval.pending")}
+          />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="vehicle">Vehicle</Label>
+          <Label htmlFor="vehicle">{t("common.profile.vehicle")}</Label>
           <Input
             id="vehicle"
             value={vehicle}
             onChange={(e) => setVehicle(e.target.value)}
-            placeholder="Bike, scooter, car…"
+            placeholder={t("common.profile.vehiclePlaceholder")}
           />
         </div>
         <div className="flex gap-2">
           <Button onClick={saveVehicle} disabled={saving}>
-            {saving ? "Saving…" : "Save vehicle"}
+            {saving ? t("common.actions.saving") : t("common.profile.saveVehicle")}
           </Button>
           <Button asChild variant="outline">
-            <Link to="/driver">Go to deliveries</Link>
+            <Link to="/driver">{t("common.profile.goToDeliveries")}</Link>
           </Button>
         </div>
       </CardContent>

@@ -14,7 +14,7 @@ import {
   useVendorOrders,
   useVendorRestaurant,
 } from "@/components/dobra/vendor-parts";
-import { money } from "@/lib/dobra";
+import { useI18n, useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/_authenticated/vendor/")({
   head: () => ({
@@ -34,6 +34,8 @@ export const Route = createFileRoute("/_authenticated/vendor/")({
 });
 
 function VendorOrdersPage() {
+  const t = useT();
+  const { formatMoney } = useI18n();
   const { data: account } = useQuery(accountQueryOptions);
   const { restaurants, restaurantId, isLoading } = useVendorRestaurant();
   const { data: orders = [], isSuccess: ordersLoaded } = useVendorOrders(restaurantId);
@@ -44,7 +46,7 @@ function VendorOrdersPage() {
   useEffect(() => {
     if (!ordersLoaded) return;
     if (seenRef.current !== null && newOrderCount > seenRef.current) {
-      toast.success("New order just came in!");
+      toast.success(t("vendor.orders.newOrderToast"));
     }
     seenRef.current = newOrderCount;
   }, [newOrderCount, ordersLoaded]);
@@ -60,28 +62,25 @@ function VendorOrdersPage() {
 
   return (
     <main className="mx-auto max-w-4xl space-y-6 px-5 py-6">
-      <h1 className="text-2xl font-bold text-foreground">Orders</h1>
+      <h1 className="text-2xl font-bold text-foreground">{t("vendor.orders.title")}</h1>
 
       {account?.approvalStatus !== "approved" ? (
         <Card className="border-ink/10 bg-sun/20">
           <CardContent className="py-4 text-sm text-foreground">
-            Your account is still being reviewed. You can set up your restaurant and menu now —
-            customers will see it as soon as you are approved.
+            {t("vendor.orders.pendingApproval")}
           </CardContent>
         </Card>
       ) : null}
 
       {isLoading ? (
-        <p className="text-sm text-foreground/60">Loading your restaurant…</p>
+        <p className="text-sm text-foreground/60">{t("vendor.orders.loadingRestaurant")}</p>
       ) : restaurants.length === 0 ? (
         <Card className="border-ink/10">
           <CardContent className="space-y-3 py-6 text-center">
-            <h2 className="text-lg font-bold text-foreground">Create your restaurant</h2>
-            <p className="text-sm text-foreground/60">
-              Add your name, city and logo to start taking orders.
-            </p>
+            <h2 className="text-lg font-bold text-foreground">{t("vendor.orders.createTitle")}</h2>
+            <p className="text-sm text-foreground/60">{t("vendor.orders.createHint")}</p>
             <Button onClick={() => setCreateOpen(true)}>
-              <Plus className="size-4" aria-hidden /> Create restaurant
+              <Plus className="size-4" aria-hidden /> {t("vendor.orders.createButton")}
             </Button>
           </CardContent>
         </Card>
@@ -90,34 +89,38 @@ function VendorOrdersPage() {
           <RestaurantSwitcher />
 
           <section className="grid gap-3 sm:grid-cols-3">
-            <StatCard label="Orders today" value={String(todayOrders.length)} />
-            <StatCard label="Revenue today" value={money(todayRevenue)} />
-            <StatCard label="Active now" value={String(activeOrders.length)} />
+            <StatCard label={t("vendor.orders.ordersToday")} value={String(todayOrders.length)} />
+            <StatCard label={t("vendor.orders.revenueToday")} value={formatMoney(todayRevenue)} />
+            <StatCard label={t("vendor.orders.activeNow")} value={String(activeOrders.length)} />
           </section>
 
           <OrdersSection
-            title={`Active orders${newOrderCount ? ` · ${newOrderCount} new` : ""}`}
+            title={
+              newOrderCount
+                ? t("vendor.orders.activeOrdersNew", { n: newOrderCount })
+                : t("vendor.orders.activeOrders")
+            }
             orders={activeOrders}
-            emptyText="No orders in progress."
+            emptyText={t("vendor.orders.noActiveOrders")}
             actionable
           />
 
           <OrdersSection
-            title="Completed orders"
+            title={t("vendor.orders.completedOrders")}
             orders={completedOrders}
-            emptyText="Nothing completed yet."
+            emptyText={t("vendor.orders.noCompletedOrders")}
           />
 
           <p className="text-sm text-foreground/60">
-            Manage dishes on the{" "}
+            {t("vendor.orders.manageHintPre")}
             <Link to="/vendor/menu" className="font-semibold underline">
-              Menu
-            </Link>{" "}
-            tab and your details on the{" "}
+              {t("common.tabs.menu")}
+            </Link>
+            {t("vendor.orders.manageHintMid")}
             <Link to="/vendor/store" className="font-semibold underline">
-              Store
-            </Link>{" "}
-            tab.
+              {t("common.tabs.store")}
+            </Link>
+            {t("vendor.orders.manageHintPost")}
           </p>
         </>
       )}

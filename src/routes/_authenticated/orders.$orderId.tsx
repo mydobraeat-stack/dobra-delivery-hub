@@ -12,7 +12,6 @@ import {
   CUSTOMER_STEPS,
   cancelOrder,
   driverLocationQuery,
-  money,
   orderItemsQuery,
   orderQuery,
   orderRef,
@@ -20,6 +19,7 @@ import {
   restaurantQuery,
   submitReview,
 } from "@/lib/dobra";
+import { useI18n } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
@@ -43,6 +43,7 @@ export const Route = createFileRoute("/_authenticated/orders/$orderId")({
 });
 
 function OrderTracking() {
+  const { t, formatMoney, formatDate } = useI18n();
   const { orderId } = useParams({ from: "/_authenticated/orders/$orderId" });
   const queryClient = useQueryClient();
   const { data: order, isLoading } = useQuery(orderQuery(orderId));
@@ -66,7 +67,7 @@ function OrderTracking() {
   const cancel = useMutation({
     mutationFn: () => cancelOrder(orderId),
     onSuccess: () => {
-      toast.success("Order cancelled.");
+      toast.success(t("customer.tracking.cancelledToast"));
       invalidate();
     },
     onError: (e: Error) => toast.error(e.message),
@@ -83,7 +84,7 @@ function OrderTracking() {
         comment,
       }),
     onSuccess: () => {
-      toast.success("Thanks for the review!");
+      toast.success(t("customer.tracking.reviewThanksToast"));
       queryClient.invalidateQueries({ queryKey: ["review", orderId] });
       queryClient.invalidateQueries({ queryKey: ["reviews"] });
     },
@@ -94,28 +95,28 @@ function OrderTracking() {
 
   return (
     <div className="min-h-screen bg-background">
-      <AppHeader subtitle="Customer" />
+      <AppHeader subtitle={t("common.roles.customer")} />
       <main className="mx-auto max-w-2xl space-y-6 px-5 py-6">
         <Link
           to="/customer"
           className="inline-flex items-center gap-2 text-sm font-medium text-foreground/70 hover:text-foreground"
         >
-          <ArrowLeft className="size-4" aria-hidden /> Back
+          <ArrowLeft className="size-4" aria-hidden /> {t("common.actions.back")}
         </Link>
 
         {isLoading ? (
-          <p className="text-sm text-foreground/60">Loading order…</p>
+          <p className="text-sm text-foreground/60">{t("customer.tracking.loadingOrder")}</p>
         ) : !order ? (
-          <p className="text-sm text-foreground/60">We couldn’t find this order.</p>
+          <p className="text-sm text-foreground/60">{t("customer.tracking.notFound")}</p>
         ) : (
           <>
             <div className="space-y-1">
               <h1 className="text-2xl font-bold text-foreground">
-                {restaurantData?.restaurant?.name ?? "Your order"}
+                {restaurantData?.restaurant?.name ?? t("customer.tracking.defaultTitle")}
               </h1>
               <p className="text-sm text-foreground/60">
-                {orderRef(order.id)} · {money(order.total, order.currency)} · arrives in about{" "}
-                {order.eta_minutes} min
+                {orderRef(order.id)} · {formatMoney(order.total, order.currency)} ·{" "}
+                {t("customer.tracking.arrivesIn", { n: order.eta_minutes })}
               </p>
               <StatusBadge status={order.status} />
             </div>
@@ -143,7 +144,7 @@ function OrderTracking() {
                             done ? "font-semibold text-foreground" : "text-foreground/50",
                           )}
                         >
-                          {step.label}
+                          {t(`common.steps.${step.status}`)}
                         </span>
                       </div>
                     );
@@ -160,7 +161,7 @@ function OrderTracking() {
 
             <Card className="border-ink/10">
               <CardContent className="space-y-3 py-4">
-                <p className="text-sm font-semibold text-foreground">Order details</p>
+                <p className="text-sm font-semibold text-foreground">{t("customer.tracking.orderDetails")}</p>
                 {items.map((item: any) => (
                   <div key={item.id} className="flex items-center gap-3">
                     <StoredImage
@@ -171,32 +172,32 @@ function OrderTracking() {
                       className="size-12 rounded-lg object-cover"
                     />
                     <p className="flex-1 text-sm text-foreground">
-                      {item.quantity} × {item.menu_items?.name ?? "Item"}
+                      {item.quantity} × {item.menu_items?.name ?? t("customer.home.restaurantFallback")}
                     </p>
                     <p className="text-sm text-foreground/70">
-                      {money(Number(item.price) * item.quantity, order.currency)}
+                      {formatMoney(Number(item.price) * item.quantity, order.currency)}
                     </p>
                   </div>
                 ))}
                 <div className="space-y-1 border-t border-ink/10 pt-3 text-sm">
                   <div className="flex justify-between text-foreground/70">
-                    <span>Subtotal</span>
-                    <span>{money(order.subtotal, order.currency)}</span>
+                    <span>{t("customer.checkout.subtotal")}</span>
+                    <span>{formatMoney(order.subtotal, order.currency)}</span>
                   </div>
                   <div className="flex justify-between text-foreground/70">
-                    <span>Delivery</span>
-                    <span>{money(order.delivery_fee, order.currency)}</span>
+                    <span>{t("customer.checkout.delivery")}</span>
+                    <span>{formatMoney(order.delivery_fee, order.currency)}</span>
                   </div>
                   <div className="flex justify-between font-bold">
-                    <span>Total</span>
-                    <span>{money(order.total, order.currency)}</span>
+                    <span>{t("customer.checkout.total")}</span>
+                    <span>{formatMoney(order.total, order.currency)}</span>
                   </div>
                 </div>
                 {order.address ? (
-                  <p className="text-xs text-foreground/60">Delivering to {order.address}</p>
+                  <p className="text-xs text-foreground/60">{t("customer.tracking.deliveringTo", { address: order.address })}</p>
                 ) : null}
                 {order.note ? (
-                  <p className="text-xs text-foreground/60">Note: {order.note}</p>
+                  <p className="text-xs text-foreground/60">{t("customer.tracking.noteLabel", { note: order.note })}</p>
                 ) : null}
               </CardContent>
             </Card>
@@ -207,35 +208,39 @@ function OrderTracking() {
                 disabled={cancel.isPending}
                 onClick={() => cancel.mutate()}
               >
-                Cancel order
+                {t("customer.tracking.cancelOrder")}
               </Button>
             ) : null}
 
             {order.status === "delivered" ? (
               <Card className="border-ink/10">
                 <CardContent className="space-y-4 py-4">
-                  <p className="text-sm font-semibold text-foreground">Rate your order</p>
+                  <p className="text-sm font-semibold text-foreground">{t("customer.tracking.rateOrder")}</p>
                   {review ? (
                     <p className="text-sm text-foreground/70">
-                      You rated this order {review.restaurant_rating}/5. Thanks!
+                      {t("customer.tracking.ratedThanks", { n: review.restaurant_rating })}
                     </p>
                   ) : (
                     <>
                       <Stars
-                        label="Restaurant"
+                        label={t("customer.tracking.restaurantLabel")}
                         value={restaurantRating}
                         onChange={setRestaurantRating}
                       />
                       {order.driver_id ? (
-                        <Stars label="Driver" value={driverRating} onChange={setDriverRating} />
+                        <Stars
+                          label={t("customer.tracking.driverLabel")}
+                          value={driverRating}
+                          onChange={setDriverRating}
+                        />
                       ) : null}
                       <Textarea
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
-                        placeholder="Tell others how it went (optional)"
+                        placeholder={t("customer.tracking.commentPlaceholder")}
                       />
                       <Button disabled={review$.isPending} onClick={() => review$.mutate()}>
-                        Submit review
+                        {t("customer.tracking.submitReview")}
                       </Button>
                     </>
                   )}
@@ -265,7 +270,7 @@ function Stars({
         <button
           key={n}
           type="button"
-          aria-label={`${label} ${n} star${n > 1 ? "s" : ""}`}
+          aria-label={label + " " + n + (n > 1 ? "s" : "")}
           onClick={() => onChange(n)}
         >
           <Star
@@ -289,12 +294,13 @@ function DeliveryMap({
   updatedAt: string | null;
   address: string | null;
 }) {
+  const { t, formatDate } = useI18n();
   const { data: dropOff } = useQuery(addressPointQuery(address));
 
   const points = useMemo(() => {
     const list: MapPoint[] = [];
-    if (driver) list.push({ ...driver, label: "Your driver" });
-    if (dropOff) list.push({ ...dropOff, label: address ?? "Delivery address" });
+    if (driver) list.push({ ...driver, label: t("customer.tracking.yourDriver") });
+    if (dropOff) list.push({ ...dropOff, label: address ?? t("customer.tracking.deliveryAddress") });
     return list;
   }, [driver, dropOff, address]);
 
@@ -304,12 +310,12 @@ function DeliveryMap({
     <Card className="border-ink/10">
       <CardContent className="space-y-2 py-4">
         <p className="inline-flex items-center gap-2 text-sm font-semibold text-foreground">
-          <MapPin className="size-4" aria-hidden /> {driver ? "Driver location" : "Delivery address"}
+          <MapPin className="size-4" aria-hidden /> {driver ? t("customer.tracking.driverLocation") : t("customer.tracking.deliveryAddress")}
         </p>
         <MapView points={points} className="h-56 w-full" />
         {driver && updatedAt ? (
           <p className="text-xs text-foreground/60">
-            Updated {new Date(updatedAt).toLocaleTimeString()}
+            {t("customer.tracking.updated", { time: formatDate(updatedAt, { timeStyle: "short" }) })}
           </p>
         ) : null}
       </CardContent>

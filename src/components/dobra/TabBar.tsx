@@ -10,36 +10,38 @@ import {
   UtensilsCrossed,
   Wallet,
 } from "lucide-react";
+import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
-type Tab = { to: string; label: string; icon: typeof Home };
+type Tab = { to: string; labelKey: string; icon: typeof Home };
 
 const TABS: Record<"customer" | "vendor" | "driver", Tab[]> = {
   customer: [
-    { to: "/customer", label: "Home", icon: Home },
-    { to: "/customer/orders", label: "Orders", icon: Receipt },
-    { to: "/profile", label: "Account", icon: User },
+    { to: "/customer", labelKey: "common.tabs.home", icon: Home },
+    { to: "/customer/orders", labelKey: "common.tabs.orders", icon: Receipt },
+    { to: "/profile", labelKey: "common.tabs.account", icon: User },
   ],
   vendor: [
-    { to: "/vendor", label: "Orders", icon: ClipboardList },
-    { to: "/vendor/menu", label: "Menu", icon: UtensilsCrossed },
-    { to: "/vendor/store", label: "Store", icon: Store },
-    { to: "/profile", label: "Account", icon: User },
+    { to: "/vendor", labelKey: "common.tabs.orders", icon: ClipboardList },
+    { to: "/vendor/menu", labelKey: "common.tabs.menu", icon: UtensilsCrossed },
+    { to: "/vendor/store", labelKey: "common.tabs.store", icon: Store },
+    { to: "/profile", labelKey: "common.tabs.account", icon: User },
   ],
   driver: [
-    { to: "/driver", label: "Home", icon: Home },
-    { to: "/driver/earnings", label: "Earnings", icon: Wallet },
-    { to: "/driver/deliveries", label: "Deliveries", icon: Package },
-    { to: "/driver/help", label: "Help", icon: LifeBuoy },
+    { to: "/driver", labelKey: "common.tabs.home", icon: Home },
+    { to: "/driver/earnings", labelKey: "common.tabs.earnings", icon: Wallet },
+    { to: "/driver/deliveries", labelKey: "common.tabs.deliveries", icon: Package },
+    { to: "/driver/help", labelKey: "common.tabs.help", icon: LifeBuoy },
   ],
 };
 
 export function TabBar({ role }: { role: "customer" | "vendor" | "driver" }) {
   const tabs = TABS[role];
+  const t = useT();
 
   return (
     <nav
-      aria-label="Main"
+      aria-label={t("common.navAria")}
       className="fixed inset-x-0 bottom-0 z-30 border-t border-ink/10 bg-card/95 backdrop-blur"
     >
       <ul className="mx-auto flex max-w-4xl">
@@ -57,7 +59,7 @@ export function TabBar({ role }: { role: "customer" | "vendor" | "driver" }) {
                     className={cn("size-5", isActive ? "text-foreground" : "text-foreground/60")}
                     aria-hidden
                   />
-                  {tab.label}
+                  {t(tab.labelKey)}
                 </>
               )}
             </Link>

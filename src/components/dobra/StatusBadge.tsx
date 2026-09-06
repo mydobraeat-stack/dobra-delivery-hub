@@ -1,4 +1,5 @@
 import { STATUS_LABEL } from "@/lib/dobra";
+import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 const TONE: Record<string, string> = {
@@ -12,6 +13,9 @@ const TONE: Record<string, string> = {
 };
 
 export function StatusBadge({ status, className }: { status: string; className?: string }) {
+  const t = useT();
+  const label = STATUS_LABEL[status] ? t(`common.status.${status}`) : status;
+
   return (
     <span
       className={cn(
@@ -20,7 +24,7 @@ export function StatusBadge({ status, className }: { status: string; className?:
         className,
       )}
     >
-      {STATUS_LABEL[status] ?? status}
+      {label}
     </span>
   );
 }
