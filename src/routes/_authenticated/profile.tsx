@@ -5,6 +5,7 @@ import { queryOptions } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { AppHeader } from "@/components/dobra/AppHeader";
+import { TabBar } from "@/components/dobra/TabBar";
 import { ImageUpload } from "@/components/dobra/ImageUpload";
 import { accountQueryOptions } from "@/lib/profile";
 import { myOrdersQuery, myDriverQuery, vendorRestaurantsQuery, money } from "@/lib/dobra";
