@@ -24,6 +24,7 @@ import { Route as AuthenticatedOrdersOrderIdRouteImport } from './routes/_authen
 import { Route as AuthenticatedRestaurantRestaurantIdRouteImport } from './routes/_authenticated/restaurant.$restaurantId'
 import { Route as AuthenticatedVendorIndexRouteImport } from './routes/_authenticated/vendor.index'
 import { Route as AuthenticatedVendorMenuRouteImport } from './routes/_authenticated/vendor.menu'
+import { Route as AuthenticatedVendorStoreRouteImport } from './routes/_authenticated/vendor.store'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -104,6 +105,12 @@ const AuthenticatedVendorMenuRoute = AuthenticatedVendorMenuRouteImport.update({
   path: '/menu',
   getParentRoute: () => AuthenticatedVendorRoute,
 } as any)
+const AuthenticatedVendorStoreRoute =
+  AuthenticatedVendorStoreRouteImport.update({
+    id: '/store',
+    path: '/store',
+    getParentRoute: () => AuthenticatedVendorRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -118,6 +125,7 @@ export interface FileRoutesByFullPath {
   '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
   '/vendor/menu': typeof AuthenticatedVendorMenuRoute
+  '/vendor/store': typeof AuthenticatedVendorStoreRoute
   '/customer/': typeof AuthenticatedCustomerIndexRoute
   '/vendor/': typeof AuthenticatedVendorIndexRoute
 }
@@ -132,6 +140,7 @@ export interface FileRoutesByTo {
   '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
   '/vendor/menu': typeof AuthenticatedVendorMenuRoute
+  '/vendor/store': typeof AuthenticatedVendorStoreRoute
   '/customer': typeof AuthenticatedCustomerIndexRoute
   '/vendor': typeof AuthenticatedVendorIndexRoute
 }
@@ -150,6 +159,7 @@ export interface FileRoutesById {
   '/_authenticated/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/_authenticated/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
   '/_authenticated/vendor/menu': typeof AuthenticatedVendorMenuRoute
+  '/_authenticated/vendor/store': typeof AuthenticatedVendorStoreRoute
   '/_authenticated/customer/': typeof AuthenticatedCustomerIndexRoute
   '/_authenticated/vendor/': typeof AuthenticatedVendorIndexRoute
 }
@@ -168,6 +178,7 @@ export interface FileRouteTypes {
     | '/orders/$orderId'
     | '/restaurant/$restaurantId'
     | '/vendor/menu'
+    | '/vendor/store'
     | '/customer/'
     | '/vendor/'
   fileRoutesByTo: FileRoutesByTo
@@ -182,6 +193,7 @@ export interface FileRouteTypes {
     | '/orders/$orderId'
     | '/restaurant/$restaurantId'
     | '/vendor/menu'
+    | '/vendor/store'
     | '/customer'
     | '/vendor'
   id:
@@ -199,6 +211,7 @@ export interface FileRouteTypes {
     | '/_authenticated/orders/$orderId'
     | '/_authenticated/restaurant/$restaurantId'
     | '/_authenticated/vendor/menu'
+    | '/_authenticated/vendor/store'
     | '/_authenticated/customer/'
     | '/_authenticated/vendor/'
   fileRoutesById: FileRoutesById
@@ -316,6 +329,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedVendorMenuRouteImport
       parentRoute: typeof AuthenticatedVendorRoute
     }
+    '/_authenticated/vendor/store': {
+      id: '/_authenticated/vendor/store'
+      path: '/store'
+      fullPath: '/vendor/store'
+      preLoaderRoute: typeof AuthenticatedVendorStoreRouteImport
+      parentRoute: typeof AuthenticatedVendorRoute
+    }
   }
 }
 
@@ -336,11 +356,13 @@ const AuthenticatedCustomerRouteWithChildren =
 
 interface AuthenticatedVendorRouteChildren {
   AuthenticatedVendorMenuRoute: typeof AuthenticatedVendorMenuRoute
+  AuthenticatedVendorStoreRoute: typeof AuthenticatedVendorStoreRoute
   AuthenticatedVendorIndexRoute: typeof AuthenticatedVendorIndexRoute
 }
 
 const AuthenticatedVendorRouteChildren: AuthenticatedVendorRouteChildren = {
   AuthenticatedVendorMenuRoute: AuthenticatedVendorMenuRoute,
+  AuthenticatedVendorStoreRoute: AuthenticatedVendorStoreRoute,
   AuthenticatedVendorIndexRoute: AuthenticatedVendorIndexRoute,
 }
 
