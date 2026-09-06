@@ -243,3 +243,57 @@ export function orderItemsQuery(orderId: string) {
     },
   });
 }
+
+export type RestaurantInput = {
+  name: string;
+  cuisine: string;
+  city: string;
+  country: string;
+  eta_minutes: number;
+  delivery_fee: number;
+  logo_url: string | null;
+};
+
+export async function createRestaurant(input: RestaurantInput) {
+  const userId = await currentUserId();
+  const { data, error } = await supabase
+    .from("restaurants")
+    .insert({ ...input, owner_id: userId })
+    .select("id")
+    .single();
+  if (error) throw error;
+  return data.id as string;
+}
+
+export async function updateRestaurant(id: string, input: RestaurantInput) {
+  const { error } = await supabase.from("restaurants").update(input).eq("id", id);
+  if (error) throw error;
+}
+
+export type MenuItemInput = {
+  name: string;
+  price: number;
+  currency: string;
+  image_url: string | null;
+};
+
+export async function createMenuItem(restaurantId: string, input: MenuItemInput) {
+  const { error } = await supabase
+    .from("menu_items")
+    .insert({ ...input, restaurant_id: restaurantId, available: true });
+  if (error) throw error;
+}
+
+export async function updateMenuItem(id: string, input: MenuItemInput) {
+  const { error } = await supabase.from("menu_items").update(input).eq("id", id);
+  if (error) throw error;
+}
+
+export async function deleteMenuItem(id: string) {
+  const { error } = await supabase.from("menu_items").delete().eq("id", id);
+  if (error) throw error;
+}
+
+export async function cancelOrder(orderId: string) {
+  return updateOrderStatus(orderId, "cancelled");
+}

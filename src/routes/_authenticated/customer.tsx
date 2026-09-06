@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Clock, Search, Star } from "lucide-react";
+import { StoredImage } from "@/components/dobra/StoredImage";
 import { AppHeader } from "@/components/dobra/AppHeader";
 import { StatusBadge } from "@/components/dobra/StatusBadge";
 import { accountQueryOptions } from "@/lib/profile";
@@ -115,18 +116,13 @@ function CustomerHome() {
                   className="rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                 >
                   <Card className="h-full overflow-hidden border-ink/10 transition-shadow hover:shadow-soft">
-                    {r.logo_url ? (
-                      <img
-                        src={r.logo_url}
-                        alt={`${r.name} restaurant`}
-                        loading="lazy"
-                        width={1024}
-                        height={640}
-                        className="h-32 w-full object-cover"
-                      />
-                    ) : (
-                      <div className="h-32 bg-muted" />
-                    )}
+                    <StoredImage
+                      value={r.logo_url}
+                      alt={`${r.name} restaurant`}
+                      width={1024}
+                      height={640}
+                      className="h-32 w-full object-cover"
+                    />
                     <CardContent className="space-y-1 py-4">
                       <p className="font-bold text-foreground">{r.name}</p>
                       <p className="text-sm text-foreground/60">

@@ -2,6 +2,7 @@ import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Clock, Star } from "lucide-react";
 import { toast } from "sonner";
+import { StoredImage } from "@/components/dobra/StoredImage";
 import { AppHeader } from "@/components/dobra/AppHeader";
 import { money, placeOrder, restaurantQuery, type MenuItem } from "@/lib/dobra";
 import { Button } from "@/components/ui/button";
@@ -58,15 +59,14 @@ function RestaurantPage() {
         ) : (
           <>
             <div className="overflow-hidden rounded-2xl bg-card shadow-soft">
-              {restaurant.logo_url ? (
-                <img
-                  src={restaurant.logo_url}
-                  alt={`${restaurant.name} restaurant`}
-                  width={1024}
-                  height={640}
-                  className="h-44 w-full object-cover"
-                />
-              ) : null}
+              <StoredImage
+                value={restaurant.logo_url}
+                alt={`${restaurant.name} restaurant`}
+                width={1024}
+                height={640}
+                eager
+                className="h-44 w-full object-cover"
+              />
               <div className="space-y-1 p-5">
                 <h1 className="text-2xl font-bold text-foreground">{restaurant.name}</h1>
                 <p className="text-sm text-foreground/60">
@@ -91,16 +91,13 @@ function RestaurantPage() {
                 {data!.items.map((item) => (
                   <Card key={item.id} className="border-ink/10">
                     <CardContent className="flex items-center gap-4 p-4">
-                      {item.image_url ? (
-                        <img
-                          src={item.image_url}
-                          alt={item.name}
-                          loading="lazy"
-                          width={640}
-                          height={512}
-                          className="size-20 shrink-0 rounded-xl object-cover"
-                        />
-                      ) : null}
+                      <StoredImage
+                        value={item.image_url}
+                        alt={item.name}
+                        width={640}
+                        height={512}
+                        className="size-20 shrink-0 rounded-xl object-cover"
+                      />
                       <div className="min-w-0 flex-1">
                         <p className="font-semibold text-foreground">{item.name}</p>
                         <p className="text-sm text-foreground/70">
