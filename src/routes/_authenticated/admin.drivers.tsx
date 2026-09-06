@@ -11,7 +11,7 @@ import {
   setProfileApproval,
 } from "@/lib/admin";
 import { resolveImageUrl } from "@/lib/storage";
-import { DOCS_STATUS_LABEL } from "@/lib/driver-docs";
+import { DOCS_STATUS_LABEL_KEY } from "@/lib/driver-docs";
 import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/_authenticated/admin/drivers")({
@@ -87,7 +87,7 @@ function AdminDrivers() {
             </div>
             <div className="flex flex-col items-end gap-1 text-xs">
               <span className="rounded-full bg-sun/30 px-3 py-1 font-semibold">
-                {t("admin.drivers.docs")}: {DOCS_STATUS_LABEL[d.docs_status] ?? d.docs_status}
+                {t("admin.drivers.docs")}: {DOCS_STATUS_LABEL_KEY[d.docs_status] ? t(DOCS_STATUS_LABEL_KEY[d.docs_status]!) : d.docs_status}
               </span>
               <span className="text-foreground/60">
                 {t("admin.drivers.account")}: {d.profile?.approval_status ?? t("admin.drivers.unknown")}
