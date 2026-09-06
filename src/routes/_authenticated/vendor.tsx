@@ -176,10 +176,13 @@ function VendorDashboard() {
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <p className="font-bold text-foreground">{restaurant.name}</p>
-                      <StatusBadge
-                        status={restaurant.status === "approved" ? "delivered" : "pending"}
-                      />
-                      <span className="text-xs text-foreground/60">
+                      <span
+                        className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                          restaurant.status === "approved"
+                            ? "bg-ink text-primary"
+                            : "bg-muted text-foreground/70"
+                        }`}
+                      >
                         {restaurant.status === "approved" ? "Live" : "Pending approval"}
                       </span>
                     </div>
