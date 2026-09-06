@@ -14,6 +14,50 @@ export type Database = {
   }
   public: {
     Tables: {
+      driver_documents: {
+        Row: {
+          created_at: string
+          doc_type: string
+          driver_id: string
+          expires_on: string | null
+          file_path: string
+          id: string
+          review_note: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          doc_type: string
+          driver_id: string
+          expires_on?: string | null
+          file_path: string
+          id?: string
+          review_note?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          doc_type?: string
+          driver_id?: string
+          expires_on?: string | null
+          file_path?: string
+          id?: string
+          review_note?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "driver_documents_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       driver_locations: {
         Row: {
           driver_id: string
@@ -47,22 +91,34 @@ export type Database = {
         Row: {
           country: string | null
           created_at: string
+          docs_status: string
           id: string
+          plate: string | null
           status: string
+          submitted_at: string | null
+          vehicle_model: string | null
           vehicle_type: string | null
         }
         Insert: {
           country?: string | null
           created_at?: string
+          docs_status?: string
           id: string
+          plate?: string | null
           status?: string
+          submitted_at?: string | null
+          vehicle_model?: string | null
           vehicle_type?: string | null
         }
         Update: {
           country?: string | null
           created_at?: string
+          docs_status?: string
           id?: string
+          plate?: string | null
           status?: string
+          submitted_at?: string | null
+          vehicle_model?: string | null
           vehicle_type?: string | null
         }
         Relationships: [
