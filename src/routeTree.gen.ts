@@ -30,6 +30,7 @@ import { Route as AuthenticatedRestaurantRestaurantIdRouteImport } from './route
 import { Route as AuthenticatedVendorIndexRouteImport } from './routes/_authenticated/vendor.index'
 import { Route as AuthenticatedVendorMenuRouteImport } from './routes/_authenticated/vendor.menu'
 import { Route as AuthenticatedVendorStoreRouteImport } from './routes/_authenticated/vendor.store'
+import { Route as AuthenticatedDriverDeliveryOrderIdRouteImport } from './routes/_authenticated/driver.delivery.$orderId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -145,6 +146,12 @@ const AuthenticatedVendorStoreRoute =
     path: '/store',
     getParentRoute: () => AuthenticatedVendorRoute,
   } as any)
+const AuthenticatedDriverDeliveryOrderIdRoute =
+  AuthenticatedDriverDeliveryOrderIdRouteImport.update({
+    id: '/delivery/$orderId',
+    path: '/delivery/$orderId',
+    getParentRoute: () => AuthenticatedDriverRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -167,6 +174,7 @@ export interface FileRoutesByFullPath {
   '/customer/': typeof AuthenticatedCustomerIndexRoute
   '/driver/': typeof AuthenticatedDriverIndexRoute
   '/vendor/': typeof AuthenticatedVendorIndexRoute
+  '/driver/delivery/$orderId': typeof AuthenticatedDriverDeliveryOrderIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -186,6 +194,7 @@ export interface FileRoutesByTo {
   '/customer': typeof AuthenticatedCustomerIndexRoute
   '/driver': typeof AuthenticatedDriverIndexRoute
   '/vendor': typeof AuthenticatedVendorIndexRoute
+  '/driver/delivery/$orderId': typeof AuthenticatedDriverDeliveryOrderIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -210,6 +219,7 @@ export interface FileRoutesById {
   '/_authenticated/customer/': typeof AuthenticatedCustomerIndexRoute
   '/_authenticated/driver/': typeof AuthenticatedDriverIndexRoute
   '/_authenticated/vendor/': typeof AuthenticatedVendorIndexRoute
+  '/_authenticated/driver/delivery/$orderId': typeof AuthenticatedDriverDeliveryOrderIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -234,6 +244,7 @@ export interface FileRouteTypes {
     | '/customer/'
     | '/driver/'
     | '/vendor/'
+    | '/driver/delivery/$orderId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -253,6 +264,7 @@ export interface FileRouteTypes {
     | '/customer'
     | '/driver'
     | '/vendor'
+    | '/driver/delivery/$orderId'
   id:
     | '__root__'
     | '/'
@@ -276,6 +288,7 @@ export interface FileRouteTypes {
     | '/_authenticated/customer/'
     | '/_authenticated/driver/'
     | '/_authenticated/vendor/'
+    | '/_authenticated/driver/delivery/$orderId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -433,6 +446,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedVendorStoreRouteImport
       parentRoute: typeof AuthenticatedVendorRoute
     }
+    '/_authenticated/driver/delivery/$orderId': {
+      id: '/_authenticated/driver/delivery/$orderId'
+      path: '/delivery/$orderId'
+      fullPath: '/driver/delivery/$orderId'
+      preLoaderRoute: typeof AuthenticatedDriverDeliveryOrderIdRouteImport
+      parentRoute: typeof AuthenticatedDriverRoute
+    }
   }
 }
 
@@ -457,6 +477,7 @@ interface AuthenticatedDriverRouteChildren {
   AuthenticatedDriverEarningsRoute: typeof AuthenticatedDriverEarningsRoute
   AuthenticatedDriverHelpRoute: typeof AuthenticatedDriverHelpRoute
   AuthenticatedDriverIndexRoute: typeof AuthenticatedDriverIndexRoute
+  AuthenticatedDriverDeliveryOrderIdRoute: typeof AuthenticatedDriverDeliveryOrderIdRoute
 }
 
 const AuthenticatedDriverRouteChildren: AuthenticatedDriverRouteChildren = {
@@ -465,6 +486,8 @@ const AuthenticatedDriverRouteChildren: AuthenticatedDriverRouteChildren = {
   AuthenticatedDriverEarningsRoute: AuthenticatedDriverEarningsRoute,
   AuthenticatedDriverHelpRoute: AuthenticatedDriverHelpRoute,
   AuthenticatedDriverIndexRoute: AuthenticatedDriverIndexRoute,
+  AuthenticatedDriverDeliveryOrderIdRoute:
+    AuthenticatedDriverDeliveryOrderIdRoute,
 }
 
 const AuthenticatedDriverRouteWithChildren =
