@@ -18,8 +18,16 @@ import { Route as AuthenticatedDriverRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedVendorRouteImport } from './routes/_authenticated/vendor'
+import { Route as AuthenticatedCustomerIndexRouteImport } from './routes/_authenticated/customer.index'
+import { Route as AuthenticatedCustomerOrdersRouteImport } from './routes/_authenticated/customer.orders'
+import { Route as AuthenticatedDriverIndexRouteImport } from './routes/_authenticated/driver.index'
+import { Route as AuthenticatedDriverDocumentsRouteImport } from './routes/_authenticated/driver.documents'
+import { Route as AuthenticatedDriverEarningsRouteImport } from './routes/_authenticated/driver.earnings'
 import { Route as AuthenticatedOrdersOrderIdRouteImport } from './routes/_authenticated/orders.$orderId'
 import { Route as AuthenticatedRestaurantRestaurantIdRouteImport } from './routes/_authenticated/restaurant.$restaurantId'
+import { Route as AuthenticatedVendorIndexRouteImport } from './routes/_authenticated/vendor.index'
+import { Route as AuthenticatedVendorMenuRouteImport } from './routes/_authenticated/vendor.menu'
+import { Route as AuthenticatedVendorStoreRouteImport } from './routes/_authenticated/vendor.store'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -65,6 +73,36 @@ const AuthenticatedVendorRoute = AuthenticatedVendorRouteImport.update({
   path: '/vendor',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedCustomerIndexRoute =
+  AuthenticatedCustomerIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedCustomerRoute,
+  } as any)
+const AuthenticatedCustomerOrdersRoute =
+  AuthenticatedCustomerOrdersRouteImport.update({
+    id: '/orders',
+    path: '/orders',
+    getParentRoute: () => AuthenticatedCustomerRoute,
+  } as any)
+const AuthenticatedDriverIndexRoute =
+  AuthenticatedDriverIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedDriverRoute,
+  } as any)
+const AuthenticatedDriverDocumentsRoute =
+  AuthenticatedDriverDocumentsRouteImport.update({
+    id: '/documents',
+    path: '/documents',
+    getParentRoute: () => AuthenticatedDriverRoute,
+  } as any)
+const AuthenticatedDriverEarningsRoute =
+  AuthenticatedDriverEarningsRouteImport.update({
+    id: '/earnings',
+    path: '/earnings',
+    getParentRoute: () => AuthenticatedDriverRoute,
+  } as any)
 const AuthenticatedOrdersOrderIdRoute =
   AuthenticatedOrdersOrderIdRouteImport.update({
     id: '/orders/$orderId',
@@ -77,30 +115,60 @@ const AuthenticatedRestaurantRestaurantIdRoute =
     path: '/restaurant/$restaurantId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedVendorIndexRoute =
+  AuthenticatedVendorIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedVendorRoute,
+  } as any)
+const AuthenticatedVendorMenuRoute = AuthenticatedVendorMenuRouteImport.update({
+  id: '/menu',
+  path: '/menu',
+  getParentRoute: () => AuthenticatedVendorRoute,
+} as any)
+const AuthenticatedVendorStoreRoute =
+  AuthenticatedVendorStoreRouteImport.update({
+    id: '/store',
+    path: '/store',
+    getParentRoute: () => AuthenticatedVendorRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/checkout': typeof AuthenticatedCheckoutRoute
-  '/customer': typeof AuthenticatedCustomerRoute
-  '/driver': typeof AuthenticatedDriverRoute
+  '/customer': typeof AuthenticatedCustomerRouteWithChildren
+  '/driver': typeof AuthenticatedDriverRouteWithChildren
   '/home': typeof AuthenticatedHomeRoute
   '/profile': typeof AuthenticatedProfileRoute
-  '/vendor': typeof AuthenticatedVendorRoute
+  '/vendor': typeof AuthenticatedVendorRouteWithChildren
+  '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
+  '/driver/documents': typeof AuthenticatedDriverDocumentsRoute
+  '/driver/earnings': typeof AuthenticatedDriverEarningsRoute
   '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
+  '/vendor/menu': typeof AuthenticatedVendorMenuRoute
+  '/vendor/store': typeof AuthenticatedVendorStoreRoute
+  '/customer/': typeof AuthenticatedCustomerIndexRoute
+  '/driver/': typeof AuthenticatedDriverIndexRoute
+  '/vendor/': typeof AuthenticatedVendorIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/checkout': typeof AuthenticatedCheckoutRoute
-  '/customer': typeof AuthenticatedCustomerRoute
-  '/driver': typeof AuthenticatedDriverRoute
   '/home': typeof AuthenticatedHomeRoute
   '/profile': typeof AuthenticatedProfileRoute
-  '/vendor': typeof AuthenticatedVendorRoute
+  '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
+  '/driver/documents': typeof AuthenticatedDriverDocumentsRoute
+  '/driver/earnings': typeof AuthenticatedDriverEarningsRoute
   '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
+  '/vendor/menu': typeof AuthenticatedVendorMenuRoute
+  '/vendor/store': typeof AuthenticatedVendorStoreRoute
+  '/customer': typeof AuthenticatedCustomerIndexRoute
+  '/driver': typeof AuthenticatedDriverIndexRoute
+  '/vendor': typeof AuthenticatedVendorIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -108,13 +176,21 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/checkout': typeof AuthenticatedCheckoutRoute
-  '/_authenticated/customer': typeof AuthenticatedCustomerRoute
-  '/_authenticated/driver': typeof AuthenticatedDriverRoute
+  '/_authenticated/customer': typeof AuthenticatedCustomerRouteWithChildren
+  '/_authenticated/driver': typeof AuthenticatedDriverRouteWithChildren
   '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
-  '/_authenticated/vendor': typeof AuthenticatedVendorRoute
+  '/_authenticated/vendor': typeof AuthenticatedVendorRouteWithChildren
+  '/_authenticated/customer/orders': typeof AuthenticatedCustomerOrdersRoute
+  '/_authenticated/driver/documents': typeof AuthenticatedDriverDocumentsRoute
+  '/_authenticated/driver/earnings': typeof AuthenticatedDriverEarningsRoute
   '/_authenticated/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/_authenticated/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
+  '/_authenticated/vendor/menu': typeof AuthenticatedVendorMenuRoute
+  '/_authenticated/vendor/store': typeof AuthenticatedVendorStoreRoute
+  '/_authenticated/customer/': typeof AuthenticatedCustomerIndexRoute
+  '/_authenticated/driver/': typeof AuthenticatedDriverIndexRoute
+  '/_authenticated/vendor/': typeof AuthenticatedVendorIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -127,20 +203,33 @@ export interface FileRouteTypes {
     | '/home'
     | '/profile'
     | '/vendor'
+    | '/customer/orders'
+    | '/driver/documents'
+    | '/driver/earnings'
     | '/orders/$orderId'
     | '/restaurant/$restaurantId'
+    | '/vendor/menu'
+    | '/vendor/store'
+    | '/customer/'
+    | '/driver/'
+    | '/vendor/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/checkout'
-    | '/customer'
-    | '/driver'
     | '/home'
     | '/profile'
-    | '/vendor'
+    | '/customer/orders'
+    | '/driver/documents'
+    | '/driver/earnings'
     | '/orders/$orderId'
     | '/restaurant/$restaurantId'
+    | '/vendor/menu'
+    | '/vendor/store'
+    | '/customer'
+    | '/driver'
+    | '/vendor'
   id:
     | '__root__'
     | '/'
@@ -152,8 +241,16 @@ export interface FileRouteTypes {
     | '/_authenticated/home'
     | '/_authenticated/profile'
     | '/_authenticated/vendor'
+    | '/_authenticated/customer/orders'
+    | '/_authenticated/driver/documents'
+    | '/_authenticated/driver/earnings'
     | '/_authenticated/orders/$orderId'
     | '/_authenticated/restaurant/$restaurantId'
+    | '/_authenticated/vendor/menu'
+    | '/_authenticated/vendor/store'
+    | '/_authenticated/customer/'
+    | '/_authenticated/driver/'
+    | '/_authenticated/vendor/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -227,6 +324,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedVendorRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/customer/': {
+      id: '/_authenticated/customer/'
+      path: '/'
+      fullPath: '/customer/'
+      preLoaderRoute: typeof AuthenticatedCustomerIndexRouteImport
+      parentRoute: typeof AuthenticatedCustomerRoute
+    }
+    '/_authenticated/customer/orders': {
+      id: '/_authenticated/customer/orders'
+      path: '/orders'
+      fullPath: '/customer/orders'
+      preLoaderRoute: typeof AuthenticatedCustomerOrdersRouteImport
+      parentRoute: typeof AuthenticatedCustomerRoute
+    }
+    '/_authenticated/driver/': {
+      id: '/_authenticated/driver/'
+      path: '/'
+      fullPath: '/driver/'
+      preLoaderRoute: typeof AuthenticatedDriverIndexRouteImport
+      parentRoute: typeof AuthenticatedDriverRoute
+    }
+    '/_authenticated/driver/documents': {
+      id: '/_authenticated/driver/documents'
+      path: '/documents'
+      fullPath: '/driver/documents'
+      preLoaderRoute: typeof AuthenticatedDriverDocumentsRouteImport
+      parentRoute: typeof AuthenticatedDriverRoute
+    }
+    '/_authenticated/driver/earnings': {
+      id: '/_authenticated/driver/earnings'
+      path: '/earnings'
+      fullPath: '/driver/earnings'
+      preLoaderRoute: typeof AuthenticatedDriverEarningsRouteImport
+      parentRoute: typeof AuthenticatedDriverRoute
+    }
     '/_authenticated/orders/$orderId': {
       id: '/_authenticated/orders/$orderId'
       path: '/orders/$orderId'
@@ -241,27 +373,93 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRestaurantRestaurantIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/vendor/': {
+      id: '/_authenticated/vendor/'
+      path: '/'
+      fullPath: '/vendor/'
+      preLoaderRoute: typeof AuthenticatedVendorIndexRouteImport
+      parentRoute: typeof AuthenticatedVendorRoute
+    }
+    '/_authenticated/vendor/menu': {
+      id: '/_authenticated/vendor/menu'
+      path: '/menu'
+      fullPath: '/vendor/menu'
+      preLoaderRoute: typeof AuthenticatedVendorMenuRouteImport
+      parentRoute: typeof AuthenticatedVendorRoute
+    }
+    '/_authenticated/vendor/store': {
+      id: '/_authenticated/vendor/store'
+      path: '/store'
+      fullPath: '/vendor/store'
+      preLoaderRoute: typeof AuthenticatedVendorStoreRouteImport
+      parentRoute: typeof AuthenticatedVendorRoute
+    }
   }
 }
 
+interface AuthenticatedCustomerRouteChildren {
+  AuthenticatedCustomerOrdersRoute: typeof AuthenticatedCustomerOrdersRoute
+  AuthenticatedCustomerIndexRoute: typeof AuthenticatedCustomerIndexRoute
+}
+
+const AuthenticatedCustomerRouteChildren: AuthenticatedCustomerRouteChildren = {
+  AuthenticatedCustomerOrdersRoute: AuthenticatedCustomerOrdersRoute,
+  AuthenticatedCustomerIndexRoute: AuthenticatedCustomerIndexRoute,
+}
+
+const AuthenticatedCustomerRouteWithChildren =
+  AuthenticatedCustomerRoute._addFileChildren(
+    AuthenticatedCustomerRouteChildren,
+  )
+
+interface AuthenticatedDriverRouteChildren {
+  AuthenticatedDriverDocumentsRoute: typeof AuthenticatedDriverDocumentsRoute
+  AuthenticatedDriverEarningsRoute: typeof AuthenticatedDriverEarningsRoute
+  AuthenticatedDriverIndexRoute: typeof AuthenticatedDriverIndexRoute
+}
+
+const AuthenticatedDriverRouteChildren: AuthenticatedDriverRouteChildren = {
+  AuthenticatedDriverDocumentsRoute: AuthenticatedDriverDocumentsRoute,
+  AuthenticatedDriverEarningsRoute: AuthenticatedDriverEarningsRoute,
+  AuthenticatedDriverIndexRoute: AuthenticatedDriverIndexRoute,
+}
+
+const AuthenticatedDriverRouteWithChildren =
+  AuthenticatedDriverRoute._addFileChildren(AuthenticatedDriverRouteChildren)
+
+interface AuthenticatedVendorRouteChildren {
+  AuthenticatedVendorMenuRoute: typeof AuthenticatedVendorMenuRoute
+  AuthenticatedVendorStoreRoute: typeof AuthenticatedVendorStoreRoute
+  AuthenticatedVendorIndexRoute: typeof AuthenticatedVendorIndexRoute
+}
+
+const AuthenticatedVendorRouteChildren: AuthenticatedVendorRouteChildren = {
+  AuthenticatedVendorMenuRoute: AuthenticatedVendorMenuRoute,
+  AuthenticatedVendorStoreRoute: AuthenticatedVendorStoreRoute,
+  AuthenticatedVendorIndexRoute: AuthenticatedVendorIndexRoute,
+}
+
+const AuthenticatedVendorRouteWithChildren =
+  AuthenticatedVendorRoute._addFileChildren(AuthenticatedVendorRouteChildren)
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedCheckoutRoute: typeof AuthenticatedCheckoutRoute
-  AuthenticatedCustomerRoute: typeof AuthenticatedCustomerRoute
-  AuthenticatedDriverRoute: typeof AuthenticatedDriverRoute
+  AuthenticatedCustomerRoute: typeof AuthenticatedCustomerRouteWithChildren
+  AuthenticatedDriverRoute: typeof AuthenticatedDriverRouteWithChildren
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
-  AuthenticatedVendorRoute: typeof AuthenticatedVendorRoute
+  AuthenticatedVendorRoute: typeof AuthenticatedVendorRouteWithChildren
   AuthenticatedOrdersOrderIdRoute: typeof AuthenticatedOrdersOrderIdRoute
   AuthenticatedRestaurantRestaurantIdRoute: typeof AuthenticatedRestaurantRestaurantIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCheckoutRoute: AuthenticatedCheckoutRoute,
-  AuthenticatedCustomerRoute: AuthenticatedCustomerRoute,
-  AuthenticatedDriverRoute: AuthenticatedDriverRoute,
+  AuthenticatedCustomerRoute: AuthenticatedCustomerRouteWithChildren,
+  AuthenticatedDriverRoute: AuthenticatedDriverRouteWithChildren,
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
-  AuthenticatedVendorRoute: AuthenticatedVendorRoute,
+  AuthenticatedVendorRoute: AuthenticatedVendorRouteWithChildren,
   AuthenticatedOrdersOrderIdRoute: AuthenticatedOrdersOrderIdRoute,
   AuthenticatedRestaurantRestaurantIdRoute:
     AuthenticatedRestaurantRestaurantIdRoute,

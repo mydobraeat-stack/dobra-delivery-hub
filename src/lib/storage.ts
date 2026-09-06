@@ -1,7 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
-export type ImageBucket = "restaurant-logos" | "menu-images" | "profile-photos";
+export type ImageBucket =
+  | "restaurant-logos"
+  | "menu-images"
+  | "profile-photos"
+  | "driver-documents";
 
 function isDirectUrl(value: string) {
   return value.startsWith("/") || value.startsWith("http");

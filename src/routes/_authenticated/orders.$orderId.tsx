@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Check, MapPin, Star } from "lucide-react";
@@ -6,6 +6,8 @@ import { toast } from "sonner";
 import { AppHeader } from "@/components/dobra/AppHeader";
 import { StoredImage } from "@/components/dobra/StoredImage";
 import { StatusBadge } from "@/components/dobra/StatusBadge";
+import { MapView, type MapPoint } from "@/components/dobra/MapView";
+import { addressPointQuery } from "@/lib/maps";
 import {
   CUSTOMER_STEPS,
   cancelOrder,
@@ -150,23 +152,11 @@ function OrderTracking() {
               </Card>
             )}
 
-            {order.driver_id && location ? (
-              <Card className="border-ink/10">
-                <CardContent className="space-y-2 py-4">
-                  <p className="inline-flex items-center gap-2 text-sm font-semibold text-foreground">
-                    <MapPin className="size-4" aria-hidden /> Driver location
-                  </p>
-                  <iframe
-                    title="Driver location map"
-                    className="h-56 w-full rounded-xl border border-ink/10"
-                    src={`https://www.openstreetmap.org/export/embed.html?bbox=${location.lng - 0.01}%2C${location.lat - 0.01}%2C${location.lng + 0.01}%2C${location.lat + 0.01}&layer=mapnik&marker=${location.lat}%2C${location.lng}`}
-                  />
-                  <p className="text-xs text-foreground/60">
-                    Updated {new Date(location.updated_at).toLocaleTimeString()}
-                  </p>
-                </CardContent>
-              </Card>
-            ) : null}
+            <DeliveryMap
+              driver={location ? { lat: location.lat, lng: location.lng } : null}
+              updatedAt={location?.updated_at ?? null}
+              address={order.address}
+            />
 
             <Card className="border-ink/10">
               <CardContent className="space-y-3 py-4">
@@ -287,5 +277,42 @@ function Stars({
         </button>
       ))}
     </div>
+  );
+}
+
+function DeliveryMap({
+  driver,
+  updatedAt,
+  address,
+}: {
+  driver: { lat: number; lng: number } | null;
+  updatedAt: string | null;
+  address: string | null;
+}) {
+  const { data: dropOff } = useQuery(addressPointQuery(address));
+
+  const points = useMemo(() => {
+    const list: MapPoint[] = [];
+    if (driver) list.push({ ...driver, label: "Your driver" });
+    if (dropOff) list.push({ ...dropOff, label: address ?? "Delivery address" });
+    return list;
+  }, [driver, dropOff, address]);
+
+  if (points.length === 0) return null;
+
+  return (
+    <Card className="border-ink/10">
+      <CardContent className="space-y-2 py-4">
+        <p className="inline-flex items-center gap-2 text-sm font-semibold text-foreground">
+          <MapPin className="size-4" aria-hidden /> {driver ? "Driver location" : "Delivery address"}
+        </p>
+        <MapView points={points} className="h-56 w-full" />
+        {driver && updatedAt ? (
+          <p className="text-xs text-foreground/60">
+            Updated {new Date(updatedAt).toLocaleTimeString()}
+          </p>
+        ) : null}
+      </CardContent>
+    </Card>
   );
 }
