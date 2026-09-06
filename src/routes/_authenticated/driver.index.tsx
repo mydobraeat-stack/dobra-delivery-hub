@@ -292,8 +292,9 @@ function DriverHome() {
                         Open
                       </Link>
                     </Button>
-
+                    {o.address ? (
                       <Button size="sm" variant="outline" asChild>
+
                         <a
                           href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(o.address)}`}
                           target="_blank"
