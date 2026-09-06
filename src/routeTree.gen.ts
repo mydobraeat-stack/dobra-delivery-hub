@@ -23,6 +23,7 @@ import { Route as AuthenticatedCustomerOrdersRouteImport } from './routes/_authe
 import { Route as AuthenticatedOrdersOrderIdRouteImport } from './routes/_authenticated/orders.$orderId'
 import { Route as AuthenticatedRestaurantRestaurantIdRouteImport } from './routes/_authenticated/restaurant.$restaurantId'
 import { Route as AuthenticatedVendorIndexRouteImport } from './routes/_authenticated/vendor.index'
+import { Route as AuthenticatedVendorMenuRouteImport } from './routes/_authenticated/vendor.menu'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -98,6 +99,11 @@ const AuthenticatedVendorIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedVendorRoute,
   } as any)
+const AuthenticatedVendorMenuRoute = AuthenticatedVendorMenuRouteImport.update({
+  id: '/menu',
+  path: '/menu',
+  getParentRoute: () => AuthenticatedVendorRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -111,6 +117,7 @@ export interface FileRoutesByFullPath {
   '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
   '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
+  '/vendor/menu': typeof AuthenticatedVendorMenuRoute
   '/customer/': typeof AuthenticatedCustomerIndexRoute
   '/vendor/': typeof AuthenticatedVendorIndexRoute
 }
@@ -124,6 +131,7 @@ export interface FileRoutesByTo {
   '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
   '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
+  '/vendor/menu': typeof AuthenticatedVendorMenuRoute
   '/customer': typeof AuthenticatedCustomerIndexRoute
   '/vendor': typeof AuthenticatedVendorIndexRoute
 }
@@ -141,6 +149,7 @@ export interface FileRoutesById {
   '/_authenticated/customer/orders': typeof AuthenticatedCustomerOrdersRoute
   '/_authenticated/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/_authenticated/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
+  '/_authenticated/vendor/menu': typeof AuthenticatedVendorMenuRoute
   '/_authenticated/customer/': typeof AuthenticatedCustomerIndexRoute
   '/_authenticated/vendor/': typeof AuthenticatedVendorIndexRoute
 }
@@ -158,6 +167,7 @@ export interface FileRouteTypes {
     | '/customer/orders'
     | '/orders/$orderId'
     | '/restaurant/$restaurantId'
+    | '/vendor/menu'
     | '/customer/'
     | '/vendor/'
   fileRoutesByTo: FileRoutesByTo
@@ -171,6 +181,7 @@ export interface FileRouteTypes {
     | '/customer/orders'
     | '/orders/$orderId'
     | '/restaurant/$restaurantId'
+    | '/vendor/menu'
     | '/customer'
     | '/vendor'
   id:
@@ -187,6 +198,7 @@ export interface FileRouteTypes {
     | '/_authenticated/customer/orders'
     | '/_authenticated/orders/$orderId'
     | '/_authenticated/restaurant/$restaurantId'
+    | '/_authenticated/vendor/menu'
     | '/_authenticated/customer/'
     | '/_authenticated/vendor/'
   fileRoutesById: FileRoutesById
@@ -297,6 +309,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedVendorIndexRouteImport
       parentRoute: typeof AuthenticatedVendorRoute
     }
+    '/_authenticated/vendor/menu': {
+      id: '/_authenticated/vendor/menu'
+      path: '/menu'
+      fullPath: '/vendor/menu'
+      preLoaderRoute: typeof AuthenticatedVendorMenuRouteImport
+      parentRoute: typeof AuthenticatedVendorRoute
+    }
   }
 }
 
@@ -316,10 +335,12 @@ const AuthenticatedCustomerRouteWithChildren =
   )
 
 interface AuthenticatedVendorRouteChildren {
+  AuthenticatedVendorMenuRoute: typeof AuthenticatedVendorMenuRoute
   AuthenticatedVendorIndexRoute: typeof AuthenticatedVendorIndexRoute
 }
 
 const AuthenticatedVendorRouteChildren: AuthenticatedVendorRouteChildren = {
+  AuthenticatedVendorMenuRoute: AuthenticatedVendorMenuRoute,
   AuthenticatedVendorIndexRoute: AuthenticatedVendorIndexRoute,
 }
 
