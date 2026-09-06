@@ -156,7 +156,16 @@ function ProfilePage() {
         {role === "customer" ? <CustomerSection /> : null}
         {role === "vendor" ? <VendorSection status={profile?.approval_status ?? null} /> : null}
         {role === "driver" ? <DriverSection status={profile?.approval_status ?? null} /> : null}
+
+        <Card className="border-ink/10">
+          <CardContent className="pt-6">
+            <Button variant="outline" className="w-full" onClick={handleSignOut}>
+              {t("common.actions.signOut")}
+            </Button>
+          </CardContent>
+        </Card>
       </main>
+
       {role === "customer" || role === "vendor" || role === "driver" ? (
         <TabBar role={role} />
       ) : null}
