@@ -287,7 +287,12 @@ function DriverHome() {
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
                     <StatusBadge status={o.status} />
-                    {o.address ? (
+                    <Button size="sm" variant="outline" asChild>
+                      <Link to="/driver/delivery/$orderId" params={{ orderId: o.id }}>
+                        Open
+                      </Link>
+                    </Button>
+
                       <Button size="sm" variant="outline" asChild>
                         <a
                           href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(o.address)}`}
