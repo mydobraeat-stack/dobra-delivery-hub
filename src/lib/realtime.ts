@@ -14,8 +14,6 @@ export function useRealtimeSync() {
       .channel("dobra-live")
       .on("postgres_changes", { event: "*", schema: "public", table: "orders" }, () => {
         queryClient.invalidateQueries({ queryKey: ["orders"] });
-        queryClient.invalidateQueries({ queryKey: ["vendor-orders"] });
-        queryClient.invalidateQueries({ queryKey: ["driver-orders"] });
         queryClient.invalidateQueries({ queryKey: ["order"] });
         queryClient.invalidateQueries({ queryKey: ["admin"] });
       })

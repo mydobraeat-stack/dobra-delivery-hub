@@ -156,7 +156,6 @@ export function restaurantQuery(id: string) {
 
 export const myOrdersQuery = queryOptions({
   queryKey: ["orders", "mine"],
-  refetchInterval: 20_000,
   queryFn: async (): Promise<OrderRow[]> => {
     const userId = await currentUserId();
     const { data, error } = await supabase
@@ -172,7 +171,6 @@ export const myOrdersQuery = queryOptions({
 export function orderQuery(orderId: string) {
   return queryOptions({
     queryKey: ["order", orderId],
-    refetchInterval: 15_000,
     queryFn: async (): Promise<OrderRow | null> => {
       const { data, error } = await supabase
         .from("orders")
@@ -203,7 +201,6 @@ export function vendorOrdersQuery(restaurantId: string | undefined) {
   return queryOptions({
     queryKey: ["orders", "vendor", restaurantId ?? "none"],
     enabled: Boolean(restaurantId),
-    refetchInterval: 15_000,
     queryFn: async (): Promise<OrderRow[]> => {
       const { data, error } = await supabase
         .from("orders")
@@ -218,7 +215,6 @@ export function vendorOrdersQuery(restaurantId: string | undefined) {
 
 export const driverOrdersQuery = queryOptions({
   queryKey: ["orders", "driver"],
-  refetchInterval: 15_000,
   queryFn: async (): Promise<{ available: OrderRow[]; mine: OrderRow[] }> => {
     const userId = await currentUserId();
     const { data, error } = await supabase
@@ -284,7 +280,6 @@ export function driverLocationQuery(driverId: string | null | undefined) {
   return queryOptions({
     queryKey: ["driver-location", driverId ?? "none"],
     enabled: Boolean(driverId),
-    refetchInterval: 20_000,
     queryFn: async (): Promise<{ lat: number; lng: number; updated_at: string } | null> => {
       const { data, error } = await supabase
         .from("driver_locations")
