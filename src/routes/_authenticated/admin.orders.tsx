@@ -52,7 +52,7 @@ function AdminOrders() {
               type="button"
               onClick={() => setFilter(f)}
               className={`rounded-full px-3 py-1.5 text-xs font-semibold ${
-                filter === f ? "bg-primary text-foreground" : "bg-muted text-foreground/70"
+                filter === f ? "bg-sun text-foreground" : "bg-muted text-foreground/70"
               }`}
             >
               {f === "all" ? "All" : f.replace(/_/g, " ")}

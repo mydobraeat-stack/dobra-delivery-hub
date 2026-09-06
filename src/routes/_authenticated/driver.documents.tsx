@@ -209,7 +209,7 @@ function DriverDocuments() {
         })}
       </section>
 
-      <Card className="border-ink/10 bg-primary/20">
+      <Card className="border-ink/10 bg-sun/20">
         <CardContent className="flex flex-wrap items-center justify-between gap-3 py-4">
           <p className="text-sm text-foreground">
             {docsStatus === "approved"

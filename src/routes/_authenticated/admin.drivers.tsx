@@ -86,7 +86,7 @@ function AdminDrivers() {
               </p>
             </div>
             <div className="flex flex-col items-end gap-1 text-xs">
-              <span className="rounded-full bg-primary/30 px-3 py-1 font-semibold">
+              <span className="rounded-full bg-sun/30 px-3 py-1 font-semibold">
                 Docs: {DOCS_STATUS_LABEL[d.docs_status] ?? d.docs_status}
               </span>
               <span className="text-foreground/60">

@@ -60,7 +60,7 @@ function PendingApprovals() {
                   {p.email} · {p.role} · {p.country || "no country"}
                 </p>
               </div>
-              <span className="rounded-full bg-primary/30 px-3 py-1 text-xs font-semibold">
+              <span className="rounded-full bg-sun/30 px-3 py-1 text-xs font-semibold">
                 Pending review
               </span>
             </div>
@@ -79,7 +79,7 @@ function PendingApprovals() {
                     {driver.documents.map((d) => (
                       <li key={d.id} className="flex items-center justify-between gap-3">
                         <span className="text-foreground/70">{d.doc_type.replace(/_/g, " ")}</span>
-                        <span className="rounded-full bg-primary/25 px-2 py-0.5 text-xs font-semibold">
+                        <span className="rounded-full bg-sun/25 px-2 py-0.5 text-xs font-semibold">
                           {d.status}
                         </span>
                       </li>

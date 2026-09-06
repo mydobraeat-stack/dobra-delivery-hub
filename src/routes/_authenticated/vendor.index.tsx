@@ -63,7 +63,7 @@ function VendorOrdersPage() {
       <h1 className="text-2xl font-bold text-foreground">Orders</h1>
 
       {account?.approvalStatus !== "approved" ? (
-        <Card className="border-ink/10 bg-primary/20">
+        <Card className="border-ink/10 bg-sun/20">
           <CardContent className="py-4 text-sm text-foreground">
             Your account is still being reviewed. You can set up your restaurant and menu now —
             customers will see it as soon as you are approved.

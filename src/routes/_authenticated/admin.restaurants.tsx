@@ -12,7 +12,7 @@ export const Route = createFileRoute("/_authenticated/admin/restaurants")({
 
 const TONE: Record<string, string> = {
   approved: "bg-accent/15 text-accent",
-  pending: "bg-primary/30 text-foreground",
+  pending: "bg-sun/30 text-foreground",
   suspended: "bg-destructive/10 text-destructive",
 };
 

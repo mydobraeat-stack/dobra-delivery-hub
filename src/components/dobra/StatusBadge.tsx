@@ -2,9 +2,9 @@ import { STATUS_LABEL } from "@/lib/dobra";
 import { cn } from "@/lib/utils";
 
 const TONE: Record<string, string> = {
-  pending: "bg-primary/25 text-foreground",
-  accepted: "bg-primary/25 text-foreground",
-  preparing: "bg-primary/40 text-foreground",
+  pending: "bg-sun/25 text-foreground",
+  accepted: "bg-sun/25 text-foreground",
+  preparing: "bg-sun/40 text-foreground",
   ready: "bg-accent/15 text-accent",
   picked_up: "bg-accent/15 text-accent",
   delivered: "bg-foreground/10 text-foreground/70",

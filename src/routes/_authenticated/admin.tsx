@@ -57,9 +57,9 @@ function AdminLayout() {
                 to={l.to}
                 activeOptions={{ exact: Boolean(l.exact) }}
                 className={cn(
-                  "block whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium text-foreground/70 hover:bg-primary/20",
+                  "block whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium text-foreground/70 hover:bg-sun/20",
                 )}
-                activeProps={{ className: "bg-primary text-foreground font-semibold" }}
+                activeProps={{ className: "bg-sun text-foreground font-semibold" }}
               >
                 {l.label}
               </Link>
