@@ -15,7 +15,7 @@ export default {
     completedOrders: "Commandes terminées",
     noActiveOrders: "Aucune commande en cours.",
     noCompletedOrders: "Rien de terminé pour l'instant.",
-      "Gérez vos plats dans l'onglet {menu} et vos informations dans l'onglet {store}.",
+      
     newOrderToast: "Une nouvelle commande vient d'arriver !",
     manageHintPre: "Gérez vos plats dans l'onglet ",
     manageHintMid: " et vos informations dans l'onglet ",
