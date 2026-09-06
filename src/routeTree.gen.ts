@@ -21,6 +21,7 @@ import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedVendorRouteImport } from './routes/_authenticated/vendor'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminApprovalsRouteImport } from './routes/_authenticated/admin.approvals'
+import { Route as AuthenticatedAdminRestaurantsRouteImport } from './routes/_authenticated/admin.restaurants'
 import { Route as AuthenticatedCustomerIndexRouteImport } from './routes/_authenticated/customer.index'
 import { Route as AuthenticatedCustomerOrdersRouteImport } from './routes/_authenticated/customer.orders'
 import { Route as AuthenticatedDriverIndexRouteImport } from './routes/_authenticated/driver.index'
@@ -93,6 +94,12 @@ const AuthenticatedAdminApprovalsRoute =
   AuthenticatedAdminApprovalsRouteImport.update({
     id: '/approvals',
     path: '/approvals',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminRestaurantsRoute =
+  AuthenticatedAdminRestaurantsRouteImport.update({
+    id: '/restaurants',
+    path: '/restaurants',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedCustomerIndexRoute =
@@ -183,6 +190,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof AuthenticatedProfileRoute
   '/vendor': typeof AuthenticatedVendorRouteWithChildren
   '/admin/approvals': typeof AuthenticatedAdminApprovalsRoute
+  '/admin/restaurants': typeof AuthenticatedAdminRestaurantsRoute
   '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
   '/driver/deliveries': typeof AuthenticatedDriverDeliveriesRoute
   '/driver/documents': typeof AuthenticatedDriverDocumentsRoute
@@ -205,6 +213,7 @@ export interface FileRoutesByTo {
   '/home': typeof AuthenticatedHomeRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/admin/approvals': typeof AuthenticatedAdminApprovalsRoute
+  '/admin/restaurants': typeof AuthenticatedAdminRestaurantsRoute
   '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
   '/driver/deliveries': typeof AuthenticatedDriverDeliveriesRoute
   '/driver/documents': typeof AuthenticatedDriverDocumentsRoute
@@ -233,6 +242,7 @@ export interface FileRoutesById {
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/vendor': typeof AuthenticatedVendorRouteWithChildren
   '/_authenticated/admin/approvals': typeof AuthenticatedAdminApprovalsRoute
+  '/_authenticated/admin/restaurants': typeof AuthenticatedAdminRestaurantsRoute
   '/_authenticated/customer/orders': typeof AuthenticatedCustomerOrdersRoute
   '/_authenticated/driver/deliveries': typeof AuthenticatedDriverDeliveriesRoute
   '/_authenticated/driver/documents': typeof AuthenticatedDriverDocumentsRoute
@@ -261,6 +271,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/vendor'
     | '/admin/approvals'
+    | '/admin/restaurants'
     | '/customer/orders'
     | '/driver/deliveries'
     | '/driver/documents'
@@ -283,6 +294,7 @@ export interface FileRouteTypes {
     | '/home'
     | '/profile'
     | '/admin/approvals'
+    | '/admin/restaurants'
     | '/customer/orders'
     | '/driver/deliveries'
     | '/driver/documents'
@@ -310,6 +322,7 @@ export interface FileRouteTypes {
     | '/_authenticated/profile'
     | '/_authenticated/vendor'
     | '/_authenticated/admin/approvals'
+    | '/_authenticated/admin/restaurants'
     | '/_authenticated/customer/orders'
     | '/_authenticated/driver/deliveries'
     | '/_authenticated/driver/documents'
@@ -418,6 +431,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminApprovalsRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/restaurants': {
+      id: '/_authenticated/admin/restaurants'
+      path: '/restaurants'
+      fullPath: '/admin/restaurants'
+      preLoaderRoute: typeof AuthenticatedAdminRestaurantsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/customer/': {
       id: '/_authenticated/customer/'
       path: '/'
@@ -514,11 +534,13 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminApprovalsRoute: typeof AuthenticatedAdminApprovalsRoute
+  AuthenticatedAdminRestaurantsRoute: typeof AuthenticatedAdminRestaurantsRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminApprovalsRoute: AuthenticatedAdminApprovalsRoute,
+  AuthenticatedAdminRestaurantsRoute: AuthenticatedAdminRestaurantsRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
 
