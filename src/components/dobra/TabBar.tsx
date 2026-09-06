@@ -41,7 +41,7 @@ export function TabBar({ role }: { role: "customer" | "vendor" | "driver" }) {
 
   return (
     <nav
-      aria-label="Main"
+      aria-label={t("common.navAria")}
       className="fixed inset-x-0 bottom-0 z-30 border-t border-ink/10 bg-card/95 backdrop-blur"
     >
       <ul className="mx-auto flex max-w-4xl">

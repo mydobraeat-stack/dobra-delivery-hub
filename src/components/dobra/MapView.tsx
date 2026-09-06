@@ -94,5 +94,5 @@ gestureHandling: "greedy",
     );
   }
 
-  return <div ref={ref} className={cn("rounded-xl bg-muted", className)} role="img" aria-label="Map" />;
+  return <div ref={ref} className={cn("rounded-xl bg-muted", className)} role="img" aria-label={t("common.mapAria")} />;
 }

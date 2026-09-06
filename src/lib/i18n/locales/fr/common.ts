@@ -104,4 +104,6 @@ export default {
     "vehicleFailed": "Impossible d'enregistrer le véhicule.",
     "goToDeliveries": "Aller aux livraisons"
   },
+  mapAria: "Carte",
+  navAria: "Principal",
 };

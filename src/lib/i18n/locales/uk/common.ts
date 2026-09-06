@@ -104,4 +104,6 @@ export default {
     "vehicleFailed": "Не вдалося зберегти транспорт.",
     "goToDeliveries": "Перейти до доставок"
   },
+  mapAria: "Карта",
+  navAria: "Головна",
 };

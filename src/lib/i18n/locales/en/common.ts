@@ -104,4 +104,6 @@ export default {
     "vehicleFailed": "Could not save vehicle.",
     "goToDeliveries": "Go to deliveries"
   },
+  mapAria: "Map",
+  navAria: "Main",
 };

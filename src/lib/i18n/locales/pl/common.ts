@@ -104,4 +104,6 @@ export default {
     "vehicleFailed": "Nie udało się zapisać pojazdu.",
     "goToDeliveries": "Przejdź do dostaw"
   },
+  mapAria: "Mapa",
+  navAria: "Główna",
 };
