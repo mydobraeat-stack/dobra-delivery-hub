@@ -388,14 +388,23 @@ export async function saveDriverLocation(lat: number, lng: number) {
   if (error) throw error;
 }
 
+export type PaymentMethod = "cash" | "card";
+
 export type CheckoutInput = {
   restaurant: Restaurant;
   lines: CartLine[];
   address: string;
   note: string;
+  paymentMethod: PaymentMethod;
 };
 
-export async function placeOrder({ restaurant, lines, address, note }: CheckoutInput) {
+export async function placeOrder({
+  restaurant,
+  lines,
+  address,
+  note,
+  paymentMethod,
+}: CheckoutInput) {
   if (lines.length === 0) throw new Error("Your basket is empty.");
   const userId = await currentUserId();
   const subtotal = lines.reduce((sum, l) => sum + l.price * l.quantity, 0);
@@ -416,6 +425,8 @@ export async function placeOrder({ restaurant, lines, address, note }: CheckoutI
       address,
       note: note || null,
       eta_minutes: restaurant.eta_minutes,
+      payment_method: paymentMethod,
+      payment_status: paymentMethod === "cash" ? "cash" : "pending",
     })
     .select("id")
     .single();
