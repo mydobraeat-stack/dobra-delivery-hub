@@ -18,7 +18,7 @@ export async function uploadImage(bucket: ImageBucket, file: File) {
   const { error } = await supabase.storage.from(bucket).upload(path, file, {
     cacheControl: "3600",
     upsert: false,
-    contentType: file.type || undefined,
+    contentType: file.type || "image/jpeg",
   });
   if (error) throw error;
   return `${bucket}/${path}`;
@@ -27,6 +27,7 @@ export async function uploadImage(bucket: ImageBucket, file: File) {
 export async function resolveImageUrl(value: string) {
   if (isDirectUrl(value)) return value;
   const [bucket, ...rest] = value.split("/");
+  if (!bucket) throw new Error("Invalid image reference");
   const { data, error } = await supabase.storage
     .from(bucket)
     .createSignedUrl(rest.join("/"), 60 * 60);
