@@ -1,14 +1,15 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useT } from "@/lib/i18n";
 
 export function PendingApproval({ what }: { what: string }) {
+  const t = useT();
   return (
     <Card className="border-ink/10">
       <CardHeader>
-        <CardTitle className="text-lg">Your {what} account is pending approval</CardTitle>
+        <CardTitle className="text-lg">{t("vendor.pendingApproval.title", { what })}</CardTitle>
       </CardHeader>
       <CardContent className="text-sm text-foreground/70">
-        Our team is reviewing your details. You'll get access to the full dashboard as soon as
-        you're approved.
+        {t("vendor.pendingApproval.body")}
       </CardContent>
     </Card>
   );
