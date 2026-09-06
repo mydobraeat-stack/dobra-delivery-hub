@@ -10,8 +10,9 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { myDriverQuery } from "@/lib/dobra";
+import { useT } from "@/lib/i18n";
 import {
-  DOCS_STATUS_LABEL,
+  DOCS_STATUS_LABEL_KEY,
   DOC_TYPES,
   VEHICLE_TYPES,
   driverDocsQuery,
@@ -41,6 +42,7 @@ export const Route = createFileRoute("/_authenticated/driver/documents")({
 
 function DriverDocuments() {
   const queryClient = useQueryClient();
+  const t = useT();
   const { data: driver } = useQuery(myDriverQuery);
   const { data: docs = [], isLoading } = useQuery(driverDocsQuery);
 
@@ -71,7 +73,7 @@ function DriverDocuments() {
         plate: plate.trim() || null,
       }),
     onSuccess: () => {
-      toast.success("Vehicle details saved.");
+      toast.success(t("driver.documents.savedToast"));
       refresh();
     },
     onError: (e: Error) => toast.error(e.message),
@@ -81,7 +83,7 @@ function DriverDocuments() {
     mutationFn: ({ docType, path }: { docType: DocType; path: string }) =>
       saveDriverDocument(docType, path, null),
     onSuccess: () => {
-      toast.success("Document uploaded.");
+      toast.success(t("driver.documents.uploadedToast"));
       refresh();
     },
     onError: (e: Error) => toast.error(e.message),
@@ -90,7 +92,7 @@ function DriverDocuments() {
   const remove = useMutation({
     mutationFn: (id: string) => removeDriverDocument(id),
     onSuccess: () => {
-      toast.success("Document removed.");
+      toast.success(t("driver.documents.removedToast"));
       refresh();
     },
     onError: (e: Error) => toast.error(e.message),
@@ -99,7 +101,7 @@ function DriverDocuments() {
   const submit = useMutation({
     mutationFn: submitDriverApplication,
     onSuccess: () => {
-      toast.success("Sent for review — we will let you know shortly.");
+      toast.success(t("driver.documents.submittedToast"));
       refresh();
     },
     onError: (e: Error) => toast.error(e.message),
@@ -111,18 +113,18 @@ function DriverDocuments() {
   return (
     <main className="mx-auto max-w-4xl space-y-6 px-5 py-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold text-foreground">Documents</h1>
+        <h1 className="text-2xl font-bold text-foreground">{t("driver.documents.title")}</h1>
         <Badge variant={docsStatus === "approved" ? "default" : "secondary"}>
-          {DOCS_STATUS_LABEL[docsStatus] ?? docsStatus}
+          {DOCS_STATUS_LABEL_KEY[docsStatus] ? t(DOCS_STATUS_LABEL_KEY[docsStatus]!) : docsStatus}
         </Badge>
       </div>
 
       <Card className="border-ink/10">
         <CardContent className="space-y-4 py-4">
-          <h2 className="text-lg font-bold text-foreground">Your vehicle</h2>
+          <h2 className="text-lg font-bold text-foreground">{t("driver.documents.vehicleTitle")}</h2>
           <div className="grid gap-4 sm:grid-cols-3">
             <div className="space-y-1.5">
-              <Label htmlFor="vehicle-type">Type</Label>
+              <Label htmlFor="vehicle-type">{t("driver.documents.type")}</Label>
               <select
                 id="vehicle-type"
                 value={vehicleType}
@@ -131,13 +133,13 @@ function DriverDocuments() {
               >
                 {VEHICLE_TYPES.map((v) => (
                   <option key={v} value={v}>
-                    {v}
+                    {t(`driver.vehicleTypes.${v}`)}
                   </option>
                 ))}
               </select>
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="vehicle-model">Make and model</Label>
+              <Label htmlFor="vehicle-model">{t("driver.documents.makeModel")}</Label>
               <Input
                 id="vehicle-model"
                 value={vehicleModel}
@@ -146,7 +148,7 @@ function DriverDocuments() {
               />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="plate">Number plate</Label>
+              <Label htmlFor="plate">{t("driver.documents.plate")}</Label>
               <Input
                 id="plate"
                 value={plate}
@@ -156,14 +158,14 @@ function DriverDocuments() {
             </div>
           </div>
           <Button size="sm" disabled={saveDetails.isPending} onClick={() => saveDetails.mutate()}>
-            Save vehicle details
+            {t("driver.documents.save")}
           </Button>
         </CardContent>
       </Card>
 
       <section className="space-y-3">
-        <h2 className="text-lg font-bold text-foreground">Your paperwork</h2>
-        {isLoading ? <p className="text-sm text-foreground/60">Loading…</p> : null}
+        <h2 className="text-lg font-bold text-foreground">{t("driver.documents.paperworkTitle")}</h2>
+        {isLoading ? <p className="text-sm text-foreground/60">{t("common.state.loading")}</p> : null}
         {DOC_TYPES.map((type) => {
           const doc = docFor(type.id);
           return (
@@ -172,10 +174,10 @@ function DriverDocuments() {
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div>
                     <p className="font-semibold text-foreground">
-                      {type.label}
-                      {type.required ? "" : " (if you drive)"}
+                      {t(type.labelKey)}
+                      {type.required ? "" : t("driver.documents.ifYouDrive")}
                     </p>
-                    <p className="text-xs text-foreground/60">{type.hint}</p>
+                    <p className="text-xs text-foreground/60">{t(type.hintKey)}</p>
                     {doc?.review_note ? (
                       <p className="text-xs text-destructive">{doc.review_note}</p>
                     ) : null}
@@ -186,7 +188,7 @@ function DriverDocuments() {
                       <Button
                         size="sm"
                         variant="ghost"
-                        aria-label={`Remove ${type.label}`}
+                        aria-label={t("driver.documents.removeAria", { label: t(type.labelKey) })}
                         disabled={remove.isPending}
                         onClick={() => remove.mutate(doc.id)}
                       >
@@ -197,7 +199,7 @@ function DriverDocuments() {
                 </div>
                 <ImageUpload
                   bucket="driver-documents"
-                  label={doc ? "Replace photo" : "Upload photo"}
+                  label={t(doc ? "driver.documents.replacePhoto" : "driver.documents.uploadPhoto")}
                   value={doc?.file_path ?? null}
                   onChange={(path) => {
                     if (path) upload.mutate({ docType: type.id, path });
@@ -213,16 +215,18 @@ function DriverDocuments() {
         <CardContent className="flex flex-wrap items-center justify-between gap-3 py-4">
           <p className="text-sm text-foreground">
             {docsStatus === "approved"
-              ? "You are approved to deliver with Dobra."
+              ? t("driver.documents.approvedNote")
               : requiredMissing.length > 0
-                ? `Still needed: ${requiredMissing.map((t) => t.label).join(", ")}.`
-                : "Everything is uploaded — send it in for review."}
+                ? t("driver.documents.missingNote", {
+                    items: requiredMissing.map((d) => t(d.labelKey)).join(", "),
+                  })
+                : t("driver.documents.allUploadedNote")}
           </p>
           <Button
             disabled={submit.isPending || requiredMissing.length > 0 || docsStatus === "approved"}
             onClick={() => submit.mutate()}
           >
-            Submit for review
+            {t("driver.documents.submit")}
           </Button>
         </CardContent>
       </Card>
@@ -231,21 +235,22 @@ function DriverDocuments() {
 }
 
 function StatusIcon({ status }: { status: string }) {
+  const t = useT();
   if (status === "approved")
     return (
       <span className="inline-flex items-center gap-1 text-xs text-foreground">
-        <CheckCircle2 className="size-4" aria-hidden /> Approved
+        <CheckCircle2 className="size-4" aria-hidden /> {t("driver.documents.approvedIcon")}
       </span>
     );
   if (status === "rejected")
     return (
       <span className="inline-flex items-center gap-1 text-xs text-destructive">
-        <XCircle className="size-4" aria-hidden /> Needs changes
+        <XCircle className="size-4" aria-hidden /> {t("driver.documents.rejectedIcon")}
       </span>
     );
   return (
     <span className="inline-flex items-center gap-1 text-xs text-foreground/60">
-      <Clock className="size-4" aria-hidden /> In review
+      <Clock className="size-4" aria-hidden /> {t("driver.documents.reviewIcon")}
     </span>
   );
 }
