@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { queryOptions } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -52,10 +52,19 @@ const myProfileQuery = queryOptions({
 
 function ProfilePage() {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const { data: account } = useQuery(accountQueryOptions);
   const { data: profile } = useQuery(myProfileQuery);
   const t = useT();
   const role = account?.role ?? "customer";
+
+  async function handleSignOut() {
+    await queryClient.cancelQueries();
+    queryClient.clear();
+    await supabase.auth.signOut();
+    navigate({ to: "/auth", replace: true });
+  }
+
 
   const [fullName, setFullName] = useState("");
   const [country, setCountry] = useState("");
