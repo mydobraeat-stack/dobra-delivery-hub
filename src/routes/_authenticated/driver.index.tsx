@@ -253,8 +253,8 @@ function DriverHome() {
       </section>
 
       {/* Bottom sheet content */}
-      <div className="mx-auto -mt-4 max-w-4xl space-y-5 rounded-t-3xl bg-background px-5 pb-6 pt-5">
-        <div className="rounded-2xl bg-primary px-4 py-4">
+      <div className="mx-auto -mt-4 max-w-4xl space-y-5 rounded-t-3xl bg-card px-5 pb-6 pt-5 shadow-[0_-8px_24px_rgba(0,0,0,0.08)]">
+        <div className="rounded-2xl bg-primary px-4 py-4 ring-1 ring-ink/10">
           <p className="text-sm font-bold text-ink">Offers</p>
           <p className="text-sm text-ink/80">
             Complete 10 deliveries this weekend for a bonus. More promotions coming soon.
