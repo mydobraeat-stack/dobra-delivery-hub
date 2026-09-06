@@ -21,6 +21,7 @@ import { Route as AuthenticatedVendorRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedCustomerIndexRouteImport } from './routes/_authenticated/customer.index'
 import { Route as AuthenticatedCustomerOrdersRouteImport } from './routes/_authenticated/customer.orders'
 import { Route as AuthenticatedDriverIndexRouteImport } from './routes/_authenticated/driver.index'
+import { Route as AuthenticatedDriverEarningsRouteImport } from './routes/_authenticated/driver.earnings'
 import { Route as AuthenticatedOrdersOrderIdRouteImport } from './routes/_authenticated/orders.$orderId'
 import { Route as AuthenticatedRestaurantRestaurantIdRouteImport } from './routes/_authenticated/restaurant.$restaurantId'
 import { Route as AuthenticatedVendorIndexRouteImport } from './routes/_authenticated/vendor.index'
@@ -89,6 +90,12 @@ const AuthenticatedDriverIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedDriverRoute,
   } as any)
+const AuthenticatedDriverEarningsRoute =
+  AuthenticatedDriverEarningsRouteImport.update({
+    id: '/earnings',
+    path: '/earnings',
+    getParentRoute: () => AuthenticatedDriverRoute,
+  } as any)
 const AuthenticatedOrdersOrderIdRoute =
   AuthenticatedOrdersOrderIdRouteImport.update({
     id: '/orders/$orderId',
@@ -129,6 +136,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof AuthenticatedProfileRoute
   '/vendor': typeof AuthenticatedVendorRouteWithChildren
   '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
+  '/driver/earnings': typeof AuthenticatedDriverEarningsRoute
   '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
   '/vendor/menu': typeof AuthenticatedVendorMenuRoute
@@ -144,6 +152,7 @@ export interface FileRoutesByTo {
   '/home': typeof AuthenticatedHomeRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
+  '/driver/earnings': typeof AuthenticatedDriverEarningsRoute
   '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
   '/vendor/menu': typeof AuthenticatedVendorMenuRoute
@@ -164,6 +173,7 @@ export interface FileRoutesById {
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/vendor': typeof AuthenticatedVendorRouteWithChildren
   '/_authenticated/customer/orders': typeof AuthenticatedCustomerOrdersRoute
+  '/_authenticated/driver/earnings': typeof AuthenticatedDriverEarningsRoute
   '/_authenticated/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/_authenticated/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
   '/_authenticated/vendor/menu': typeof AuthenticatedVendorMenuRoute
@@ -184,6 +194,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/vendor'
     | '/customer/orders'
+    | '/driver/earnings'
     | '/orders/$orderId'
     | '/restaurant/$restaurantId'
     | '/vendor/menu'
@@ -199,6 +210,7 @@ export interface FileRouteTypes {
     | '/home'
     | '/profile'
     | '/customer/orders'
+    | '/driver/earnings'
     | '/orders/$orderId'
     | '/restaurant/$restaurantId'
     | '/vendor/menu'
@@ -218,6 +230,7 @@ export interface FileRouteTypes {
     | '/_authenticated/profile'
     | '/_authenticated/vendor'
     | '/_authenticated/customer/orders'
+    | '/_authenticated/driver/earnings'
     | '/_authenticated/orders/$orderId'
     | '/_authenticated/restaurant/$restaurantId'
     | '/_authenticated/vendor/menu'
@@ -319,6 +332,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDriverIndexRouteImport
       parentRoute: typeof AuthenticatedDriverRoute
     }
+    '/_authenticated/driver/earnings': {
+      id: '/_authenticated/driver/earnings'
+      path: '/earnings'
+      fullPath: '/driver/earnings'
+      preLoaderRoute: typeof AuthenticatedDriverEarningsRouteImport
+      parentRoute: typeof AuthenticatedDriverRoute
+    }
     '/_authenticated/orders/$orderId': {
       id: '/_authenticated/orders/$orderId'
       path: '/orders/$orderId'
@@ -373,10 +393,12 @@ const AuthenticatedCustomerRouteWithChildren =
   )
 
 interface AuthenticatedDriverRouteChildren {
+  AuthenticatedDriverEarningsRoute: typeof AuthenticatedDriverEarningsRoute
   AuthenticatedDriverIndexRoute: typeof AuthenticatedDriverIndexRoute
 }
 
 const AuthenticatedDriverRouteChildren: AuthenticatedDriverRouteChildren = {
+  AuthenticatedDriverEarningsRoute: AuthenticatedDriverEarningsRoute,
   AuthenticatedDriverIndexRoute: AuthenticatedDriverIndexRoute,
 }
 
