@@ -1,7 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
-export type AppRole = "customer" | "vendor" | "driver";
+export type AppRole = "customer" | "vendor" | "driver" | "admin";
 
 export type AccountInfo = {
   role: AppRole;
