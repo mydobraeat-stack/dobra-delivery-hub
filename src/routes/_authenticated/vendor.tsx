@@ -10,6 +10,7 @@ import { StoredImage } from "@/components/dobra/StoredImage";
 import { ImageUpload } from "@/components/dobra/ImageUpload";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -86,7 +87,7 @@ function VendorDashboard() {
   const [selected, setSelected] = useState<string | null>(null);
   const restaurantId = selected ?? restaurants[0]?.id;
 
-  const { data: orders = [] } = useQuery(vendorOrdersQuery(restaurantId));
+  const { data: orders = [], isSuccess: ordersLoaded } = useQuery(vendorOrdersQuery(restaurantId));
   const { data: detail } = useQuery({
     ...restaurantQuery(restaurantId ?? ""),
     enabled: Boolean(restaurantId),
@@ -118,11 +119,12 @@ function VendorDashboard() {
   const newOrderCount = orders.filter((o) => o.status === "pending").length;
   const seenRef = useRef<number | null>(null);
   useEffect(() => {
+    if (!ordersLoaded) return;
     if (seenRef.current !== null && newOrderCount > seenRef.current) {
       toast.success("New order just came in!");
     }
     seenRef.current = newOrderCount;
-  }, [newOrderCount]);
+  }, [newOrderCount, ordersLoaded]);
 
   const today = new Date().toDateString();
   const delivered = orders.filter((o) => o.status === "delivered");
@@ -209,15 +211,9 @@ function VendorDashboard() {
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <p className="font-bold text-foreground">{restaurant.name}</p>
-                      <span
-                        className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
-                          restaurant.status === "approved"
-                            ? "bg-ink text-primary"
-                            : "bg-muted text-foreground/70"
-                        }`}
-                      >
+                      <Badge variant={restaurant.status === "approved" ? "default" : "secondary"}>
                         {restaurant.status === "approved" ? "Live" : "Pending approval"}
-                      </span>
+                      </Badge>
                     </div>
                     <p className="text-sm text-foreground/60">
                       {restaurant.cuisine} · {restaurant.city}, {restaurant.country}
