@@ -22,7 +22,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
+  MENU_CATEGORIES,
   ORDER_FLOW,
+  setRestaurantOpen,
   cancelOrder,
   createMenuItem,
   createRestaurant,
@@ -73,6 +75,7 @@ const EMPTY_RESTAURANT: RestaurantInput = {
   country: "Poland",
   eta_minutes: 30,
   delivery_fee: 5,
+  min_order: 0,
   logo_url: null,
 };
 
@@ -478,6 +481,7 @@ function RestaurantDialog({
             country: editing.country ?? "Poland",
             eta_minutes: editing.eta_minutes,
             delivery_fee: Number(editing.delivery_fee),
+            min_order: Number(editing.min_order ?? 0),
             logo_url: editing.logo_url,
           }
         : EMPTY_RESTAURANT,
@@ -571,6 +575,17 @@ function RestaurantDialog({
                 }
               />
             </Field>
+            <Field label="Minimum order (PLN)">
+              <Input
+                type="number"
+                min={0}
+                step="1"
+                value={form.min_order}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, min_order: Number(e.target.value) || 0 }))
+                }
+              />
+            </Field>
           </div>
         </div>
 
@@ -601,12 +616,16 @@ function DishDialog({
   const queryClient = useQueryClient();
   const [name, setName] = useState("");
   const [price, setPrice] = useState("0");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState<string>("Mains");
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (!open) return;
     setName(editing?.name ?? "");
     setPrice(editing ? String(editing.price) : "0");
+    setDescription(editing?.description ?? "");
+    setCategory(editing?.category ?? "Mains");
     setImageUrl(editing?.image_url ?? null);
   }, [open, editing]);
 
@@ -618,6 +637,8 @@ function DishDialog({
         price: Number(price) || 0,
         currency: editing?.currency ?? "PLN",
         image_url: imageUrl,
+        description: description.trim() || null,
+        category,
       };
       if (editing) return updateMenuItem(editing.id, payload);
       return createMenuItem(restaurantId, payload);
@@ -652,6 +673,27 @@ function DishDialog({
               onChange={(e) => setName(e.target.value)}
               placeholder="Margherita Pizza"
             />
+          </Field>
+          <Field label="Description">
+            <Input
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Tomato, mozzarella, fresh basil"
+            />
+          </Field>
+          <Field label="Section">
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+              aria-label="Menu section"
+            >
+              {MENU_CATEGORIES.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
           </Field>
           <Field label="Price (PLN)">
             <Input
