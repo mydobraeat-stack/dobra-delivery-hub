@@ -140,7 +140,7 @@ function DriverHome() {
   const active = mine.filter((o) => !isFinished(o.status));
   const done = mine.filter((o) => o.status === "delivered");
 
-  const currency = driverCurrency(driver?.country ?? account?.role ? driver?.country : null);
+  const currency = driverCurrency(driver?.country);
   const symbol = SYMBOL[currency] ?? currency;
   const startOfDay = new Date();
   startOfDay.setHours(0, 0, 0, 0);
