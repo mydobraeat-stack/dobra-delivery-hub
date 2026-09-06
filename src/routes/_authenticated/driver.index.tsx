@@ -342,9 +342,17 @@ function DriverHome() {
                       <p className="text-xs text-foreground/60">Drop-off: {o.address}</p>
                     ) : null}
                   </div>
-                  <Button size="sm" disabled={claim.isPending} onClick={() => claim.mutate(o.id)}>
-                    Accept
-                  </Button>
+                  <div className="flex items-center gap-2">
+                    <Button size="sm" variant="outline" asChild>
+                      <Link to="/driver/delivery/$orderId" params={{ orderId: o.id }}>
+                        View
+                      </Link>
+                    </Button>
+                    <Button size="sm" disabled={claim.isPending} onClick={() => claim.mutate(o.id)}>
+                      Accept
+                    </Button>
+                  </div>
+
                 </CardContent>
               </Card>
             ))
