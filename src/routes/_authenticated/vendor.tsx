@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChevronDown, ChevronUp, Plus, Trash2 } from "lucide-react";
@@ -103,6 +103,36 @@ function VendorDashboard() {
 
   const restaurant = detail?.restaurant ?? null;
   const items = detail?.items ?? [];
+  const queryClient = useQueryClient();
+
+  const toggleOpen = useMutation({
+    mutationFn: (isOpen: boolean) => setRestaurantOpen(restaurant!.id, isOpen),
+    onSuccess: (_d, isOpen) => {
+      toast.success(isOpen ? "You are open for orders." : "You are closed — new orders paused.");
+      queryClient.invalidateQueries({ queryKey: ["restaurant"] });
+      queryClient.invalidateQueries({ queryKey: ["restaurants"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const newOrderCount = orders.filter((o) => o.status === "pending").length;
+  const seenRef = useRef<number | null>(null);
+  useEffect(() => {
+    if (seenRef.current !== null && newOrderCount > seenRef.current) {
+      toast.success("New order just came in!");
+    }
+    seenRef.current = newOrderCount;
+  }, [newOrderCount]);
+
+  const today = new Date().toDateString();
+  const delivered = orders.filter((o) => o.status === "delivered");
+  const todayOrders = orders.filter((o) => new Date(o.created_at).toDateString() === today);
+  const todayRevenue = todayOrders
+    .filter((o) => o.status === "delivered")
+    .reduce((sum, o) => sum + Number(o.total), 0);
+  const avgOrder = delivered.length
+    ? delivered.reduce((sum, o) => sum + Number(o.total), 0) / delivered.length
+    : 0;
   const activeOrders = orders.filter((o) => !["delivered", "cancelled"].includes(o.status));
   const completedOrders = orders.filter((o) => ["delivered", "cancelled"].includes(o.status));
   const revenue = orders
@@ -198,19 +228,39 @@ function VendorDashboard() {
                       delivery {money(restaurant.delivery_fee)}
                     </p>
                   </div>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => setRestaurantForm({ open: true, editing: restaurant })}
-                  >
-                    Edit details
-                  </Button>
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2">
+                      <Switch
+                        id="open-toggle"
+                        checked={restaurant.is_open}
+                        disabled={toggleOpen.isPending}
+                        onCheckedChange={(v) => toggleOpen.mutate(v)}
+                      />
+                      <Label htmlFor="open-toggle" className="text-xs">
+                        {restaurant.is_open ? "Open" : "Closed"}
+                      </Label>
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setRestaurantForm({ open: true, editing: restaurant })}
+                    >
+                      Edit details
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             ) : null}
 
+            <section className="grid gap-3 sm:grid-cols-4">
+              <StatCard label="Orders today" value={String(todayOrders.length)} />
+              <StatCard label="Revenue today" value={money(todayRevenue)} />
+              <StatCard label="Delivered all time" value={String(delivered.length)} />
+              <StatCard label="Average order" value={money(avgOrder)} />
+            </section>
+
             <OrdersSection
-              title="Active orders"
+              title={`Active orders${newOrderCount ? ` · ${newOrderCount} new` : ""}`}
               orders={activeOrders}
               emptyText="No orders in progress."
               actionable
@@ -247,6 +297,17 @@ function VendorDashboard() {
         ) : null}
       </main>
     </div>
+  );
+}
+
+function StatCard({ label, value }: { label: string; value: string }) {
+  return (
+    <Card className="border-ink/10">
+      <CardContent className="py-4">
+        <p className="text-xs text-foreground/60">{label}</p>
+        <p className="text-xl font-bold text-foreground">{value}</p>
+      </CardContent>
+    </Card>
   );
 }
 
