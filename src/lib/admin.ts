@@ -154,7 +154,7 @@ export const adminOrdersQuery = queryOptions({
         supabase
           .from("orders")
           .select(
-            "id,status,total,currency,country,created_at,customer_id,restaurant_id,driver_id,payment_method,payment_status",
+            "id,status,total,currency,country,created_at,customer_id,restaurant_id,driver_id",
           )
           .order("created_at", { ascending: false })
           .limit(200),
