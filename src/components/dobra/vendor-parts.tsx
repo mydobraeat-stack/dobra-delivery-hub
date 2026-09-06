@@ -154,6 +154,8 @@ export function OrdersSection({
   emptyText: string;
   actionable?: boolean;
 }) {
+  const t = useT();
+  const { formatMoney, formatDate } = useI18n();
   const queryClient = useQueryClient();
   const [expanded, setExpanded] = useState<string | null>(null);
 
@@ -166,7 +168,7 @@ export function OrdersSection({
   const cancel = useMutation({
     mutationFn: (id: string) => cancelOrder(id),
     onSuccess: () => {
-      toast.success("Order cancelled.");
+      toast.success(t("vendor.items.orderCancelled"));
       queryClient.invalidateQueries({ queryKey: ["orders"] });
     },
     onError: (e: Error) => toast.error(e.message),
@@ -180,7 +182,7 @@ export function OrdersSection({
       ) : (
         orders.map((o) => {
           const next = ORDER_FLOW[ORDER_FLOW.indexOf(o.status as never) + 1];
-          const label = NEXT_LABEL[o.status];
+          const labelKey = NEXT_LABEL_KEY[o.status];
           const isOpen = expanded === o.id;
           return (
             <Card key={o.id} className="border-ink/10">
@@ -190,7 +192,7 @@ export function OrdersSection({
                     <p className="font-semibold text-foreground">{orderRef(o.id)}</p>
                     <p className="text-xs text-foreground/60">
                       {money(o.total, o.currency)} ·{" "}
-                      {new Date(o.created_at).toLocaleString(undefined, {
+                      {formatDate(o.created_at, {
                         hour: "2-digit",
                         minute: "2-digit",
                         day: "numeric",
@@ -198,18 +200,20 @@ export function OrdersSection({
                       })}
                     </p>
                     {o.address ? (
-                      <p className="text-xs text-foreground/60">Drop-off: {o.address}</p>
+                      <p className="text-xs text-foreground/60">
+                        {t("vendor.items.dropOff", { address: o.address })}
+                      </p>
                     ) : null}
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
                     <StatusBadge status={o.status} />
-                    {actionable && label && next ? (
+                    {actionable && labelKey && next ? (
                       <Button
                         size="sm"
                         disabled={advance.isPending}
                         onClick={() => advance.mutate({ id: o.id, status: next })}
                       >
-                        {label}
+                        {t(labelKey)}
                       </Button>
                     ) : null}
                     {actionable &&
@@ -220,7 +224,7 @@ export function OrdersSection({
                         disabled={cancel.isPending}
                         onClick={() => cancel.mutate(o.id)}
                       >
-                        Cancel
+                        {t("vendor.items.cancel")}
                       </Button>
                     ) : null}
                     <Button
@@ -234,7 +238,7 @@ export function OrdersSection({
                       ) : (
                         <ChevronDown className="size-4" aria-hidden />
                       )}
-                      Items
+                      {t("vendor.items.itemsButton")}
                     </Button>
                   </div>
                 </div>
@@ -249,17 +253,19 @@ export function OrdersSection({
 }
 
 function OrderItems({ orderId, currency }: { orderId: string; currency: string }) {
+  const t = useT();
   const { data = [], isLoading } = useQuery(orderItemsQuery(orderId));
 
-  if (isLoading) return <p className="text-xs text-foreground/60">Loading items…</p>;
-  if (data.length === 0) return <p className="text-xs text-foreground/60">No items recorded.</p>;
+  if (isLoading) return <p className="text-xs text-foreground/60">{t("vendor.items.loadingItems")}</p>;
+  if (data.length === 0)
+    return <p className="text-xs text-foreground/60">{t("vendor.items.noItemsRecorded")}</p>;
 
   return (
     <ul className="space-y-1 border-t border-ink/10 pt-3">
       {data.map((row: any) => (
         <li key={row.id} className="flex justify-between text-sm text-foreground/80">
           <span>
-            {row.quantity}× {row.menu_items?.name ?? "Item"}
+            {row.quantity}× {row.menu_items?.name ?? t("vendor.items.item")}
           </span>
           <span>{money(Number(row.price) * Number(row.quantity), currency)}</span>
         </li>
@@ -277,6 +283,8 @@ export function MenuSection({
   onAdd: () => void;
   onEdit: (item: MenuItem) => void;
 }) {
+  const t = useT();
+  const { formatMoney } = useI18n();
   const queryClient = useQueryClient();
   const invalidate = () => queryClient.invalidateQueries({ queryKey: ["restaurant"] });
 
@@ -290,7 +298,7 @@ export function MenuSection({
   const remove = useMutation({
     mutationFn: (id: string) => deleteMenuItem(id),
     onSuccess: () => {
-      toast.success("Dish removed.");
+      toast.success(t("vendor.menuSection.dishRemoved"));
       invalidate();
     },
     onError: (e: Error) => toast.error(e.message),
@@ -299,15 +307,13 @@ export function MenuSection({
   return (
     <section className="space-y-3">
       <div className="flex items-center justify-between gap-3">
-        <h2 className="text-lg font-bold text-foreground">Menu</h2>
+        <h2 className="text-lg font-bold text-foreground">{t("vendor.menuSection.title")}</h2>
         <Button size="sm" variant="outline" onClick={onAdd}>
-          <Plus className="size-4" aria-hidden /> Add dish
+          <Plus className="size-4" aria-hidden /> {t("vendor.menuSection.addDish")}
         </Button>
       </div>
       {items.length === 0 ? (
-        <p className="text-sm text-foreground/60">
-          Your menu is empty — add your first dish so customers can order.
-        </p>
+        <p className="text-sm text-foreground/60">{t("vendor.menuSection.empty")}</p>
       ) : (
         items.map((item) => (
           <Card key={item.id} className="border-ink/10">
@@ -321,24 +327,24 @@ export function MenuSection({
               />
               <div className="min-w-0 flex-1">
                 <p className="font-semibold text-foreground">{item.name}</p>
-                <p className="text-sm text-foreground/70">{money(item.price, item.currency)}</p>
+                <p className="text-sm text-foreground/70">{formatMoney(item.price, item.currency)}</p>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-xs text-foreground/60">
-                  {item.available ? "Available" : "Hidden"}
+                  {item.available ? t("vendor.menuSection.available") : t("vendor.menuSection.hidden")}
                 </span>
                 <Switch
                   checked={item.available}
-                  aria-label={`Toggle availability for ${item.name}`}
+                  aria-label={t("vendor.menuSection.toggleAvailability", { name: item.name })}
                   onCheckedChange={(checked) => toggle.mutate({ id: item.id, available: checked })}
                 />
                 <Button size="sm" variant="outline" onClick={() => onEdit(item)}>
-                  Edit
+                  {t("vendor.menuSection.edit")}
                 </Button>
                 <Button
                   size="sm"
                   variant="ghost"
-                  aria-label={`Delete ${item.name}`}
+                  aria-label={t("vendor.menuSection.delete", { name: item.name })}
                   disabled={remove.isPending}
                   onClick={() => remove.mutate(item.id)}
                 >

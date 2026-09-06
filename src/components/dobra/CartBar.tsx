@@ -1,10 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { ShoppingBag } from "lucide-react";
 import { cartCount, cartSubtotal, useCart } from "@/lib/cart";
-import { money } from "@/lib/dobra";
+import { useI18n } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 
 export function CartBar({ raised }: { raised?: boolean } = {}) {
+  const { t, formatMoney } = useI18n();
   const cart = useCart();
   const count = cartCount(cart);
   if (count === 0) return null;
@@ -18,13 +19,13 @@ export function CartBar({ raised }: { raised?: boolean } = {}) {
           </span>
           <div>
             <p className="text-sm font-semibold text-foreground">
-              {count} {count === 1 ? "item" : "items"} · {money(cartSubtotal(cart))}
+              {count === 1 ? t("customer.cart.itemSingular", { n: count }) : t("customer.cart.itemPlural", { n: count })} · {formatMoney(cartSubtotal(cart))}
             </p>
             <p className="text-xs text-foreground/60">{cart.restaurantName}</p>
           </div>
         </div>
         <Button asChild>
-          <Link to="/checkout">View basket</Link>
+          <Link to="/checkout">{t("customer.cart.viewBasket")}</Link>
         </Button>
       </div>
     </div>

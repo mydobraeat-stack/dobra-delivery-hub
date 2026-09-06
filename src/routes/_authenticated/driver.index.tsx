@@ -15,6 +15,7 @@ import {
   User,
 } from "lucide-react";
 import { toast } from "sonner";
+import { useI18n } from "@/lib/i18n";
 import { accountQueryOptions } from "@/lib/profile";
 import {
   ApplicationRejected,
@@ -32,7 +33,6 @@ import {
   driverCurrency,
   driverOrdersQuery,
   isFinished,
-  money,
   myDriverQuery,
   orderRef,
   payout,
@@ -59,9 +59,8 @@ export const Route = createFileRoute("/_authenticated/driver/")({
   component: DriverHome,
 });
 
-const SYMBOL: Record<string, string> = { PLN: "zł", XAF: "FCFA", EUR: "€" };
-
 function DriverHome() {
+  const { t, formatMoney } = useI18n();
   const { data: account } = useQuery(accountQueryOptions);
   const { data: driver } = useQuery(myDriverQuery);
   const approval = driverApproval(account?.approvalStatus, driver);
@@ -108,7 +107,7 @@ function DriverHome() {
     onSuccess: (_d, next) => {
       setOnline(next);
       queryClient.invalidateQueries({ queryKey: ["driver", "me"] });
-      toast.success(next ? "You are online — jobs will appear here." : "You are offline.");
+      toast.success(next ? t("driver.home.onlineToast") : t("driver.home.offlineToast"));
     },
     onError: (e: Error) => toast.error(e.message),
   });
@@ -118,7 +117,7 @@ function DriverHome() {
   const claim = useMutation({
     mutationFn: (id: string) => claimOrder(id),
     onSuccess: () => {
-      toast.success("Delivery accepted.");
+      toast.success(t("driver.home.acceptedToast"));
       invalidate();
     },
     onError: (e: Error) => toast.error(e.message),
@@ -141,7 +140,6 @@ function DriverHome() {
   const done = mine.filter((o) => o.status === "delivered");
 
   const currency = driverCurrency(driver?.country);
-  const symbol = SYMBOL[currency] ?? currency;
   const startOfDay = new Date();
   startOfDay.setHours(0, 0, 0, 0);
   const todayEarnings = done
@@ -149,7 +147,7 @@ function DriverHome() {
     .reduce((sum, o) => sum + payout(Number(o.total)), 0);
 
   const acceptance = mine.length === 0 ? 100 : Math.round((done.length / mine.length) * 100);
-  const restaurantName = (id: string) => restaurants.find((r) => r.id === id)?.name ?? "Restaurant";
+  const restaurantName = (id: string) => restaurants.find((r) => r.id === id)?.name ?? t("driver.home.restaurantFallback");
 
   return (
     <div className="pb-4">
@@ -159,7 +157,7 @@ function DriverHome() {
           <MapView points={points} className="h-full w-full rounded-none" zoom={15} />
         ) : (
           <div className="flex h-full items-center justify-center bg-muted text-sm text-foreground/60">
-            Turn on location to see yourself on the map.
+            {t("driver.home.locationOff")}
           </div>
         )}
 
@@ -169,7 +167,7 @@ function DriverHome() {
               <Button
                 size="icon"
                 variant="secondary"
-                aria-label="Open menu"
+                aria-label={t("driver.home.menuAria")}
                 className="pointer-events-auto rounded-full bg-card shadow-md"
               >
                 <Menu className="size-5" aria-hidden />
@@ -182,25 +180,25 @@ function DriverHome() {
                 </SheetTitle>
               </SheetHeader>
               <nav className="mt-6 flex flex-col gap-1">
-                <SideLink to="/profile" icon={User} label="Profile" />
-                <SideLink to="/driver/documents" icon={FileText} label="Documents" />
-                <SideLink to="/profile" icon={Settings} label="Settings" />
-                <SideLink to="/driver/help" icon={LifeBuoy} label="Support" />
+                <SideLink to="/profile" icon={User} label={t("driver.sideNav.profile")} />
+                <SideLink to="/driver/documents" icon={FileText} label={t("driver.sideNav.documents")} />
+                <SideLink to="/profile" icon={Settings} label={t("driver.sideNav.settings")} />
+                <SideLink to="/driver/help" icon={LifeBuoy} label={t("driver.sideNav.support")} />
               </nav>
             </SheetContent>
           </Sheet>
 
           <div className="pointer-events-auto rounded-full bg-ink px-5 py-2 text-center shadow-md">
             <p className="text-base font-bold text-background">
-              {symbol} {todayEarnings.toFixed(2)}
+              {formatMoney(todayEarnings, currency)}
             </p>
-            <p className="text-[10px] uppercase tracking-wide text-background/70">Today</p>
+            <p className="text-[10px] uppercase tracking-wide text-background/70">{t("driver.home.today")}</p>
           </div>
 
           <Button
             size="icon"
             variant="secondary"
-            aria-label="Safety centre"
+            aria-label={t("driver.home.safetyAria")}
             asChild
             className="pointer-events-auto rounded-full bg-card shadow-md"
           >
@@ -215,9 +213,9 @@ function DriverHome() {
           <Button
             size="icon"
             variant="secondary"
-            aria-label="Map layers"
+            aria-label={t("driver.home.layersAria")}
             className="size-11 shrink-0 rounded-full bg-card shadow-md"
-            onClick={() => toast("Map layers are coming soon.")}
+            onClick={() => toast(t("driver.home.layersToast"))}
           >
             <Layers className="size-5" aria-hidden />
           </Button>
@@ -232,18 +230,18 @@ function DriverHome() {
                 : "bg-[hsl(145_63%_35%)] text-white hover:bg-[hsl(145_63%_30%)]"
             }`}
           >
-            {online ? "Go Offline" : "Go Online"}
+            {online ? t("driver.home.goOffline") : t("driver.home.goOnline")}
           </Button>
 
           <Button
             size="icon"
             variant="secondary"
-            aria-label="Centre on my location"
+            aria-label={t("driver.home.centreAria")}
             className="size-11 shrink-0 rounded-full bg-card shadow-md"
             onClick={() =>
               navigator.geolocation?.getCurrentPosition(
                 (pos) => setMe({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
-                () => toast.error("We could not read your location."),
+                () => toast.error(t("driver.home.locationError")),
               )
             }
           >
@@ -255,23 +253,21 @@ function DriverHome() {
       {/* Bottom sheet content */}
       <div className="mx-auto -mt-4 max-w-4xl space-y-5 rounded-t-3xl bg-card px-5 pb-6 pt-5 shadow-[0_-8px_24px_rgba(0,0,0,0.08)]">
         <div className="rounded-2xl bg-background px-4 py-4 ring-1 ring-ink/10">
-          <p className="text-sm font-bold text-ink">Offers</p>
-          <p className="text-sm text-ink/80">
-            Complete 10 deliveries this weekend for a bonus. More promotions coming soon.
-          </p>
+          <p className="text-sm font-bold text-ink">{t("driver.home.offersTitle")}</p>
+          <p className="text-sm text-ink/80">{t("driver.home.offersBody")}</p>
         </div>
 
         <div className="grid grid-cols-2 gap-3">
-          <StatCard icon={Trophy} label="Driver score" value="96%" />
-          <StatCard icon={Star} label="Star rating" value="4.9" />
-          <StatCard icon={Navigation} label="Acceptance rate" value={`${acceptance}%`} />
-          <StatCard icon={Trophy} label="Total deliveries" value={String(done.length)} />
+          <StatCard icon={Trophy} label={t("driver.home.statScore")} value="96%" />
+          <StatCard icon={Star} label={t("driver.home.statRating")} value="4.9" />
+          <StatCard icon={Navigation} label={t("driver.home.statAcceptance")} value={`${acceptance}%`} />
+          <StatCard icon={Trophy} label={t("driver.home.statTotal")} value={String(done.length)} />
         </div>
 
         <section className="space-y-3">
-          <h2 className="text-lg font-bold text-foreground">My deliveries</h2>
+          <h2 className="text-lg font-bold text-foreground">{t("driver.home.myDeliveries")}</h2>
           {active.length === 0 ? (
-            <p className="text-sm text-foreground/60">Nothing assigned yet.</p>
+            <p className="text-sm text-foreground/60">{t("driver.home.noneAssigned")}</p>
           ) : (
             active.map((o) => (
               <Card key={o.id} className="border-ink/10">
@@ -279,17 +275,17 @@ function DriverHome() {
                   <div className="min-w-0">
                     <p className="font-semibold text-foreground">{restaurantName(o.restaurant_id)}</p>
                     <p className="text-xs text-foreground/60">
-                      {orderRef(o.id)} · {money(payout(Number(o.total)), o.currency)} payout
+                      {orderRef(o.id)} · {formatMoney(payout(Number(o.total)), o.currency)} {t("driver.home.payoutSuffix")}
                     </p>
                     {o.address ? (
-                      <p className="text-xs text-foreground/60">Drop-off: {o.address}</p>
+                      <p className="text-xs text-foreground/60">{t("driver.home.dropOff", { address: o.address })}</p>
                     ) : null}
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
                     <StatusBadge status={o.status} />
                     <Button size="sm" variant="outline" asChild>
                       <Link to="/driver/delivery/$orderId" params={{ orderId: o.id }}>
-                        Open
+                        {t("driver.home.open")}
                       </Link>
                     </Button>
                     {o.address ? (
@@ -300,7 +296,7 @@ function DriverHome() {
                           target="_blank"
                           rel="noreferrer"
                         >
-                          <Navigation className="size-4" aria-hidden /> Navigate
+                          <Navigation className="size-4" aria-hidden /> {t("driver.home.navigate")}
                         </a>
                       </Button>
                     ) : null}
@@ -310,7 +306,7 @@ function DriverHome() {
                         disabled={advance.isPending}
                         onClick={() => advance.mutate({ id: o.id, status: "picked_up" })}
                       >
-                        Picked up
+                        {t("driver.home.pickedUp")}
                       </Button>
                     ) : null}
                     {o.status === "picked_up" ? (
@@ -319,7 +315,7 @@ function DriverHome() {
                         disabled={advance.isPending}
                         onClick={() => advance.mutate({ id: o.id, status: "delivered" })}
                       >
-                        Delivered
+                        {t("driver.home.delivered")}
                       </Button>
                     ) : null}
                   </div>
@@ -330,11 +326,11 @@ function DriverHome() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-lg font-bold text-foreground">Available deliveries</h2>
+          <h2 className="text-lg font-bold text-foreground">{t("driver.home.availableDeliveries")}</h2>
           {!online ? (
-            <p className="text-sm text-foreground/60">Go online to see delivery jobs.</p>
+            <p className="text-sm text-foreground/60">{t("driver.home.goOnlineToSeeJobs")}</p>
           ) : available.length === 0 ? (
-            <p className="text-sm text-foreground/60">No deliveries waiting right now.</p>
+            <p className="text-sm text-foreground/60">{t("driver.home.noneWaiting")}</p>
           ) : (
             available.map((o) => (
               <Card key={o.id} className="border-ink/10">
@@ -342,20 +338,20 @@ function DriverHome() {
                   <div>
                     <p className="font-semibold text-foreground">{restaurantName(o.restaurant_id)}</p>
                     <p className="text-xs text-foreground/60">
-                      {orderRef(o.id)} · you earn {money(payout(Number(o.total)), o.currency)}
+                      {orderRef(o.id)} · {t("driver.home.youEarn", { amount: formatMoney(payout(Number(o.total)), o.currency) })}
                     </p>
                     {o.address ? (
-                      <p className="text-xs text-foreground/60">Drop-off: {o.address}</p>
+                      <p className="text-xs text-foreground/60">{t("driver.home.dropOff", { address: o.address })}</p>
                     ) : null}
                   </div>
                   <div className="flex items-center gap-2">
                     <Button size="sm" variant="outline" asChild>
                       <Link to="/driver/delivery/$orderId" params={{ orderId: o.id }}>
-                        View
+                        {t("driver.home.view")}
                       </Link>
                     </Button>
                     <Button size="sm" disabled={claim.isPending} onClick={() => claim.mutate(o.id)}>
-                      Accept
+                      {t("driver.home.accept")}
                     </Button>
                   </div>
 

@@ -294,7 +294,7 @@ function DeliveryMap({
   updatedAt: string | null;
   address: string | null;
 }) {
-  const { t } = useI18n();
+  const { t, formatDate } = useI18n();
   const { data: dropOff } = useQuery(addressPointQuery(address));
 
   const points = useMemo(() => {
