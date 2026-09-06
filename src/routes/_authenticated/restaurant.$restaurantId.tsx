@@ -1,12 +1,21 @@
+import { useMemo } from "react";
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, Clock, Star } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { ArrowLeft, Clock, Minus, Plus, Star } from "lucide-react";
 import { toast } from "sonner";
 import { StoredImage } from "@/components/dobra/StoredImage";
 import { AppHeader } from "@/components/dobra/AppHeader";
-import { money, placeOrder, restaurantQuery, type MenuItem } from "@/lib/dobra";
+import { CartBar } from "@/components/dobra/CartBar";
+import {
+  money,
+  restaurantQuery,
+  restaurantReviewsQuery,
+  type MenuItem,
+} from "@/lib/dobra";
+import { addToCart, setQuantity, useCart } from "@/lib/cart";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 export const Route = createFileRoute("/_authenticated/restaurant/$restaurantId")({
   head: () => ({
@@ -28,21 +37,26 @@ export const Route = createFileRoute("/_authenticated/restaurant/$restaurantId")
 function RestaurantPage() {
   const { restaurantId } = useParams({ from: "/_authenticated/restaurant/$restaurantId" });
   const { data, isLoading } = useQuery(restaurantQuery(restaurantId));
-  const queryClient = useQueryClient();
-
-  const order = useMutation({
-    mutationFn: (item: MenuItem) => placeOrder(item, data!.restaurant!),
-    onSuccess: () => {
-      toast.success("Order placed — the restaurant has been notified.");
-      queryClient.invalidateQueries({ queryKey: ["orders"] });
-    },
-    onError: (e: Error) => toast.error(e.message),
-  });
+  const { data: reviews = [] } = useQuery(restaurantReviewsQuery(restaurantId));
+  const cart = useCart();
 
   const restaurant = data?.restaurant;
+  const items = data?.items ?? [];
+
+  const grouped = useMemo(() => {
+    const map = new Map<string, MenuItem[]>();
+    for (const item of items) {
+      const key = item.category || "Mains";
+      map.set(key, [...(map.get(key) ?? []), item]);
+    }
+    return [...map.entries()];
+  }, [items]);
+
+  const qtyOf = (id: string) =>
+    cart.restaurantId === restaurantId ? (cart.lines.find((l) => l.itemId === id)?.quantity ?? 0) : 0;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-28">
       <AppHeader subtitle="Customer" />
       <main className="mx-auto max-w-4xl space-y-6 px-5 py-6">
         <Link
@@ -67,61 +81,143 @@ function RestaurantPage() {
                 eager
                 className="h-44 w-full object-cover"
               />
-              <div className="space-y-1 p-5">
-                <h1 className="text-2xl font-bold text-foreground">{restaurant.name}</h1>
+              <div className="space-y-2 p-5">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h1 className="text-2xl font-bold text-foreground">{restaurant.name}</h1>
+                  <Badge variant={restaurant.is_open ? "default" : "secondary"}>
+                    {restaurant.is_open ? "Open" : "Closed"}
+                  </Badge>
+                </div>
                 <p className="text-sm text-foreground/60">
-                  {restaurant.cuisine} · {restaurant.city}, {restaurant.country}
+                  {restaurant.cuisine} · {restaurant.city}
                 </p>
-                <div className="flex items-center gap-4 pt-1 text-xs text-foreground/70">
+                <div className="flex flex-wrap items-center gap-4 text-xs text-foreground/70">
                   <span className="inline-flex items-center gap-1">
                     <Star className="size-3.5 fill-accent text-accent" aria-hidden />
-                    {restaurant.rating}
+                    {restaurant.rating} ({reviews.length} reviews)
                   </span>
                   <span className="inline-flex items-center gap-1">
                     <Clock className="size-3.5" aria-hidden /> {restaurant.eta_minutes} min
                   </span>
                   <span>Delivery {money(restaurant.delivery_fee)}</span>
+                  {restaurant.min_order > 0 ? <span>Min {money(restaurant.min_order)}</span> : null}
                 </div>
+                {restaurant.tags?.length ? (
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    {restaurant.tags.map((tag) => (
+                      <Badge key={tag} variant="outline">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                ) : null}
               </div>
             </div>
 
+            {grouped.map(([category, categoryItems]) => (
+              <section key={category} className="space-y-3">
+                <h2 className="text-lg font-bold text-foreground">{category}</h2>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {categoryItems.map((item) => {
+                    const qty = qtyOf(item.id);
+                    return (
+                      <Card key={item.id} className="overflow-hidden border-ink/10">
+                        <div className="flex gap-3">
+                          <StoredImage
+                            value={item.image_url}
+                            alt={item.name}
+                            width={320}
+                            height={320}
+                            className="size-24 shrink-0 object-cover"
+                          />
+                          <CardContent className="flex flex-1 items-center justify-between gap-3 px-3 py-3">
+                            <div className="min-w-0">
+                              <p className="truncate font-semibold text-foreground">{item.name}</p>
+                              {item.description ? (
+                                <p className="line-clamp-2 text-xs text-foreground/60">
+                                  {item.description}
+                                </p>
+                              ) : null}
+                              <p className="pt-1 text-sm font-medium text-foreground/80">
+                                {money(item.price, item.currency)}
+                              </p>
+                            </div>
+                            {!item.available ? (
+                              <span className="text-xs text-foreground/50">Sold out</span>
+                            ) : qty > 0 ? (
+                              <div className="flex items-center gap-2">
+                                <Button
+                                  size="icon"
+                                  variant="outline"
+                                  aria-label={`Remove one ${item.name}`}
+                                  onClick={() => setQuantity(item.id, qty - 1)}
+                                >
+                                  <Minus className="size-4" />
+                                </Button>
+                                <span className="w-4 text-center text-sm font-semibold">{qty}</span>
+                                <Button
+                                  size="icon"
+                                  aria-label={`Add one ${item.name}`}
+                                  onClick={() => setQuantity(item.id, qty + 1)}
+                                >
+                                  <Plus className="size-4" />
+                                </Button>
+                              </div>
+                            ) : (
+                              <Button
+                                size="sm"
+                                onClick={() => {
+                                  addToCart(
+                                    { id: restaurant.id, name: restaurant.name },
+                                    {
+                                      itemId: item.id,
+                                      name: item.name,
+                                      price: Number(item.price),
+                                      currency: item.currency,
+                                      image: item.image_url,
+                                    },
+                                  );
+                                  toast.success(`${item.name} added to your basket.`);
+                                }}
+                              >
+                                Add
+                              </Button>
+                            )}
+                          </CardContent>
+                        </div>
+                      </Card>
+                    );
+                  })}
+                </div>
+              </section>
+            ))}
+
             <section className="space-y-3">
-              <h2 className="text-lg font-bold text-foreground">Menu</h2>
-              <div className="space-y-3">
-                {data!.items.map((item) => (
-                  <Card key={item.id} className="border-ink/10">
-                    <CardContent className="flex items-center gap-4 p-4">
-                      <StoredImage
-                        value={item.image_url}
-                        alt={item.name}
-                        width={640}
-                        height={512}
-                        className="size-20 shrink-0 rounded-xl object-cover"
-                      />
-                      <div className="min-w-0 flex-1">
-                        <p className="font-semibold text-foreground">{item.name}</p>
-                        <p className="text-sm text-foreground/70">
-                          {money(item.price, item.currency)}
-                        </p>
-                        {!item.available ? (
-                          <p className="text-xs text-destructive">Currently unavailable</p>
-                        ) : null}
+              <h2 className="text-lg font-bold text-foreground">Reviews</h2>
+              {reviews.length === 0 ? (
+                <p className="text-sm text-foreground/60">No reviews yet — be the first.</p>
+              ) : (
+                reviews.map((review) => (
+                  <Card key={review.id} className="border-ink/10">
+                    <CardContent className="space-y-1 py-4">
+                      <div className="flex items-center gap-1 text-sm font-semibold">
+                        {Array.from({ length: review.restaurant_rating }).map((_, i) => (
+                          <Star key={i} className="size-4 fill-accent text-accent" aria-hidden />
+                        ))}
+                        <span className="sr-only">{review.restaurant_rating} out of 5</span>
                       </div>
-                      <Button
-                        size="sm"
-                        disabled={!item.available || order.isPending}
-                        onClick={() => order.mutate(item)}
-                      >
-                        Order
-                      </Button>
+                      {review.comment ? (
+                        <p className="text-sm text-foreground/70">{review.comment}</p>
+                      ) : null}
                     </CardContent>
                   </Card>
-                ))}
-              </div>
+                ))
+              )}
             </section>
           </>
         )}
       </main>
+      <CartBar />
     </div>
   );
 }

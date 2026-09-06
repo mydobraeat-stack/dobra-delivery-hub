@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChevronDown, ChevronUp, Plus, Trash2 } from "lucide-react";
@@ -10,6 +10,7 @@ import { StoredImage } from "@/components/dobra/StoredImage";
 import { ImageUpload } from "@/components/dobra/ImageUpload";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -22,7 +23,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
+  MENU_CATEGORIES,
   ORDER_FLOW,
+  setRestaurantOpen,
   cancelOrder,
   createMenuItem,
   createRestaurant,
@@ -73,6 +76,7 @@ const EMPTY_RESTAURANT: RestaurantInput = {
   country: "Poland",
   eta_minutes: 30,
   delivery_fee: 5,
+  min_order: 0,
   logo_url: null,
 };
 
@@ -83,7 +87,7 @@ function VendorDashboard() {
   const [selected, setSelected] = useState<string | null>(null);
   const restaurantId = selected ?? restaurants[0]?.id;
 
-  const { data: orders = [] } = useQuery(vendorOrdersQuery(restaurantId));
+  const { data: orders = [], isSuccess: ordersLoaded } = useQuery(vendorOrdersQuery(restaurantId));
   const { data: detail } = useQuery({
     ...restaurantQuery(restaurantId ?? ""),
     enabled: Boolean(restaurantId),
@@ -100,6 +104,37 @@ function VendorDashboard() {
 
   const restaurant = detail?.restaurant ?? null;
   const items = detail?.items ?? [];
+  const queryClient = useQueryClient();
+
+  const toggleOpen = useMutation({
+    mutationFn: (isOpen: boolean) => setRestaurantOpen(restaurant!.id, isOpen),
+    onSuccess: (_d, isOpen) => {
+      toast.success(isOpen ? "You are open for orders." : "You are closed — new orders paused.");
+      queryClient.invalidateQueries({ queryKey: ["restaurant"] });
+      queryClient.invalidateQueries({ queryKey: ["restaurants"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const newOrderCount = orders.filter((o) => o.status === "pending").length;
+  const seenRef = useRef<number | null>(null);
+  useEffect(() => {
+    if (!ordersLoaded) return;
+    if (seenRef.current !== null && newOrderCount > seenRef.current) {
+      toast.success("New order just came in!");
+    }
+    seenRef.current = newOrderCount;
+  }, [newOrderCount, ordersLoaded]);
+
+  const today = new Date().toDateString();
+  const delivered = orders.filter((o) => o.status === "delivered");
+  const todayOrders = orders.filter((o) => new Date(o.created_at).toDateString() === today);
+  const todayRevenue = todayOrders
+    .filter((o) => o.status === "delivered")
+    .reduce((sum, o) => sum + Number(o.total), 0);
+  const avgOrder = delivered.length
+    ? delivered.reduce((sum, o) => sum + Number(o.total), 0) / delivered.length
+    : 0;
   const activeOrders = orders.filter((o) => !["delivered", "cancelled"].includes(o.status));
   const completedOrders = orders.filter((o) => ["delivered", "cancelled"].includes(o.status));
   const revenue = orders
@@ -176,15 +211,9 @@ function VendorDashboard() {
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <p className="font-bold text-foreground">{restaurant.name}</p>
-                      <span
-                        className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
-                          restaurant.status === "approved"
-                            ? "bg-ink text-primary"
-                            : "bg-muted text-foreground/70"
-                        }`}
-                      >
+                      <Badge variant={restaurant.status === "approved" ? "default" : "secondary"}>
                         {restaurant.status === "approved" ? "Live" : "Pending approval"}
-                      </span>
+                      </Badge>
                     </div>
                     <p className="text-sm text-foreground/60">
                       {restaurant.cuisine} · {restaurant.city}, {restaurant.country}
@@ -195,19 +224,39 @@ function VendorDashboard() {
                       delivery {money(restaurant.delivery_fee)}
                     </p>
                   </div>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => setRestaurantForm({ open: true, editing: restaurant })}
-                  >
-                    Edit details
-                  </Button>
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2">
+                      <Switch
+                        id="open-toggle"
+                        checked={restaurant.is_open}
+                        disabled={toggleOpen.isPending}
+                        onCheckedChange={(v) => toggleOpen.mutate(v)}
+                      />
+                      <Label htmlFor="open-toggle" className="text-xs">
+                        {restaurant.is_open ? "Open" : "Closed"}
+                      </Label>
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setRestaurantForm({ open: true, editing: restaurant })}
+                    >
+                      Edit details
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             ) : null}
 
+            <section className="grid gap-3 sm:grid-cols-4">
+              <StatCard label="Orders today" value={String(todayOrders.length)} />
+              <StatCard label="Revenue today" value={money(todayRevenue)} />
+              <StatCard label="Delivered all time" value={String(delivered.length)} />
+              <StatCard label="Average order" value={money(avgOrder)} />
+            </section>
+
             <OrdersSection
-              title="Active orders"
+              title={`Active orders${newOrderCount ? ` · ${newOrderCount} new` : ""}`}
               orders={activeOrders}
               emptyText="No orders in progress."
               actionable
@@ -244,6 +293,17 @@ function VendorDashboard() {
         ) : null}
       </main>
     </div>
+  );
+}
+
+function StatCard({ label, value }: { label: string; value: string }) {
+  return (
+    <Card className="border-ink/10">
+      <CardContent className="py-4">
+        <p className="text-xs text-foreground/60">{label}</p>
+        <p className="text-xl font-bold text-foreground">{value}</p>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -478,6 +538,7 @@ function RestaurantDialog({
             country: editing.country ?? "Poland",
             eta_minutes: editing.eta_minutes,
             delivery_fee: Number(editing.delivery_fee),
+            min_order: Number(editing.min_order ?? 0),
             logo_url: editing.logo_url,
           }
         : EMPTY_RESTAURANT,
@@ -571,6 +632,17 @@ function RestaurantDialog({
                 }
               />
             </Field>
+            <Field label="Minimum order (PLN)">
+              <Input
+                type="number"
+                min={0}
+                step="1"
+                value={form.min_order}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, min_order: Number(e.target.value) || 0 }))
+                }
+              />
+            </Field>
           </div>
         </div>
 
@@ -601,12 +673,16 @@ function DishDialog({
   const queryClient = useQueryClient();
   const [name, setName] = useState("");
   const [price, setPrice] = useState("0");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState<string>("Mains");
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (!open) return;
     setName(editing?.name ?? "");
     setPrice(editing ? String(editing.price) : "0");
+    setDescription(editing?.description ?? "");
+    setCategory(editing?.category ?? "Mains");
     setImageUrl(editing?.image_url ?? null);
   }, [open, editing]);
 
@@ -618,6 +694,8 @@ function DishDialog({
         price: Number(price) || 0,
         currency: editing?.currency ?? "PLN",
         image_url: imageUrl,
+        description: description.trim() || null,
+        category,
       };
       if (editing) return updateMenuItem(editing.id, payload);
       return createMenuItem(restaurantId, payload);
@@ -652,6 +730,27 @@ function DishDialog({
               onChange={(e) => setName(e.target.value)}
               placeholder="Margherita Pizza"
             />
+          </Field>
+          <Field label="Description">
+            <Input
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Tomato, mozzarella, fresh basil"
+            />
+          </Field>
+          <Field label="Section">
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+              aria-label="Menu section"
+            >
+              {MENU_CATEGORIES.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
           </Field>
           <Field label="Price (PLN)">
             <Input
