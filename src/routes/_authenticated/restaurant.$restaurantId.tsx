@@ -7,11 +7,11 @@ import { StoredImage } from "@/components/dobra/StoredImage";
 import { AppHeader } from "@/components/dobra/AppHeader";
 import { CartBar } from "@/components/dobra/CartBar";
 import {
-  money,
   restaurantQuery,
   restaurantReviewsQuery,
   type MenuItem,
 } from "@/lib/dobra";
+import { useI18n } from "@/lib/i18n";
 import { addToCart, setQuantity, useCart } from "@/lib/cart";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -35,6 +35,7 @@ export const Route = createFileRoute("/_authenticated/restaurant/$restaurantId")
 });
 
 function RestaurantPage() {
+  const { t, formatMoney } = useI18n();
   const { restaurantId } = useParams({ from: "/_authenticated/restaurant/$restaurantId" });
   const { data, isLoading } = useQuery(restaurantQuery(restaurantId));
   const { data: reviews = [] } = useQuery(restaurantReviewsQuery(restaurantId));
@@ -57,19 +58,19 @@ function RestaurantPage() {
 
   return (
     <div className="min-h-screen bg-background pb-28">
-      <AppHeader subtitle="Customer" />
+      <AppHeader subtitle={t("common.roles.customer")} />
       <main className="mx-auto max-w-4xl space-y-6 px-5 py-6">
         <Link
           to="/customer"
           className="inline-flex items-center gap-2 text-sm font-medium text-foreground/70 hover:text-foreground"
         >
-          <ArrowLeft className="size-4" aria-hidden /> Back
+          <ArrowLeft className="size-4" aria-hidden /> {t("common.actions.back")}
         </Link>
 
         {isLoading ? (
-          <p className="text-sm text-foreground/60">Loading menu…</p>
+          <p className="text-sm text-foreground/60">{t("customer.restaurant.loadingMenu")}</p>
         ) : !restaurant ? (
-          <p className="text-sm text-foreground/60">This restaurant is no longer available.</p>
+          <p className="text-sm text-foreground/60">{t("customer.restaurant.unavailable")}</p>
         ) : (
           <>
             <div className="overflow-hidden rounded-2xl bg-card shadow-soft">
@@ -85,7 +86,7 @@ function RestaurantPage() {
                 <div className="flex flex-wrap items-center gap-2">
                   <h1 className="text-2xl font-bold text-foreground">{restaurant.name}</h1>
                   <Badge variant={restaurant.is_open ? "default" : "secondary"}>
-                    {restaurant.is_open ? "Open" : "Closed"}
+                    {restaurant.is_open ? t("customer.restaurant.open") : t("customer.restaurant.closed")}
                   </Badge>
                 </div>
                 <p className="text-sm text-foreground/60">
@@ -94,13 +95,13 @@ function RestaurantPage() {
                 <div className="flex flex-wrap items-center gap-4 text-xs text-foreground/70">
                   <span className="inline-flex items-center gap-1">
                     <Star className="size-3.5 fill-accent text-accent" aria-hidden />
-                    {restaurant.rating} ({reviews.length} reviews)
+                    {restaurant.rating} {t("customer.restaurant.reviewsCount", { n: reviews.length })}
                   </span>
                   <span className="inline-flex items-center gap-1">
                     <Clock className="size-3.5" aria-hidden /> {restaurant.eta_minutes} min
                   </span>
-                  <span>Delivery {money(restaurant.delivery_fee)}</span>
-                  {restaurant.min_order > 0 ? <span>Min {money(restaurant.min_order)}</span> : null}
+                  <span>{t("customer.restaurant.deliveryFee", { price: formatMoney(restaurant.delivery_fee) })}</span>
+                  {restaurant.min_order > 0 ? <span>{t("customer.restaurant.minOrder", { price: formatMoney(restaurant.min_order) })}</span> : null}
                 </div>
                 {restaurant.tags?.length ? (
                   <div className="flex flex-wrap gap-2 pt-1">
@@ -116,7 +117,7 @@ function RestaurantPage() {
 
             {grouped.map(([category, categoryItems]) => (
               <section key={category} className="space-y-3">
-                <h2 className="text-lg font-bold text-foreground">{category}</h2>
+                <h2 className="text-lg font-bold text-foreground">{t(`common.categories.${category}`)}</h2>
                 <div className="grid gap-3 sm:grid-cols-2">
                   {categoryItems.map((item) => {
                     const qty = qtyOf(item.id);
@@ -139,17 +140,17 @@ function RestaurantPage() {
                                 </p>
                               ) : null}
                               <p className="pt-1 text-sm font-medium text-foreground/80">
-                                {money(item.price, item.currency)}
+                                {formatMoney(item.price, item.currency)}
                               </p>
                             </div>
                             {!item.available ? (
-                              <span className="text-xs text-foreground/50">Sold out</span>
+                              <span className="text-xs text-foreground/50">{t("customer.restaurant.soldOut")}</span>
                             ) : qty > 0 ? (
                               <div className="flex items-center gap-2">
                                 <Button
                                   size="icon"
                                   variant="outline"
-                                  aria-label={`Remove one ${item.name}`}
+                                  aria-label={t("customer.cart.removeOneAria", { name: item.name })}
                                   onClick={() => setQuantity(item.id, qty - 1)}
                                 >
                                   <Minus className="size-4" />
@@ -157,7 +158,7 @@ function RestaurantPage() {
                                 <span className="w-4 text-center text-sm font-semibold">{qty}</span>
                                 <Button
                                   size="icon"
-                                  aria-label={`Add one ${item.name}`}
+                                  aria-label={t("customer.cart.addOneAria", { name: item.name })}
                                   onClick={() => setQuantity(item.id, qty + 1)}
                                 >
                                   <Plus className="size-4" />
@@ -177,10 +178,10 @@ function RestaurantPage() {
                                       image: item.image_url,
                                     },
                                   );
-                                  toast.success(`${item.name} added to your basket.`);
+                                  toast.success(t("customer.restaurant.addedToast", { name: item.name }));
                                 }}
                               >
-                                Add
+                                {t("common.actions.add")}
                               </Button>
                             )}
                           </CardContent>
@@ -193,9 +194,9 @@ function RestaurantPage() {
             ))}
 
             <section className="space-y-3">
-              <h2 className="text-lg font-bold text-foreground">Reviews</h2>
+              <h2 className="text-lg font-bold text-foreground">{t("customer.restaurant.reviewsTitle")}</h2>
               {reviews.length === 0 ? (
-                <p className="text-sm text-foreground/60">No reviews yet — be the first.</p>
+                <p className="text-sm text-foreground/60">{t("customer.restaurant.noReviews")}</p>
               ) : (
                 reviews.map((review) => (
                   <Card key={review.id} className="border-ink/10">
@@ -204,7 +205,7 @@ function RestaurantPage() {
                         {Array.from({ length: review.restaurant_rating }).map((_, i) => (
                           <Star key={i} className="size-4 fill-accent text-accent" aria-hidden />
                         ))}
-                        <span className="sr-only">{review.restaurant_rating} out of 5</span>
+                        <span className="sr-only">{t("customer.restaurant.outOf5", { n: review.restaurant_rating })}</span>
                       </div>
                       {review.comment ? (
                         <p className="text-sm text-foreground/70">{review.comment}</p>

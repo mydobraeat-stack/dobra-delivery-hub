@@ -9,12 +9,14 @@ import {
   adminRestaurantsQuery,
   setProfileApproval,
 } from "@/lib/admin";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/_authenticated/admin/approvals")({
   component: PendingApprovals,
 });
 
 function PendingApprovals() {
+  const t = useT();
   const queryClient = useQueryClient();
   const profiles = useQuery(adminProfilesQuery);
   const drivers = useQuery(adminDriversQuery);
@@ -24,7 +26,9 @@ function PendingApprovals() {
     mutationFn: ({ id, status }: { id: string; status: "approved" | "rejected" }) =>
       setProfileApproval(id, status),
     onSuccess: (_d, v) => {
-      toast.success(v.status === "approved" ? "Account approved" : "Account rejected");
+      toast.success(
+        v.status === "approved" ? t("admin.approvals.accountApproved") : t("admin.approvals.accountRejected"),
+      );
       queryClient.invalidateQueries({ queryKey: ["admin"] });
     },
     onError: (e: Error) => toast.error(e.message),
@@ -37,15 +41,13 @@ function PendingApprovals() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-2xl font-bold">Pending approvals</h1>
-        <p className="text-sm text-foreground/60">
-          Vendors and drivers waiting for a decision on their account.
-        </p>
+        <h1 className="text-2xl font-bold">{t("admin.approvals.title")}</h1>
+        <p className="text-sm text-foreground/60">{t("admin.approvals.subtitle")}</p>
       </div>
 
-      {profiles.isPending ? <p className="text-foreground/60">Loading…</p> : null}
+      {profiles.isPending ? <p className="text-foreground/60">{t("admin.loading")}</p> : null}
       {!profiles.isPending && waiting.length === 0 ? (
-        <Card className="p-8 text-center text-foreground/60">Nothing waiting. All caught up.</Card>
+        <Card className="p-8 text-center text-foreground/60">{t("admin.approvals.empty")}</Card>
       ) : null}
 
       {waiting.map((p) => {
@@ -55,25 +57,25 @@ function PendingApprovals() {
           <Card key={p.id} className="space-y-3 p-5">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <p className="text-lg font-semibold">{p.full_name || p.email || "Unnamed"}</p>
+                <p className="text-lg font-semibold">{p.full_name || p.email || t("admin.approvals.unnamed")}</p>
                 <p className="text-sm text-foreground/60">
-                  {p.email} · {p.role} · {p.country || "no country"}
+                  {p.email} · {p.role} · {p.country || t("admin.approvals.noCountry")}
                 </p>
               </div>
               <span className="rounded-full bg-sun/30 px-3 py-1 text-xs font-semibold">
-                Pending review
+                {t("admin.approvals.pendingReview")}
               </span>
             </div>
 
             {p.role === "driver" ? (
               <div className="rounded-xl bg-muted/60 p-4 text-sm">
-                <p className="font-medium">Vehicle</p>
+                <p className="font-medium">{t("admin.approvals.vehicle")}</p>
                 <p className="text-foreground/70">
-                  {driver?.vehicle_type || "Not provided"}
+                  {driver?.vehicle_type || t("admin.approvals.notProvided")}
                   {driver?.vehicle_model ? ` · ${driver.vehicle_model}` : ""}
                   {driver?.plate ? ` · ${driver.plate}` : ""}
                 </p>
-                <p className="mt-3 font-medium">Documents</p>
+                <p className="mt-3 font-medium">{t("admin.approvals.documents")}</p>
                 {driver && driver.documents.length > 0 ? (
                   <ul className="mt-1 space-y-1">
                     {driver.documents.map((d) => (
@@ -86,14 +88,14 @@ function PendingApprovals() {
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-foreground/60">No documents uploaded yet.</p>
+                  <p className="text-foreground/60">{t("admin.approvals.noDocuments")}</p>
                 )}
               </div>
             ) : null}
 
             {p.role === "vendor" ? (
               <div className="rounded-xl bg-muted/60 p-4 text-sm">
-                <p className="font-medium">Restaurants</p>
+                <p className="font-medium">{t("admin.approvals.restaurants")}</p>
                 {stores.length ? (
                   <ul className="mt-1 space-y-1 text-foreground/70">
                     {stores.map((r) => (
@@ -103,7 +105,7 @@ function PendingApprovals() {
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-foreground/60">No restaurant created yet.</p>
+                  <p className="text-foreground/60">{t("admin.approvals.noRestaurant")}</p>
                 )}
               </div>
             ) : null}
@@ -113,14 +115,14 @@ function PendingApprovals() {
                 onClick={() => decide.mutate({ id: p.id, status: "approved" })}
                 disabled={decide.isPending}
               >
-                Approve
+                {t("admin.approvals.approve")}
               </Button>
               <Button
                 variant="outline"
                 onClick={() => decide.mutate({ id: p.id, status: "rejected" })}
                 disabled={decide.isPending}
               >
-                Reject
+                {t("admin.approvals.reject")}
               </Button>
             </div>
           </Card>

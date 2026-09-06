@@ -3,12 +3,12 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Clock, Heart, Search, Star } from "lucide-react";
 import { StoredImage } from "@/components/dobra/StoredImage";
+import { useI18n } from "@/lib/i18n";
 import { StatusBadge } from "@/components/dobra/StatusBadge";
 import { accountQueryOptions } from "@/lib/profile";
 import {
   allMenuItemsQuery,
   isFinished,
-  money,
   myOrdersQuery,
   orderRef,
   restaurantsQuery,
@@ -35,9 +35,9 @@ export const Route = createFileRoute("/_authenticated/customer/")({
 });
 
 const SORTS = [
-  { id: "rating", label: "Top rated" },
-  { id: "eta", label: "Fastest" },
-  { id: "fee", label: "Cheapest delivery" },
+  { id: "rating", labelKey: "customer.home.sortTopRated" },
+  { id: "eta", labelKey: "customer.home.sortFastest" },
+  { id: "fee", labelKey: "customer.home.sortCheapest" },
 ] as const;
 
 const FAV_KEY = "dobra.favourites.v1";
@@ -61,6 +61,7 @@ function useFavourites() {
 }
 
 function CustomerHome() {
+  const { t, formatMoney } = useI18n();
   const { data: account } = useQuery(accountQueryOptions);
   const { data: restaurants = [] } = useQuery(restaurantsQuery);
   const { data: dishes = [] } = useQuery(allMenuItemsQuery);
@@ -114,7 +115,9 @@ function CustomerHome() {
   return (
     <main className="mx-auto max-w-4xl space-y-8 px-5 py-6">
       <h1 className="text-2xl font-bold text-foreground">
-        Hungry{account?.fullName ? `, ${account.fullName.split(" ")[0]}` : ""}?
+        {account?.fullName
+          ? t("customer.home.greetingNamed", { name: account.fullName.split(" ")[0] })
+          : t("customer.home.greeting")}
       </h1>
 
       <div className="flex items-center gap-3 rounded-2xl bg-card px-4 py-2 shadow-soft">
@@ -122,18 +125,18 @@ function CustomerHome() {
         <Input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search restaurants or dishes"
+          placeholder={t("customer.home.searchPlaceholder")}
           className="border-0 bg-transparent px-0 shadow-none focus-visible:ring-0"
-          aria-label="Search restaurants or dishes"
+          aria-label={t("customer.home.searchAriaLabel")}
         />
       </div>
 
       {liveOrders.length > 0 ? (
         <section className="space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-foreground">Live orders</h2>
+            <h2 className="text-lg font-bold text-foreground">{t("customer.home.liveOrders")}</h2>
             <Button asChild size="sm" variant="ghost">
-              <Link to="/customer/orders">See all</Link>
+              <Link to="/customer/orders">{t("customer.home.seeAll")}</Link>
             </Button>
           </div>
           {liveOrders.slice(0, 2).map((o) => (
@@ -142,10 +145,10 @@ function CustomerHome() {
                 <CardContent className="flex items-center justify-between gap-3 py-4">
                   <div className="min-w-0">
                     <p className="truncate font-semibold text-foreground">
-                      {byRestaurant[o.restaurant_id]?.name ?? "Restaurant"}
+                      {byRestaurant[o.restaurant_id]?.name ?? t("customer.home.restaurantFallback")}
                     </p>
                     <p className="text-xs text-foreground/60">
-                      {orderRef(o.id)} · {money(o.total, o.currency)} · about {o.eta_minutes} min
+                      {orderRef(o.id)} · {formatMoney(o.total, o.currency)} · {t("customer.home.aboutMin", { n: o.eta_minutes })}
                     </p>
                   </div>
                   <StatusBadge status={o.status} />
@@ -163,7 +166,7 @@ function CustomerHome() {
             variant={cuisine === null ? "default" : "outline"}
             onClick={() => setCuisine(null)}
           >
-            All
+            {t("customer.home.all")}
           </Button>
           {cuisines.map((c) => (
             <Button
@@ -184,7 +187,7 @@ function CustomerHome() {
               variant={sort === s.id ? "secondary" : "ghost"}
               onClick={() => setSort(s.id)}
             >
-              {s.label}
+              {t(s.labelKey)}
             </Button>
           ))}
           <Button
@@ -192,24 +195,24 @@ function CustomerHome() {
             variant={openOnly ? "secondary" : "ghost"}
             onClick={() => setOpenOnly(!openOnly)}
           >
-            Open now
+            {t("customer.home.openNow")}
           </Button>
           <Button
             size="sm"
             variant={favOnly ? "secondary" : "ghost"}
             onClick={() => setFavOnly(!favOnly)}
           >
-            Favourites
+            {t("customer.home.favourites")}
           </Button>
         </div>
       </section>
 
       <section className="space-y-3">
         <h2 className="text-lg font-bold text-foreground">
-          {query ? "Search results" : "Restaurants near you"}
+          {query ? t("customer.home.searchResults") : t("customer.home.nearYou")}
         </h2>
         {results.length === 0 ? (
-          <p className="text-sm text-foreground/60">Nothing matches your filters.</p>
+          <p className="text-sm text-foreground/60">{t("customer.home.noMatch")}</p>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2">
             {results.map((r) => (
@@ -218,8 +221,8 @@ function CustomerHome() {
                   type="button"
                   aria-label={
                     favourites.includes(r.id)
-                      ? `Remove ${r.name} from favourites`
-                      : `Save ${r.name} to favourites`
+                      ? t("customer.home.removeFavouriteAria", { name: r.name })
+                      : t("customer.home.addFavouriteAria", { name: r.name })
                   }
                   onClick={() => toggle(r.id)}
                   className="absolute right-3 top-3 z-10 rounded-full bg-card/90 p-2 shadow-soft"
@@ -249,7 +252,7 @@ function CustomerHome() {
                     <CardContent className="space-y-1 py-4">
                       <div className="flex items-center gap-2">
                         <p className="font-bold text-foreground">{r.name}</p>
-                        {!r.is_open ? <Badge variant="secondary">Closed</Badge> : null}
+                        {!r.is_open ? <Badge variant="secondary">{t("customer.home.closed")}</Badge> : null}
                       </div>
                       <p className="text-sm text-foreground/60">
                         {r.cuisine} · {r.city}
@@ -262,7 +265,7 @@ function CustomerHome() {
                         <span className="inline-flex items-center gap-1">
                           <Clock className="size-3.5" aria-hidden /> {r.eta_minutes} min
                         </span>
-                        <span>Delivery {money(r.delivery_fee)}</span>
+                        <span>{t("customer.home.deliveryFee", { price: formatMoney(r.delivery_fee) })}</span>
                       </div>
                     </CardContent>
                   </Card>
