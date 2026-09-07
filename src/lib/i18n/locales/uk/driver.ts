@@ -26,6 +26,7 @@ export default {
     open: "Відкрити",
     view: "Переглянути",
     navigate: "Навігація",
+    routeSummary: "{km} км · близько {minutes} хв їзди",
     pickedUp: "Забрано",
     delivered: "Доставлено",
     accept: "Прийняти",

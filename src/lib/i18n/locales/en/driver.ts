@@ -25,6 +25,7 @@ export default {
     open: "Open",
     view: "View",
     navigate: "Navigate",
+    routeSummary: "{km} km · about {minutes} min driving",
     pickedUp: "Picked up",
     delivered: "Delivered",
     accept: "Accept",
