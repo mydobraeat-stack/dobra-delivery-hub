@@ -105,5 +105,6 @@ export default {
     "goToDeliveries": "Aller aux livraisons"
   },
   mapAria: "Carte",
+  mapUnavailable: "La carte apparaîtra une fois configurée.",
   navAria: "Principal",
 };
