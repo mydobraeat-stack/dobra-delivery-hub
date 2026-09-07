@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, MapPin, Navigation, Phone, Store } from "lucide-react";
@@ -8,7 +8,7 @@ import { MapView, type MapPoint } from "@/components/dobra/MapView";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useI18n } from "@/lib/i18n";
-import { addressPointQuery } from "@/lib/maps";
+import { addressPointQuery, routeQuery } from "@/lib/maps";
 import {
   claimOrder,
   driverOrdersQuery,
@@ -54,11 +54,44 @@ function DeliveryDetail() {
     [data, orderId],
   );
 
-  const { data: point } = useQuery(addressPointQuery(order?.address));
-  const points = useMemo<MapPoint[]>(
-    () => (point ? [{ ...point, label: order?.address ?? "Drop-off" }] : []),
-    [point, order?.address],
-  );
+  const restaurantForOrder = restaurants.find((r) => r.id === order?.restaurant_id) ?? null;
+
+  // Driver's own position, for the route start.
+  const [me, setMe] = useState<{ lat: number; lng: number } | null>(null);
+  useEffect(() => {
+    if (!("geolocation" in navigator)) return;
+    navigator.geolocation.getCurrentPosition(
+      (pos) => setMe({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+      () => undefined,
+    );
+  }, []);
+
+  const savedDrop =
+    order && order.dest_lat != null && order.dest_lng != null
+      ? { lat: order.dest_lat, lng: order.dest_lng }
+      : null;
+  const { data: geocodedDrop } = useQuery({
+    ...addressPointQuery(order?.address),
+    enabled: !savedDrop && Boolean(order?.address),
+  });
+  const dropOff = savedDrop ?? geocodedDrop ?? null;
+
+  const pickupSearch = restaurantForOrder
+    ? [restaurantForOrder.name, restaurantForOrder.city, restaurantForOrder.country]
+        .filter(Boolean)
+        .join(", ")
+    : null;
+  const { data: pickup } = useQuery(addressPointQuery(pickupSearch));
+
+  const { data: route } = useQuery(routeQuery([me, pickup, dropOff]));
+
+  const points = useMemo<MapPoint[]>(() => {
+    const list: MapPoint[] = [];
+    if (me) list.push({ ...me, label: "You", kind: "driver" });
+    if (pickup) list.push({ ...pickup, label: restaurantForOrder?.name ?? "Pickup", kind: "pickup" });
+    if (dropOff) list.push({ ...dropOff, label: order?.address ?? "Drop-off", kind: "dropoff" });
+    return list;
+  }, [me, pickup, dropOff, order?.address, restaurantForOrder?.name]);
 
   const invalidate = () => queryClient.invalidateQueries({ queryKey: ["orders"] });
 
@@ -160,7 +193,19 @@ function DeliveryDetail() {
         </CardContent>
       </Card>
 
-      {points.length > 0 ? <MapView points={points} className="h-56 w-full" /> : null}
+      {points.length > 0 ? (
+        <div className="space-y-2">
+          <MapView points={points} path={route?.polyline ?? null} className="h-56 w-full" />
+          {route ? (
+            <p className="text-xs text-foreground/60">
+              {t("driver.delivery.routeSummary", {
+                km: (route.distanceMeters / 1000).toFixed(1),
+                minutes: String(route.durationMinutes),
+              })}
+            </p>
+          ) : null}
+        </div>
+      ) : null}
 
       <Card className="border-ink/10">
         <CardContent className="space-y-2 py-4">
