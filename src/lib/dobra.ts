@@ -391,6 +391,8 @@ export type CheckoutInput = {
   address: string;
   note: string;
   paymentMethod: PaymentMethod;
+  destLat?: number | null;
+  destLng?: number | null;
 };
 
 export async function placeOrder({
@@ -399,6 +401,8 @@ export async function placeOrder({
   address,
   note,
   paymentMethod,
+  destLat,
+  destLng,
 }: CheckoutInput) {
   if (lines.length === 0) throw new Error("Your basket is empty.");
   const userId = await currentUserId();
@@ -418,6 +422,8 @@ export async function placeOrder({
       delivery_fee: deliveryFee,
       total: subtotal + deliveryFee,
       address,
+      dest_lat: destLat ?? null,
+      dest_lng: destLng ?? null,
       note: note || null,
       eta_minutes: restaurant.eta_minutes,
       payment_method: paymentMethod,
