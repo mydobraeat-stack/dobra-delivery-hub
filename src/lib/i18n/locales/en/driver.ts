@@ -54,6 +54,7 @@ export default {
     notAvailableBody: "This delivery is no longer open — another driver may have taken it.",
     backToJobs: "Back to jobs",
     pickup: "Pick-up{city}",
+    routeSummary: "{km} km · about {minutes} min driving",
     dropoff: "Drop-off",
     addressFallback: "Address on the way",
     note: "Note: {note}",

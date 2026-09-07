@@ -105,5 +105,6 @@ export default {
     "goToDeliveries": "Перейти до доставок"
   },
   mapAria: "Карта",
+  mapUnavailable: "Карта з'явиться після налаштування.",
   navAria: "Головна",
 };

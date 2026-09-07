@@ -12,8 +12,8 @@ import { placeOrder, restaurantQuery, type PaymentMethod } from "@/lib/dobra";
 import { useI18n } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { AddressPicker, type PickedAddress } from "@/components/dobra/AddressPicker";
 import { Textarea } from "@/components/ui/textarea";
 
 export const Route = createFileRoute("/_authenticated/checkout")({
@@ -44,7 +44,7 @@ function CheckoutPage() {
   });
   const restaurant = data?.restaurant ?? null;
 
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState<PickedAddress>({ address: "", lat: null, lng: null });
   const [note, setNote] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cash");
   const startCardPayment = useServerFn(createCardCheckoutSession);
@@ -59,9 +59,11 @@ function CheckoutPage() {
       const orderId = await placeOrder({
         restaurant: restaurant!,
         lines: cart.lines,
-        address: address.trim(),
+        address: address.address.trim(),
         note,
         paymentMethod,
+        destLat: address.lat,
+        destLng: address.lng,
       });
       if (paymentMethod === "card") {
         const session = await startCardPayment({
@@ -158,15 +160,7 @@ function CheckoutPage() {
 
             <Card className="border-ink/10">
               <CardContent className="space-y-4 py-4">
-                <div className="space-y-2">
-                  <Label htmlFor="address">{t("customer.checkout.addressLabel")}</Label>
-                  <Input
-                    id="address"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                    placeholder={t("customer.checkout.addressPlaceholder")}
-                  />
-                </div>
+                <AddressPicker value={address} onChange={setAddress} />
                 <div className="space-y-2">
                   <Label htmlFor="note">{t("customer.checkout.noteLabel")}</Label>
                   <Textarea
@@ -238,7 +232,7 @@ function CheckoutPage() {
               className="w-full"
               size="lg"
               disabled={
-                submit.isPending || !restaurant || belowMinimum || address.trim().length < 5
+                submit.isPending || !restaurant || belowMinimum || address.address.trim().length < 5
               }
               onClick={() => submit.mutate()}
             >

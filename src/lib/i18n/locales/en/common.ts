@@ -105,5 +105,6 @@ export default {
     "goToDeliveries": "Go to deliveries"
   },
   mapAria: "Map",
+  mapUnavailable: "Map will appear once configured.",
   navAria: "Main",
 };

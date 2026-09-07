@@ -55,6 +55,7 @@ export default {
     notAvailableBody: "Cette livraison n'est plus disponible — un autre livreur l'a peut-être prise.",
     backToJobs: "Retour aux courses",
     pickup: "Retrait{city}",
+    routeSummary: "{km} km · environ {minutes} min de route",
     dropoff: "Livraison",
     addressFallback: "Adresse communiquée en route",
     note: "Note : {note}",
