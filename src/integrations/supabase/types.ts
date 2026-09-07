@@ -228,6 +228,8 @@ export type Database = {
           currency: string
           customer_id: string
           delivery_fee: number
+          dest_lat: number | null
+          dest_lng: number | null
           driver_id: string | null
           eta_minutes: number
           id: string
@@ -247,6 +249,8 @@ export type Database = {
           currency?: string
           customer_id: string
           delivery_fee?: number
+          dest_lat?: number | null
+          dest_lng?: number | null
           driver_id?: string | null
           eta_minutes?: number
           id?: string
@@ -266,6 +270,8 @@ export type Database = {
           currency?: string
           customer_id?: string
           delivery_fee?: number
+          dest_lat?: number | null
+          dest_lng?: number | null
           driver_id?: string | null
           eta_minutes?: number
           id?: string
