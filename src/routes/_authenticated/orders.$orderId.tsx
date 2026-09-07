@@ -157,6 +157,11 @@ function OrderTracking() {
               driver={location ? { lat: location.lat, lng: location.lng } : null}
               updatedAt={location?.updated_at ?? null}
               address={order.address}
+              saved={
+                order.dest_lat != null && order.dest_lng != null
+                  ? { lat: order.dest_lat, lng: order.dest_lng }
+                  : null
+              }
             />
 
             <Card className="border-ink/10">
@@ -289,18 +294,25 @@ function DeliveryMap({
   driver,
   updatedAt,
   address,
+  saved,
 }: {
   driver: { lat: number; lng: number } | null;
   updatedAt: string | null;
   address: string | null;
+  saved: { lat: number; lng: number } | null;
 }) {
   const { t, formatDate } = useI18n();
-  const { data: dropOff } = useQuery(addressPointQuery(address));
+  const { data: geocoded } = useQuery({
+    ...addressPointQuery(address),
+    enabled: !saved && Boolean(address && address.trim().length > 3),
+  });
+  const dropOff = saved ?? geocoded ?? null;
 
   const points = useMemo(() => {
     const list: MapPoint[] = [];
-    if (driver) list.push({ ...driver, label: t("customer.tracking.yourDriver") });
-    if (dropOff) list.push({ ...dropOff, label: address ?? t("customer.tracking.deliveryAddress") });
+    if (driver) list.push({ ...driver, label: t("customer.tracking.yourDriver"), kind: "driver" });
+    if (dropOff)
+      list.push({ ...dropOff, label: address ?? t("customer.tracking.deliveryAddress"), kind: "dropoff" });
     return list;
   }, [driver, dropOff, address]);
 

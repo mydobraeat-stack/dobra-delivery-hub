@@ -129,7 +129,7 @@ function DriverHome() {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  const points = useMemo<MapPoint[]>(() => (me ? [{ ...me, label: "You" }] : []), [me]);
+  const points = useMemo<MapPoint[]>(() => (me ? [{ ...me, label: "You", kind: "driver" as const }] : []), [me]);
 
   if (approval === "rejected") return <ApplicationRejected />;
   if (approval === "pending") return <ApplicationUnderReview driver={driver} />;
