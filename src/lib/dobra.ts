@@ -50,10 +50,12 @@ export type OrderRow = {
   address: string | null;
   note: string | null;
   eta_minutes: number;
+  dest_lat: number | null;
+  dest_lng: number | null;
 };
 
 const ORDER_COLS =
-  "id,status,total,subtotal,delivery_fee,currency,created_at,restaurant_id,driver_id,customer_id,address,note,eta_minutes";
+  "id,status,total,subtotal,delivery_fee,currency,created_at,restaurant_id,driver_id,customer_id,address,note,eta_minutes,dest_lat,dest_lng";
 
 export type Review = {
   id: string;
