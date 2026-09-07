@@ -58,6 +58,8 @@ export default {
     basketEmpty: "Ваш кошик порожній.",
     addressLabel: "Адреса доставки",
     addressPlaceholder: "Вулиця, будинок, квартира",
+    addressSuggestionsOff: "Підказки недоступні — введіть повну адресу.",
+    addressConfirmed: "Позначено на карті для водія.",
     noteLabel: "Коментар для ресторану (необов'язково)",
     notePlaceholder: "Подзвоніть у дзвінок, без цибулі…",
     paymentTitle: "Як бажаєте оплатити?",

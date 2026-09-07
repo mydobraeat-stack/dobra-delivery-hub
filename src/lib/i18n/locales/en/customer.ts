@@ -58,6 +58,8 @@ export default {
     basketEmpty: "Your basket is empty.",
     addressLabel: "Delivery address",
     addressPlaceholder: "Street, building, flat",
+    addressSuggestionsOff: "Suggestions are unavailable — type the full address.",
+    addressConfirmed: "Pinned on the map for your driver.",
     noteLabel: "Note for the restaurant (optional)",
     notePlaceholder: "Ring the bell, no onions…",
     paymentTitle: "How would you like to pay?",

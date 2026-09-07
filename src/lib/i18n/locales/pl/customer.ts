@@ -58,6 +58,8 @@ export default {
     basketEmpty: "Twój koszyk jest pusty.",
     addressLabel: "Adres dostawy",
     addressPlaceholder: "Ulica, numer budynku, mieszkanie",
+    addressSuggestionsOff: "Podpowiedzi są niedostępne — wpisz pełny adres.",
+    addressConfirmed: "Zaznaczono na mapie dla kierowcy.",
     noteLabel: "Uwaga dla restauracji (opcjonalnie)",
     notePlaceholder: "Zadzwoń dzwonkiem, bez cebuli…",
     paymentTitle: "Jak chcesz zapłacić?",

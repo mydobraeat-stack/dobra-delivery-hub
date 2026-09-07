@@ -58,6 +58,8 @@ export default {
     basketEmpty: "Votre panier est vide.",
     addressLabel: "Adresse de livraison",
     addressPlaceholder: "Rue, bâtiment, appartement",
+    addressSuggestionsOff: "Les suggestions sont indisponibles — saisissez l'adresse complète.",
+    addressConfirmed: "Épinglé sur la carte pour votre livreur.",
     noteLabel: "Note pour le restaurant (facultatif)",
     notePlaceholder: "Sonnez, sans oignons…",
     paymentTitle: "Comment souhaitez-vous payer ?",
