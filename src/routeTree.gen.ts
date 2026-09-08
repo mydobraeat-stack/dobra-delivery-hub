@@ -37,6 +37,7 @@ import { Route as AuthenticatedVendorIndexRouteImport } from './routes/_authenti
 import { Route as AuthenticatedVendorMenuRouteImport } from './routes/_authenticated/vendor.menu'
 import { Route as AuthenticatedVendorStoreRouteImport } from './routes/_authenticated/vendor.store'
 import { Route as AuthenticatedDriverDeliveryOrderIdRouteImport } from './routes/_authenticated/driver.delivery.$orderId'
+import { Route as ApiPublicPushDispatchRouteImport } from './routes/api/public/push.dispatch'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -192,6 +193,11 @@ const AuthenticatedDriverDeliveryOrderIdRoute =
     path: '/delivery/$orderId',
     getParentRoute: () => AuthenticatedDriverRoute,
   } as any)
+const ApiPublicPushDispatchRoute = ApiPublicPushDispatchRouteImport.update({
+  id: '/api/public/push/dispatch',
+  path: '/api/public/push/dispatch',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -221,6 +227,7 @@ export interface FileRoutesByFullPath {
   '/driver/': typeof AuthenticatedDriverIndexRoute
   '/vendor/': typeof AuthenticatedVendorIndexRoute
   '/driver/delivery/$orderId': typeof AuthenticatedDriverDeliveryOrderIdRoute
+  '/api/public/push/dispatch': typeof ApiPublicPushDispatchRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -246,6 +253,7 @@ export interface FileRoutesByTo {
   '/driver': typeof AuthenticatedDriverIndexRoute
   '/vendor': typeof AuthenticatedVendorIndexRoute
   '/driver/delivery/$orderId': typeof AuthenticatedDriverDeliveryOrderIdRoute
+  '/api/public/push/dispatch': typeof ApiPublicPushDispatchRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -277,6 +285,7 @@ export interface FileRoutesById {
   '/_authenticated/driver/': typeof AuthenticatedDriverIndexRoute
   '/_authenticated/vendor/': typeof AuthenticatedVendorIndexRoute
   '/_authenticated/driver/delivery/$orderId': typeof AuthenticatedDriverDeliveryOrderIdRoute
+  '/api/public/push/dispatch': typeof ApiPublicPushDispatchRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -308,6 +317,7 @@ export interface FileRouteTypes {
     | '/driver/'
     | '/vendor/'
     | '/driver/delivery/$orderId'
+    | '/api/public/push/dispatch'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -333,6 +343,7 @@ export interface FileRouteTypes {
     | '/driver'
     | '/vendor'
     | '/driver/delivery/$orderId'
+    | '/api/public/push/dispatch'
   id:
     | '__root__'
     | '/'
@@ -363,12 +374,14 @@ export interface FileRouteTypes {
     | '/_authenticated/driver/'
     | '/_authenticated/vendor/'
     | '/_authenticated/driver/delivery/$orderId'
+    | '/api/public/push/dispatch'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  ApiPublicPushDispatchRoute: typeof ApiPublicPushDispatchRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -569,6 +582,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDriverDeliveryOrderIdRouteImport
       parentRoute: typeof AuthenticatedDriverRoute
     }
+    '/api/public/push/dispatch': {
+      id: '/api/public/push/dispatch'
+      path: '/api/public/push/dispatch'
+      fullPath: '/api/public/push/dispatch'
+      preLoaderRoute: typeof ApiPublicPushDispatchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -675,6 +695,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  ApiPublicPushDispatchRoute: ApiPublicPushDispatchRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
