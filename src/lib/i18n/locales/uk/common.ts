@@ -107,4 +107,9 @@ export default {
   mapAria: "Карта",
   mapUnavailable: "Карта з'явиться після налаштування.",
   navAria: "Головна",
+  notifications: {
+    title: "Сповіщення",
+    markAll: "Позначити всі як прочитані",
+    empty: "Сповіщень поки немає",
+  },
 };

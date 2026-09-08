@@ -107,4 +107,9 @@ export default {
   mapAria: "Mapa",
   mapUnavailable: "Mapa pojawi się po skonfigurowaniu.",
   navAria: "Główna",
+  notifications: {
+    title: "Powiadomienia",
+    markAll: "Oznacz wszystkie jako przeczytane",
+    empty: "Brak powiadomień",
+  },
 };

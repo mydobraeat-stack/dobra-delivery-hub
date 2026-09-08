@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,7 @@ export function NotificationBell() {
   const t = useT();
   const { formatDate } = useI18n();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const { data } = useQuery(notificationsQuery);
   const items = data ?? [];
@@ -30,20 +31,21 @@ export function NotificationBell() {
 
   const row = (n: AppNotification) => (
     <li key={n.id} className={cn("border-b border-ink/5 last:border-0", !n.read && "bg-sun/10")}>
-      <Link
-        to={n.link ?? "/home"}
+      <button
+        type="button"
         onClick={() => {
           if (!n.read) readOne.mutate(n.id);
           setOpen(false);
+          void navigate({ to: n.link ?? "/home" } as never);
         }}
-        className="block px-4 py-3 hover:bg-muted/60"
+        className="block w-full px-4 py-3 text-left hover:bg-muted/60"
       >
         <p className="text-sm font-semibold text-foreground">{n.title}</p>
         <p className="mt-0.5 text-xs text-foreground/70">{n.message}</p>
         <p className="mt-1 text-[11px] text-foreground/50">
           {formatDate(n.created_at, { dateStyle: "short", timeStyle: "short" })}
         </p>
-      </Link>
+      </button>
     </li>
   );
 
