@@ -1,6 +1,7 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { useRealtimeSync } from "@/lib/realtime";
+import { useNotificationStream } from "@/lib/notifications";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
@@ -14,5 +15,6 @@ export const Route = createFileRoute("/_authenticated")({
 
 function AuthenticatedLayout() {
   useRealtimeSync();
+  useNotificationStream();
   return <Outlet />;
 }

@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useT } from "@/lib/i18n";
+import { NotificationBell } from "./NotificationBell";
 import { DobraLogo } from "./Logo";
 
 export function AppHeader({ subtitle }: { subtitle?: string }) {
@@ -17,6 +18,7 @@ export function AppHeader({ subtitle }: { subtitle?: string }) {
           ) : null}
         </div>
         <div className="flex items-center gap-1">
+          <NotificationBell />
           <Button asChild variant="ghost" size="sm">
             <Link to="/profile" aria-label={t("common.actions.profile")}>
               <User className="size-4" aria-hidden />
