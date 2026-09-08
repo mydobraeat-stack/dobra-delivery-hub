@@ -162,6 +162,8 @@ function ProfilePage() {
 
         <LanguageSwitcher />
 
+        <PushSettings />
+
         {role === "customer" ? <CustomerSection /> : null}
         {role === "vendor" ? <VendorSection status={profile?.approval_status ?? null} /> : null}
         {role === "driver" ? <DriverSection status={profile?.approval_status ?? null} /> : null}
