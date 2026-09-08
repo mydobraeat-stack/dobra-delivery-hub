@@ -112,4 +112,13 @@ export default {
     markAll: "Tout marquer comme lu",
     empty: "Aucune notification pour l’instant",
   },
+  push: {
+    title: "Alertes push",
+    description: "Recevez des alertes sur votre écran verrouillé même quand Dobra est fermée.",
+    enable: "Activer les alertes push",
+    enabled: "Alertes push activées",
+    blocked: "Les notifications sont bloquées dans votre navigateur — autorisez-les pour ce site.",
+    unsupported: "Ce navigateur ne prend pas en charge les alertes push. Sur iPhone, ajoutez d’abord Dobra à l’écran d’accueil.",
+    error: "Impossible d’activer les alertes push. Réessayez.",
+  },
 };

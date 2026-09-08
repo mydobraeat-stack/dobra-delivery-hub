@@ -112,4 +112,13 @@ export default {
     markAll: "Mark all as read",
     empty: "No notifications yet",
   },
+  push: {
+    title: "Push alerts",
+    description: "Get alerts on your lock screen even when Dobra is closed.",
+    enable: "Turn on push alerts",
+    enabled: "Push alerts are on",
+    blocked: "Alerts are blocked in your browser settings — allow notifications for this site to turn them on.",
+    unsupported: "This browser does not support push alerts. On iPhone, add Dobra to your home screen first.",
+    error: "Could not turn on push alerts. Please try again.",
+  },
 };
