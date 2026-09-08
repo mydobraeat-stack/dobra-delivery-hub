@@ -17,5 +17,6 @@ export const Route = createFileRoute("/_authenticated")({
 function AuthenticatedLayout() {
   useRealtimeSync();
   useNotificationStream();
+  usePushRegistration();
   return <Outlet />;
 }
