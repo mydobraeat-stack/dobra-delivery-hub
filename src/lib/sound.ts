@@ -69,7 +69,7 @@ export function playSound(name: SoundName) {
   if (!c) return;
   if (c.state === "suspended") void c.resume();
   const now = c.currentTime + 0.02;
-  for (const tone of PATTERNS[name] ?? PATTERNS.soft!) {
+  for (const tone of PATTERNS[name] ?? PATTERNS["soft"]!) {
     const osc = c.createOscillator();
     const gain = c.createGain();
     osc.type = "sine";
