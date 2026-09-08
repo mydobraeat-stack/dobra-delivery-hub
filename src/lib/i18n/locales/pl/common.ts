@@ -112,4 +112,13 @@ export default {
     markAll: "Oznacz wszystkie jako przeczytane",
     empty: "Brak powiadomień",
   },
+  push: {
+    title: "Powiadomienia push",
+    description: "Otrzymuj alerty na ekranie blokady, nawet gdy Dobra jest zamknięta.",
+    enable: "Włącz powiadomienia push",
+    enabled: "Powiadomienia push są włączone",
+    blocked: "Powiadomienia są zablokowane w ustawieniach przeglądarki — zezwól na powiadomienia dla tej strony.",
+    unsupported: "Ta przeglądarka nie obsługuje powiadomień push. Na iPhonie najpierw dodaj Dobra do ekranu głównego.",
+    error: "Nie udało się włączyć powiadomień push. Spróbuj ponownie.",
+  },
 };

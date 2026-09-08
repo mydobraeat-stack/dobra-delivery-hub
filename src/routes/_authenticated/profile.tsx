@@ -8,6 +8,7 @@ import { AppHeader } from "@/components/dobra/AppHeader";
 import { TabBar } from "@/components/dobra/TabBar";
 import { ImageUpload } from "@/components/dobra/ImageUpload";
 import { LanguageSwitcher } from "@/components/dobra/LanguageSwitcher";
+import { PushSettings } from "@/components/dobra/PushSettings";
 import { useT, useI18n } from "@/lib/i18n";
 import { accountQueryOptions } from "@/lib/profile";
 import { myOrdersQuery, myDriverQuery, vendorRestaurantsQuery } from "@/lib/dobra";
@@ -161,6 +162,8 @@ function ProfilePage() {
         </Card>
 
         <LanguageSwitcher />
+
+        <PushSettings />
 
         {role === "customer" ? <CustomerSection /> : null}
         {role === "vendor" ? <VendorSection status={profile?.approval_status ?? null} /> : null}
