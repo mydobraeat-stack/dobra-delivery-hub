@@ -124,14 +124,14 @@ function PendingApprovals() {
 
             <div className="flex gap-2">
               <Button
-                onClick={() => decide.mutate({ id: p.id, status: "approved" })}
+                onClick={() => decide.mutate({ id: p.id, status: "approved", role: p.role })}
                 disabled={decide.isPending}
               >
                 {t("admin.approvals.approve")}
               </Button>
               <Button
                 variant="outline"
-                onClick={() => decide.mutate({ id: p.id, status: "rejected" })}
+                onClick={() => decide.mutate({ id: p.id, status: "rejected", role: p.role })}
                 disabled={decide.isPending}
               >
                 {t("admin.approvals.reject")}
