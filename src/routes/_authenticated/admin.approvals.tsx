@@ -7,6 +7,7 @@ import {
   adminDriversQuery,
   adminProfilesQuery,
   adminRestaurantsQuery,
+  setDriverDocsStatus,
   setProfileApproval,
 } from "@/lib/admin";
 import { useT } from "@/lib/i18n";
@@ -23,8 +24,19 @@ function PendingApprovals() {
   const restaurants = useQuery(adminRestaurantsQuery);
 
   const decide = useMutation({
-    mutationFn: ({ id, status }: { id: string; status: "approved" | "rejected" }) =>
-      setProfileApproval(id, status),
+    mutationFn: async ({
+      id,
+      status,
+      role,
+    }: {
+      id: string;
+      status: "approved" | "rejected";
+      role: string;
+    }) => {
+      await setProfileApproval(id, status);
+      // Drivers are also gated on their document review state — keep both in step.
+      if (role === "driver") await setDriverDocsStatus(id, status);
+    },
     onSuccess: (_d, v) => {
       toast.success(
         v.status === "approved" ? t("admin.approvals.accountApproved") : t("admin.approvals.accountRejected"),
