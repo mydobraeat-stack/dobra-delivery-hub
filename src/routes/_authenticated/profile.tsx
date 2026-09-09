@@ -298,7 +298,7 @@ function DriverSection({ status }: { status: string | null | undefined }) {
         <div className="grid grid-cols-2 gap-3">
           <Stat
             label={t("common.profile.availability")}
-            value={driver?.status === "online" ? t("common.profile.online") : t("common.profile.offline")}
+            value={driver?.status && driver.status !== "offline" ? t("common.profile.online") : t("common.profile.offline")}
           />
           <Stat
             label={t("common.profile.accountStatus")}

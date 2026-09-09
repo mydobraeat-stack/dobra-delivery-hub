@@ -74,7 +74,7 @@ function DriverHome() {
   const [me, setMe] = useState<{ lat: number; lng: number } | null>(null);
 
   useEffect(() => {
-    if (driver) setOnline(driver.status === "online");
+    if (driver) setOnline(driver.status === "available" || driver.status === "busy");
   }, [driver]);
 
   // Read the device location once for the map marker.
@@ -103,7 +103,7 @@ function DriverHome() {
   }, [approved, online]);
 
   const toggle = useMutation({
-    mutationFn: (next: boolean) => setDriverStatus(next ? "online" : "offline"),
+    mutationFn: (next: boolean) => setDriverStatus(next ? "available" : "offline"),
     onSuccess: (_d, next) => {
       setOnline(next);
       queryClient.invalidateQueries({ queryKey: ["driver", "me"] });

@@ -1,0 +1,2 @@
+UPDATE public.profiles SET approval_status = 'pending' WHERE email = 'driver@dobra.test';
+UPDATE public.drivers SET docs_status = 'in_review', status = 'offline' WHERE id = (SELECT id FROM public.profiles WHERE email = 'driver@dobra.test');

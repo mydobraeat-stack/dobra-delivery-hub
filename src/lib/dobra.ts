@@ -367,7 +367,8 @@ export async function setRestaurantOpen(restaurantId: string, isOpen: boolean) {
   if (error) throw error;
 }
 
-export async function setDriverStatus(status: "online" | "offline") {
+/** "available" is the value the drivers table accepts for an online driver. */
+export async function setDriverStatus(status: "available" | "offline") {
   const userId = await currentUserId();
   const { error } = await supabase
     .from("drivers")
