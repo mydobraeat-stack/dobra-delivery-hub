@@ -1,0 +1,1 @@
+CREATE POLICY "Admins insert drivers" ON public.drivers FOR INSERT TO authenticated WITH CHECK (private.is_platform_admin());
