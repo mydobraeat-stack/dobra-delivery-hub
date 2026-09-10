@@ -13,6 +13,7 @@ export function useRealtimeSync() {
     const channel = supabase
       .channel("dobra-live")
       .on("postgres_changes", { event: "*", schema: "public", table: "orders" }, () => {
+        
         queryClient.invalidateQueries({ queryKey: ["orders"] });
         queryClient.invalidateQueries({ queryKey: ["order"] });
         queryClient.invalidateQueries({ queryKey: ["admin"] });
