@@ -79,6 +79,14 @@ export function useNotificationStream() {
           (payload) => {
             const row = payload.new as AppNotification;
             queryClient.invalidateQueries({ queryKey: ["notifications"] });
+            // Row-level realtime on `orders` is filtered by RLS and never reaches
+            // vendors/drivers (their policies join other tables). Every order event
+            // already writes a notification for the parties involved, so refresh the
+            // order views from here — that is what keeps their lists live.
+            queryClient.invalidateQueries({ queryKey: ["orders"] });
+            queryClient.invalidateQueries({ queryKey: ["order"] });
+            queryClient.invalidateQueries({ queryKey: ["order-items"] });
+            queryClient.invalidateQueries({ queryKey: ["admin"] });
             if (row.sound) playSound(soundFor(row.type));
             toast(row.title, { description: row.message });
           },
