@@ -92,7 +92,11 @@ function CheckoutPage() {
           ? t("customer.checkout.orderPlacedCash")
           : t("customer.checkout.orderPlacedCard"),
       );
-      navigate({ to: "/orders/$orderId", params: { orderId } });
+      setPlaced(true);
+      window.setTimeout(
+        () => navigate({ to: "/orders/$orderId", params: { orderId } }),
+        1800,
+      );
     },
     onError: (e: Error) => toast.error(e.message),
   });
