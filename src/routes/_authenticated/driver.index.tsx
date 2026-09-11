@@ -24,6 +24,7 @@ import {
 } from "@/components/dobra/DriverGate";
 import { StatusBadge } from "@/components/dobra/StatusBadge";
 import { MapView, type MapPoint } from "@/components/dobra/MapView";
+import { NewDeliveryAlert } from "@/components/dobra/NewDeliveryAlert";
 import { DobraLogo } from "@/components/dobra/Logo";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -151,6 +152,7 @@ function DriverHome() {
 
   return (
     <div className="pb-4">
+      <NewDeliveryAlert online={online} available={available} restaurantName={restaurantName} />
       {/* Map with floating controls */}
       <section className="relative h-[58vh] min-h-80 w-full overflow-hidden">
         {points.length > 0 ? (
