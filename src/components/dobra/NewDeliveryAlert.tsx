@@ -39,7 +39,7 @@ export function NewDeliveryAlert({
   const queryClient = useQueryClient();
 
   const [declined, setDeclined] = useState<string[]>(loadDeclined);
-  const [seconds, setSeconds] = useState(OFFER_SECONDS);
+  const [timer, setTimer] = useState<{ id: string; left: number } | null>(null);
   const soundedFor = useRef<string | null>(null);
 
   const offer = useMemo(
@@ -62,7 +62,7 @@ export function NewDeliveryAlert({
   // Restart the countdown and play the urgent chime for each new offer.
   useEffect(() => {
     if (!offer) return;
-    setSeconds(OFFER_SECONDS);
+    setTimer({ id: offer.id, left: OFFER_SECONDS });
     if (soundedFor.current !== offer.id) {
       soundedFor.current = offer.id;
       playSound("alert");
@@ -71,15 +71,19 @@ export function NewDeliveryAlert({
 
   useEffect(() => {
     if (!offer) return;
-    const timer = window.setInterval(() => setSeconds((s) => s - 1), 1000);
-    return () => window.clearInterval(timer);
+    const id = offer.id;
+    const handle = window.setInterval(
+      () => setTimer((prev) => (prev && prev.id === id ? { id, left: prev.left - 1 } : prev)),
+      1000,
+    );
+    return () => window.clearInterval(handle);
   }, [offer?.id]);
 
   useEffect(() => {
-    if (!offer || seconds > 0) return;
+    if (!offer || !timer || timer.id !== offer.id || timer.left > 0) return;
     skip(offer.id);
     toast(t("driver.offer.expiredToast"));
-  }, [seconds, offer?.id]);
+  }, [timer, offer?.id]);
 
   const accept = useMutation({
     mutationFn: (id: string) => claimOrder(id),
@@ -94,6 +98,7 @@ export function NewDeliveryAlert({
   if (!offer) return null;
 
   const total = Number(offer.total);
+  const seconds = timer && timer.id === offer.id ? timer.left : OFFER_SECONDS;
   const progress = Math.max(0, Math.min(100, (seconds / OFFER_SECONDS) * 100));
 
   return (
