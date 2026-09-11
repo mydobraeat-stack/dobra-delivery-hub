@@ -1,4 +1,15 @@
 export default {
+  offer: {
+    badge: "Нове замовлення",
+    pickup: "Забрати",
+    dropoff: "Доставити",
+    noAddress: "Адреса з'явиться після прийняття",
+    expiresIn: "Спливає через {n} с",
+    accept: "Прийняти",
+    decline: "Відхилити",
+    declinedToast: "Відхилено — передано іншому водію.",
+    expiredToast: "Час вийшов — передано іншому водію.",
+  },
   home: {
     menuAria: "Відкрити меню",
     safetyAria: "Центр безпеки",

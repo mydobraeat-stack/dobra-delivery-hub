@@ -1,4 +1,15 @@
 export default {
+  offer: {
+    badge: "Nouvelle livraison",
+    pickup: "Retrait",
+    dropoff: "Livraison",
+    noAddress: "Adresse communiquée après acceptation",
+    expiresIn: "Expire dans {n} s",
+    accept: "Accepter",
+    decline: "Refuser",
+    declinedToast: "Refusée — proposée à un autre livreur.",
+    expiredToast: "Offre expirée — proposée à un autre livreur.",
+  },
   home: {
     menuAria: "Ouvrir le menu",
     safetyAria: "Centre de sécurité",

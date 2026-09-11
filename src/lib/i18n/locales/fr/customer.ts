@@ -1,4 +1,10 @@
 export default {
+  celebration: {
+    placedTitle: "Commande passée !",
+    placedBody: "Nous l'envoyons en cuisine.",
+    deliveredTitle: "Livrée !",
+    deliveredBody: "Bon appétit 🎉",
+  },
   home: {
     greeting: "Une petite faim ?",
     greetingNamed: "Une petite faim, {name} ?",

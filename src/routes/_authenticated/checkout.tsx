@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { AddressPicker, type PickedAddress } from "@/components/dobra/AddressPicker";
+import { SuccessOverlay } from "@/components/dobra/SuccessOverlay";
 import { Textarea } from "@/components/ui/textarea";
 
 export const Route = createFileRoute("/_authenticated/checkout")({
@@ -46,6 +47,7 @@ function CheckoutPage() {
 
   const [address, setAddress] = useState<PickedAddress>({ address: "", lat: null, lng: null });
   const [note, setNote] = useState("");
+  const [placed, setPlaced] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cash");
   const startCardPayment = useServerFn(createCardCheckoutSession);
 
@@ -92,13 +94,23 @@ function CheckoutPage() {
           ? t("customer.checkout.orderPlacedCash")
           : t("customer.checkout.orderPlacedCard"),
       );
-      navigate({ to: "/orders/$orderId", params: { orderId } });
+      setPlaced(true);
+      window.setTimeout(
+        () => navigate({ to: "/orders/$orderId", params: { orderId } }),
+        1800,
+      );
     },
     onError: (e: Error) => toast.error(e.message),
   });
 
   return (
     <div className="min-h-screen bg-background">
+      {placed ? (
+        <SuccessOverlay
+          title={t("customer.celebration.placedTitle")}
+          subtitle={t("customer.celebration.placedBody")}
+        />
+      ) : null}
       <AppHeader subtitle={t("common.roles.customer")} />
       <main className="mx-auto max-w-2xl space-y-6 px-5 py-6">
         <Link
