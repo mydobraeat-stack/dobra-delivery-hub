@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Check, MapPin, Star } from "lucide-react";
@@ -7,6 +7,7 @@ import { AppHeader } from "@/components/dobra/AppHeader";
 import { StoredImage } from "@/components/dobra/StoredImage";
 import { StatusBadge } from "@/components/dobra/StatusBadge";
 import { MapView, type MapPoint } from "@/components/dobra/MapView";
+import { SuccessOverlay } from "@/components/dobra/SuccessOverlay";
 import { addressPointQuery } from "@/lib/maps";
 import {
   CUSTOMER_STEPS,
@@ -58,6 +59,17 @@ function OrderTracking() {
   const [restaurantRating, setRestaurantRating] = useState(5);
   const [driverRating, setDriverRating] = useState(5);
   const [comment, setComment] = useState("");
+  const [celebrate, setCelebrate] = useState(false);
+  const seenDelivered = useRef(false);
+
+  // Celebrate the moment the order flips to delivered (realtime or on arrival).
+  useEffect(() => {
+    if (order?.status !== "delivered" || seenDelivered.current) return;
+    seenDelivered.current = true;
+    setCelebrate(true);
+    const timer = window.setTimeout(() => setCelebrate(false), 2400);
+    return () => window.clearTimeout(timer);
+  }, [order?.status]);
 
   const invalidate = () => {
     queryClient.invalidateQueries({ queryKey: ["order", orderId] });
@@ -95,6 +107,13 @@ function OrderTracking() {
 
   return (
     <div className="min-h-screen bg-background">
+      {celebrate ? (
+        <SuccessOverlay
+          tone="sun"
+          title={t("customer.celebration.deliveredTitle")}
+          subtitle={t("customer.celebration.deliveredBody")}
+        />
+      ) : null}
       <AppHeader subtitle={t("common.roles.customer")} />
       <main className="mx-auto max-w-2xl space-y-6 px-5 py-6">
         <Link
