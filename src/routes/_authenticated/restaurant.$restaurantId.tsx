@@ -131,8 +131,8 @@ function RestaurantPage() {
                             height={320}
                             className="size-24 shrink-0 object-cover"
                           />
-                          <CardContent className="flex flex-1 items-center justify-between gap-3 px-3 py-3">
-                            <div className="min-w-0">
+                          <CardContent className="flex min-w-0 flex-1 items-center justify-between gap-3 px-3 py-3">
+                            <div className="min-w-0 flex-1">
                               <p className="truncate font-semibold text-foreground">{item.name}</p>
                               {item.description ? (
                                 <p className="line-clamp-2 text-xs text-foreground/60">
