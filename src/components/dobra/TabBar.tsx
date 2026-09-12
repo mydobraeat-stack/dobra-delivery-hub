@@ -56,10 +56,10 @@ export function TabBar({ role }: { role: "customer" | "vendor" | "driver" }) {
               {({ isActive }) => (
                 <>
                   <tab.icon
-                    className={cn("size-5", isActive ? "text-foreground" : "text-foreground/60")}
+                    className={cn("size-5 shrink-0", isActive ? "text-foreground" : "text-foreground/60")}
                     aria-hidden
                   />
-                  {t(tab.labelKey)}
+                  <span className="w-full truncate">{t(tab.labelKey)}</span>
                 </>
               )}
             </Link>
