@@ -165,9 +165,10 @@ function RestaurantPage() {
                                 </Button>
                               </div>
                             ) : (
-                              <Button
-                                size="sm"
-                                onClick={() => {
+                               <Button
+                                 size="sm"
+                                 className="shrink-0"
+                                 onClick={() => {
                                   addToCart(
                                     { id: restaurant.id, name: restaurant.name },
                                     {
