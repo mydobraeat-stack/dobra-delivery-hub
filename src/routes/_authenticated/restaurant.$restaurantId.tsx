@@ -131,9 +131,9 @@ function RestaurantPage() {
                             height={320}
                             className="size-24 shrink-0 object-cover"
                           />
-                          <CardContent className="flex flex-1 items-center justify-between gap-3 px-3 py-3">
-                            <div className="min-w-0">
-                              <p className="truncate font-semibold text-foreground">{item.name}</p>
+                          <CardContent className="flex min-w-0 flex-1 items-center justify-between gap-3 px-3 py-3">
+                            <div className="min-w-0 flex-1">
+                              <p className="line-clamp-2 font-semibold text-foreground">{item.name}</p>
                               {item.description ? (
                                 <p className="line-clamp-2 text-xs text-foreground/60">
                                   {item.description}
@@ -143,10 +143,10 @@ function RestaurantPage() {
                                 {formatMoney(item.price, item.currency)}
                               </p>
                             </div>
-                            {!item.available ? (
-                              <span className="text-xs text-foreground/50">{t("customer.restaurant.soldOut")}</span>
-                            ) : qty > 0 ? (
-                              <div className="flex items-center gap-2">
+                             {!item.available ? (
+                               <span className="shrink-0 text-xs text-foreground/50">{t("customer.restaurant.soldOut")}</span>
+                             ) : qty > 0 ? (
+                               <div className="flex shrink-0 items-center gap-2">
                                 <Button
                                   size="icon"
                                   variant="outline"
@@ -165,9 +165,10 @@ function RestaurantPage() {
                                 </Button>
                               </div>
                             ) : (
-                              <Button
-                                size="sm"
-                                onClick={() => {
+                               <Button
+                                 size="sm"
+                                 className="shrink-0"
+                                 onClick={() => {
                                   addToCart(
                                     { id: restaurant.id, name: restaurant.name },
                                     {
