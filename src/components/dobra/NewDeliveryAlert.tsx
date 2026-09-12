@@ -5,10 +5,10 @@ import { MapPin, Store, Timer } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n";
-import { playSound } from "@/lib/sound";
+import { startRingtone } from "@/lib/sound";
 import { claimOrder, orderRef, payout, type OrderRow } from "@/lib/dobra";
 
-const OFFER_SECONDS = 20;
+const OFFER_SECONDS = 30;
 const DECLINED_KEY = "dobra.declinedOffers";
 
 function loadDeclined(): string[] {
@@ -59,14 +59,17 @@ export function NewDeliveryAlert({
     });
   };
 
-  // Restart the countdown and play the urgent chime for each new offer.
+  // Restart the countdown and ring for each new offer; the ringtone stops as
+  // soon as the offer is answered or the popup closes.
   useEffect(() => {
     if (!offer) return;
     setTimer({ id: offer.id, left: OFFER_SECONDS });
+    let stop = () => {};
     if (soundedFor.current !== offer.id) {
       soundedFor.current = offer.id;
-      playSound("alert");
+      stop = startRingtone(OFFER_SECONDS);
     }
+    return () => stop();
   }, [offer?.id]);
 
   useEffect(() => {
