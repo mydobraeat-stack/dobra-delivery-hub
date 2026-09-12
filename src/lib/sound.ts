@@ -82,3 +82,44 @@ export function playSound(name: SoundName) {
     osc.stop(now + tone.start + tone.duration + 0.05);
   }
 }
+
+/**
+ * Repeating two-tone ringtone for driver delivery offers. Loops until the
+ * returned stop() is called or maxSeconds (default 30s) elapses.
+ */
+export function startRingtone(maxSeconds = 30): () => void {
+  if (!unlocked) return () => {};
+  const c = getCtx();
+  if (!c) return () => {};
+  if (c.state === "suspended") void c.resume();
+
+  const ring = () => {
+    const now = c.currentTime + 0.02;
+    const tones: Tone[] = [
+      { freq: 988, start: 0, duration: 0.18 },
+      { freq: 1319, start: 0.2, duration: 0.18 },
+      { freq: 988, start: 0.4, duration: 0.18 },
+      { freq: 1319, start: 0.6, duration: 0.3 },
+    ];
+    for (const tone of tones) {
+      const osc = c.createOscillator();
+      const gain = c.createGain();
+      osc.type = "triangle";
+      osc.frequency.value = tone.freq;
+      gain.gain.setValueAtTime(0.0001, now + tone.start);
+      gain.gain.exponentialRampToValueAtTime(0.25, now + tone.start + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + tone.start + tone.duration);
+      osc.connect(gain).connect(c.destination);
+      osc.start(now + tone.start);
+      osc.stop(now + tone.start + tone.duration + 0.05);
+    }
+  };
+
+  ring();
+  const interval = window.setInterval(ring, 1500);
+  const timeout = window.setTimeout(() => window.clearInterval(interval), maxSeconds * 1000);
+  return () => {
+    window.clearInterval(interval);
+    window.clearTimeout(timeout);
+  };
+}
