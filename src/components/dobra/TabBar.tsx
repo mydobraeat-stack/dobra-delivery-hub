@@ -46,11 +46,11 @@ export function TabBar({ role }: { role: "customer" | "vendor" | "driver" }) {
     >
       <ul className="mx-auto flex max-w-4xl">
         {tabs.map((tab) => (
-          <li key={tab.to} className="flex-1">
+          <li key={tab.to} className="min-w-0 flex-1">
             <Link
               to={tab.to}
               activeOptions={{ exact: tab.to === "/customer" || tab.to === "/vendor" || tab.to === "/driver" }}
-              className="flex flex-col items-center gap-1 py-2.5 text-xs text-foreground/60"
+              className="flex w-full min-w-0 flex-col items-center gap-1 px-1 py-2.5 text-center text-[11px] leading-tight text-foreground/60 sm:text-xs"
               activeProps={{ className: "text-foreground font-semibold" }}
             >
               {({ isActive }) => (
