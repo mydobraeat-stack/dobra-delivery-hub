@@ -143,10 +143,10 @@ function RestaurantPage() {
                                 {formatMoney(item.price, item.currency)}
                               </p>
                             </div>
-                            {!item.available ? (
-                              <span className="text-xs text-foreground/50">{t("customer.restaurant.soldOut")}</span>
-                            ) : qty > 0 ? (
-                              <div className="flex items-center gap-2">
+                             {!item.available ? (
+                               <span className="shrink-0 text-xs text-foreground/50">{t("customer.restaurant.soldOut")}</span>
+                             ) : qty > 0 ? (
+                               <div className="flex shrink-0 items-center gap-2">
                                 <Button
                                   size="icon"
                                   variant="outline"
