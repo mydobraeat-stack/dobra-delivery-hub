@@ -14,8 +14,8 @@ self.addEventListener("push", (event) => {
   const title = payload.title || "Dobra";
   const options = {
     body: payload.body || "",
-    icon: "/favicon.ico",
-    badge: "/favicon.ico",
+    icon: "/android-chrome-192x192.png",
+    badge: "/favicon-48x48.png",
     tag: payload.tag || undefined,
     renotify: Boolean(payload.tag),
     data: { url: payload.url || "/home" },
