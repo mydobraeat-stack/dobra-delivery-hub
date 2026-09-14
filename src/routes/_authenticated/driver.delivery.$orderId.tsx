@@ -155,46 +155,64 @@ function DeliveryDetail() {
         <StatusBadge status={order.status} className="ml-auto" />
       </div>
 
-      <Card className="border-ink/10">
+      {mine ? (
+        <p
+          data-testid="leg-banner"
+          className="rounded-full bg-secondary px-4 py-2 text-center text-sm font-bold text-secondary-foreground"
+        >
+          {onCustomerLeg ? t("driver.delivery.legCustomer") : t("driver.delivery.legRestaurant")}
+        </p>
+      ) : null}
+
+      {/* Current stop */}
+      <Card className="border-2 border-primary/40">
         <CardContent className="space-y-3 py-4">
-          <div className="flex items-start gap-3">
-            <Store className="mt-0.5 size-5 shrink-0 text-foreground/60" aria-hidden />
-            <div>
-              <p className="font-semibold text-foreground">{restaurant?.name ?? t("driver.delivery.restaurantFallback")}</p>
-              <p className="text-xs text-foreground/60">
-                {t("driver.delivery.pickup", { city: restaurant?.city ? ` · ${restaurant.city}` : "" })}
-              </p>
+          {onCustomerLeg ? (
+            <div className="flex items-start gap-3">
+              <MapPin className="mt-0.5 size-5 shrink-0 text-primary" aria-hidden />
+              <div className="min-w-0">
+                <p className="font-semibold text-foreground">{order.address ?? t("driver.delivery.addressFallback")}</p>
+                <p className="text-xs text-foreground/60">{t("driver.delivery.dropoff")}</p>
+                {order.note ? (
+                  <p className="mt-1 text-xs text-foreground/70">{t("driver.delivery.note", { note: order.note })}</p>
+                ) : null}
+              </div>
             </div>
-          </div>
-          <div className="flex items-start gap-3">
-            <MapPin className="mt-0.5 size-5 shrink-0 text-foreground/60" aria-hidden />
-            <div>
-              <p className="font-semibold text-foreground">{order.address ?? t("driver.delivery.addressFallback")}</p>
-              <p className="text-xs text-foreground/60">{t("driver.delivery.dropoff")}</p>
-              {order.note ? (
-                <p className="mt-1 text-xs text-foreground/70">{t("driver.delivery.note", { note: order.note })}</p>
-              ) : null}
+          ) : (
+            <div className="flex items-start gap-3">
+              <Store className="mt-0.5 size-5 shrink-0 text-primary" aria-hidden />
+              <div className="min-w-0">
+                <p className="font-semibold text-foreground">
+                  {restaurant?.name ?? t("driver.delivery.restaurantFallback")}
+                </p>
+                <p className="text-xs text-foreground/60">
+                  {t("driver.delivery.pickup", { city: restaurant?.city ? ` · ${restaurant.city}` : "" })}
+                </p>
+              </div>
             </div>
-          </div>
+          )}
           <div className="flex flex-wrap gap-2 pt-1">
-            {order.address ? (
+            {(onCustomerLeg ? order.address : pickupSearch) ? (
               <Button size="sm" variant="outline" asChild>
                 <a
-                  href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(order.address)}`}
+                  href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+                    (onCustomerLeg ? order.address : pickupSearch) ?? "",
+                  )}`}
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <Navigation className="size-4" aria-hidden /> {t("driver.delivery.navigate")}
+                  <Navigation className="size-4" aria-hidden />{" "}
+                  {onCustomerLeg
+                    ? t("driver.delivery.navigateToCustomer")
+                    : t("driver.delivery.navigateToRestaurant")}
                 </a>
               </Button>
             ) : null}
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => toast(t("driver.delivery.contactToast"))}
-            >
-              <Phone className="size-4" aria-hidden /> {t("driver.delivery.contactCustomer")}
-            </Button>
+            {onCustomerLeg ? (
+              <Button size="sm" variant="outline" onClick={() => toast(t("driver.delivery.contactToast"))}>
+                <Phone className="size-4" aria-hidden /> {t("driver.delivery.contactCustomer")}
+              </Button>
+            ) : null}
           </div>
         </CardContent>
       </Card>
@@ -212,6 +230,34 @@ function DeliveryDetail() {
           ) : null}
         </div>
       ) : null}
+
+      {/* The other stop, for reference */}
+      <Card className="border-ink/10 bg-muted/40">
+        <CardContent className="flex items-start gap-3 py-3">
+          {onCustomerLeg ? (
+            <>
+              <Store className="mt-0.5 size-4 shrink-0 text-foreground/50" aria-hidden />
+              <div className="min-w-0 text-xs text-foreground/60">
+                <p className="font-medium text-foreground/80">
+                  {restaurant?.name ?? t("driver.delivery.restaurantFallback")}
+                </p>
+                <p>{t("driver.delivery.pickup", { city: restaurant?.city ? ` · ${restaurant.city}` : "" })}</p>
+              </div>
+            </>
+          ) : (
+            <>
+              <MapPin className="mt-0.5 size-4 shrink-0 text-foreground/50" aria-hidden />
+              <div className="min-w-0 text-xs text-foreground/60">
+                <p className="font-medium text-foreground/80">
+                  {order.address ?? t("driver.delivery.addressFallback")}
+                </p>
+                <p>{t("driver.delivery.dropoff")}</p>
+              </div>
+            </>
+          )}
+        </CardContent>
+      </Card>
+
 
       <Card className="border-ink/10">
         <CardContent className="space-y-2 py-4">
