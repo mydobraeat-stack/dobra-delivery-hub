@@ -85,6 +85,10 @@ export default {
     acceptedError: "Цю доставку прийняв інший водій.",
     pickedUpToast: "Позначено як забрано.",
     deliveredToast: "Доставлено. Чудова робота!",
+    legRestaurant: "Прямуйте до ресторану",
+    legCustomer: "Прямуйте до клієнта",
+    navigateToRestaurant: "Навігація до ресторану",
+    navigateToCustomer: "Навігація до клієнта",
     restaurantFallback: "Ресторан",
   },
   earnings: {
