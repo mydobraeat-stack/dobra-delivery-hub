@@ -83,15 +83,21 @@ function DeliveryDetail() {
     : null;
   const { data: pickup } = useQuery(addressPointQuery(pickupSearch));
 
-  const { data: route } = useQuery(routeQuery([me, pickup, dropOff]));
+  // Leg 1 runs to the restaurant; leg 2 starts once the food is picked up.
+  const onCustomerLeg = order?.status === "picked_up" || order?.status === "delivered";
+
+  const { data: route } = useQuery(routeQuery(onCustomerLeg ? [me, dropOff] : [me, pickup]));
 
   const points = useMemo<MapPoint[]>(() => {
     const list: MapPoint[] = [];
     if (me) list.push({ ...me, label: "You", kind: "driver" });
-    if (pickup) list.push({ ...pickup, label: restaurantForOrder?.name ?? "Pickup", kind: "pickup" });
-    if (dropOff) list.push({ ...dropOff, label: order?.address ?? "Drop-off", kind: "dropoff" });
+    if (onCustomerLeg) {
+      if (dropOff) list.push({ ...dropOff, label: order?.address ?? "Drop-off", kind: "dropoff" });
+    } else if (pickup) {
+      list.push({ ...pickup, label: restaurantForOrder?.name ?? "Pickup", kind: "pickup" });
+    }
     return list;
-  }, [me, pickup, dropOff, order?.address, restaurantForOrder?.name]);
+  }, [me, pickup, dropOff, onCustomerLeg, order?.address, restaurantForOrder?.name]);
 
   const invalidate = () => queryClient.invalidateQueries({ queryKey: ["orders"] });
 
