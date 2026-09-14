@@ -85,6 +85,10 @@ export default {
     acceptedError: "Ktoś inny przyjął tę dostawę.",
     pickedUpToast: "Oznaczono jako odebrane.",
     deliveredToast: "Dostarczone. Dobra robota!",
+    legRestaurant: "Jedź do restauracji",
+    legCustomer: "Jedź do klienta",
+    navigateToRestaurant: "Nawiguj do restauracji",
+    navigateToCustomer: "Nawiguj do klienta",
     restaurantFallback: "Restauracja",
   },
   earnings: {
