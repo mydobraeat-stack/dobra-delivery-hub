@@ -132,11 +132,22 @@ export default {
     },
     types: {
       drivers_licence: { label: "Prawo jazdy", hint: "Przednia strona, wyraźnie czytelna." },
-      id_card: { label: "Dowód osobisty lub paszport", hint: "Strona ze zdjęciem." },
+      id_card: {
+        label: "Paszport lub dowód osobisty",
+        hint: "Strona ze zdjęciem, widoczne wszystkie rogi.",
+      },
       insurance: { label: "Polisa ubezpieczeniowa", hint: "Ważne ubezpieczenie OC." },
       vehicle_registration: {
         label: "Dowód rejestracyjny",
         hint: "Tylko dla skutera, motocykla lub samochodu.",
+      },
+      insulated_bag: {
+        label: "Torba termiczna",
+        hint: "Zdjęcie torby termicznej — czystej i w dobrym stanie.",
+      },
+      vehicle_photo: {
+        label: "Zdjęcie pojazdu",
+        hint: "Całe zdjęcie roweru, skutera lub samochodu, którym dowozisz.",
       },
       profile_photo: { label: "Zdjęcie profilowe", hint: "Wyraźne zdjęcie Twojej twarzy." },
     },

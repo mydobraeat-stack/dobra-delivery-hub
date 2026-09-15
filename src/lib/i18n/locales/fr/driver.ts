@@ -132,11 +132,22 @@ export default {
     },
     types: {
       drivers_licence: { label: "Permis de conduire", hint: "Recto, bien lisible." },
-      id_card: { label: "Carte d'identité ou passeport", hint: "Page avec photo." },
+      id_card: {
+        label: "Passeport ou carte d'identité",
+        hint: "Page avec photo, quatre coins visibles.",
+      },
       insurance: { label: "Attestation d'assurance", hint: "Assurance responsabilité civile valide." },
       vehicle_registration: {
         label: "Carte grise",
         hint: "Uniquement pour scooter, moto ou voiture.",
+      },
+      insulated_bag: {
+        label: "Sac de livraison isotherme",
+        hint: "Photo de votre sac isotherme, propre et en bon état.",
+      },
+      vehicle_photo: {
+        label: "Photo du véhicule",
+        hint: "Photo entière du vélo, scooter ou voiture utilisé pour livrer.",
       },
       profile_photo: { label: "Photo de profil", hint: "Photo nette de votre visage." },
     },
