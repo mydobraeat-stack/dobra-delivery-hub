@@ -207,7 +207,7 @@ export async function setDriverDocsStatus(
 
 export async function setDocumentStatus(
   documentId: string,
-  status: "approved" | "rejected",
+  status: "approved" | "rejected" | "pending",
   note?: string,
 ) {
   const { error } = await supabase

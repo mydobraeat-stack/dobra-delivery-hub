@@ -12,6 +12,7 @@ import { PushSettings } from "@/components/dobra/PushSettings";
 import { useT, useI18n } from "@/lib/i18n";
 import { accountQueryOptions } from "@/lib/profile";
 import { myOrdersQuery, myDriverQuery, vendorRestaurantsQuery } from "@/lib/dobra";
+import { DOC_TYPES, driverDocsQuery } from "@/lib/driver-docs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -290,38 +291,99 @@ function DriverSection({ status }: { status: string | null | undefined }) {
   }
 
   return (
+    <>
+      <Card className="border-ink/10">
+        <CardHeader>
+          <CardTitle className="text-lg">{t("common.profile.driverDetails")}</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-2 gap-3">
+            <Stat
+              label={t("common.profile.availability")}
+              value={
+                driver?.status && driver.status !== "offline"
+                  ? t("common.profile.online")
+                  : t("common.profile.offline")
+              }
+            />
+            <Stat
+              label={t("common.profile.accountStatus")}
+              value={
+                status === "approved" ? t("common.approval.approved") : t("common.approval.pending")
+              }
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="vehicle">{t("common.profile.vehicle")}</Label>
+            <Input
+              id="vehicle"
+              value={vehicle}
+              onChange={(e) => setVehicle(e.target.value)}
+              placeholder={t("common.profile.vehiclePlaceholder")}
+            />
+          </div>
+          <div className="flex gap-2">
+            <Button onClick={saveVehicle} disabled={saving}>
+              {saving ? t("common.actions.saving") : t("common.profile.saveVehicle")}
+            </Button>
+            <Button asChild variant="outline">
+              <Link to="/driver">{t("common.profile.goToDeliveries")}</Link>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+      <DriverVerification />
+    </>
+  );
+}
+
+function DriverVerification() {
+  const t = useT();
+  const { data: docs = [] } = useQuery(driverDocsQuery);
+
+  return (
     <Card className="border-ink/10">
       <CardHeader>
-        <CardTitle className="text-lg">{t("common.profile.driverDetails")}</CardTitle>
+        <CardTitle className="text-lg">{t("driver.verification.title")}</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="grid grid-cols-2 gap-3">
-          <Stat
-            label={t("common.profile.availability")}
-            value={driver?.status && driver.status !== "offline" ? t("common.profile.online") : t("common.profile.offline")}
-          />
-          <Stat
-            label={t("common.profile.accountStatus")}
-            value={status === "approved" ? t("common.approval.approved") : t("common.approval.pending")}
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="vehicle">{t("common.profile.vehicle")}</Label>
-          <Input
-            id="vehicle"
-            value={vehicle}
-            onChange={(e) => setVehicle(e.target.value)}
-            placeholder={t("common.profile.vehiclePlaceholder")}
-          />
-        </div>
-        <div className="flex gap-2">
-          <Button onClick={saveVehicle} disabled={saving}>
-            {saving ? t("common.actions.saving") : t("common.profile.saveVehicle")}
-          </Button>
-          <Button asChild variant="outline">
-            <Link to="/driver">{t("common.profile.goToDeliveries")}</Link>
-          </Button>
-        </div>
+      <CardContent className="space-y-3">
+        <p className="text-sm text-foreground/60">{t("driver.verification.subtitle")}</p>
+        <ul className="space-y-2">
+          {DOC_TYPES.map((type) => {
+            const doc = docs.find((d) => d.doc_type === type.id);
+            const state = doc?.status ?? "missing";
+            return (
+              <li
+                key={type.id}
+                className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-ink/10 px-3 py-2"
+              >
+                <div className="min-w-0">
+                  <p className="text-sm break-words text-foreground">{t(type.labelKey)}</p>
+                  {doc?.review_note ? (
+                    <p className="text-xs break-words text-destructive">{doc.review_note}</p>
+                  ) : null}
+                </div>
+                <Badge
+                  variant={
+                    state === "approved"
+                      ? "default"
+                      : state === "rejected"
+                        ? "destructive"
+                        : state === "pending"
+                          ? "secondary"
+                          : "outline"
+                  }
+                  className="shrink-0"
+                >
+                  {t(`driver.verification.state.${state}`)}
+                </Badge>
+              </li>
+            );
+          })}
+        </ul>
+        <Button asChild variant="outline" className="w-full">
+          <Link to="/driver/documents">{t("driver.verification.manage")}</Link>
+        </Button>
       </CardContent>
     </Card>
   );

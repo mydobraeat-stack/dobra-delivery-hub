@@ -34,6 +34,7 @@ function AdminLayout() {
     { to: "/admin/approvals", label: t("admin.nav.approvals") },
     { to: "/admin/restaurants", label: t("admin.nav.restaurants") },
     { to: "/admin/drivers", label: t("admin.nav.drivers") },
+    { to: "/admin/reviews", label: t("admin.nav.reviews") },
     { to: "/admin/orders", label: t("admin.nav.orders") },
   ];
 
