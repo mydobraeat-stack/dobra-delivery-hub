@@ -1,0 +1,2 @@
+ALTER TABLE public.driver_documents DROP CONSTRAINT IF EXISTS driver_documents_doc_type_check;
+ALTER TABLE public.driver_documents ADD CONSTRAINT driver_documents_doc_type_check CHECK (doc_type IN ('drivers_licence','id_card','insurance','vehicle_registration','profile_photo','insulated_bag','vehicle_photo'));

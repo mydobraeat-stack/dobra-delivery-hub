@@ -2,16 +2,18 @@ import { queryOptions } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
 export const DOC_TYPES = [
-  { id: "drivers_licence", labelKey: "driver.documents.types.drivers_licence.label", hintKey: "driver.documents.types.drivers_licence.hint", required: true },
+  { id: "profile_photo", labelKey: "driver.documents.types.profile_photo.label", hintKey: "driver.documents.types.profile_photo.hint", required: true },
   { id: "id_card", labelKey: "driver.documents.types.id_card.label", hintKey: "driver.documents.types.id_card.hint", required: true },
+  { id: "drivers_licence", labelKey: "driver.documents.types.drivers_licence.label", hintKey: "driver.documents.types.drivers_licence.hint", required: true },
   { id: "insurance", labelKey: "driver.documents.types.insurance.label", hintKey: "driver.documents.types.insurance.hint", required: true },
+  { id: "insulated_bag", labelKey: "driver.documents.types.insulated_bag.label", hintKey: "driver.documents.types.insulated_bag.hint", required: true },
+  { id: "vehicle_photo", labelKey: "driver.documents.types.vehicle_photo.label", hintKey: "driver.documents.types.vehicle_photo.hint", required: true },
   {
     id: "vehicle_registration",
     labelKey: "driver.documents.types.vehicle_registration.label",
     hintKey: "driver.documents.types.vehicle_registration.hint",
     required: false,
   },
-  { id: "profile_photo", labelKey: "driver.documents.types.profile_photo.label", hintKey: "driver.documents.types.profile_photo.hint", required: true },
 ] as const;
 
 export type DocType = (typeof DOC_TYPES)[number]["id"];

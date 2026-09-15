@@ -199,6 +199,7 @@ function DriverDocuments() {
                 </div>
                 <ImageUpload
                   bucket="driver-documents"
+                  round={type.id === "profile_photo"}
                   label={t(doc ? "driver.documents.replacePhoto" : "driver.documents.uploadPhoto")}
                   value={doc?.file_path ?? null}
                   onChange={(path) => {

@@ -131,11 +131,19 @@ export default {
     },
     types: {
       drivers_licence: { label: "Driving licence", hint: "Front side, clearly readable." },
-      id_card: { label: "ID card or passport", hint: "Photo page." },
+      id_card: { label: "Passport or ID card", hint: "Photo page, all four corners visible." },
       insurance: { label: "Insurance certificate", hint: "Valid third-party insurance." },
       vehicle_registration: {
         label: "Vehicle registration",
         hint: "Only for scooter, motorbike or car.",
+      },
+      insulated_bag: {
+        label: "Insulated delivery bag",
+        hint: "Photo of your thermal bag, clean and in good condition.",
+      },
+      vehicle_photo: {
+        label: "Vehicle photo",
+        hint: "Full photo of the bicycle, scooter or car you will deliver with.",
       },
       profile_photo: { label: "Profile photo", hint: "Clear photo of your face." },
     },
