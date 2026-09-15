@@ -100,6 +100,17 @@ export default {
     paymentHistory: "Historia płatności",
     noneCompleted: "Brak zakończonych dostaw.",
   },
+  verification: {
+    title: "Weryfikacja dokumentów",
+    subtitle: "Oto decyzja naszego zespołu dla każdego przesłanego dokumentu.",
+    manage: "Zarządzaj dokumentami",
+    state: {
+      missing: "Nie przesłano",
+      pending: "W weryfikacji",
+      approved: "Zatwierdzony",
+      rejected: "Wymaga poprawek",
+    },
+  },
   documents: {
     title: "Dokumenty",
     vehicleTitle: "Twój pojazd",

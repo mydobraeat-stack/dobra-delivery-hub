@@ -100,6 +100,17 @@ export default {
     paymentHistory: "Historique des paiements",
     noneCompleted: "Aucune livraison terminée pour l'instant.",
   },
+  verification: {
+    title: "Vérification des documents",
+    subtitle: "Voici la décision de notre équipe pour chaque document envoyé.",
+    manage: "Gérer les documents",
+    state: {
+      missing: "Non envoyé",
+      pending: "En vérification",
+      approved: "Approuvé",
+      rejected: "À corriger",
+    },
+  },
   documents: {
     title: "Documents",
     vehicleTitle: "Votre véhicule",

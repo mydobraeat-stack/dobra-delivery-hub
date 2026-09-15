@@ -100,6 +100,17 @@ export default {
     paymentHistory: "Історія виплат",
     noneCompleted: "Ще немає завершених доставок.",
   },
+  verification: {
+    title: "Перевірка документів",
+    subtitle: "Ось рішення нашої команди щодо кожного надісланого документа.",
+    manage: "Керувати документами",
+    state: {
+      missing: "Не завантажено",
+      pending: "На перевірці",
+      approved: "Схвалено",
+      rejected: "Потребує змін",
+    },
+  },
   documents: {
     title: "Документи",
     vehicleTitle: "Ваш транспорт",
