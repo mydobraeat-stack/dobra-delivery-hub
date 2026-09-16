@@ -25,10 +25,10 @@ export function PhoneFrame({
 }) {
   return (
     <PhoneShellContext.Provider value={true}>
-      <div className="flex min-h-screen w-full justify-center bg-muted/60">
+      <div className="flex min-h-screen w-full justify-center bg-ink/20">
         <div
           className={cn(
-            "relative w-full max-w-[430px] bg-background shadow-2xl lg:border-x lg:border-ink/10",
+            "relative w-full max-w-[430px] bg-background shadow-2xl lg:border-x lg:border-ink/10 lg:min-h-screen",
             className,
           )}
         >
