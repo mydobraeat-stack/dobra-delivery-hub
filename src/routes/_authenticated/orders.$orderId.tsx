@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Check, MapPin, Star } from "lucide-react";
 import { toast } from "sonner";
 import { AppHeader } from "@/components/dobra/AppHeader";
+import { PhoneFrame } from "@/components/dobra/PhoneFrame";
 import { StoredImage } from "@/components/dobra/StoredImage";
 import { StatusBadge } from "@/components/dobra/StatusBadge";
 import { MapView, type MapPoint } from "@/components/dobra/MapView";

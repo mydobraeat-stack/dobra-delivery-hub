@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { StoredImage } from "@/components/dobra/StoredImage";
 import { AppHeader } from "@/components/dobra/AppHeader";
 import { CartBar } from "@/components/dobra/CartBar";
+import { PhoneFrame } from "@/components/dobra/PhoneFrame";
 import {
   restaurantQuery,
   restaurantReviewsQuery,
