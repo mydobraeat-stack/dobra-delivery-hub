@@ -14,8 +14,14 @@ export function CartBar({ raised }: { raised?: boolean } = {}) {
   if (count === 0) return null;
 
   return (
-    <div className={`fixed inset-x-0 z-40 border-t border-ink/10 bg-card/95 backdrop-blur ${raised ? "bottom-16" : "bottom-0"}`}>
-      <div className={cn("mx-auto flex items-center justify-between gap-3 px-5 py-3", maxW)}>
+    <div
+      className={cn(
+        "fixed left-1/2 z-40 w-full -translate-x-1/2 border-t border-ink/10 bg-card/95 backdrop-blur",
+        maxW,
+        raised ? "bottom-16" : "bottom-0",
+      )}
+    >
+      <div className="mx-auto flex w-full items-center justify-between gap-3 px-5 py-3">
         <div className="flex items-center gap-3">
           <span className="relative inline-flex size-10 items-center justify-center rounded-full bg-primary">
             <ShoppingBag className="size-5 text-primary-foreground" aria-hidden />

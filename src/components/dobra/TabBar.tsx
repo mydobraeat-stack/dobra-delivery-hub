@@ -44,9 +44,12 @@ export function TabBar({ role }: { role: "customer" | "vendor" | "driver" }) {
   return (
     <nav
       aria-label={t("common.navAria")}
-      className="fixed inset-x-0 bottom-0 z-30 border-t border-ink/10 bg-card/95 backdrop-blur"
+      className={cn(
+        "fixed bottom-0 left-1/2 z-30 w-full -translate-x-1/2 border-t border-ink/10 bg-card/95 backdrop-blur",
+        maxW,
+      )}
     >
-      <ul className={cn("mx-auto flex", maxW)}>
+      <ul className="mx-auto flex w-full">
         {tabs.map((tab) => (
           <li key={tab.to} className="min-w-0 flex-1">
             <Link
