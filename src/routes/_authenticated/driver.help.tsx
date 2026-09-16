@@ -29,7 +29,7 @@ function DriverHelp() {
     <main className="mx-auto max-w-4xl space-y-6 px-5 py-6">
       <h1 className="text-2xl font-bold text-foreground">{t("driver.help.title")}</h1>
 
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid gap-3 @sm:grid-cols-2">
         <Button asChild size="lg" className="justify-start">
           <a href="mailto:support@dobra.app">
             <Mail className="size-4" aria-hidden /> {t("driver.help.contactSupport")}

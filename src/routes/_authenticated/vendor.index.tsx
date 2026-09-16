@@ -61,7 +61,7 @@ function VendorOrdersPage() {
   const completedOrders = orders.filter((o) => ["delivered", "cancelled"].includes(o.status));
 
   return (
-    <main className="mx-auto max-w-4xl space-y-6 px-5 py-6">
+    <main className="mx-auto max-w-7xl space-y-6 px-5 py-6">
       <h1 className="text-2xl font-bold text-foreground">{t("vendor.orders.title")}</h1>
 
       {account?.approvalStatus !== "approved" ? (

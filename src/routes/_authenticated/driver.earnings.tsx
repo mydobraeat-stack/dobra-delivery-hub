@@ -55,7 +55,7 @@ function DriverEarnings() {
     <main className="mx-auto max-w-4xl space-y-6 px-5 py-6">
       <h1 className="text-2xl font-bold text-foreground">{t("driver.earnings.title")}</h1>
 
-      <section className="grid gap-3 sm:grid-cols-4">
+      <section className="grid grid-cols-2 gap-3">
         <Stat label={t("driver.earnings.today")} value={formatMoney(todayTotal)} />
         <Stat label={t("driver.earnings.last7")} value={formatMoney(weekTotal)} />
         <Stat label={t("driver.earnings.allTime")} value={formatMoney(total)} />

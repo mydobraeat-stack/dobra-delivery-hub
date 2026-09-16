@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { AppHeader } from "@/components/dobra/AppHeader";
 import { TabBar } from "@/components/dobra/TabBar";
+import { PhoneFrame } from "@/components/dobra/PhoneFrame";
 import { ImageUpload } from "@/components/dobra/ImageUpload";
 import { LanguageSwitcher } from "@/components/dobra/LanguageSwitcher";
 import { PushSettings } from "@/components/dobra/PushSettings";
@@ -105,8 +106,8 @@ function ProfilePage() {
     }
   }
 
-  return (
-    <div className="min-h-screen bg-background pb-24">
+  const body = (
+    <>
       <AppHeader subtitle={t("common.actions.profile")} />
       <main className="mx-auto max-w-2xl space-y-5 px-5 py-6">
         <div className="flex items-center justify-between gap-3">
@@ -182,8 +183,14 @@ function ProfilePage() {
       {role === "customer" || role === "vendor" || role === "driver" ? (
         <TabBar role={role} />
       ) : null}
-    </div>
+    </>
   );
+
+  if (role === "customer" || role === "driver") {
+    return <PhoneFrame className="min-h-screen pb-24">{body}</PhoneFrame>;
+  }
+
+  return <div className="min-h-screen bg-background pb-24">{body}</div>;
 }
 
 function Stat({ label, value }: { label: string; value: string }) {

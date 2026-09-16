@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Check, MapPin, Star } from "lucide-react";
 import { toast } from "sonner";
 import { AppHeader } from "@/components/dobra/AppHeader";
+import { PhoneFrame } from "@/components/dobra/PhoneFrame";
 import { StoredImage } from "@/components/dobra/StoredImage";
 import { StatusBadge } from "@/components/dobra/StatusBadge";
 import { MapView, type MapPoint } from "@/components/dobra/MapView";
@@ -106,7 +107,7 @@ function OrderTracking() {
   const currentIndex = order ? CUSTOMER_STEPS.findIndex((s) => s.status === order.status) : -1;
 
   return (
-    <div className="min-h-screen bg-background">
+    <PhoneFrame className="min-h-screen">
       {celebrate ? (
         <SuccessOverlay
           tone="sun"
@@ -274,7 +275,7 @@ function OrderTracking() {
           </>
         )}
       </main>
-    </div>
+    </PhoneFrame>
   );
 }
 

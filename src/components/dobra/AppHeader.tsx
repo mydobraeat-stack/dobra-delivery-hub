@@ -4,13 +4,16 @@ import { Button } from "@/components/ui/button";
 import { useT } from "@/lib/i18n";
 import { NotificationBell } from "./NotificationBell";
 import { DobraLogo } from "./Logo";
+import { useShellMaxWidth } from "./PhoneFrame";
+import { cn } from "@/lib/utils";
 
 export function AppHeader({ subtitle }: { subtitle?: string }) {
   const t = useT();
+  const maxW = useShellMaxWidth();
 
   return (
     <header className="sticky top-0 z-20 border-b border-ink/10 bg-background/95 backdrop-blur">
-      <div className="mx-auto flex max-w-4xl items-center justify-between gap-4 px-5 py-4">
+      <div className={cn("mx-auto flex items-center justify-between gap-4 px-5 py-4", maxW)}>
         <div className="flex items-baseline gap-3">
           <DobraLogo className="text-3xl" />
           {subtitle ? (

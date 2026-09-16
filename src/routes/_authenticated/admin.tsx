@@ -53,7 +53,7 @@ function AdminLayout() {
     <div className="min-h-screen bg-background pb-16">
       <AppHeader subtitle={t("admin.subtitle")} />
       <nav aria-label={t("admin.nav.label")} className="border-b border-ink/10 bg-card/60">
-        <ul className="mx-auto flex max-w-5xl flex-wrap gap-1 px-4 py-2">
+        <ul className="mx-auto flex max-w-7xl flex-wrap gap-1 px-4 py-2">
           {LINKS.map((l) => (
             <li key={l.to} className="shrink-0">
               <Link
@@ -70,7 +70,7 @@ function AdminLayout() {
           ))}
         </ul>
       </nav>
-      <main className="mx-auto max-w-5xl px-4 py-6">
+      <main className="mx-auto max-w-7xl px-4 py-6">
         <Outlet />
       </main>
     </div>

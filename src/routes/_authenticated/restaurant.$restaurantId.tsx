@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { StoredImage } from "@/components/dobra/StoredImage";
 import { AppHeader } from "@/components/dobra/AppHeader";
 import { CartBar } from "@/components/dobra/CartBar";
+import { PhoneFrame } from "@/components/dobra/PhoneFrame";
 import {
   restaurantQuery,
   restaurantReviewsQuery,
@@ -57,7 +58,7 @@ function RestaurantPage() {
     cart.restaurantId === restaurantId ? (cart.lines.find((l) => l.itemId === id)?.quantity ?? 0) : 0;
 
   return (
-    <div className="min-h-screen bg-background pb-28">
+    <PhoneFrame className="min-h-screen pb-28">
       <AppHeader subtitle={t("common.roles.customer")} />
       <main className="mx-auto max-w-4xl space-y-6 px-5 py-6">
         <Link
@@ -118,7 +119,7 @@ function RestaurantPage() {
             {grouped.map(([category, categoryItems]) => (
               <section key={category} className="space-y-3">
                 <h2 className="text-lg font-bold text-foreground">{t(`common.categories.${category}`)}</h2>
-                <div className="grid gap-3 sm:grid-cols-2">
+                <div className="grid gap-3 @sm:grid-cols-2">
                   {categoryItems.map((item) => {
                     const qty = qtyOf(item.id);
                     return (
@@ -220,6 +221,6 @@ function RestaurantPage() {
         )}
       </main>
       <CartBar />
-    </div>
+    </PhoneFrame>
   );
 }
