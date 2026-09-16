@@ -214,7 +214,7 @@ function CustomerHome() {
         {results.length === 0 ? (
           <p className="text-sm text-foreground/60">{t("customer.home.noMatch")}</p>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4 @sm:grid-cols-2">
             {results.map((r) => (
               <div key={r.id} className="relative">
                 <button

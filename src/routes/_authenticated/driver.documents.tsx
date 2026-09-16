@@ -122,7 +122,7 @@ function DriverDocuments() {
       <Card className="border-ink/10">
         <CardContent className="space-y-4 py-4">
           <h2 className="text-lg font-bold text-foreground">{t("driver.documents.vehicleTitle")}</h2>
-          <div className="grid gap-4 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
               <Label htmlFor="vehicle-type">{t("driver.documents.type")}</Label>
               <select
