@@ -57,7 +57,7 @@ function RestaurantPage() {
     cart.restaurantId === restaurantId ? (cart.lines.find((l) => l.itemId === id)?.quantity ?? 0) : 0;
 
   return (
-    <div className="min-h-screen bg-background pb-28">
+    <PhoneFrame className="min-h-screen pb-28">
       <AppHeader subtitle={t("common.roles.customer")} />
       <main className="mx-auto max-w-4xl space-y-6 px-5 py-6">
         <Link
@@ -220,6 +220,6 @@ function RestaurantPage() {
         )}
       </main>
       <CartBar />
-    </div>
+    </PhoneFrame>
   );
 }

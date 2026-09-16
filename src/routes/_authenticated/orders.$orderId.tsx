@@ -106,7 +106,7 @@ function OrderTracking() {
   const currentIndex = order ? CUSTOMER_STEPS.findIndex((s) => s.status === order.status) : -1;
 
   return (
-    <div className="min-h-screen bg-background">
+    <PhoneFrame className="min-h-screen">
       {celebrate ? (
         <SuccessOverlay
           tone="sun"
@@ -274,7 +274,7 @@ function OrderTracking() {
           </>
         )}
       </main>
-    </div>
+    </PhoneFrame>
   );
 }
 

@@ -104,7 +104,7 @@ function CheckoutPage() {
   });
 
   return (
-    <div className="min-h-screen bg-background">
+    <PhoneFrame className="min-h-screen">
       {placed ? (
         <SuccessOverlay
           title={t("customer.celebration.placedTitle")}
