@@ -9,7 +9,7 @@ export function usePhoneShell() {
 
 /** Max-width utility for bars/headers so they align with the phone frame. */
 export function useShellMaxWidth() {
-  return usePhoneShell() ? "max-w-[430px]" : "max-w-4xl";
+  return usePhoneShell() ? "max-w-[430px]" : "max-w-7xl";
 }
 
 /**

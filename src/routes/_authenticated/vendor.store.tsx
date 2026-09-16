@@ -62,7 +62,7 @@ function VendorStorePage() {
   const avgOrder = delivered.length ? revenue / delivered.length : 0;
 
   return (
-    <main className="mx-auto max-w-4xl space-y-6 px-5 py-6">
+    <main className="mx-auto max-w-7xl space-y-6 px-5 py-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-bold text-foreground">{t("vendor.store.title")}</h1>
         <Button size="sm" variant="outline" onClick={() => setForm({ open: true, editing: null })}>
