@@ -11,7 +11,17 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as BusinessRouteImport } from './routes/business'
+import { Route as CitiesRouteImport } from './routes/cities'
+import { Route as DeliverRouteImport } from './routes/deliver'
+import { Route as GetStartedRouteImport } from './routes/get-started'
+import { Route as HelpRouteImport } from './routes/help'
+import { Route as PartnerRouteImport } from './routes/partner'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as RestaurantsRouteImport } from './routes/restaurants'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedCheckoutRouteImport } from './routes/_authenticated/checkout'
 import { Route as AuthenticatedCustomerRouteImport } from './routes/_authenticated/customer'
@@ -49,9 +59,59 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BusinessRoute = BusinessRouteImport.update({
+  id: '/business',
+  path: '/business',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CitiesRoute = CitiesRouteImport.update({
+  id: '/cities',
+  path: '/cities',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DeliverRoute = DeliverRouteImport.update({
+  id: '/deliver',
+  path: '/deliver',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GetStartedRoute = GetStartedRouteImport.update({
+  id: '/get-started',
+  path: '/get-started',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HelpRoute = HelpRouteImport.update({
+  id: '/help',
+  path: '/help',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PartnerRoute = PartnerRouteImport.update({
+  id: '/partner',
+  path: '/partner',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RestaurantsRoute = RestaurantsRouteImport.update({
+  id: '/restaurants',
+  path: '/restaurants',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
@@ -208,7 +268,17 @@ const ApiPublicPushDispatchRoute = ApiPublicPushDispatchRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/business': typeof BusinessRoute
+  '/cities': typeof CitiesRoute
+  '/deliver': typeof DeliverRoute
+  '/get-started': typeof GetStartedRoute
+  '/help': typeof HelpRoute
+  '/partner': typeof PartnerRoute
+  '/privacy': typeof PrivacyRoute
+  '/restaurants': typeof RestaurantsRoute
+  '/terms': typeof TermsRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/checkout': typeof AuthenticatedCheckoutRoute
   '/customer': typeof AuthenticatedCustomerRouteWithChildren
@@ -239,7 +309,17 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/business': typeof BusinessRoute
+  '/cities': typeof CitiesRoute
+  '/deliver': typeof DeliverRoute
+  '/get-started': typeof GetStartedRoute
+  '/help': typeof HelpRoute
+  '/partner': typeof PartnerRoute
+  '/privacy': typeof PrivacyRoute
+  '/restaurants': typeof RestaurantsRoute
+  '/terms': typeof TermsRoute
   '/checkout': typeof AuthenticatedCheckoutRoute
   '/home': typeof AuthenticatedHomeRoute
   '/profile': typeof AuthenticatedProfileRoute
@@ -268,7 +348,17 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/business': typeof BusinessRoute
+  '/cities': typeof CitiesRoute
+  '/deliver': typeof DeliverRoute
+  '/get-started': typeof GetStartedRoute
+  '/help': typeof HelpRoute
+  '/partner': typeof PartnerRoute
+  '/privacy': typeof PrivacyRoute
+  '/restaurants': typeof RestaurantsRoute
+  '/terms': typeof TermsRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/checkout': typeof AuthenticatedCheckoutRoute
   '/_authenticated/customer': typeof AuthenticatedCustomerRouteWithChildren
@@ -301,7 +391,17 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/auth'
+    | '/business'
+    | '/cities'
+    | '/deliver'
+    | '/get-started'
+    | '/help'
+    | '/partner'
+    | '/privacy'
+    | '/restaurants'
+    | '/terms'
     | '/admin'
     | '/checkout'
     | '/customer'
@@ -332,7 +432,17 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/auth'
+    | '/business'
+    | '/cities'
+    | '/deliver'
+    | '/get-started'
+    | '/help'
+    | '/partner'
+    | '/privacy'
+    | '/restaurants'
+    | '/terms'
     | '/checkout'
     | '/home'
     | '/profile'
@@ -360,7 +470,17 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/about'
     | '/auth'
+    | '/business'
+    | '/cities'
+    | '/deliver'
+    | '/get-started'
+    | '/help'
+    | '/partner'
+    | '/privacy'
+    | '/restaurants'
+    | '/terms'
     | '/_authenticated/admin'
     | '/_authenticated/checkout'
     | '/_authenticated/customer'
@@ -393,7 +513,17 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
+  BusinessRoute: typeof BusinessRoute
+  CitiesRoute: typeof CitiesRoute
+  DeliverRoute: typeof DeliverRoute
+  GetStartedRoute: typeof GetStartedRoute
+  HelpRoute: typeof HelpRoute
+  PartnerRoute: typeof PartnerRoute
+  PrivacyRoute: typeof PrivacyRoute
+  RestaurantsRoute: typeof RestaurantsRoute
+  TermsRoute: typeof TermsRoute
   ApiPublicPushDispatchRoute: typeof ApiPublicPushDispatchRoute
 }
 
@@ -413,11 +543,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/business': {
+      id: '/business'
+      path: '/business'
+      fullPath: '/business'
+      preLoaderRoute: typeof BusinessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cities': {
+      id: '/cities'
+      path: '/cities'
+      fullPath: '/cities'
+      preLoaderRoute: typeof CitiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/deliver': {
+      id: '/deliver'
+      path: '/deliver'
+      fullPath: '/deliver'
+      preLoaderRoute: typeof DeliverRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/get-started': {
+      id: '/get-started'
+      path: '/get-started'
+      fullPath: '/get-started'
+      preLoaderRoute: typeof GetStartedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/help': {
+      id: '/help'
+      path: '/help'
+      fullPath: '/help'
+      preLoaderRoute: typeof HelpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/partner': {
+      id: '/partner'
+      path: '/partner'
+      fullPath: '/partner'
+      preLoaderRoute: typeof PartnerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/restaurants': {
+      id: '/restaurants'
+      path: '/restaurants'
+      fullPath: '/restaurants'
+      preLoaderRoute: typeof RestaurantsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin': {
@@ -716,7 +916,17 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
+  BusinessRoute: BusinessRoute,
+  CitiesRoute: CitiesRoute,
+  DeliverRoute: DeliverRoute,
+  GetStartedRoute: GetStartedRoute,
+  HelpRoute: HelpRoute,
+  PartnerRoute: PartnerRoute,
+  PrivacyRoute: PrivacyRoute,
+  RestaurantsRoute: RestaurantsRoute,
+  TermsRoute: TermsRoute,
   ApiPublicPushDispatchRoute: ApiPublicPushDispatchRoute,
 }
 export const routeTree = rootRouteImport
