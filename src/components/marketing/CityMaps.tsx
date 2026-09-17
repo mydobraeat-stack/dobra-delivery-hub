@@ -8,7 +8,7 @@ function toPoints(cities: City[]): MapPoint[] {
 
 function CountryCard({ title, cities }: { title: string; cities: City[] }) {
   return (
-    <article className="overflow-hidden rounded-3xl border border-ink/10 bg-card shadow-soft">
+    <article className="overflow-hidden rounded-3xl border border-ink/10 bg-background/40 shadow-soft">
       <MapView points={toPoints(cities)} className="h-64 w-full sm:h-72" zoom={6} />
       <div className="p-5">
         <h3 className="text-lg font-bold text-foreground">{title}</h3>
@@ -30,7 +30,7 @@ function CountryCard({ title, cities }: { title: string; cities: City[] }) {
 export function CityMaps() {
   const t = useT();
   return (
-    <section className="bg-background">
+    <section className="bg-card">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
         <h2 className="text-3xl font-extrabold text-foreground sm:text-4xl">
           {t("marketing.cities.title")}
