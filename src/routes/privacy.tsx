@@ -1,18 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { InfoPage } from "@/components/marketing/InfoPage";
+import { LegalPage } from "@/components/marketing/LegalPage";
+import { PRIVACY_DOC } from "@/components/marketing/legal-content";
 
 export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
-      { title: "Privacy policy — Dobra" },
-      { name: "description", content: "How Dobra handles your personal data." },
-      { property: "og:title", content: "Privacy policy — Dobra" },
-      { property: "og:description", content: "How Dobra handles your personal data." },
+      { title: "Polityka prywatności — Dobra" },
+      { name: "description", content: "Jak Dobra przetwarza dane osobowe użytkowników zgodnie z RODO." },
+      { property: "og:title", content: "Polityka prywatności — Dobra" },
+      { property: "og:description", content: "Jak Dobra przetwarza dane osobowe użytkowników zgodnie z RODO." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: () => (
-    <InfoPage titleKey="marketing.pages.privacy.title" bodyKey="marketing.pages.privacy.body" />
-  ),
+  component: () => <LegalPage doc={PRIVACY_DOC} />,
 });
