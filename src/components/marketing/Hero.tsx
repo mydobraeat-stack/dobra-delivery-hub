@@ -1,14 +1,33 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useT } from "@/lib/i18n";
 import heroImage from "@/assets/marketing-hero.jpg";
+import heroBurger from "@/assets/hero-burger.jpg";
+import heroBowl from "@/assets/hero-bowl.jpg";
+import heroPizza from "@/assets/hero-pizza.jpg";
+import heroPierogi from "@/assets/hero-pierogi.jpg";
+import heroGrill from "@/assets/hero-grill.jpg";
+
+const HERO_IMAGES = [heroImage, heroBurger, heroBowl, heroPizza, heroPierogi, heroGrill];
+const ROTATE_MS = 5000;
 
 export function Hero() {
   const t = useT();
   const navigate = useNavigate();
   const [address, setAddress] = useState("");
+
+  // Start on a random dish each visit, then cycle gently.
+  const start = useMemo(() => Math.floor(Math.random() * HERO_IMAGES.length), []);
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const id = window.setInterval(() => setIndex((i) => i + 1), ROTATE_MS);
+    return () => window.clearInterval(id);
+  }, []);
+
+  const active = (start + index) % HERO_IMAGES.length;
 
   function submit(event: React.FormEvent) {
     event.preventDefault();
@@ -56,13 +75,21 @@ export function Hero() {
         </div>
 
         <div className="min-w-0">
-          <img
-            src={heroImage}
-            alt={t("marketing.hero.imageAlt")}
-            width={1280}
-            height={1024}
-            className="aspect-[5/4] w-full rounded-3xl object-cover shadow-soft"
-          />
+          <div className="relative aspect-[5/4] w-full overflow-hidden rounded-3xl shadow-soft">
+            {HERO_IMAGES.map((src, i) => (
+              <img
+                key={src}
+                src={src}
+                alt={i === active ? t("marketing.hero.imageAlt") : ""}
+                aria-hidden={i !== active}
+                width={1280}
+                height={1024}
+                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out ${
+                  i === active ? "opacity-100" : "opacity-0"
+                }`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>
