@@ -206,9 +206,15 @@ function DriverDocuments() {
                     </div>
                   ) : null}
                 </div>
+                {type.id === "insulated_bag" ? (
+                  <DocExamples good={bagGood} avoid={bagAvoid} />
+                ) : null}
+                {type.id === "profile_photo" ? (
+                  <DocExamples good={selfieGood} avoid={selfieAvoid} />
+                ) : null}
                 <ImageUpload
                   bucket="driver-documents"
-                  round={type.id === "profile_photo"}
+                  capture={capture}
                   label={t(doc ? "driver.documents.replacePhoto" : "driver.documents.uploadPhoto")}
                   value={doc?.file_path ?? null}
                   onChange={(path) => {
