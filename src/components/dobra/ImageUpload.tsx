@@ -13,7 +13,7 @@ type Props = {
   onChange: (value: string) => void;
   label: string;
   /** Opens the device camera directly instead of the gallery. */
-  capture?: "user" | "environment";
+  capture?: "user" | "environment" | undefined;
 };
 
 const MAX_BYTES = 5 * 1024 * 1024;
