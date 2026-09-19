@@ -4,6 +4,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2, Clock, Trash2, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import { ImageUpload } from "@/components/dobra/ImageUpload";
+import { DocExamples } from "@/components/dobra/DocExamples";
+import bagGood from "@/assets/doc-bag-good.jpg";
+import bagAvoid from "@/assets/doc-bag-avoid.jpg";
+import selfieGood from "@/assets/doc-selfie-good.jpg";
+import selfieAvoid from "@/assets/doc-selfie-avoid.jpg";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -13,7 +18,7 @@ import { myDriverQuery } from "@/lib/dobra";
 import { useT } from "@/lib/i18n";
 import {
   DOCS_STATUS_LABEL_KEY,
-  DOC_TYPES,
+  requiredDocsFor,
   VEHICLE_TYPES,
   driverDocsQuery,
   removeDriverDocument,
