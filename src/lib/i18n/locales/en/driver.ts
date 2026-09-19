@@ -111,6 +111,9 @@ export default {
     },
   },
   documents: {
+    takePhoto: "Take photo",
+    retakePhoto: "Retake photo",
+    examples: { good: "Good example", avoid: "Avoid" },
     title: "Documents",
     vehicleTitle: "Your vehicle",
     type: "Type",
@@ -197,5 +200,14 @@ export default {
       "We couldn't approve your driver account this time. This usually happens when a document is unreadable, expired, or doesn't match your details. Our support team can tell you exactly what to fix and help you re-apply.",
     contactSupport: "Contact support",
     reupload: "Re-upload documents",
+  },
+  verifyGate: {
+    startTitle: "Verify your account to go online",
+    startBody: "Add your documents so we can verify you before you start delivering.",
+    finishTitle: "Finish verifying your account",
+    finishBody: "Some documents are still missing. Complete them to go online.",
+    rejectedTitle: "Application not approved",
+    rejectedBody: "Your documents were not approved. Update them and submit again.",
+    action: "Go to documents",
   },
 };

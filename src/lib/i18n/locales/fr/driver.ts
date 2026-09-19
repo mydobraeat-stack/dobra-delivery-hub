@@ -112,6 +112,9 @@ export default {
     },
   },
   documents: {
+    takePhoto: "Prendre une photo",
+    retakePhoto: "Reprendre la photo",
+    examples: { good: "Bon exemple", avoid: "À éviter" },
     title: "Documents",
     vehicleTitle: "Votre véhicule",
     type: "Type",
@@ -202,5 +205,14 @@ export default {
       "Nous n'avons pas pu approuver votre compte livreur cette fois. Cela arrive souvent quand un document est illisible, expiré ou ne correspond pas à vos informations. Notre assistance vous indiquera exactement quoi corriger et vous aidera à postuler à nouveau.",
     contactSupport: "Contacter l'assistance",
     reupload: "Renvoyer les documents",
+  },
+  verifyGate: {
+    startTitle: "Vérifiez votre compte pour passer en ligne",
+    startBody: "Ajoutez vos documents pour que nous puissions vous vérifier avant vos premières livraisons.",
+    finishTitle: "Terminez la vérification de votre compte",
+    finishBody: "Certains documents manquent encore. Complétez-les pour passer en ligne.",
+    rejectedTitle: "Demande non approuvée",
+    rejectedBody: "Vos documents n'ont pas été approuvés. Mettez-les à jour et renvoyez-les.",
+    action: "Voir mes documents",
   },
 };
