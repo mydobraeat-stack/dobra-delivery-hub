@@ -172,6 +172,45 @@ function DriverHome() {
   return (
     <div className="pb-4">
       <NewDeliveryAlert online={online} available={available} restaurantName={restaurantName} />
+
+      <Dialog open={gate !== null} onOpenChange={(o) => !o && setGate(null)}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle>
+              {t(
+                gate === "rejected"
+                  ? "driver.verifyGate.rejectedTitle"
+                  : gate === "finish"
+                    ? "driver.verifyGate.finishTitle"
+                    : "driver.verifyGate.startTitle",
+              )}
+            </DialogTitle>
+            <DialogDescription>
+              {t(
+                gate === "rejected"
+                  ? "driver.verifyGate.rejectedBody"
+                  : gate === "finish"
+                    ? "driver.verifyGate.finishBody"
+                    : "driver.verifyGate.startBody",
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          {gate === "finish" && missingDocs.length > 0 ? (
+            <p className="text-sm text-foreground/70">
+              {t("driver.documents.missingNote", {
+                items: missingDocs.map((d) => t(d.labelKey)).join(", "),
+              })}
+            </p>
+          ) : null}
+          <DialogFooter>
+            <Button asChild className="w-full">
+              <Link to="/driver/documents" onClick={() => setGate(null)}>
+                {t("driver.verifyGate.action")}
+              </Link>
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       {/* Map with floating controls */}
       <section className="relative h-[58vh] min-h-80 w-full overflow-hidden">
         {points.length > 0 ? (
