@@ -105,14 +105,14 @@ function AdminDriverReviews() {
                 <span className="text-foreground/60">
                   {t("admin.reviews.progress", {
                     done: String(approvedCount),
-                    total: String(DOC_TYPES.length),
+                    total: String(types.length),
                   })}
                 </span>
               </div>
             </div>
 
             <ul className="space-y-3">
-              {DOC_TYPES.map((type) => {
+              {types.map((type) => {
                 const doc = d.documents.find((x) => x.doc_type === type.id);
                 const noteValue = doc
                   ? (notes[doc.id] ?? doc.review_note ?? "")
