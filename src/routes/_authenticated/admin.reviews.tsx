@@ -13,7 +13,7 @@ import {
   setDriverDocsStatus,
   setProfileApproval,
 } from "@/lib/admin";
-import { DOCS_STATUS_LABEL_KEY, DOC_TYPES } from "@/lib/driver-docs";
+import { DOCS_STATUS_LABEL_KEY, requiredDocsFor } from "@/lib/driver-docs";
 import { resolveImageUrl } from "@/lib/storage";
 import { useT } from "@/lib/i18n";
 
@@ -78,7 +78,10 @@ function AdminDriverReviews() {
       ) : null}
 
       {drivers.map((d) => {
-        const approvedCount = d.documents.filter((doc) => doc.status === "approved").length;
+        const types = requiredDocsFor(d.vehicle_type);
+        const approvedCount = d.documents.filter(
+          (doc) => doc.status === "approved" && types.some((ty) => ty.id === doc.doc_type),
+        ).length;
         return (
           <Card key={d.id} className="space-y-4 p-5">
             <div className="flex flex-wrap items-start justify-between gap-3">

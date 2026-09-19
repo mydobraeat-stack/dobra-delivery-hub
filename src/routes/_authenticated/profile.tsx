@@ -13,7 +13,7 @@ import { PushSettings } from "@/components/dobra/PushSettings";
 import { useT, useI18n } from "@/lib/i18n";
 import { accountQueryOptions } from "@/lib/profile";
 import { myOrdersQuery, myDriverQuery, vendorRestaurantsQuery } from "@/lib/dobra";
-import { DOC_TYPES, driverDocsQuery } from "@/lib/driver-docs";
+import { requiredDocsFor, driverDocsQuery } from "@/lib/driver-docs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -347,6 +347,8 @@ function DriverSection({ status }: { status: string | null | undefined }) {
 function DriverVerification() {
   const t = useT();
   const { data: docs = [] } = useQuery(driverDocsQuery);
+  const { data: driver } = useQuery(myDriverQuery);
+  const types = requiredDocsFor(driver?.vehicle_type);
 
   return (
     <Card className="border-ink/10">
@@ -356,7 +358,7 @@ function DriverVerification() {
       <CardContent className="space-y-3">
         <p className="text-sm text-foreground/60">{t("driver.verification.subtitle")}</p>
         <ul className="space-y-2">
-          {DOC_TYPES.map((type) => {
+          {types.map((type) => {
             const doc = docs.find((d) => d.doc_type === type.id);
             const state = doc?.status ?? "missing";
             return (
