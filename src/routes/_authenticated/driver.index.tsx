@@ -17,11 +17,16 @@ import {
 import { toast } from "sonner";
 import { useI18n } from "@/lib/i18n";
 import { accountQueryOptions } from "@/lib/profile";
+import { driverApproval } from "@/components/dobra/DriverGate";
+import { driverDocsQuery, requiredDocsFor } from "@/lib/driver-docs";
 import {
-  ApplicationRejected,
-  ApplicationUnderReview,
-  driverApproval,
-} from "@/components/dobra/DriverGate";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { StatusBadge } from "@/components/dobra/StatusBadge";
 import { MapView, type MapPoint } from "@/components/dobra/MapView";
 import { NewDeliveryAlert } from "@/components/dobra/NewDeliveryAlert";
