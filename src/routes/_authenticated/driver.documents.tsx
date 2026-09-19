@@ -172,8 +172,14 @@ function DriverDocuments() {
       <section className="space-y-3">
         <h2 className="text-lg font-bold text-foreground">{t("driver.documents.paperworkTitle")}</h2>
         {isLoading ? <p className="text-sm text-foreground/60">{t("common.state.loading")}</p> : null}
-        {DOC_TYPES.map((type) => {
+        {requiredDocs.map((type) => {
           const doc = docFor(type.id);
+          const capture =
+            type.id === "profile_photo"
+              ? ("user" as const)
+              : type.id === "id_card"
+                ? ("environment" as const)
+                : undefined;
           return (
             <Card key={type.id} className="border-ink/10">
               <CardContent className="space-y-3 py-4">
