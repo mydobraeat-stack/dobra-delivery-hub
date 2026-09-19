@@ -243,8 +243,8 @@ function DriverHome() {
 
           <Button
             size="lg"
-            disabled={!approved || toggle.isPending}
-            onClick={() => toggle.mutate(!online)}
+            disabled={toggle.isPending}
+            onClick={handleToggle}
             className={`h-12 flex-1 rounded-full text-base font-bold shadow-lg ${
               online
                 ? "bg-destructive text-destructive-foreground hover:bg-destructive/90"
