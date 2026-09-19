@@ -137,8 +137,6 @@ function DriverHome() {
 
   const points = useMemo<MapPoint[]>(() => (me ? [{ ...me, label: "You", kind: "driver" as const }] : []), [me]);
 
-  if (approval === "rejected") return <ApplicationRejected />;
-  if (approval === "pending") return <ApplicationUnderReview driver={driver} />;
 
   const mine = data?.mine ?? [];
   const available = online ? (data?.available ?? []) : [];
