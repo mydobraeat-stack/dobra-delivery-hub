@@ -185,10 +185,7 @@ function DriverDocuments() {
               <CardContent className="space-y-3 py-4">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div>
-                    <p className="font-semibold text-foreground">
-                      {t(type.labelKey)}
-                      {type.required ? "" : t("driver.documents.ifYouDrive")}
-                    </p>
+                    <p className="font-semibold text-foreground">{t(type.labelKey)}</p>
                     <p className="text-xs text-foreground/60">{t(type.hintKey)}</p>
                     {doc?.review_note ? (
                       <p className="text-xs text-destructive">{doc.review_note}</p>
