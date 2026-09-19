@@ -113,7 +113,8 @@ function DriverDocuments() {
   });
 
   const docFor = (id: string) => docs.find((d) => d.doc_type === id);
-  const requiredMissing = DOC_TYPES.filter((t) => t.required && !docFor(t.id));
+  const requiredDocs = requiredDocsFor(vehicleType);
+  const requiredMissing = requiredDocs.filter((d) => !docFor(d.id));
 
   return (
     <main className="mx-auto max-w-4xl space-y-6 px-5 py-6">
