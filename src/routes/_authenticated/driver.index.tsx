@@ -17,11 +17,16 @@ import {
 import { toast } from "sonner";
 import { useI18n } from "@/lib/i18n";
 import { accountQueryOptions } from "@/lib/profile";
+import { driverApproval } from "@/components/dobra/DriverGate";
+import { driverDocsQuery, requiredDocsFor } from "@/lib/driver-docs";
 import {
-  ApplicationRejected,
-  ApplicationUnderReview,
-  driverApproval,
-} from "@/components/dobra/DriverGate";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { StatusBadge } from "@/components/dobra/StatusBadge";
 import { MapView, type MapPoint } from "@/components/dobra/MapView";
 import { NewDeliveryAlert } from "@/components/dobra/NewDeliveryAlert";
@@ -73,6 +78,22 @@ function DriverHome() {
 
   const [online, setOnline] = useState(false);
   const [me, setMe] = useState<{ lat: number; lng: number } | null>(null);
+  const { data: docs = [] } = useQuery(driverDocsQuery);
+  const [gate, setGate] = useState<null | "start" | "finish" | "rejected">(null);
+
+  const missingDocs = requiredDocsFor(driver?.vehicle_type).filter(
+    (d) => !docs.some((x) => x.doc_type === d.id),
+  );
+
+  function handleToggle() {
+    if (approved) {
+      toggle.mutate(!online);
+      return;
+    }
+    if (approval === "rejected") setGate("rejected");
+    else if (docs.length === 0) setGate("start");
+    else setGate("finish");
+  }
 
   useEffect(() => {
     if (driver) setOnline(driver.status === "available" || driver.status === "busy");
@@ -132,8 +153,6 @@ function DriverHome() {
 
   const points = useMemo<MapPoint[]>(() => (me ? [{ ...me, label: "You", kind: "driver" as const }] : []), [me]);
 
-  if (approval === "rejected") return <ApplicationRejected />;
-  if (approval === "pending") return <ApplicationUnderReview driver={driver} />;
 
   const mine = data?.mine ?? [];
   const available = online ? (data?.available ?? []) : [];
@@ -153,6 +172,45 @@ function DriverHome() {
   return (
     <div className="pb-4">
       <NewDeliveryAlert online={online} available={available} restaurantName={restaurantName} />
+
+      <Dialog open={gate !== null} onOpenChange={(o) => !o && setGate(null)}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle>
+              {t(
+                gate === "rejected"
+                  ? "driver.verifyGate.rejectedTitle"
+                  : gate === "finish"
+                    ? "driver.verifyGate.finishTitle"
+                    : "driver.verifyGate.startTitle",
+              )}
+            </DialogTitle>
+            <DialogDescription>
+              {t(
+                gate === "rejected"
+                  ? "driver.verifyGate.rejectedBody"
+                  : gate === "finish"
+                    ? "driver.verifyGate.finishBody"
+                    : "driver.verifyGate.startBody",
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          {gate === "finish" && missingDocs.length > 0 ? (
+            <p className="text-sm text-foreground/70">
+              {t("driver.documents.missingNote", {
+                items: missingDocs.map((d) => t(d.labelKey)).join(", "),
+              })}
+            </p>
+          ) : null}
+          <DialogFooter>
+            <Button asChild className="w-full">
+              <Link to="/driver/documents" onClick={() => setGate(null)}>
+                {t("driver.verifyGate.action")}
+              </Link>
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       {/* Map with floating controls */}
       <section className="relative h-[58vh] min-h-80 w-full overflow-hidden">
         {points.length > 0 ? (
@@ -224,8 +282,8 @@ function DriverHome() {
 
           <Button
             size="lg"
-            disabled={!approved || toggle.isPending}
-            onClick={() => toggle.mutate(!online)}
+            disabled={toggle.isPending}
+            onClick={handleToggle}
             className={`h-12 flex-1 rounded-full text-base font-bold shadow-lg ${
               online
                 ? "bg-destructive text-destructive-foreground hover:bg-destructive/90"

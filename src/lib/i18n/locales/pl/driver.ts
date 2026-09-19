@@ -112,6 +112,9 @@ export default {
     },
   },
   documents: {
+    takePhoto: "Zrób zdjęcie",
+    retakePhoto: "Zrób ponownie",
+    examples: { good: "Dobry przykład", avoid: "Unikaj" },
     title: "Dokumenty",
     vehicleTitle: "Twój pojazd",
     type: "Typ",
@@ -202,5 +205,14 @@ export default {
       "Tym razem nie mogliśmy zatwierdzić Twojego konta kierowcy. Zwykle dzieje się tak, gdy dokument jest nieczytelny, nieważny lub nie zgadza się z Twoimi danymi. Nasze wsparcie powie dokładnie, co poprawić, i pomoże złożyć wniosek ponownie.",
     contactSupport: "Skontaktuj się ze wsparciem",
     reupload: "Prześlij dokumenty ponownie",
+  },
+  verifyGate: {
+    startTitle: "Zweryfikuj konto, aby przejść online",
+    startBody: "Dodaj dokumenty, abyśmy mogli Cię zweryfikować przed pierwszą dostawą.",
+    finishTitle: "Dokończ weryfikację konta",
+    finishBody: "Brakuje jeszcze kilku dokumentów. Uzupełnij je, aby przejść online.",
+    rejectedTitle: "Wniosek odrzucony",
+    rejectedBody: "Twoje dokumenty nie zostały zatwierdzone. Zaktualizuj je i wyślij ponownie.",
+    action: "Przejdź do dokumentów",
   },
 };

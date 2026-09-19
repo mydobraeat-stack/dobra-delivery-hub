@@ -1,0 +1,1 @@
+ALTER TABLE public.driver_documents DROP CONSTRAINT IF EXISTS driver_documents_type_check;

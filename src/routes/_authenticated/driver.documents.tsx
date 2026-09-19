@@ -4,6 +4,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2, Clock, Trash2, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import { ImageUpload } from "@/components/dobra/ImageUpload";
+import { DocExamples } from "@/components/dobra/DocExamples";
+import bagGood from "@/assets/doc-bag-good.jpg";
+import bagAvoid from "@/assets/doc-bag-avoid.jpg";
+import selfieGood from "@/assets/doc-selfie-good.jpg";
+import selfieAvoid from "@/assets/doc-selfie-avoid.jpg";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -13,7 +18,7 @@ import { myDriverQuery } from "@/lib/dobra";
 import { useT } from "@/lib/i18n";
 import {
   DOCS_STATUS_LABEL_KEY,
-  DOC_TYPES,
+  requiredDocsFor,
   VEHICLE_TYPES,
   driverDocsQuery,
   removeDriverDocument,
@@ -108,7 +113,8 @@ function DriverDocuments() {
   });
 
   const docFor = (id: string) => docs.find((d) => d.doc_type === id);
-  const requiredMissing = DOC_TYPES.filter((t) => t.required && !docFor(t.id));
+  const requiredDocs = requiredDocsFor(vehicleType);
+  const requiredMissing = requiredDocs.filter((d) => !docFor(d.id));
 
   return (
     <main className="mx-auto max-w-4xl space-y-6 px-5 py-6">
@@ -166,17 +172,20 @@ function DriverDocuments() {
       <section className="space-y-3">
         <h2 className="text-lg font-bold text-foreground">{t("driver.documents.paperworkTitle")}</h2>
         {isLoading ? <p className="text-sm text-foreground/60">{t("common.state.loading")}</p> : null}
-        {DOC_TYPES.map((type) => {
+        {requiredDocs.map((type) => {
           const doc = docFor(type.id);
+          const capture =
+            type.id === "profile_photo"
+              ? ("user" as const)
+              : type.id === "id_card"
+                ? ("environment" as const)
+                : undefined;
           return (
             <Card key={type.id} className="border-ink/10">
               <CardContent className="space-y-3 py-4">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div>
-                    <p className="font-semibold text-foreground">
-                      {t(type.labelKey)}
-                      {type.required ? "" : t("driver.documents.ifYouDrive")}
-                    </p>
+                    <p className="font-semibold text-foreground">{t(type.labelKey)}</p>
                     <p className="text-xs text-foreground/60">{t(type.hintKey)}</p>
                     {doc?.review_note ? (
                       <p className="text-xs text-destructive">{doc.review_note}</p>
@@ -197,9 +206,15 @@ function DriverDocuments() {
                     </div>
                   ) : null}
                 </div>
+                {type.id === "insulated_bag" ? (
+                  <DocExamples good={bagGood} avoid={bagAvoid} />
+                ) : null}
+                {type.id === "profile_photo" ? (
+                  <DocExamples good={selfieGood} avoid={selfieAvoid} />
+                ) : null}
                 <ImageUpload
                   bucket="driver-documents"
-                  round={type.id === "profile_photo"}
+                  capture={capture}
                   label={t(doc ? "driver.documents.replacePhoto" : "driver.documents.uploadPhoto")}
                   value={doc?.file_path ?? null}
                   onChange={(path) => {

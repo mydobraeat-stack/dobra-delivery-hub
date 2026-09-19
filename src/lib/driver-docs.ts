@@ -20,6 +20,28 @@ export type DocType = (typeof DOC_TYPES)[number]["id"];
 
 export const VEHICLE_TYPES = ["Bicycle", "E-bike", "Scooter", "Motorbike", "Car", "On foot"] as const;
 
+const BASE_DOCS: DocType[] = ["profile_photo", "id_card", "insulated_bag"];
+const LIGHT_DOCS: DocType[] = [...BASE_DOCS, "vehicle_photo"];
+const FULL_DOCS: DocType[] = [
+  ...LIGHT_DOCS,
+  "drivers_licence",
+  "insurance",
+  "vehicle_registration",
+];
+
+/** Documents a driver must provide for the vehicle they deliver with. */
+export function requiredDocsFor(vehicleType: string | null | undefined) {
+  const ids =
+    vehicleType === "Motorbike" || vehicleType === "Car"
+      ? FULL_DOCS
+      : vehicleType === "On foot"
+        ? BASE_DOCS
+        : LIGHT_DOCS;
+  return DOC_TYPES.filter((d) => ids.includes(d.id)).sort(
+    (a, b) => ids.indexOf(a.id) - ids.indexOf(b.id),
+  );
+}
+
 export type DriverDocument = {
   id: string;
   doc_type: string;
