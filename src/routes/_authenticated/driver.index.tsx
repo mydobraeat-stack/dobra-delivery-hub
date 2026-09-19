@@ -78,6 +78,22 @@ function DriverHome() {
 
   const [online, setOnline] = useState(false);
   const [me, setMe] = useState<{ lat: number; lng: number } | null>(null);
+  const { data: docs = [] } = useQuery(driverDocsQuery);
+  const [gate, setGate] = useState<null | "start" | "finish" | "rejected">(null);
+
+  const missingDocs = requiredDocsFor(driver?.vehicle_type).filter(
+    (d) => !docs.some((x) => x.doc_type === d.id),
+  );
+
+  function handleToggle() {
+    if (approved) {
+      toggle.mutate(!online);
+      return;
+    }
+    if (approval === "rejected") setGate("rejected");
+    else if (docs.length === 0) setGate("start");
+    else setGate("finish");
+  }
 
   useEffect(() => {
     if (driver) setOnline(driver.status === "available" || driver.status === "busy");
