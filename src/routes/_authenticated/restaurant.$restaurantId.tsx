@@ -119,7 +119,7 @@ function RestaurantPage() {
             {grouped.map(([category, categoryItems]) => (
               <section key={category} className="space-y-3">
                 <h2 className="text-lg font-bold text-foreground">{t(`common.categories.${category}`)}</h2>
-                <div className="grid gap-3 @sm:grid-cols-2">
+                <div className="grid gap-3 @lg:grid-cols-2">wsp
                   {categoryItems.map((item) => {
                     const qty = qtyOf(item.id);
                     return (
