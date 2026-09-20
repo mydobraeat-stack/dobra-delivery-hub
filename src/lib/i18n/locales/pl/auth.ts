@@ -19,4 +19,9 @@ export default {
   newHere: "Pierwszy raz w Dobra?",
   confirmEmail: "Już prawie — sprawdź e-mail i potwierdź konto.",
   googleFailed: "Logowanie przez Google nie powiodło się. Spróbuj ponownie.",
+  verifiedTitle: "E-mail potwierdzony",
+  verifiedBody: "Twój e-mail został potwierdzony. Możesz się teraz zalogować.",
+  verifiedBodySession: "Twój e-mail został potwierdzony. Wszystko gotowe.",
+  verifiedCta: "Zaloguj się",
+  verifiedContinue: "Dalej",
 };

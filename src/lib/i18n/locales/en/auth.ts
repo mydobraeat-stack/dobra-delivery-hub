@@ -19,4 +19,9 @@ export default {
   newHere: "New to Dobra?",
   confirmEmail: "Almost there — check your email to confirm your account.",
   googleFailed: "Google sign-in didn't work. Please try again.",
+  verifiedTitle: "Email verified",
+  verifiedBody: "Your email is verified. You can now log in to Dobra.",
+  verifiedBodySession: "Your email is verified. You're all set — let's go.",
+  verifiedCta: "Log in",
+  verifiedContinue: "Continue",
 };
