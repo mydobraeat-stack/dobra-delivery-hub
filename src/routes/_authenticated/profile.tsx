@@ -329,7 +329,7 @@ function DriverSection({ status }: { status: string | null | undefined }) {
               placeholder={t("common.profile.vehiclePlaceholder")}
             />
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <Button onClick={saveVehicle} disabled={saving}>
               {saving ? t("common.actions.saving") : t("common.profile.saveVehicle")}
             </Button>
