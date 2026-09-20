@@ -12,6 +12,9 @@ import heroGrill from "@/assets/hero-grill.jpg";
 
 const HERO_IMAGES = [heroImage, heroBurger, heroBowl, heroPizza, heroPierogi, heroGrill];
 const ROTATE_MS = 5000;
+// Slot-machine intro: fast cycle, then decelerating steps into the slow rotation.
+const SPIN_STEPS = [170, 170, 170, 180, 200, 240, 320, 460, 700, 1100, 1900, 3000];
+const FADE_STEPS = [90, 90, 90, 100, 120, 150, 200, 280, 420, 620, 900, 1000];
 
 export function Hero() {
   const t = useT();
@@ -23,11 +26,28 @@ export function Hero() {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    const id = window.setInterval(() => setIndex((i) => i + 1), ROTATE_MS);
-    return () => window.clearInterval(id);
+    const reduced =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+    let step = reduced ? SPIN_STEPS.length : 0;
+    let timer = 0;
+
+    const tick = () => {
+      const delay = SPIN_STEPS[step] ?? ROTATE_MS;
+      timer = window.setTimeout(() => {
+        setIndex((i) => i + 1);
+        step += 1;
+        tick();
+      }, delay);
+    };
+    tick();
+
+    return () => window.clearTimeout(timer);
   }, []);
 
   const active = (start + index) % HERO_IMAGES.length;
+  const fadeMs = FADE_STEPS[Math.min(index, FADE_STEPS.length - 1)] ?? 1000;
 
   function submit(event: React.FormEvent) {
     event.preventDefault();
