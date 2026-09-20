@@ -77,14 +77,24 @@ function RestaurantPage() {
         ) : (
           <>
             <div className="overflow-hidden rounded-2xl bg-card shadow-soft">
-              <StoredImage
-                value={restaurant.logo_url}
-                alt={`${restaurant.name} restaurant`}
-                width={1024}
-                height={640}
-                eager
-                className="h-44 w-full object-cover"
-              />
+              <button
+                type="button"
+                className="block w-full focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+                aria-label={t("customer.restaurant.viewPhoto")}
+                onClick={() =>
+                  restaurant.logo_url &&
+                  setPreview({ value: restaurant.logo_url, alt: restaurant.name })
+                }
+              >
+                <StoredImage
+                  value={restaurant.logo_url}
+                  alt={`${restaurant.name} restaurant`}
+                  width={1024}
+                  height={640}
+                  eager
+                  className="h-44 w-full object-cover"
+                />
+              </button>
               <div className="space-y-2 p-5">
                 <div className="flex flex-wrap items-center gap-2">
                   <h1 className="text-2xl font-bold text-foreground">{restaurant.name}</h1>
