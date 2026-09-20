@@ -21,11 +21,12 @@ export function Hero() {
   const navigate = useNavigate();
   const [address, setAddress] = useState("");
 
-  // Start on a random dish each visit, then cycle gently.
-  const start = useMemo(() => Math.floor(Math.random() * HERO_IMAGES.length), []);
+  // Start on a random dish each visit (after hydration), then cycle gently.
+  const [start, setStart] = useState(0);
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
+    setStart(Math.floor(Math.random() * HERO_IMAGES.length));
     const reduced =
       typeof window !== "undefined" &&
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
