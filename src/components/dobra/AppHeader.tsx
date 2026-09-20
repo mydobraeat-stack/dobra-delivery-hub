@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useT } from "@/lib/i18n";
+import { LanguageMenu } from "./LanguageMenu";
 import { NotificationBell } from "./NotificationBell";
 import { DobraLogo } from "./Logo";
 import { useShellMaxWidth } from "./PhoneFrame";
@@ -21,6 +22,7 @@ export function AppHeader({ subtitle }: { subtitle?: string }) {
           ) : null}
         </div>
         <div className="flex items-center gap-1">
+          <LanguageMenu className="hidden sm:inline-flex" />
           <NotificationBell />
           <Button asChild variant="ghost" size="sm">
             <Link to="/profile" aria-label={t("common.actions.profile")}>
