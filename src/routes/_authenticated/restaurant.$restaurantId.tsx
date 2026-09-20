@@ -1,9 +1,10 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, Clock, Minus, Plus, Star } from "lucide-react";
 import { toast } from "sonner";
 import { StoredImage } from "@/components/dobra/StoredImage";
+import { ImageLightbox } from "@/components/dobra/ImageLightbox";
 import { AppHeader } from "@/components/dobra/AppHeader";
 import { CartBar } from "@/components/dobra/CartBar";
 import { PhoneFrame } from "@/components/dobra/PhoneFrame";
@@ -41,6 +42,7 @@ function RestaurantPage() {
   const { data, isLoading } = useQuery(restaurantQuery(restaurantId));
   const { data: reviews = [] } = useQuery(restaurantReviewsQuery(restaurantId));
   const cart = useCart();
+  const [preview, setPreview] = useState<{ value: string; alt: string } | null>(null);
 
   const restaurant = data?.restaurant;
   const items = data?.items ?? [];
@@ -75,14 +77,24 @@ function RestaurantPage() {
         ) : (
           <>
             <div className="overflow-hidden rounded-2xl bg-card shadow-soft">
-              <StoredImage
-                value={restaurant.logo_url}
-                alt={`${restaurant.name} restaurant`}
-                width={1024}
-                height={640}
-                eager
-                className="h-44 w-full object-cover"
-              />
+              <button
+                type="button"
+                className="block w-full focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+                aria-label={t("customer.restaurant.viewPhoto")}
+                onClick={() =>
+                  restaurant.logo_url &&
+                  setPreview({ value: restaurant.logo_url, alt: restaurant.name })
+                }
+              >
+                <StoredImage
+                  value={restaurant.logo_url}
+                  alt={`${restaurant.name} restaurant`}
+                  width={1024}
+                  height={640}
+                  eager
+                  className="h-44 w-full object-cover"
+                />
+              </button>
               <div className="space-y-2 p-5">
                 <div className="flex flex-wrap items-center gap-2">
                   <h1 className="text-2xl font-bold text-foreground">{restaurant.name}</h1>
@@ -125,13 +137,24 @@ function RestaurantPage() {
                     return (
                       <Card key={item.id} className="overflow-hidden border-ink/10">
                         <div className="flex gap-3">
-                          <StoredImage
-                            value={item.image_url}
-                            alt={item.name}
-                            width={320}
-                            height={320}
-                            className="size-24 shrink-0 object-cover"
-                          />
+                          <button
+                            type="button"
+                            className="shrink-0 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+                            aria-label={t("customer.restaurant.viewPhoto")}
+                            data-testid="dish-photo"
+                            onClick={() =>
+                              item.image_url &&
+                              setPreview({ value: item.image_url, alt: item.name })
+                            }
+                          >
+                            <StoredImage
+                              value={item.image_url}
+                              alt={item.name}
+                              width={320}
+                              height={320}
+                              className="size-24 shrink-0 object-cover"
+                            />
+                          </button>
                           <CardContent className="flex min-w-0 flex-1 flex-col gap-2 px-3 py-3">
                             <div className="min-w-0">
                               <p className="line-clamp-2 font-semibold text-foreground">{item.name}</p>
@@ -223,6 +246,11 @@ function RestaurantPage() {
         )}
       </main>
       <CartBar />
+      <ImageLightbox
+        value={preview?.value ?? null}
+        alt={preview?.alt ?? ""}
+        onClose={() => setPreview(null)}
+      />
     </PhoneFrame>
   );
 }
