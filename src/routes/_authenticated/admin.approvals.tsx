@@ -9,6 +9,7 @@ import {
   adminRestaurantsQuery,
   setDriverDocsStatus,
   setProfileApproval,
+  setRestaurantStatus,
 } from "@/lib/admin";
 import { useT } from "@/lib/i18n";
 
@@ -36,6 +37,14 @@ function PendingApprovals() {
       await setProfileApproval(id, status);
       // Drivers are also gated on their document review state — keep both in step.
       if (role === "driver") await setDriverDocsStatus(id, status);
+      // Vendors: customers only see restaurants whose own status is approved,
+      // so approving the account must approve its pending stores too.
+      if (role === "vendor" && status === "approved") {
+        const stores = (restaurants.data ?? []).filter(
+          (r) => r.owner_id === id && r.status === "pending",
+        );
+        for (const store of stores) await setRestaurantStatus(store.id, "approved");
+      }
     },
     onSuccess: (_d, v) => {
       toast.success(
