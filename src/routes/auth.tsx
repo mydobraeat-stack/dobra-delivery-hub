@@ -223,6 +223,32 @@ function AuthPage() {
           </Link>
         </p>
       </div>
+
+      <Dialog open={verifiedOpen} onOpenChange={setVerifiedOpen}>
+        <DialogContent className="max-w-sm rounded-3xl text-center">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-sun/30 text-brand">
+            <CheckCircle2 size={32} />
+          </div>
+          <DialogHeader>
+            <DialogTitle className="text-center text-xl">
+              {t("auth.verifiedTitle")}
+            </DialogTitle>
+            <DialogDescription className="text-center">
+              {hasSession ? t("auth.verifiedBodySession") : t("auth.verifiedBody")}
+            </DialogDescription>
+          </DialogHeader>
+          <Button
+            size="lg"
+            className="w-full"
+            onClick={() => {
+              setVerifiedOpen(false);
+              if (hasSession) navigate({ to: "/home", replace: true });
+            }}
+          >
+            {hasSession ? t("auth.verifiedContinue") : t("auth.verifiedCta")}
+          </Button>
+        </DialogContent>
+      </Dialog>
     </main>
   );
 }
