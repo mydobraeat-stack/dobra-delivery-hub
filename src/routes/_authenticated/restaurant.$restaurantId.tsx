@@ -137,13 +137,24 @@ function RestaurantPage() {
                     return (
                       <Card key={item.id} className="overflow-hidden border-ink/10">
                         <div className="flex gap-3">
-                          <StoredImage
-                            value={item.image_url}
-                            alt={item.name}
-                            width={320}
-                            height={320}
-                            className="size-24 shrink-0 object-cover"
-                          />
+                          <button
+                            type="button"
+                            className="shrink-0 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+                            aria-label={t("customer.restaurant.viewPhoto")}
+                            data-testid="dish-photo"
+                            onClick={() =>
+                              item.image_url &&
+                              setPreview({ value: item.image_url, alt: item.name })
+                            }
+                          >
+                            <StoredImage
+                              value={item.image_url}
+                              alt={item.name}
+                              width={320}
+                              height={320}
+                              className="size-24 shrink-0 object-cover"
+                            />
+                          </button>
                           <CardContent className="flex min-w-0 flex-1 flex-col gap-2 px-3 py-3">
                             <div className="min-w-0">
                               <p className="line-clamp-2 font-semibold text-foreground">{item.name}</p>
@@ -235,6 +246,11 @@ function RestaurantPage() {
         )}
       </main>
       <CartBar />
+      <ImageLightbox
+        value={preview?.value ?? null}
+        alt={preview?.alt ?? ""}
+        onClose={() => setPreview(null)}
+      />
     </PhoneFrame>
   );
 }
