@@ -19,7 +19,11 @@ export const EmailChangeEmail = ({
   newEmail,
   confirmationUrl,
 }: EmailChangeEmailProps) => (
-  <EmailLayout preview={`Confirm your new ${siteName} email`} siteName={siteName}>
+  <EmailLayout
+    preview={`Confirm your new ${siteName} email`}
+    siteName={siteName}
+    disclaimer="If you didn't request this change, you can safely ignore this email — your email address stays the same."
+  >
     <Heading style={h1}>Confirm your new email</Heading>
     <Text style={text}>
       You asked to change the email on your <strong>{siteName}</strong> account from{' '}
@@ -34,10 +38,6 @@ export const EmailChangeEmail = ({
       <Link href={confirmationUrl} style={link}>
         {confirmationUrl}
       </Link>
-    </Text>
-    <Text style={small}>
-      If you didn&apos;t request this change, please ignore this email and your
-      address stays the same.
     </Text>
   </EmailLayout>
 )

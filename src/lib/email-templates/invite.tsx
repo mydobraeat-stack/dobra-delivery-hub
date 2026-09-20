@@ -15,6 +15,7 @@ export const InviteEmail = ({ siteName, siteUrl, confirmationUrl }: InviteEmailP
     preview={`You've been invited to ${siteName}`}
     siteName={siteName}
     siteUrl={siteUrl}
+    disclaimer="If this invitation wasn't meant for you, you can safely ignore this email — no account will be created."
   >
     <Heading style={h1}>You&apos;re invited</Heading>
     <Text style={text}>
@@ -30,9 +31,6 @@ export const InviteEmail = ({ siteName, siteUrl, confirmationUrl }: InviteEmailP
       <Link href={confirmationUrl} style={link}>
         {confirmationUrl}
       </Link>
-    </Text>
-    <Text style={small}>
-      If this invitation wasn&apos;t meant for you, simply ignore this email.
     </Text>
   </EmailLayout>
 )

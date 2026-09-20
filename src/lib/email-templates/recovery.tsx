@@ -10,7 +10,11 @@ interface RecoveryEmailProps {
 }
 
 export const RecoveryEmail = ({ siteName, confirmationUrl }: RecoveryEmailProps) => (
-  <EmailLayout preview={`Reset your ${siteName} password`} siteName={siteName}>
+  <EmailLayout
+    preview={`Reset your ${siteName} password`}
+    siteName={siteName}
+    disclaimer="If you didn't request a password reset, you can safely ignore this email — your password has NOT been changed."
+  >
     <Heading style={h1}>Reset your password</Heading>
     <Text style={text}>
       We got a request to reset the password for your <strong>{siteName}</strong>{' '}
@@ -25,10 +29,6 @@ export const RecoveryEmail = ({ siteName, confirmationUrl }: RecoveryEmailProps)
       <Link href={confirmationUrl} style={link}>
         {confirmationUrl}
       </Link>
-    </Text>
-    <Text style={small}>
-      Didn&apos;t ask for this? You can ignore this email — your password stays the
-      same.
     </Text>
   </EmailLayout>
 )

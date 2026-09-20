@@ -22,7 +22,9 @@ export const BRAND = {
   muted: '#6B655E',
 }
 
-export const LOGO_URL = 'https://mydobra.pl/android-chrome-192x192.png'
+export const LOGO_URL =
+  'https://mydobra.pl/__l5e/assets-v1/625edaa8-cc2b-4380-89f6-418cca1d8553/dobra-logo.png'
+export const SUPPORT_EMAIL = 'support@mydobra.pl'
 
 const main = {
   backgroundColor: '#ffffff',
@@ -47,13 +49,6 @@ const header = {
   textAlign: 'center' as const,
 }
 
-const wordmark = {
-  margin: '10px 0 0',
-  fontSize: '26px',
-  fontWeight: 'bold' as const,
-  letterSpacing: '-0.5px',
-  color: BRAND.red,
-}
 
 const inner = { padding: '28px' }
 
@@ -118,11 +113,13 @@ export const EmailLayout = ({
   preview,
   siteName = 'Dobra',
   siteUrl = 'https://mydobra.pl',
+  disclaimer = "If you didn't request this email, you can safely ignore it — no changes have been made to your account.",
   children,
 }: {
   preview: string
   siteName?: string
   siteUrl?: string
+  disclaimer?: string
   children: React.ReactNode
 }) => (
   <Html lang="en" dir="ltr">
@@ -134,16 +131,34 @@ export const EmailLayout = ({
           <Section style={header}>
             <Img
               src={LOGO_URL}
-              width="56"
-              height="56"
+              width="150"
+              height="66"
               alt={siteName}
-              style={{ margin: '0 auto', display: 'block', borderRadius: '14px' }}
+              style={{ margin: '0 auto', display: 'block' }}
             />
-            <Text style={wordmark}>{siteName}</Text>
           </Section>
           <Section style={inner}>{children}</Section>
         </Section>
         <Hr style={hr} />
+        <Text style={footerText}>{disclaimer}</Text>
+        <Text style={footerText}>
+          We take your privacy seriously. Read our{' '}
+          <Link href={`${siteUrl}/privacy`} style={link}>
+            Privacy Policy
+          </Link>
+          .
+        </Text>
+        <Text style={footerText}>
+          Need help? Email{' '}
+          <Link href={`mailto:${SUPPORT_EMAIL}`} style={link}>
+            {SUPPORT_EMAIL}
+          </Link>{' '}
+          or visit our{' '}
+          <Link href={`${siteUrl}/help`} style={link}>
+            Help Centre
+          </Link>
+          .
+        </Text>
         <Text style={footerText}>
           <Link href={siteUrl} style={{ ...link, textDecoration: 'none' }}>
             mydobra.pl

@@ -21,6 +21,7 @@ export const SignupEmail = ({
     preview={`Confirm your ${siteName} account`}
     siteName={siteName}
     siteUrl={siteUrl}
+    disclaimer="If you didn't create a Dobra account, you can safely ignore this email — no account will be activated."
   >
     <Heading style={h1}>Confirm your email</Heading>
     <Text style={text}>
@@ -39,9 +40,6 @@ export const SignupEmail = ({
       <Link href={confirmationUrl} style={link}>
         {confirmationUrl}
       </Link>
-    </Text>
-    <Text style={small}>
-      If you didn&apos;t create an account, you can safely ignore this email.
     </Text>
   </EmailLayout>
 )
