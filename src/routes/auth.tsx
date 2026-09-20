@@ -1,6 +1,13 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { CheckCircle2, Eye, EyeOff } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
@@ -13,6 +20,7 @@ import { useT } from "@/lib/i18n";
 const searchSchema = z.object({
   mode: z.enum(["signup", "login"]).catch("login"),
   role: z.enum(["customer", "vendor", "driver"]).catch("customer"),
+  verified: z.coerce.boolean().catch(false),
 });
 
 export const Route = createFileRoute("/auth")({
@@ -36,7 +44,7 @@ export const Route = createFileRoute("/auth")({
 });
 
 function AuthPage() {
-  const { mode, role } = Route.useSearch();
+  const { mode, role, verified } = Route.useSearch();
   const navigate = useNavigate();
   const t = useT();
   const [email, setEmail] = useState("");
@@ -47,14 +55,21 @@ function AuthPage() {
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [verifiedOpen, setVerifiedOpen] = useState(verified);
+  const [hasSession, setHasSession] = useState(false);
 
   const isSignup = mode === "signup";
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/home", replace: true });
+      if (!data.session) return;
+      if (verified) {
+        setHasSession(true);
+        return;
+      }
+      navigate({ to: "/home", replace: true });
     });
-  }, [navigate]);
+  }, [navigate, verified]);
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -67,7 +82,7 @@ function AuthPage() {
         email,
         password,
         options: {
-          emailRedirectTo: window.location.origin,
+          emailRedirectTo: `${window.location.origin}/auth?mode=login&verified=1`,
           data: { role, full_name: fullName, country },
         },
       });
@@ -208,13 +223,39 @@ function AuthPage() {
           {isSignup ? t("auth.haveAccount") : t("auth.newHere")}{" "}
           <Link
             to="/auth"
-            search={{ mode: isSignup ? "login" : "signup", role }}
+            search={{ mode: isSignup ? "login" : "signup", role, verified: false }}
             className="font-semibold text-brand underline-offset-4 hover:underline"
           >
             {isSignup ? t("auth.logIn") : t("auth.signUp")}
           </Link>
         </p>
       </div>
+
+      <Dialog open={verifiedOpen} onOpenChange={setVerifiedOpen}>
+        <DialogContent className="max-w-sm rounded-3xl text-center">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-sun/30 text-brand">
+            <CheckCircle2 size={32} />
+          </div>
+          <DialogHeader>
+            <DialogTitle className="text-center text-xl">
+              {t("auth.verifiedTitle")}
+            </DialogTitle>
+            <DialogDescription className="text-center">
+              {hasSession ? t("auth.verifiedBodySession") : t("auth.verifiedBody")}
+            </DialogDescription>
+          </DialogHeader>
+          <Button
+            size="lg"
+            className="w-full"
+            onClick={() => {
+              setVerifiedOpen(false);
+              if (hasSession) navigate({ to: "/home", replace: true });
+            }}
+          >
+            {hasSession ? t("auth.verifiedContinue") : t("auth.verifiedCta")}
+          </Button>
+        </DialogContent>
+      </Dialog>
     </main>
   );
 }

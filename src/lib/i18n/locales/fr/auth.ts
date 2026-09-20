@@ -19,4 +19,9 @@ export default {
   newHere: "Nouveau sur Dobra ?",
   confirmEmail: "Presque fini — consultez votre e-mail pour confirmer votre compte.",
   googleFailed: "La connexion Google a échoué. Veuillez réessayer.",
+  verifiedTitle: "E-mail vérifié",
+  verifiedBody: "Votre e-mail est vérifié. Vous pouvez maintenant vous connecter.",
+  verifiedBodySession: "Votre e-mail est vérifié. Tout est prêt.",
+  verifiedCta: "Se connecter",
+  verifiedContinue: "Continuer",
 };

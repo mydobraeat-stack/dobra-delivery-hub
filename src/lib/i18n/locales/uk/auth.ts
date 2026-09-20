@@ -19,4 +19,9 @@ export default {
   newHere: "Вперше в Dobra?",
   confirmEmail: "Майже готово — перевірте пошту та підтвердіть акаунт.",
   googleFailed: "Не вдалося увійти через Google. Спробуйте ще раз.",
+  verifiedTitle: "Пошту підтверджено",
+  verifiedBody: "Вашу пошту підтверджено. Тепер ви можете увійти.",
+  verifiedBodySession: "Вашу пошту підтверджено. Усе готово.",
+  verifiedCta: "Увійти",
+  verifiedContinue: "Далі",
 };
