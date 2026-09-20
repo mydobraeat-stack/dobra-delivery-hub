@@ -22,7 +22,9 @@ export const BRAND = {
   muted: '#6B655E',
 }
 
-export const LOGO_URL = 'https://mydobra.pl/android-chrome-192x192.png'
+export const LOGO_URL =
+  'https://mydobra.pl/__l5e/assets-v1/625edaa8-cc2b-4380-89f6-418cca1d8553/dobra-logo.png'
+export const SUPPORT_EMAIL = 'support@mydobra.pl'
 
 const main = {
   backgroundColor: '#ffffff',
