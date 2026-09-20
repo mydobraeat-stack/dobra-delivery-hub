@@ -7,6 +7,8 @@ export type Restaurant = {
   name: string;
   cuisine: string | null;
   city: string | null;
+  address_line: string | null;
+  postal_code: string | null;
   country: string | null;
   logo_url: string | null;
   rating: number;
@@ -19,7 +21,7 @@ export type Restaurant = {
 };
 
 const RESTAURANT_COLS =
-  "id,name,cuisine,city,country,logo_url,rating,eta_minutes,delivery_fee,status,is_open,min_order,tags";
+  "id,name,cuisine,city,address_line,postal_code,country,logo_url,rating,eta_minutes,delivery_fee,status,is_open,min_order,tags";
 
 export type MenuItem = {
   id: string;
@@ -473,6 +475,8 @@ export type RestaurantInput = {
   name: string;
   cuisine: string;
   city: string;
+  address_line: string;
+  postal_code: string;
   country: string;
   eta_minutes: number;
   delivery_fee: number;
