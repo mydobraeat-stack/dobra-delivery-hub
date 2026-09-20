@@ -14,7 +14,7 @@ export function StoredImage({ value, alt, className, width, height, eager }: Pro
   const url = useImageUrl(value);
 
   if (!url) {
-    return <div className={cn("bg-muted", className)} aria-hidden />;
+    return <div className={cn("shrink-0 bg-muted", className)} aria-hidden />;
   }
 
   return (
@@ -24,7 +24,7 @@ export function StoredImage({ value, alt, className, width, height, eager }: Pro
       width={width}
       height={height}
       loading={eager ? "eager" : "lazy"}
-      className={className}
+      className={cn("object-cover object-center", className)}
     />
   );
 }

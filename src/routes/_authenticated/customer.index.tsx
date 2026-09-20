@@ -257,7 +257,7 @@ function CustomerHome() {
                       <p className="text-sm text-foreground/60">
                         {r.cuisine} · {r.city}
                       </p>
-                      <div className="flex items-center gap-4 pt-1 text-xs text-foreground/70">
+                      <div className="flex min-w-0 flex-wrap items-center gap-x-4 gap-y-1 pt-1 text-xs text-foreground/70">
                         <span className="inline-flex items-center gap-1">
                           <Star className="size-3.5 fill-accent text-accent" aria-hidden />
                           {r.rating}

@@ -195,9 +195,9 @@ function ProfilePage() {
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl border border-ink/10 bg-muted/50 px-4 py-3">
-      <div className="text-xs text-foreground/60">{label}</div>
-      <div className="text-lg font-semibold text-foreground">{value}</div>
+    <div className="min-w-0 rounded-xl border border-ink/10 bg-muted/50 px-4 py-3">
+      <div className="text-xs break-words text-foreground/60">{label}</div>
+      <div className="text-lg font-semibold break-words text-foreground">{value}</div>
     </div>
   );
 }
@@ -329,7 +329,7 @@ function DriverSection({ status }: { status: string | null | undefined }) {
               placeholder={t("common.profile.vehiclePlaceholder")}
             />
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <Button onClick={saveVehicle} disabled={saving}>
               {saving ? t("common.actions.saving") : t("common.profile.saveVehicle")}
             </Button>
