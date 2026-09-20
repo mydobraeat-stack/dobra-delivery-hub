@@ -216,7 +216,7 @@ function AuthPage() {
           {isSignup ? t("auth.haveAccount") : t("auth.newHere")}{" "}
           <Link
             to="/auth"
-            search={{ mode: isSignup ? "login" : "signup", role }}
+            search={{ mode: isSignup ? "login" : "signup", role, verified: false }}
             className="font-semibold text-brand underline-offset-4 hover:underline"
           >
             {isSignup ? t("auth.logIn") : t("auth.signUp")}
