@@ -1,5 +1,5 @@
 export default {
-  tagline: "Dobre jedzenie, szybko dostarczone.",
+  tagline: "Szybka dostawa, pyszny posiłek.",
   language: "Język",
   languageHelp: "Wybierz język, w którym chcesz korzystać z Dobra.",
   actions: {

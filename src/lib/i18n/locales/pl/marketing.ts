@@ -22,7 +22,7 @@ export default {
     note: "Zasięg stale rośnie — wkrótce dojdą kolejne miasta.",
   },
   footer: {
-    tagline: "Dobre jedzenie, szybka dostawa.",
+    tagline: "Szybka dostawa, pyszny posiłek.",
     getHelp: "Pomoc",
     addRestaurant: "Dodaj swoją restaurację",
     signUpToDeliver: "Zostań kurierem",
