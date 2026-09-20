@@ -8,6 +8,16 @@ export type MapPoint = { lat: number; lng: number; label?: string; kind?: MapPoi
 
 let loader: Promise<void> | null = null;
 
+/** Google calls this global when the key is rejected for this domain. */
+let authFailed = false;
+const authListeners = new Set<() => void>();
+if (typeof window !== "undefined") {
+  (window as unknown as Record<string, unknown>)["gm_authFailure"] = () => {
+    authFailed = true;
+    authListeners.forEach((l) => l());
+  };
+}
+
 /** Brand colours for the markers. */
 const MARKER_COLOR: Record<MapPointKind, string> = {
   driver: "#DC3A2A",
@@ -52,7 +62,15 @@ export function MapView({ points, path, className, zoom = 14 }: Props) {
   const mapRef = useRef<any>(null);
   const markersRef = useRef<any[]>([]);
   const lineRef = useRef<any>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(authFailed ? "MAPS_KEY_REJECTED" : null);
+
+  useEffect(() => {
+    const listener = () => setError("MAPS_KEY_REJECTED");
+    authListeners.add(listener);
+    return () => {
+      authListeners.delete(listener);
+    };
+  }, []);
   const t = useT();
 
   useEffect(() => {

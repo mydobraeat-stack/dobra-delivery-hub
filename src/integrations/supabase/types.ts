@@ -433,6 +433,7 @@ export type Database = {
       }
       restaurants: {
         Row: {
+          address_line: string | null
           city: string | null
           country: string | null
           created_at: string
@@ -445,11 +446,13 @@ export type Database = {
           min_order: number
           name: string
           owner_id: string
+          postal_code: string | null
           rating: number
           status: string
           tags: string[]
         }
         Insert: {
+          address_line?: string | null
           city?: string | null
           country?: string | null
           created_at?: string
@@ -462,11 +465,13 @@ export type Database = {
           min_order?: number
           name: string
           owner_id: string
+          postal_code?: string | null
           rating?: number
           status?: string
           tags?: string[]
         }
         Update: {
+          address_line?: string | null
           city?: string | null
           country?: string | null
           created_at?: string
@@ -479,6 +484,7 @@ export type Database = {
           min_order?: number
           name?: string
           owner_id?: string
+          postal_code?: string | null
           rating?: number
           status?: string
           tags?: string[]

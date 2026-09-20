@@ -52,6 +52,8 @@ export const EMPTY_RESTAURANT: RestaurantInput = {
   name: "",
   cuisine: "",
   city: "",
+  address_line: "",
+  postal_code: "",
   country: "Poland",
   eta_minutes: 30,
   delivery_fee: 5,
@@ -380,6 +382,8 @@ export function RestaurantDialog({
             name: editing.name,
             cuisine: editing.cuisine ?? "",
             city: editing.city ?? "",
+            address_line: editing.address_line ?? "",
+            postal_code: editing.postal_code ?? "",
             country: editing.country ?? "Poland",
             eta_minutes: editing.eta_minutes,
             delivery_fee: Number(editing.delivery_fee),
@@ -444,7 +448,23 @@ export function RestaurantDialog({
               placeholder={t("vendor.restaurantDialog.cuisinePlaceholder")}
             />
           </Field>
+          <Field label={t("vendor.restaurantDialog.addressLabel")}>
+            <Input
+              value={form.address_line}
+              onChange={(e) => setForm((f) => ({ ...f, address_line: e.target.value }))}
+              placeholder={t("vendor.restaurantDialog.addressPlaceholder")}
+              autoComplete="street-address"
+            />
+          </Field>
           <div className="grid gap-4 sm:grid-cols-2">
+            <Field label={t("vendor.restaurantDialog.postalLabel")}>
+              <Input
+                value={form.postal_code}
+                onChange={(e) => setForm((f) => ({ ...f, postal_code: e.target.value }))}
+                placeholder={t("vendor.restaurantDialog.postalPlaceholder")}
+                autoComplete="postal-code"
+              />
+            </Field>
             <Field label={t("vendor.restaurantDialog.cityLabel")}>
               <Input
                 value={form.city}

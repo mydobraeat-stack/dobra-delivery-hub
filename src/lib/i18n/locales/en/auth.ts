@@ -24,4 +24,8 @@ export default {
   verifiedBodySession: "Your email is verified. You're all set — let's go.",
   verifiedCta: "Log in",
   verifiedContinue: "Continue",
+  checkEmailTitle: "Check your email!",
+  checkEmailBody: "We've sent a verification link to {email}.",
+  checkEmailSpam: "Don't forget to check your spam folder.",
+  checkEmailCta: "Got it",
 };

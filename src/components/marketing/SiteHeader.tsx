@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { LanguageMenu } from "@/components/dobra/LanguageMenu";
 import { DobraLogo } from "@/components/dobra/Logo";
 import { useT } from "@/lib/i18n";
 
@@ -18,6 +19,7 @@ export function SiteHeader() {
         </Link>
 
         <div className="hidden shrink-0 items-center gap-3 md:flex">
+          <LanguageMenu />
           <Link
             to="/deliver"
             className="text-sm font-semibold text-foreground/80 underline-offset-4 hover:underline"
@@ -36,8 +38,10 @@ export function SiteHeader() {
           </Button>
         </div>
 
+        <div className="flex items-center gap-1 md:hidden">
+          <LanguageMenu />
         <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger asChild className="md:hidden">
+          <SheetTrigger asChild>
             <Button variant="ghost" size="icon" aria-label={t("marketing.nav.menu")}>
               <Menu className="size-5" aria-hidden />
             </Button>
@@ -86,6 +90,7 @@ export function SiteHeader() {
             </nav>
           </SheetContent>
         </Sheet>
+        </div>
       </div>
     </header>
   );

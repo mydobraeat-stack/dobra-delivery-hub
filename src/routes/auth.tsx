@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { CheckCircle2, Eye, EyeOff } from "lucide-react";
+import { CheckCircle2, Eye, EyeOff, MailCheck } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -56,6 +56,7 @@ function AuthPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [verifiedOpen, setVerifiedOpen] = useState(verified);
+  const [checkEmailOpen, setCheckEmailOpen] = useState(false);
   const [hasSession, setHasSession] = useState(false);
 
   const isSignup = mode === "signup";
@@ -92,6 +93,7 @@ function AuthPage() {
         return;
       }
       if (!data.session) {
+        setCheckEmailOpen(true);
         setMessage(t("auth.confirmEmail"));
         return;
       }
@@ -230,6 +232,27 @@ function AuthPage() {
           </Link>
         </p>
       </div>
+
+      <Dialog open={checkEmailOpen} onOpenChange={setCheckEmailOpen}>
+        <DialogContent className="max-w-sm rounded-3xl text-center">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-sun/30 text-brand">
+            <MailCheck size={32} />
+          </div>
+          <DialogHeader>
+            <DialogTitle className="text-center text-xl">
+              {t("auth.checkEmailTitle")}
+            </DialogTitle>
+            <DialogDescription className="text-center">
+              {t("auth.checkEmailBody", { email })}
+              <br />
+              {t("auth.checkEmailSpam")}
+            </DialogDescription>
+          </DialogHeader>
+          <Button size="lg" className="w-full" onClick={() => setCheckEmailOpen(false)}>
+            {t("auth.checkEmailCta")}
+          </Button>
+        </DialogContent>
+      </Dialog>
 
       <Dialog open={verifiedOpen} onOpenChange={setVerifiedOpen}>
         <DialogContent className="max-w-sm rounded-3xl text-center">
