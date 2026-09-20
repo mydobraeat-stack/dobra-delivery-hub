@@ -46,6 +46,7 @@ export default {
     deliveryFee: "Доставка {price}",
     minOrder: "Мін. {price}",
     soldOut: "Розпродано",
+    viewPhoto: "Переглянути повне фото",
     addedToast: "{name} додано до кошика.",
     reviewsTitle: "Відгуки",
     noReviews: "Ще немає відгуків — будьте першими.",

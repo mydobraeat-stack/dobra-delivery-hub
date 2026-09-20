@@ -46,6 +46,7 @@ export default {
     deliveryFee: "Dostawa {price}",
     minOrder: "Min. {price}",
     soldOut: "Wyprzedane",
+    viewPhoto: "Zobacz pełne zdjęcie",
     addedToast: "{name} dodano do koszyka.",
     reviewsTitle: "Opinie",
     noReviews: "Brak opinii — bądź pierwszy.",
