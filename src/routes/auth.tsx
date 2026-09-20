@@ -37,7 +37,7 @@ export const Route = createFileRoute("/auth")({
 });
 
 function AuthPage() {
-  const { mode, role } = Route.useSearch();
+  const { mode, role, verified } = Route.useSearch();
   const navigate = useNavigate();
   const t = useT();
   const [email, setEmail] = useState("");
