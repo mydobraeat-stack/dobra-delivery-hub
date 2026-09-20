@@ -48,14 +48,21 @@ function AuthPage() {
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [verifiedOpen, setVerifiedOpen] = useState(verified);
+  const [hasSession, setHasSession] = useState(false);
 
   const isSignup = mode === "signup";
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/home", replace: true });
+      if (!data.session) return;
+      if (verified) {
+        setHasSession(true);
+        return;
+      }
+      navigate({ to: "/home", replace: true });
     });
-  }, [navigate]);
+  }, [navigate, verified]);
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
