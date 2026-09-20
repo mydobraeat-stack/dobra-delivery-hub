@@ -13,6 +13,7 @@ import { useT } from "@/lib/i18n";
 const searchSchema = z.object({
   mode: z.enum(["signup", "login"]).catch("login"),
   role: z.enum(["customer", "vendor", "driver"]).catch("customer"),
+  verified: z.coerce.boolean().catch(false),
 });
 
 export const Route = createFileRoute("/auth")({
