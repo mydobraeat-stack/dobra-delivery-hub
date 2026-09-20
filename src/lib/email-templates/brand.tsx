@@ -49,13 +49,6 @@ const header = {
   textAlign: 'center' as const,
 }
 
-const wordmark = {
-  margin: '10px 0 0',
-  fontSize: '26px',
-  fontWeight: 'bold' as const,
-  letterSpacing: '-0.5px',
-  color: BRAND.red,
-}
 
 const inner = { padding: '28px' }
 
