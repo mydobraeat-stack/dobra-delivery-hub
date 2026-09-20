@@ -22,7 +22,7 @@ export default {
     note: "Coverage is growing — more cities will be added soon.",
   },
   footer: {
-    tagline: "Good food, delivered fast.",
+    tagline: "Quick delivery, great meal.",
     getHelp: "Get Help",
     addRestaurant: "Add your restaurant",
     signUpToDeliver: "Sign up to deliver",

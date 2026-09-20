@@ -1,5 +1,5 @@
 export default {
-  tagline: "De bons plats, livrés vite.",
+  tagline: "Livraison rapide, repas savoureux.",
   language: "Langue",
   languageHelp: "Choisissez la langue que vous souhaitez utiliser dans Dobra.",
   actions: {

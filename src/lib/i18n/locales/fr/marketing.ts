@@ -22,7 +22,7 @@ export default {
     note: "La couverture s'étend — de nouvelles villes arrivent bientôt.",
   },
   footer: {
-    tagline: "De la bonne cuisine, livrée vite.",
+    tagline: "Livraison rapide, repas savoureux.",
     getHelp: "Aide",
     addRestaurant: "Ajouter votre restaurant",
     signUpToDeliver: "Devenir livreur",
