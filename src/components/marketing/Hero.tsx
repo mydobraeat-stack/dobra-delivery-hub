@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,22 +12,43 @@ import heroGrill from "@/assets/hero-grill.jpg";
 
 const HERO_IMAGES = [heroImage, heroBurger, heroBowl, heroPizza, heroPierogi, heroGrill];
 const ROTATE_MS = 5000;
+// Slot-machine intro: fast cycle, then decelerating steps into the slow rotation.
+const SPIN_STEPS = [170, 170, 170, 180, 200, 240, 320, 460, 700, 1100, 1900, 3000];
+const FADE_STEPS = [90, 90, 90, 100, 120, 150, 200, 280, 420, 620, 900, 1000];
 
 export function Hero() {
   const t = useT();
   const navigate = useNavigate();
   const [address, setAddress] = useState("");
 
-  // Start on a random dish each visit, then cycle gently.
-  const start = useMemo(() => Math.floor(Math.random() * HERO_IMAGES.length), []);
+  // Start on a random dish each visit (after hydration), then cycle gently.
+  const [start, setStart] = useState(0);
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    const id = window.setInterval(() => setIndex((i) => i + 1), ROTATE_MS);
-    return () => window.clearInterval(id);
+    setStart(Math.floor(Math.random() * HERO_IMAGES.length));
+    const reduced =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+    let step = reduced ? SPIN_STEPS.length : 0;
+    let timer = 0;
+
+    const tick = () => {
+      const delay = SPIN_STEPS[step] ?? ROTATE_MS;
+      timer = window.setTimeout(() => {
+        setIndex((i) => i + 1);
+        step += 1;
+        tick();
+      }, delay);
+    };
+    tick();
+
+    return () => window.clearTimeout(timer);
   }, []);
 
   const active = (start + index) % HERO_IMAGES.length;
+  const fadeMs = FADE_STEPS[Math.min(index, FADE_STEPS.length - 1)] ?? 1000;
 
   function submit(event: React.FormEvent) {
     event.preventDefault();
@@ -84,7 +105,10 @@ export function Hero() {
                 aria-hidden={i !== active}
                 width={1280}
                 height={1024}
-                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out ${
+                loading="eager"
+                decoding="async"
+                style={{ transitionDuration: `${fadeMs}ms`, willChange: "opacity" }}
+                className={`absolute inset-0 h-full w-full object-cover transition-opacity ease-in-out ${
                   i === active ? "opacity-100" : "opacity-0"
                 }`}
               />
