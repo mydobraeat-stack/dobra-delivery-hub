@@ -104,7 +104,10 @@ export function Hero() {
                 aria-hidden={i !== active}
                 width={1280}
                 height={1024}
-                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out ${
+                loading="eager"
+                decoding="async"
+                style={{ transitionDuration: `${fadeMs}ms`, willChange: "opacity" }}
+                className={`absolute inset-0 h-full w-full object-cover transition-opacity ease-in-out ${
                   i === active ? "opacity-100" : "opacity-0"
                 }`}
               />
