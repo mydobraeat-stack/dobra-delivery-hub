@@ -24,4 +24,8 @@ export default {
   verifiedBodySession: "Вашу пошту підтверджено. Усе готово.",
   verifiedCta: "Увійти",
   verifiedContinue: "Далі",
+  checkEmailTitle: "Перевірте пошту!",
+  checkEmailBody: "Ми надіслали посилання для підтвердження на {email}.",
+  checkEmailSpam: "Не забудьте перевірити папку «Спам».",
+  checkEmailCta: "Зрозуміло",
 };
