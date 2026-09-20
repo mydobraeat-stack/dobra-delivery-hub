@@ -94,9 +94,7 @@ export function SiteFooter() {
                 aria-label={t(`marketing.footer.${badge.key}`)}
                 className="flex w-full max-w-[200px] items-center gap-3 rounded-xl bg-ink px-4 py-2.5 text-card transition-opacity hover:opacity-90"
               >
-                <span className="text-xl leading-none" aria-hidden>
-                  {badge.key === "appStore" ? "" : "▶"}
-                </span>
+                <badge.Icon />
                 <span className="min-w-0">
                   <span className="block text-[10px] uppercase tracking-wide opacity-80">
                     {badge.small}
