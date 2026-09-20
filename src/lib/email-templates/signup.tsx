@@ -41,9 +41,6 @@ export const SignupEmail = ({
         {confirmationUrl}
       </Link>
     </Text>
-    <Text style={small}>
-      If you didn&apos;t create an account, you can safely ignore this email.
-    </Text>
   </EmailLayout>
 )
 
