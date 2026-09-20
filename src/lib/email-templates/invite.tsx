@@ -32,9 +32,6 @@ export const InviteEmail = ({ siteName, siteUrl, confirmationUrl }: InviteEmailP
         {confirmationUrl}
       </Link>
     </Text>
-    <Text style={small}>
-      If this invitation wasn&apos;t meant for you, simply ignore this email.
-    </Text>
   </EmailLayout>
 )
 

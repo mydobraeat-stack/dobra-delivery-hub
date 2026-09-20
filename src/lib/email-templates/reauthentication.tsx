@@ -16,10 +16,7 @@ export const ReauthenticationEmail = ({ token }: ReauthenticationEmailProps) => 
     <Heading style={h1}>Your verification code</Heading>
     <Text style={text}>Enter this code to confirm it&apos;s really you:</Text>
     <Text style={codeBox}>{token}</Text>
-    <Text style={small}>
-      The code expires shortly. If you didn&apos;t request it, you can ignore this
-      email.
-    </Text>
+    <Text style={small}>The code expires shortly.</Text>
   </EmailLayout>
 )
 

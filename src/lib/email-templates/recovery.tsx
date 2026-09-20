@@ -30,10 +30,6 @@ export const RecoveryEmail = ({ siteName, confirmationUrl }: RecoveryEmailProps)
         {confirmationUrl}
       </Link>
     </Text>
-    <Text style={small}>
-      Didn&apos;t ask for this? You can ignore this email — your password stays the
-      same.
-    </Text>
   </EmailLayout>
 )
 

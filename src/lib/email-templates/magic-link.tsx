@@ -30,10 +30,7 @@ export const MagicLinkEmail = ({ siteName, confirmationUrl }: MagicLinkEmailProp
         {confirmationUrl}
       </Link>
     </Text>
-    <Text style={small}>
-      This link only works once. If you didn&apos;t ask to sign in, you can ignore
-      this email.
-    </Text>
+    <Text style={small}>This link only works once.</Text>
   </EmailLayout>
 )
 

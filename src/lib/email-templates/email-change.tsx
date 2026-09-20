@@ -39,10 +39,6 @@ export const EmailChangeEmail = ({
         {confirmationUrl}
       </Link>
     </Text>
-    <Text style={small}>
-      If you didn&apos;t request this change, please ignore this email and your
-      address stays the same.
-    </Text>
   </EmailLayout>
 )
 
