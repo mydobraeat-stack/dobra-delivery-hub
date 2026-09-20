@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, Clock, Minus, Plus, Star } from "lucide-react";
@@ -42,6 +42,7 @@ function RestaurantPage() {
   const { data, isLoading } = useQuery(restaurantQuery(restaurantId));
   const { data: reviews = [] } = useQuery(restaurantReviewsQuery(restaurantId));
   const cart = useCart();
+  const [preview, setPreview] = useState<{ value: string; alt: string } | null>(null);
 
   const restaurant = data?.restaurant;
   const items = data?.items ?? [];
