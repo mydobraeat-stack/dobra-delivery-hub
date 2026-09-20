@@ -1,0 +1,45 @@
+import * as React from 'react'
+
+import { Button, Heading, Link, Text } from '@react-email/components'
+
+import { EmailLayout, button, h1, link, small, text } from './brand'
+
+interface EmailChangeEmailProps {
+  siteName: string
+  oldEmail: string
+  email: string
+  newEmail: string
+  confirmationUrl: string
+}
+
+export const EmailChangeEmail = ({
+  siteName,
+  oldEmail,
+  email,
+  newEmail,
+  confirmationUrl,
+}: EmailChangeEmailProps) => (
+  <EmailLayout preview={`Confirm your new ${siteName} email`} siteName={siteName}>
+    <Heading style={h1}>Confirm your new email</Heading>
+    <Text style={text}>
+      You asked to change the email on your <strong>{siteName}</strong> account from{' '}
+      <strong>{oldEmail || email}</strong> to <strong>{newEmail}</strong>.
+    </Text>
+    <Button style={button} href={confirmationUrl}>
+      Confirm New Email
+    </Button>
+    <Text style={{ ...small, margin: '22px 0 0' }}>
+      Button not working? Paste this link into your browser:
+      <br />
+      <Link href={confirmationUrl} style={link}>
+        {confirmationUrl}
+      </Link>
+    </Text>
+    <Text style={small}>
+      If you didn&apos;t request this change, please ignore this email and your
+      address stays the same.
+    </Text>
+  </EmailLayout>
+)
+
+export default EmailChangeEmail

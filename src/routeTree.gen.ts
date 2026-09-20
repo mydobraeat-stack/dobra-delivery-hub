@@ -49,6 +49,8 @@ import { Route as AuthenticatedVendorMenuRouteImport } from './routes/_authentic
 import { Route as AuthenticatedVendorStoreRouteImport } from './routes/_authenticated/vendor.store'
 import { Route as AuthenticatedDriverDeliveryOrderIdRouteImport } from './routes/_authenticated/driver.delivery.$orderId'
 import { Route as ApiPublicPushDispatchRouteImport } from './routes/api/public/push.dispatch'
+import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
+import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -265,6 +267,16 @@ const ApiPublicPushDispatchRoute = ApiPublicPushDispatchRouteImport.update({
   path: '/api/public/push/dispatch',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LovableEmailAuthPreviewRoute = LovableEmailAuthPreviewRouteImport.update({
+  id: '/lovable/email/auth/preview',
+  path: '/lovable/email/auth/preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LovableEmailAuthWebhookRoute = LovableEmailAuthWebhookRouteImport.update({
+  id: '/lovable/email/auth/webhook',
+  path: '/lovable/email/auth/webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -306,6 +318,8 @@ export interface FileRoutesByFullPath {
   '/vendor/': typeof AuthenticatedVendorIndexRoute
   '/driver/delivery/$orderId': typeof AuthenticatedDriverDeliveryOrderIdRoute
   '/api/public/push/dispatch': typeof ApiPublicPushDispatchRoute
+  '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
+  '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -343,6 +357,8 @@ export interface FileRoutesByTo {
   '/vendor': typeof AuthenticatedVendorIndexRoute
   '/driver/delivery/$orderId': typeof AuthenticatedDriverDeliveryOrderIdRoute
   '/api/public/push/dispatch': typeof ApiPublicPushDispatchRoute
+  '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
+  '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -386,6 +402,8 @@ export interface FileRoutesById {
   '/_authenticated/vendor/': typeof AuthenticatedVendorIndexRoute
   '/_authenticated/driver/delivery/$orderId': typeof AuthenticatedDriverDeliveryOrderIdRoute
   '/api/public/push/dispatch': typeof ApiPublicPushDispatchRoute
+  '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
+  '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -429,6 +447,8 @@ export interface FileRouteTypes {
     | '/vendor/'
     | '/driver/delivery/$orderId'
     | '/api/public/push/dispatch'
+    | '/lovable/email/auth/preview'
+    | '/lovable/email/auth/webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -466,6 +486,8 @@ export interface FileRouteTypes {
     | '/vendor'
     | '/driver/delivery/$orderId'
     | '/api/public/push/dispatch'
+    | '/lovable/email/auth/preview'
+    | '/lovable/email/auth/webhook'
   id:
     | '__root__'
     | '/'
@@ -508,6 +530,8 @@ export interface FileRouteTypes {
     | '/_authenticated/vendor/'
     | '/_authenticated/driver/delivery/$orderId'
     | '/api/public/push/dispatch'
+    | '/lovable/email/auth/preview'
+    | '/lovable/email/auth/webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -525,6 +549,8 @@ export interface RootRouteChildren {
   RestaurantsRoute: typeof RestaurantsRoute
   TermsRoute: typeof TermsRoute
   ApiPublicPushDispatchRoute: typeof ApiPublicPushDispatchRoute
+  LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
+  LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -809,6 +835,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicPushDispatchRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lovable/email/auth/preview': {
+      id: '/lovable/email/auth/preview'
+      path: '/lovable/email/auth/preview'
+      fullPath: '/lovable/email/auth/preview'
+      preLoaderRoute: typeof LovableEmailAuthPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lovable/email/auth/webhook': {
+      id: '/lovable/email/auth/webhook'
+      path: '/lovable/email/auth/webhook'
+      fullPath: '/lovable/email/auth/webhook'
+      preLoaderRoute: typeof LovableEmailAuthWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -928,6 +968,8 @@ const rootRouteChildren: RootRouteChildren = {
   RestaurantsRoute: RestaurantsRoute,
   TermsRoute: TermsRoute,
   ApiPublicPushDispatchRoute: ApiPublicPushDispatchRoute,
+  LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
+  LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
