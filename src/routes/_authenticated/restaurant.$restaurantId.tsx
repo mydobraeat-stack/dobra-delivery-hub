@@ -119,7 +119,7 @@ function RestaurantPage() {
             {grouped.map(([category, categoryItems]) => (
               <section key={category} className="space-y-3">
                 <h2 className="text-lg font-bold text-foreground">{t(`common.categories.${category}`)}</h2>
-                <div className="grid gap-3 @lg:grid-cols-2">wsp
+                <div className="grid gap-3 @lg:grid-cols-2">
                   {categoryItems.map((item) => {
                     const qty = qtyOf(item.id);
                     return (
@@ -132,60 +132,62 @@ function RestaurantPage() {
                             height={320}
                             className="size-24 shrink-0 object-cover"
                           />
-                          <CardContent className="flex min-w-0 flex-1 items-center justify-between gap-3 px-3 py-3">
-                            <div className="min-w-0 flex-1">
+                          <CardContent className="flex min-w-0 flex-1 flex-col gap-2 px-3 py-3">
+                            <div className="min-w-0">
                               <p className="line-clamp-2 font-semibold text-foreground">{item.name}</p>
                               {item.description ? (
                                 <p className="line-clamp-2 text-xs text-foreground/60">
                                   {item.description}
                                 </p>
                               ) : null}
-                              <p className="pt-1 text-sm font-medium text-foreground/80">
+                            </div>
+                            <div className="flex min-w-0 flex-wrap items-center justify-between gap-2">
+                              <p className="text-sm font-medium text-foreground/80">
                                 {formatMoney(item.price, item.currency)}
                               </p>
+                              {!item.available ? (
+                                <span className="text-xs text-foreground/50">{t("customer.restaurant.soldOut")}</span>
+                              ) : qty > 0 ? (
+                                <div className="flex shrink-0 items-center gap-2">
+                                  <Button
+                                    size="icon"
+                                    variant="outline"
+                                    aria-label={t("customer.cart.removeOneAria", { name: item.name })}
+                                    onClick={() => setQuantity(item.id, qty - 1)}
+                                  >
+                                    <Minus className="size-4" />
+                                  </Button>
+                                  <span className="w-4 text-center text-sm font-semibold">{qty}</span>
+                                  <Button
+                                    size="icon"
+                                    aria-label={t("customer.cart.addOneAria", { name: item.name })}
+                                    onClick={() => setQuantity(item.id, qty + 1)}
+                                  >
+                                    <Plus className="size-4" />
+                                  </Button>
+                                </div>
+                              ) : (
+                                <Button
+                                  size="sm"
+                                  className="shrink-0"
+                                  onClick={() => {
+                                    addToCart(
+                                      { id: restaurant.id, name: restaurant.name },
+                                      {
+                                        itemId: item.id,
+                                        name: item.name,
+                                        price: Number(item.price),
+                                        currency: item.currency,
+                                        image: item.image_url,
+                                      },
+                                    );
+                                    toast.success(t("customer.restaurant.addedToast", { name: item.name }));
+                                  }}
+                                >
+                                  {t("common.actions.add")}
+                                </Button>
+                              )}
                             </div>
-                             {!item.available ? (
-                               <span className="shrink-0 text-xs text-foreground/50">{t("customer.restaurant.soldOut")}</span>
-                             ) : qty > 0 ? (
-                               <div className="flex shrink-0 items-center gap-2">
-                                <Button
-                                  size="icon"
-                                  variant="outline"
-                                  aria-label={t("customer.cart.removeOneAria", { name: item.name })}
-                                  onClick={() => setQuantity(item.id, qty - 1)}
-                                >
-                                  <Minus className="size-4" />
-                                </Button>
-                                <span className="w-4 text-center text-sm font-semibold">{qty}</span>
-                                <Button
-                                  size="icon"
-                                  aria-label={t("customer.cart.addOneAria", { name: item.name })}
-                                  onClick={() => setQuantity(item.id, qty + 1)}
-                                >
-                                  <Plus className="size-4" />
-                                </Button>
-                              </div>
-                            ) : (
-                               <Button
-                                 size="sm"
-                                 className="shrink-0"
-                                 onClick={() => {
-                                  addToCart(
-                                    { id: restaurant.id, name: restaurant.name },
-                                    {
-                                      itemId: item.id,
-                                      name: item.name,
-                                      price: Number(item.price),
-                                      currency: item.currency,
-                                      image: item.image_url,
-                                    },
-                                  );
-                                  toast.success(t("customer.restaurant.addedToast", { name: item.name }));
-                                }}
-                              >
-                                {t("common.actions.add")}
-                              </Button>
-                            )}
                           </CardContent>
                         </div>
                       </Card>
