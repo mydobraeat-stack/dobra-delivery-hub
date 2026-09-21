@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { FileText, LifeBuoy, Mail, ShieldCheck } from "lucide-react";
+import { ChatButton } from "@/components/dobra/ChatButton";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useT } from "@/lib/i18n";
