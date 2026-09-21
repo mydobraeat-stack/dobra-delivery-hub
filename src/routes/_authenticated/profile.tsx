@@ -167,6 +167,24 @@ function ProfilePage() {
 
         <PushSettings />
 
+        {role === "admin" ? null : (
+          <Card className="border-ink/10">
+            <CardContent className="space-y-3 pt-6">
+              <div>
+                <p className="font-semibold text-foreground">{t("chat.supportTitle")}</p>
+                <p className="text-sm text-foreground/60">{t("chat.supportSubtitle")}</p>
+              </div>
+              <ChatButton
+                kind="support"
+                variant="default"
+                size="default"
+                className="w-full"
+                label={t("chat.contactSupport")}
+              />
+            </CardContent>
+          </Card>
+        )}
+
         {role === "customer" ? <CustomerSection /> : null}
         {role === "vendor" ? <VendorSection status={profile?.approval_status ?? null} /> : null}
         {role === "driver" ? <DriverSection status={profile?.approval_status ?? null} /> : null}
