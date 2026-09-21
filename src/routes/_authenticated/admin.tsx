@@ -36,6 +36,7 @@ function AdminLayout() {
     { to: "/admin/drivers", label: t("admin.nav.drivers") },
     { to: "/admin/reviews", label: t("admin.nav.reviews") },
     { to: "/admin/orders", label: t("admin.nav.orders") },
+    { to: "/admin/support", label: t("chat.inboxTitle") },
   ];
 
   useEffect(() => {

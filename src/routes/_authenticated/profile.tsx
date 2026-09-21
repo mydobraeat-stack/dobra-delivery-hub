@@ -9,6 +9,7 @@ import { TabBar } from "@/components/dobra/TabBar";
 import { PhoneFrame } from "@/components/dobra/PhoneFrame";
 import { ImageUpload } from "@/components/dobra/ImageUpload";
 import { LanguageSwitcher } from "@/components/dobra/LanguageSwitcher";
+import { ChatButton } from "@/components/dobra/ChatButton";
 import { PushSettings } from "@/components/dobra/PushSettings";
 import { useT, useI18n } from "@/lib/i18n";
 import { accountQueryOptions } from "@/lib/profile";
