@@ -35,7 +35,7 @@ export async function currentUserId() {
 export async function openChatThread(kind: ChatKind, orderId?: string | null) {
   const { data, error } = await supabase.rpc("open_chat_thread", {
     _kind: kind,
-    _order_id: orderId ?? null,
+    ...(orderId ? { _order_id: orderId } : {}),
   });
   if (error) throw error;
   return data as string;
