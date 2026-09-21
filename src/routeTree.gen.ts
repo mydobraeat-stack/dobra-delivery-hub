@@ -35,6 +35,7 @@ import { Route as AuthenticatedAdminDriversRouteImport } from './routes/_authent
 import { Route as AuthenticatedAdminOrdersRouteImport } from './routes/_authenticated/admin.orders'
 import { Route as AuthenticatedAdminRestaurantsRouteImport } from './routes/_authenticated/admin.restaurants'
 import { Route as AuthenticatedAdminReviewsRouteImport } from './routes/_authenticated/admin.reviews'
+import { Route as AuthenticatedChatThreadIdRouteImport } from './routes/_authenticated/chat.$threadId'
 import { Route as AuthenticatedCustomerIndexRouteImport } from './routes/_authenticated/customer.index'
 import { Route as AuthenticatedCustomerOrdersRouteImport } from './routes/_authenticated/customer.orders'
 import { Route as AuthenticatedDriverIndexRouteImport } from './routes/_authenticated/driver.index'
@@ -186,6 +187,12 @@ const AuthenticatedAdminReviewsRoute =
     path: '/reviews',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedChatThreadIdRoute =
+  AuthenticatedChatThreadIdRouteImport.update({
+    id: '/chat/$threadId',
+    path: '/chat/$threadId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedCustomerIndexRoute =
   AuthenticatedCustomerIndexRouteImport.update({
     id: '/',
@@ -303,6 +310,7 @@ export interface FileRoutesByFullPath {
   '/admin/orders': typeof AuthenticatedAdminOrdersRoute
   '/admin/restaurants': typeof AuthenticatedAdminRestaurantsRoute
   '/admin/reviews': typeof AuthenticatedAdminReviewsRoute
+  '/chat/$threadId': typeof AuthenticatedChatThreadIdRoute
   '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
   '/driver/deliveries': typeof AuthenticatedDriverDeliveriesRoute
   '/driver/documents': typeof AuthenticatedDriverDocumentsRoute
@@ -342,6 +350,7 @@ export interface FileRoutesByTo {
   '/admin/orders': typeof AuthenticatedAdminOrdersRoute
   '/admin/restaurants': typeof AuthenticatedAdminRestaurantsRoute
   '/admin/reviews': typeof AuthenticatedAdminReviewsRoute
+  '/chat/$threadId': typeof AuthenticatedChatThreadIdRoute
   '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
   '/driver/deliveries': typeof AuthenticatedDriverDeliveriesRoute
   '/driver/documents': typeof AuthenticatedDriverDocumentsRoute
@@ -387,6 +396,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/orders': typeof AuthenticatedAdminOrdersRoute
   '/_authenticated/admin/restaurants': typeof AuthenticatedAdminRestaurantsRoute
   '/_authenticated/admin/reviews': typeof AuthenticatedAdminReviewsRoute
+  '/_authenticated/chat/$threadId': typeof AuthenticatedChatThreadIdRoute
   '/_authenticated/customer/orders': typeof AuthenticatedCustomerOrdersRoute
   '/_authenticated/driver/deliveries': typeof AuthenticatedDriverDeliveriesRoute
   '/_authenticated/driver/documents': typeof AuthenticatedDriverDocumentsRoute
@@ -432,6 +442,7 @@ export interface FileRouteTypes {
     | '/admin/orders'
     | '/admin/restaurants'
     | '/admin/reviews'
+    | '/chat/$threadId'
     | '/customer/orders'
     | '/driver/deliveries'
     | '/driver/documents'
@@ -471,6 +482,7 @@ export interface FileRouteTypes {
     | '/admin/orders'
     | '/admin/restaurants'
     | '/admin/reviews'
+    | '/chat/$threadId'
     | '/customer/orders'
     | '/driver/deliveries'
     | '/driver/documents'
@@ -515,6 +527,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/orders'
     | '/_authenticated/admin/restaurants'
     | '/_authenticated/admin/reviews'
+    | '/_authenticated/chat/$threadId'
     | '/_authenticated/customer/orders'
     | '/_authenticated/driver/deliveries'
     | '/_authenticated/driver/documents'
@@ -737,6 +750,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminReviewsRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/chat/$threadId': {
+      id: '/_authenticated/chat/$threadId'
+      path: '/chat/$threadId'
+      fullPath: '/chat/$threadId'
+      preLoaderRoute: typeof AuthenticatedChatThreadIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/customer/': {
       id: '/_authenticated/customer/'
       path: '/'
@@ -933,6 +953,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedVendorRoute: typeof AuthenticatedVendorRouteWithChildren
+  AuthenticatedChatThreadIdRoute: typeof AuthenticatedChatThreadIdRoute
   AuthenticatedOrdersOrderIdRoute: typeof AuthenticatedOrdersOrderIdRoute
   AuthenticatedRestaurantRestaurantIdRoute: typeof AuthenticatedRestaurantRestaurantIdRoute
 }
@@ -945,6 +966,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedVendorRoute: AuthenticatedVendorRouteWithChildren,
+  AuthenticatedChatThreadIdRoute: AuthenticatedChatThreadIdRoute,
   AuthenticatedOrdersOrderIdRoute: AuthenticatedOrdersOrderIdRoute,
   AuthenticatedRestaurantRestaurantIdRoute:
     AuthenticatedRestaurantRestaurantIdRoute,
