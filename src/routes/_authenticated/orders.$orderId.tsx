@@ -139,6 +139,21 @@ function OrderTracking() {
                 {t("customer.tracking.arrivesIn", { n: order.eta_minutes })}
               </p>
               <StatusBadge status={order.status} />
+              <div className="flex flex-wrap gap-2 pt-2">
+                <ChatButton
+                  kind="order_vendor"
+                  orderId={order.id}
+                  label={t("chat.messageRestaurant")}
+                />
+                {order.driver_id ? (
+                  <ChatButton
+                    kind="order_driver"
+                    orderId={order.id}
+                    label={t("chat.messageDriver")}
+                  />
+                ) : null}
+                <ChatButton kind="support" label={t("chat.contactSupport")} variant="ghost" />
+              </div>
             </div>
 
             {order.status === "cancelled" ? null : (
