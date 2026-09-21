@@ -2,6 +2,7 @@ import { useEffect, useState, useSyncExternalStore } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChevronDown, ChevronUp, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { ChatButton } from "@/components/dobra/ChatButton";
 import { StatusBadge } from "@/components/dobra/StatusBadge";
 import { useI18n, useT } from "@/lib/i18n";
 import { StoredImage } from "@/components/dobra/StoredImage";
