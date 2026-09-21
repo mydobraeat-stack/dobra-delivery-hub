@@ -209,6 +209,11 @@ export function OrdersSection({
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
                     <StatusBadge status={o.status} />
+                    <ChatButton
+                      kind="order_vendor"
+                      orderId={o.id}
+                      label={t("chat.messageCustomer")}
+                    />
                     {actionable && labelKey && next ? (
                       <Button
                         size="sm"
