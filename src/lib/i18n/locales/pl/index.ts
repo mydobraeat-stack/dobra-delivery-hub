@@ -6,5 +6,6 @@ import customer from "./customer";
 import vendor from "./vendor";
 import driver from "./driver";
 import admin from "./admin";
+import chat from "./chat";
 
-export default { common, landing, marketing, auth, customer, vendor, driver, admin };
+export default { common, landing, marketing, auth, customer, vendor, driver, admin, chat };

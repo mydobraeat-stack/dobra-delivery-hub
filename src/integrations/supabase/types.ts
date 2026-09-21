@@ -14,6 +14,103 @@ export type Database = {
   }
   public: {
     Tables: {
+      chat_messages: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          read_at: string | null
+          sender_id: string
+          thread_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          read_at?: string | null
+          sender_id: string
+          thread_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          read_at?: string | null
+          sender_id?: string
+          thread_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "chat_messages_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "chat_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chat_threads: {
+        Row: {
+          counterpart_id: string | null
+          created_at: string
+          customer_id: string
+          id: string
+          kind: string
+          last_message_at: string
+          order_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          counterpart_id?: string | null
+          created_at?: string
+          customer_id: string
+          id?: string
+          kind: string
+          last_message_at?: string
+          order_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          counterpart_id?: string | null
+          created_at?: string
+          customer_id?: string
+          id?: string
+          kind?: string
+          last_message_at?: string
+          order_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_threads_counterpart_id_fkey"
+            columns: ["counterpart_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "chat_threads_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "chat_threads_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       driver_documents: {
         Row: {
           created_at: string
@@ -593,12 +690,17 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_access_chat_thread: { Args: { _thread_id: string }; Returns: boolean }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
+      }
+      open_chat_thread: {
+        Args: { _kind: string; _order_id?: string }
+        Returns: string
       }
     }
     Enums: {

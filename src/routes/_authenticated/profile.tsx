@@ -9,6 +9,7 @@ import { TabBar } from "@/components/dobra/TabBar";
 import { PhoneFrame } from "@/components/dobra/PhoneFrame";
 import { ImageUpload } from "@/components/dobra/ImageUpload";
 import { LanguageSwitcher } from "@/components/dobra/LanguageSwitcher";
+import { ChatButton } from "@/components/dobra/ChatButton";
 import { PushSettings } from "@/components/dobra/PushSettings";
 import { useT, useI18n } from "@/lib/i18n";
 import { accountQueryOptions } from "@/lib/profile";
@@ -166,6 +167,24 @@ function ProfilePage() {
         <LanguageSwitcher />
 
         <PushSettings />
+
+        {role === "admin" ? null : (
+          <Card className="border-ink/10">
+            <CardContent className="space-y-3 pt-6">
+              <div>
+                <p className="font-semibold text-foreground">{t("chat.supportTitle")}</p>
+                <p className="text-sm text-foreground/60">{t("chat.supportSubtitle")}</p>
+              </div>
+              <ChatButton
+                kind="support"
+                variant="default"
+                size="default"
+                className="w-full"
+                label={t("chat.contactSupport")}
+              />
+            </CardContent>
+          </Card>
+        )}
 
         {role === "customer" ? <CustomerSection /> : null}
         {role === "vendor" ? <VendorSection status={profile?.approval_status ?? null} /> : null}

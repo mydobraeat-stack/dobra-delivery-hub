@@ -5,6 +5,7 @@ import { ArrowLeft, MapPin, Navigation, Phone, Store } from "lucide-react";
 import { toast } from "sonner";
 import { StatusBadge } from "@/components/dobra/StatusBadge";
 import { MapView, type MapPoint } from "@/components/dobra/MapView";
+import { ChatButton } from "@/components/dobra/ChatButton";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useI18n } from "@/lib/i18n";
@@ -213,6 +214,7 @@ function DeliveryDetail() {
                 <Phone className="size-4" aria-hidden /> {t("driver.delivery.contactCustomer")}
               </Button>
             ) : null}
+            <ChatButton kind="order_driver" orderId={orderId} label={t("chat.messageCustomer")} />
           </div>
         </CardContent>
       </Card>
