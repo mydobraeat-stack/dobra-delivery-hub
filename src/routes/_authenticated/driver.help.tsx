@@ -30,7 +30,14 @@ function DriverHelp() {
       <h1 className="text-2xl font-bold text-foreground">{t("driver.help.title")}</h1>
 
       <div className="grid gap-3 @sm:grid-cols-2">
-        <Button asChild size="lg" className="justify-start">
+        <ChatButton
+          kind="support"
+          size="lg"
+          variant="default"
+          className="justify-start"
+          label={t("chat.contactSupport")}
+        />
+        <Button asChild size="lg" variant="outline" className="justify-start">
           <a href="mailto:support@dobra.app">
             <Mail className="size-4" aria-hidden /> {t("driver.help.contactSupport")}
           </a>
