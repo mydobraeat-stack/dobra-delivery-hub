@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { AppHeader } from "@/components/dobra/AppHeader";
 import { PhoneFrame } from "@/components/dobra/PhoneFrame";
 import { StoredImage } from "@/components/dobra/StoredImage";
+import { ChatButton } from "@/components/dobra/ChatButton";
 import { StatusBadge } from "@/components/dobra/StatusBadge";
 import { MapView, type MapPoint } from "@/components/dobra/MapView";
 import { SuccessOverlay } from "@/components/dobra/SuccessOverlay";
