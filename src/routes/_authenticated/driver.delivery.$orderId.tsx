@@ -213,6 +213,7 @@ function DeliveryDetail() {
                 <Phone className="size-4" aria-hidden /> {t("driver.delivery.contactCustomer")}
               </Button>
             ) : null}
+            <ChatButton kind="order_driver" orderId={orderId} label={t("chat.messageCustomer")} />
           </div>
         </CardContent>
       </Card>
