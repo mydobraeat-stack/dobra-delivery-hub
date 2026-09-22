@@ -3,7 +3,22 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { adminRestaurantsQuery, setRestaurantStatus } from "@/lib/admin";
+import {
+  adminRestaurantsQuery,
+  setRestaurantStatus,
+  type RestaurantStatus,
+} from "@/lib/admin";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { StoredImage } from "@/components/dobra/StoredImage";
 import { useT } from "@/lib/i18n";
 
@@ -15,6 +30,7 @@ const TONE: Record<string, string> = {
   approved: "bg-accent/15 text-accent",
   pending: "bg-sun/30 text-foreground",
   suspended: "bg-destructive/10 text-destructive",
+  removed: "bg-foreground/10 text-foreground/60",
 };
 
 function AdminRestaurants() {
@@ -23,10 +39,14 @@ function AdminRestaurants() {
   const { data, isPending } = useQuery(adminRestaurantsQuery);
 
   const change = useMutation({
-    mutationFn: ({ id, status }: { id: string; status: "approved" | "pending" | "suspended" }) =>
+    mutationFn: ({ id, status }: { id: string; status: RestaurantStatus }) =>
       setRestaurantStatus(id, status),
-    onSuccess: () => {
-      toast.success(t("admin.restaurants.updated"));
+    onSuccess: (_d, v) => {
+      toast.success(
+        v.status === "removed"
+          ? t("admin.restaurants.removed")
+          : t("admin.restaurants.updated"),
+      );
       queryClient.invalidateQueries({ queryKey: ["admin"] });
       queryClient.invalidateQueries({ queryKey: ["restaurants"] });
     },
@@ -63,17 +83,19 @@ function AdminRestaurants() {
           >
             {r.status}
           </span>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             {r.status !== "approved" ? (
               <Button
                 size="sm"
                 onClick={() => change.mutate({ id: r.id, status: "approved" })}
                 disabled={change.isPending}
               >
-                {t("admin.restaurants.approve")}
+                {r.status === "removed"
+                  ? t("admin.restaurants.restore")
+                  : t("admin.restaurants.approve")}
               </Button>
             ) : null}
-            {r.status !== "suspended" ? (
+            {r.status !== "suspended" && r.status !== "removed" ? (
               <Button
                 size="sm"
                 variant="outline"
@@ -82,6 +104,31 @@ function AdminRestaurants() {
               >
                 {t("admin.restaurants.suspend")}
               </Button>
+            ) : null}
+            {r.status !== "removed" ? (
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button size="sm" variant="destructive" disabled={change.isPending}>
+                    {t("admin.restaurants.delete")}
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>{t("admin.restaurants.deleteTitle")}</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      {t("admin.restaurants.deleteBody")}
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>{t("admin.restaurants.cancel")}</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => change.mutate({ id: r.id, status: "removed" })}
+                    >
+                      {t("admin.restaurants.confirmDelete")}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             ) : null}
           </div>
         </Card>

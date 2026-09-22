@@ -1,0 +1,2 @@
+ALTER TABLE public.restaurants DROP CONSTRAINT IF EXISTS restaurants_status_check;
+ALTER TABLE public.restaurants ADD CONSTRAINT restaurants_status_check CHECK (status = ANY (ARRAY['pending'::text, 'approved'::text, 'rejected'::text, 'suspended'::text, 'removed'::text]));
