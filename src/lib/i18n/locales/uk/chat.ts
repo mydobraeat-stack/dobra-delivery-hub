@@ -18,4 +18,9 @@ export default {
   inboxEmpty: "Розмов з підтримкою ще немає.",
   open: "Відкрити чат",
   lastActivity: "Останнє повідомлення {time}",
+  attach: "Додати фото або файл",
+  attachRemove: "Видалити вкладення",
+  attachTooBig: "Файл завеликий (макс. 10 МБ).",
+  attachOpen: "Відкрити файл",
+  attachUploading: "Завантаження…",
 };

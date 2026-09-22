@@ -18,4 +18,9 @@ export default {
   inboxEmpty: "Aucune conversation d'assistance.",
   open: "Ouvrir la discussion",
   lastActivity: "Dernier message {time}",
+  attach: "Joindre une photo ou un fichier",
+  attachRemove: "Retirer la pièce jointe",
+  attachTooBig: "Fichier trop volumineux (max 10 Mo).",
+  attachOpen: "Ouvrir le fichier",
+  attachUploading: "Envoi…",
 };
