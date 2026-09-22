@@ -122,15 +122,19 @@ function ProfileHub() {
       {role === "admin" ? null : (
         <ChatButton
           kind="support"
-          variant="outline"
+          variant="default"
           size="default"
-          className="w-full"
+          className="h-12 w-full rounded-2xl bg-brand text-base font-semibold text-primary-foreground shadow-soft transition-transform hover:bg-brand/90 active:scale-[0.99]"
           label={t("chat.contactSupport")}
         />
       )}
 
-      <Button variant="outline" className="w-full" onClick={handleSignOut}>
-        <LogOut className="size-4" aria-hidden />
+      <Button
+        variant="outline"
+        className="h-12 w-full rounded-2xl border-2 border-brand/30 bg-card text-base font-semibold text-brand transition-transform hover:bg-brand/10 hover:text-brand active:scale-[0.99]"
+        onClick={handleSignOut}
+      >
+        <LogOut className="size-5" aria-hidden />
         {t("common.actions.signOut")}
       </Button>
       <HelpCircle className="hidden" aria-hidden />
