@@ -36,7 +36,7 @@ export const Route = createFileRoute("/get-started")({
 const roles = ["customer", "vendor", "driver"] as const;
 
 function Welcome() {
-  const { mode } = Route.useSearch();
+  const { mode, address } = Route.useSearch();
   const [role, setRole] = useState<(typeof roles)[number]>("customer");
   const t = useT();
 
