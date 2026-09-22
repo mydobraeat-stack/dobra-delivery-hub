@@ -13,6 +13,9 @@ export default {
     cta: "Find Food",
     orSignIn: "Or Sign In",
     imageAlt: "A spread of freshly packed takeaway dishes",
+    locating: "Finding your location…",
+    useLocation: "Use my current location",
+    locationDenied: "We couldn't detect your location. Please type your address.",
   },
   cities: {
     title: "Cities we serve",

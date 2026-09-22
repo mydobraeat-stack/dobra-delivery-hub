@@ -13,6 +13,9 @@ export default {
     cta: "Znajdź jedzenie",
     orSignIn: "Albo zaloguj się",
     imageAlt: "Świeżo zapakowane dania na wynos",
+    locating: "Ustalamy Twoją lokalizację…",
+    useLocation: "Użyj mojej lokalizacji",
+    locationDenied: "Nie udało się ustalić lokalizacji. Wpisz swój adres.",
   },
   cities: {
     title: "Miasta, w których działamy",
