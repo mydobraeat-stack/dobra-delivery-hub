@@ -170,8 +170,12 @@ function CustomerHome() {
         <div className="flex flex-wrap gap-2">
           <Button
             size="sm"
+            className="transition-transform active:scale-95"
             variant={cuisine === null ? "default" : "outline"}
-            onClick={() => setCuisine(null)}
+            onClick={() => {
+              tapFeedback("tap");
+              setCuisine(null);
+            }}
           >
             {t("customer.home.all")}
           </Button>
@@ -179,8 +183,12 @@ function CustomerHome() {
             <Button
               key={c}
               size="sm"
+              className="transition-transform active:scale-95"
               variant={cuisine === c ? "default" : "outline"}
-              onClick={() => setCuisine(cuisine === c ? null : c)}
+              onClick={() => {
+                tapFeedback(cuisine === c ? "off" : "pop");
+                setCuisine(cuisine === c ? null : c);
+              }}
             >
               {c}
             </Button>
@@ -191,23 +199,35 @@ function CustomerHome() {
             <Button
               key={s.id}
               size="sm"
+              className="transition-transform active:scale-95"
               variant={sort === s.id ? "secondary" : "ghost"}
-              onClick={() => setSort(s.id)}
+              onClick={() => {
+                tapFeedback("tap");
+                setSort(s.id);
+              }}
             >
               {t(s.labelKey)}
             </Button>
           ))}
           <Button
             size="sm"
+            className="transition-transform active:scale-95"
             variant={openOnly ? "secondary" : "ghost"}
-            onClick={() => setOpenOnly(!openOnly)}
+            onClick={() => {
+              tapFeedback(openOnly ? "off" : "pop");
+              setOpenOnly(!openOnly);
+            }}
           >
             {t("customer.home.openNow")}
           </Button>
           <Button
             size="sm"
+            className="transition-transform active:scale-95"
             variant={favOnly ? "secondary" : "ghost"}
-            onClick={() => setFavOnly(!favOnly)}
+            onClick={() => {
+              tapFeedback(favOnly ? "off" : "pop");
+              setFavOnly(!favOnly);
+            }}
           >
             {t("customer.home.favourites")}
           </Button>
