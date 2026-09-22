@@ -13,6 +13,9 @@ export default {
     cta: "Trouver à manger",
     orSignIn: "Ou se connecter",
     imageAlt: "Assortiment de plats à emporter fraîchement préparés",
+    locating: "Localisation en cours…",
+    useLocation: "Utiliser ma position actuelle",
+    locationDenied: "Impossible de détecter votre position. Saisissez votre adresse.",
   },
   cities: {
     title: "Nos villes",
