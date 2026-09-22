@@ -20,6 +20,10 @@ export default {
     confirm: "Confirmer",
     contactSupport: "Contacter le support",
   },
+  signOutConfirm: {
+    title: "Se déconnecter de Dobra ?",
+    body: "Vous devrez vous reconnecter pour commander ou suivre vos commandes.",
+  },
   state: {
     loading: "Chargement…",
     empty: "Rien ici pour l'instant",

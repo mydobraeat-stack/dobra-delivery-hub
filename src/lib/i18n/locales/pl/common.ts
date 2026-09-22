@@ -20,6 +20,10 @@ export default {
     confirm: "Potwierdź",
     contactSupport: "Kontakt z pomocą",
   },
+  signOutConfirm: {
+    title: "Wylogować się z Dobra?",
+    body: "Aby składać i śledzić zamówienia, trzeba zalogować się ponownie.",
+  },
   state: {
     loading: "Ładowanie…",
     empty: "Nic tu jeszcze nie ma",
