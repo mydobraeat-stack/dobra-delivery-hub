@@ -39,10 +39,14 @@ function AdminRestaurants() {
   const { data, isPending } = useQuery(adminRestaurantsQuery);
 
   const change = useMutation({
-    mutationFn: ({ id, status }: { id: string; status: "approved" | "pending" | "suspended" }) =>
+    mutationFn: ({ id, status }: { id: string; status: RestaurantStatus }) =>
       setRestaurantStatus(id, status),
-    onSuccess: () => {
-      toast.success(t("admin.restaurants.updated"));
+    onSuccess: (_d, v) => {
+      toast.success(
+        v.status === "removed"
+          ? t("admin.restaurants.removed")
+          : t("admin.restaurants.updated"),
+      );
       queryClient.invalidateQueries({ queryKey: ["admin"] });
       queryClient.invalidateQueries({ queryKey: ["restaurants"] });
     },
