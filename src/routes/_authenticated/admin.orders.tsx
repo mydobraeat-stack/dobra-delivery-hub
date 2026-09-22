@@ -79,25 +79,108 @@ function AdminOrders() {
 
       <div className="space-y-3">
         {rows.map((o) => (
-          <Card key={o.id} className="flex flex-wrap items-center justify-between gap-3 p-4">
-            <div className="min-w-48">
-              <p className="font-semibold">
-                {orderRef(o.id)} · {o.restaurantName}
-              </p>
-              <p className="text-sm text-foreground/60">
-                {t("admin.orders.customer")}: {o.customerName} · {t("admin.orders.driver")}: {o.driverName}
-              </p>
-              <p className="text-xs text-foreground/50">
-                {formatDate(o.created_at)} · {o.country || "—"}
-              </p>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="font-semibold">{formatMoney(Number(o.total), o.currency)}</span>
-              <StatusBadge status={o.status} />
-            </div>
-          </Card>
+          <OrderRow key={o.id} order={o} />
         ))}
       </div>
     </div>
+  );
+}
+
+function OrderRow({ order: o }: { order: AdminOrder }) {
+  const t = useT();
+  const { formatMoney, formatDate } = useI18n();
+  const queryClient = useQueryClient();
+  const [open, setOpen] = useState(false);
+  const items = useQuery({ ...adminOrderItemsQuery(o.id), enabled: open });
+
+  const refresh = () => queryClient.invalidateQueries({ queryKey: ["admin"] });
+
+  const cancel = useMutation({
+    mutationFn: () => adminCancelOrder(o.id),
+    onSuccess: () => {
+      toast.success(t("admin.orders.cancelled"));
+      refresh();
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const unassign = useMutation({
+    mutationFn: () => adminUnassignDriver(o.id),
+    onSuccess: () => {
+      toast.success(t("admin.orders.driverUnassigned"));
+      refresh();
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const closed = o.status === "delivered" || o.status === "cancelled";
+
+  return (
+    <Card className="p-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="min-w-48">
+          <p className="font-semibold">
+            {orderRef(o.id)} · {o.restaurantName}
+          </p>
+          <p className="text-sm text-foreground/60">
+            {t("admin.orders.customer")}: {o.customerName} · {t("admin.orders.driver")}:{" "}
+            {o.driverName}
+          </p>
+          <p className="text-xs text-foreground/50">
+            {formatDate(o.created_at)} · {o.country || "—"}
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="font-semibold">{formatMoney(Number(o.total), o.currency)}</span>
+          <StatusBadge status={o.status} />
+        </div>
+      </div>
+
+      <div className="mt-3 flex flex-wrap gap-2">
+        <Button size="sm" variant="outline" onClick={() => setOpen((v) => !v)}>
+          {open ? t("admin.orders.hideDetails") : t("admin.orders.viewDetails")}
+        </Button>
+        {o.driver_id && !closed ? (
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => unassign.mutate()}
+            disabled={unassign.isPending}
+          >
+            {t("admin.orders.unassignDriver")}
+          </Button>
+        ) : null}
+        {!closed ? (
+          <Button
+            size="sm"
+            variant="destructive"
+            onClick={() => cancel.mutate()}
+            disabled={cancel.isPending}
+          >
+            {t("admin.orders.cancelOrder")}
+          </Button>
+        ) : null}
+      </div>
+
+      {open ? (
+        <div className="mt-3 space-y-1 rounded-xl bg-muted/50 p-3 text-sm">
+          {items.isPending ? <p className="text-foreground/60">{t("admin.loading")}</p> : null}
+          {(items.data ?? []).map((i) => (
+            <div key={i.id} className="flex justify-between gap-3">
+              <span className="min-w-0 break-words">
+                {i.quantity} × {i.name}
+              </span>
+              <span className="shrink-0">{formatMoney(i.price * i.quantity, o.currency)}</span>
+            </div>
+          ))}
+          {!items.isPending && (items.data ?? []).length === 0 ? (
+            <p className="text-foreground/60">{t("admin.orders.noItems")}</p>
+          ) : null}
+          <div className="mt-2 border-t border-ink/10 pt-2 text-xs text-foreground/60">
+            {t("admin.orders.payment")}: {o.payment_method || "—"} · {o.payment_status || "—"}
+          </div>
+        </div>
+      ) : null}
+    </Card>
   );
 }
