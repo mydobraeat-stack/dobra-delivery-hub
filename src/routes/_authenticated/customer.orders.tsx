@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { StatusBadge } from "@/components/dobra/StatusBadge";
+import { ProfileBackLink } from "@/components/dobra/ProfileMenu";
 import { isFinished, myOrdersQuery, orderRef, restaurantsQuery } from "@/lib/dobra";
 import { useI18n } from "@/lib/i18n";
 import { Card, CardContent } from "@/components/ui/card";
@@ -59,6 +60,7 @@ function CustomerOrders() {
 
   return (
     <main className="mx-auto max-w-4xl space-y-8 px-5 py-6">
+      <ProfileBackLink label={t("common.actions.back")} />
       <h1 className="text-2xl font-bold text-foreground">{t("customer.orders.title")}</h1>
 
       <section className="space-y-3">
