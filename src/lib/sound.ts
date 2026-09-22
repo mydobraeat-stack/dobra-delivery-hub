@@ -59,7 +59,36 @@ const PATTERNS: Record<string, Tone[]> = {
   ],
   // soft single blip for everything else
   soft: [{ freq: 720, start: 0, duration: 0.14 }],
+  // very short, quiet click for taps on tiles / cards
+  tap: [{ freq: 880, start: 0, duration: 0.05 }],
+  // light rising pop for adding something (cart, favourite on)
+  pop: [
+    { freq: 740, start: 0, duration: 0.06 },
+    { freq: 1180, start: 0.06, duration: 0.09 },
+  ],
+  // falling blip for removing / toggling off
+  off: [
+    { freq: 620, start: 0, duration: 0.06 },
+    { freq: 420, start: 0.06, duration: 0.09 },
+  ],
 };
+
+/** Short haptic buzz where the device supports it. */
+export function vibrate(pattern: number | number[] = 8) {
+  if (typeof navigator === "undefined") return;
+  const nav = navigator as Navigator & { vibrate?: (p: number | number[]) => boolean };
+  try {
+    nav.vibrate?.(pattern);
+  } catch {
+    /* ignore */
+  }
+}
+
+/** Combined click sound + haptic for interactive UI elements. */
+export function tapFeedback(name: SoundName = "tap", haptic: number | number[] = 8) {
+  playSound(name);
+  vibrate(haptic);
+}
 
 export type SoundName = keyof typeof PATTERNS;
 
