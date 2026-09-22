@@ -213,7 +213,7 @@ function CustomerHome() {
         </div>
       </section>
 
-      <section className="space-y-3">
+      <section id="restaurants" className="scroll-mt-4 space-y-3">
         <h2 className="text-lg font-bold text-foreground">
           {query ? t("customer.home.searchResults") : t("customer.home.nearYou")}
         </h2>
