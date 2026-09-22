@@ -32,7 +32,7 @@ export function NewDeliveryAlert({
 }: {
   online: boolean;
   available: OrderRow[];
-  restaurantName: (id: string) => string;
+  restaurantName: (id: string | null) => string;
 }) {
   const { t, formatMoney } = useI18n();
   const navigate = useNavigate();
@@ -128,8 +128,14 @@ export function NewDeliveryAlert({
           <div className="flex items-start gap-3">
             <Store className="mt-0.5 size-5 text-primary" aria-hidden />
             <div className="min-w-0">
-              <p className="font-semibold text-foreground">{restaurantName(offer.restaurant_id)}</p>
-              <p className="text-xs text-foreground/60">{t("driver.offer.pickup")}</p>
+              <p className="font-semibold text-foreground">
+                {offer.kind === "package"
+                  ? (offer.pickup_address ?? t("package.orderLabel"))
+                  : restaurantName(offer.restaurant_id)}
+              </p>
+              <p className="text-xs text-foreground/60">
+                {offer.kind === "package" ? t("package.pickupLabel") : t("driver.offer.pickup")}
+              </p>
             </div>
           </div>
           <div className="flex items-start gap-3">

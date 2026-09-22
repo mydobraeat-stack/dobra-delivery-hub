@@ -91,7 +91,7 @@ function OrderTracking() {
     mutationFn: () =>
       submitReview({
         orderId,
-        restaurantId: order!.restaurant_id,
+        restaurantId: order!.restaurant_id!,
         driverId: order!.driver_id,
         restaurantRating,
         driverRating: order!.driver_id ? driverRating : null,
@@ -253,7 +253,7 @@ function OrderTracking() {
               </Button>
             ) : null}
 
-            {order.status === "delivered" ? (
+            {order.status === "delivered" && order.restaurant_id ? (
               <Card className="border-ink/10">
                 <CardContent className="space-y-4 py-4">
                   <p className="text-sm font-semibold text-foreground">{t("customer.tracking.rateOrder")}</p>

@@ -46,7 +46,7 @@ export type OrderRow = {
   delivery_fee: number;
   currency: string;
   created_at: string;
-  restaurant_id: string;
+  restaurant_id: string | null;
   driver_id: string | null;
   customer_id: string;
   address: string | null;
@@ -54,10 +54,15 @@ export type OrderRow = {
   eta_minutes: number;
   dest_lat: number | null;
   dest_lng: number | null;
+  kind: "food" | "package";
+  pickup_address: string | null;
+  pickup_lat: number | null;
+  pickup_lng: number | null;
+  package_note: string | null;
 };
 
 const ORDER_COLS =
-  "id,status,total,subtotal,delivery_fee,currency,created_at,restaurant_id,driver_id,customer_id,address,note,eta_minutes,dest_lat,dest_lng";
+  "id,status,total,subtotal,delivery_fee,currency,created_at,restaurant_id,driver_id,customer_id,address,note,eta_minutes,dest_lat,dest_lng,kind,pickup_address,pickup_lat,pickup_lng,package_note";
 
 export type Review = {
   id: string;
@@ -447,6 +452,86 @@ export async function placeOrder({
     })),
   );
   if (itemsError) throw itemsError;
+  return data.id as string;
+}
+
+/* --------------------------- package deliveries --------------------------- */
+
+export const PACKAGE_BASE_FEE = 12;
+export const PACKAGE_PER_KM = 2.5;
+export const PACKAGE_CURRENCY = "PLN";
+
+function haversineKm(a: { lat: number; lng: number }, b: { lat: number; lng: number }) {
+  const R = 6371;
+  const dLat = ((b.lat - a.lat) * Math.PI) / 180;
+  const dLng = ((b.lng - a.lng) * Math.PI) / 180;
+  const la1 = (a.lat * Math.PI) / 180;
+  const la2 = (b.lat * Math.PI) / 180;
+  const h =
+    Math.sin(dLat / 2) ** 2 + Math.cos(la1) * Math.cos(la2) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+
+/** Flat base fee plus a per-kilometre amount when both points are known. */
+export function packageQuote(
+  pickup: { lat: number; lng: number } | null,
+  dropoff: { lat: number; lng: number } | null,
+) {
+  const km = pickup && dropoff ? haversineKm(pickup, dropoff) : 0;
+  const fee = Math.round((PACKAGE_BASE_FEE + km * PACKAGE_PER_KM) * 100) / 100;
+  const etaMinutes = Math.max(20, Math.round(15 + km * 4));
+  return { km, fee, etaMinutes };
+}
+
+export type PackageInput = {
+  pickupAddress: string;
+  pickupLat: number | null;
+  pickupLng: number | null;
+  dropAddress: string;
+  dropLat: number | null;
+  dropLng: number | null;
+  description: string;
+  paymentMethod: PaymentMethod;
+};
+
+export async function placePackageDelivery(input: PackageInput) {
+  const userId = await currentUserId();
+  const quote = packageQuote(
+    input.pickupLat != null && input.pickupLng != null
+      ? { lat: input.pickupLat, lng: input.pickupLng }
+      : null,
+    input.dropLat != null && input.dropLng != null
+      ? { lat: input.dropLat, lng: input.dropLng }
+      : null,
+  );
+
+  const { data, error } = await supabase
+    .from("orders")
+    .insert({
+      customer_id: userId,
+      restaurant_id: null,
+      kind: "package",
+      // Packages are immediately available for drivers to claim.
+      status: "ready",
+      currency: PACKAGE_CURRENCY,
+      subtotal: 0,
+      delivery_fee: quote.fee,
+      total: quote.fee,
+      address: input.dropAddress,
+      dest_lat: input.dropLat,
+      dest_lng: input.dropLng,
+      pickup_address: input.pickupAddress,
+      pickup_lat: input.pickupLat,
+      pickup_lng: input.pickupLng,
+      package_note: input.description || null,
+      note: input.description || null,
+      eta_minutes: quote.etaMinutes,
+      payment_method: input.paymentMethod,
+      payment_status: input.paymentMethod === "cash" ? "cash" : "pending",
+    })
+    .select("id")
+    .single();
+  if (error) throw error;
   return data.id as string;
 }
 

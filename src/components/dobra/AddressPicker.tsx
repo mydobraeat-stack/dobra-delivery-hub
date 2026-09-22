@@ -13,10 +13,13 @@ export type PickedAddress = { address: string; lat: number | null; lng: number |
 type Props = {
   value: PickedAddress;
   onChange: (next: PickedAddress) => void;
+  id?: string;
+  label?: string;
+  placeholder?: string;
 };
 
 /** Address field with live suggestions and a confirmation map pin. */
-export function AddressPicker({ value, onChange }: Props) {
+export function AddressPicker({ value, onChange, id = "address", label, placeholder }: Props) {
   const t = useT();
   const [query, setQuery] = useState(value.address);
   const [debounced, setDebounced] = useState(value.address);
@@ -51,10 +54,10 @@ export function AddressPicker({ value, onChange }: Props) {
 
   return (
     <div className="space-y-2">
-      <Label htmlFor="address">{t("customer.checkout.addressLabel")}</Label>
+      <Label htmlFor={id}>{label ?? t("customer.checkout.addressLabel")}</Label>
       <div className="relative">
         <Input
-          id="address"
+          id={id}
           autoComplete="off"
           value={query}
           onChange={(e) => {
@@ -62,7 +65,7 @@ export function AddressPicker({ value, onChange }: Props) {
             setOpen(true);
             onChange({ address: e.target.value, lat: null, lng: null });
           }}
-          placeholder={t("customer.checkout.addressPlaceholder")}
+          placeholder={placeholder ?? t("customer.checkout.addressPlaceholder")}
         />
         {open && suggestions.length > 0 ? (
           <ul className="absolute z-30 mt-1 w-full overflow-hidden rounded-xl border border-ink/10 bg-card shadow-soft">

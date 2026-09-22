@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Clock, Heart, Search, Star } from "lucide-react";
 import { StoredImage } from "@/components/dobra/StoredImage";
 import { useI18n } from "@/lib/i18n";
+import { CategoryGrid } from "@/components/dobra/CategoryGrid";
 import { StatusBadge } from "@/components/dobra/StatusBadge";
 import { accountQueryOptions } from "@/lib/profile";
 import {
@@ -131,6 +132,9 @@ function CustomerHome() {
         />
       </div>
 
+      <CategoryGrid />
+
+
       {liveOrders.length > 0 ? (
         <section className="space-y-3">
           <div className="flex items-center justify-between">
@@ -145,7 +149,9 @@ function CustomerHome() {
                 <CardContent className="flex items-center justify-between gap-3 py-4">
                   <div className="min-w-0">
                     <p className="truncate font-semibold text-foreground">
-                      {byRestaurant[o.restaurant_id]?.name ?? t("customer.home.restaurantFallback")}
+                      {o.restaurant_id
+                ? (byRestaurant[o.restaurant_id]?.name ?? t("customer.home.restaurantFallback"))
+                : t("package.orderLabel")}
                     </p>
                     <p className="text-xs text-foreground/60">
                       {orderRef(o.id)} · {formatMoney(o.total, o.currency)} · {t("customer.home.aboutMin", { n: o.eta_minutes })}

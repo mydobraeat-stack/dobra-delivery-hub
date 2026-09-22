@@ -171,7 +171,7 @@ export const adminOrdersQuery = queryOptions({
       payment_method: (o as { payment_method?: string | null }).payment_method ?? null,
       payment_status: (o as { payment_status?: string | null }).payment_status ?? null,
       customerName: nameBy.get(o.customer_id) ?? "—",
-      restaurantName: restaurantBy.get(o.restaurant_id) ?? "—",
+      restaurantName: (o.restaurant_id ? restaurantBy.get(o.restaurant_id) : null) ?? "—",
       driverName: o.driver_id ? (nameBy.get(o.driver_id) ?? "Assigned") : "Unassigned",
     })) as AdminOrder[];
   },
