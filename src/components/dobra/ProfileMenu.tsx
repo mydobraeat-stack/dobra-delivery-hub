@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -84,5 +84,18 @@ export function ProfileMenuItem({
 export function ProfileMenuList({ children }: { children: React.ReactNode }) {
   return (
     <ul className="overflow-hidden rounded-2xl border border-ink/10 bg-card">{children}</ul>
+  );
+}
+
+/** Back link shown at the top of profile sub-pages. */
+export function ProfileBackLink({ label }: { label: string }) {
+  return (
+    <Link
+      to="/profile"
+      className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground/70 transition-colors hover:text-foreground"
+    >
+      <ChevronLeft className="size-4 shrink-0" aria-hidden />
+      {label}
+    </Link>
   );
 }
