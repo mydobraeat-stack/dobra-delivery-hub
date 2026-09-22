@@ -43,9 +43,17 @@ export function CategoryGrid() {
     <section className="space-y-3" aria-label={t("package.categories.title")}>
       <h2 className="text-lg font-bold text-foreground">{t("package.categories.title")}</h2>
       <div className="grid grid-cols-2 gap-3">
-        <Link to="/customer" className={tileClass}>
+        <button
+          type="button"
+          className={tileClass}
+          onClick={() => {
+            document
+              .getElementById("restaurants")
+              ?.scrollIntoView({ behavior: "smooth", block: "start" });
+          }}
+        >
           <Tile img={foodImg} label={t("package.categories.food")} />
-        </Link>
+        </button>
         {soon("groceries", groceriesImg)}
       </div>
       <div className="grid grid-cols-3 gap-3">
