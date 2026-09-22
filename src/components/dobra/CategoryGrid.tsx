@@ -6,13 +6,15 @@ import shopsImg from "@/assets/categories/shops.jpg";
 import pharmacyImg from "@/assets/categories/pharmacy.jpg";
 import packageImg from "@/assets/categories/package.jpg";
 import { useI18n } from "@/lib/i18n";
+import { tapFeedback } from "@/lib/sound";
 
-const tileClass = "group flex min-w-0 flex-col items-center gap-2";
+const tileClass =
+  "group flex min-w-0 flex-col items-center gap-2 rounded-2xl transition-transform duration-200 active:scale-95";
 
 function Tile({ img, label }: { img: string; label: string }) {
   return (
     <>
-      <span className="rounded-full bg-gradient-to-br from-secondary to-primary p-[3px] shadow-soft transition-transform group-hover:scale-105">
+      <span className="rounded-full bg-gradient-to-br from-secondary to-primary p-[3px] shadow-soft transition-transform duration-200 group-hover:scale-110 group-hover:shadow-lg group-active:scale-95">
         <span className="block overflow-hidden rounded-full bg-card p-1">
           <img
             src={img}
@@ -34,7 +36,12 @@ export function CategoryGrid() {
   const { t } = useI18n();
 
   const soon = (category: string, img: string): ReactNode => (
-    <Link to="/customer/soon/$category" params={{ category }} className={tileClass}>
+    <Link
+      to="/customer/soon/$category"
+      params={{ category }}
+      className={tileClass}
+      onClick={() => tapFeedback("tap")}
+    >
       <Tile img={img} label={t(`package.categories.${category}`)} />
     </Link>
   );
@@ -47,6 +54,7 @@ export function CategoryGrid() {
           type="button"
           className={tileClass}
           onClick={() => {
+            tapFeedback("pop");
             document
               .getElementById("restaurants")
               ?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -59,7 +67,7 @@ export function CategoryGrid() {
       <div className="grid grid-cols-3 gap-3">
         {soon("shops", shopsImg)}
         {soon("pharmacy", pharmacyImg)}
-        <Link to="/customer/package" className={tileClass}>
+        <Link to="/customer/package" className={tileClass} onClick={() => tapFeedback("pop")}>
           <Tile img={packageImg} label={t("package.categories.package")} />
         </Link>
       </div>

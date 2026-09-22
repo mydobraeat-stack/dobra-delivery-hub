@@ -18,6 +18,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { tapFeedback } from "@/lib/sound";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
@@ -144,8 +145,14 @@ function CustomerHome() {
             </Button>
           </div>
           {liveOrders.slice(0, 2).map((o) => (
-            <Link key={o.id} to="/orders/$orderId" params={{ orderId: o.id }}>
-              <Card className="border-ink/10 transition-shadow hover:shadow-soft">
+            <Link
+              key={o.id}
+              to="/orders/$orderId"
+              params={{ orderId: o.id }}
+              onClick={() => tapFeedback("tap")}
+              className="block transition-transform duration-200 active:scale-[0.98]"
+            >
+              <Card className="border-ink/10 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-soft">
                 <CardContent className="flex items-center justify-between gap-3 py-4">
                   <div className="min-w-0">
                     <p className="truncate font-semibold text-foreground">
@@ -169,8 +176,12 @@ function CustomerHome() {
         <div className="flex flex-wrap gap-2">
           <Button
             size="sm"
+            className="transition-transform active:scale-95"
             variant={cuisine === null ? "default" : "outline"}
-            onClick={() => setCuisine(null)}
+            onClick={() => {
+              tapFeedback("tap");
+              setCuisine(null);
+            }}
           >
             {t("customer.home.all")}
           </Button>
@@ -178,8 +189,12 @@ function CustomerHome() {
             <Button
               key={c}
               size="sm"
+              className="transition-transform active:scale-95"
               variant={cuisine === c ? "default" : "outline"}
-              onClick={() => setCuisine(cuisine === c ? null : c)}
+              onClick={() => {
+                tapFeedback(cuisine === c ? "off" : "pop");
+                setCuisine(cuisine === c ? null : c);
+              }}
             >
               {c}
             </Button>
@@ -190,23 +205,35 @@ function CustomerHome() {
             <Button
               key={s.id}
               size="sm"
+              className="transition-transform active:scale-95"
               variant={sort === s.id ? "secondary" : "ghost"}
-              onClick={() => setSort(s.id)}
+              onClick={() => {
+                tapFeedback("tap");
+                setSort(s.id);
+              }}
             >
               {t(s.labelKey)}
             </Button>
           ))}
           <Button
             size="sm"
+            className="transition-transform active:scale-95"
             variant={openOnly ? "secondary" : "ghost"}
-            onClick={() => setOpenOnly(!openOnly)}
+            onClick={() => {
+              tapFeedback(openOnly ? "off" : "pop");
+              setOpenOnly(!openOnly);
+            }}
           >
             {t("customer.home.openNow")}
           </Button>
           <Button
             size="sm"
+            className="transition-transform active:scale-95"
             variant={favOnly ? "secondary" : "ghost"}
-            onClick={() => setFavOnly(!favOnly)}
+            onClick={() => {
+              tapFeedback(favOnly ? "off" : "pop");
+              setFavOnly(!favOnly);
+            }}
           >
             {t("customer.home.favourites")}
           </Button>
@@ -230,14 +257,17 @@ function CustomerHome() {
                       ? t("customer.home.removeFavouriteAria", { name: r.name })
                       : t("customer.home.addFavouriteAria", { name: r.name })
                   }
-                  onClick={() => toggle(r.id)}
-                  className="absolute right-3 top-3 z-10 rounded-full bg-card/90 p-2 shadow-soft"
+                  onClick={() => {
+                    tapFeedback(favourites.includes(r.id) ? "off" : "pop", [10, 30, 10]);
+                    toggle(r.id);
+                  }}
+                  className="absolute right-3 top-3 z-10 rounded-full bg-card/90 p-2 shadow-soft transition-transform hover:scale-110 active:scale-90"
                 >
                   <Heart
                     className={cn(
-                      "size-4",
+                      "size-4 transition-transform",
                       favourites.includes(r.id)
-                        ? "fill-destructive text-destructive"
+                        ? "scale-110 fill-destructive text-destructive"
                         : "text-foreground/60",
                     )}
                   />
@@ -245,9 +275,10 @@ function CustomerHome() {
                 <Link
                   to="/restaurant/$restaurantId"
                   params={{ restaurantId: r.id }}
-                  className="rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                  onClick={() => tapFeedback("tap")}
+                  className="block rounded-xl transition-transform duration-200 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                 >
-                  <Card className="h-full overflow-hidden border-ink/10 transition-shadow hover:shadow-soft">
+                  <Card className="h-full overflow-hidden border-ink/10 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-soft">
                     <StoredImage
                       value={r.logo_url}
                       alt={`${r.name} restaurant`}
