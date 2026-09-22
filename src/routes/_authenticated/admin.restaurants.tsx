@@ -30,6 +30,7 @@ const TONE: Record<string, string> = {
   approved: "bg-accent/15 text-accent",
   pending: "bg-sun/30 text-foreground",
   suspended: "bg-destructive/10 text-destructive",
+  removed: "bg-foreground/10 text-foreground/60",
 };
 
 function AdminRestaurants() {
