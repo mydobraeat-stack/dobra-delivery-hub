@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { ProfileBackLink } from "@/components/dobra/ProfileMenu";
 import { PushSettings } from "@/components/dobra/PushSettings";
 import { useT } from "@/lib/i18n";
 
@@ -22,7 +23,8 @@ export const Route = createFileRoute("/_authenticated/profile/notifications")({
 function ProfileNotifications() {
   const t = useT();
   return (
-    <main className="mx-auto max-w-2xl space-y-5 px-5 py-6">
+    <main className="mx-auto max-w-2xl space-y-4 px-5 py-6">
+      <ProfileBackLink label={t("common.actions.back")} />
       <h1 className="text-2xl font-bold text-foreground">
         {t("common.profileMenu.notifications")}
       </h1>
