@@ -18,4 +18,9 @@ export default {
   inboxEmpty: "Brak rozmów z obsługą.",
   open: "Otwórz czat",
   lastActivity: "Ostatnia wiadomość {time}",
+  attach: "Dodaj zdjęcie lub plik",
+  attachRemove: "Usuń załącznik",
+  attachTooBig: "Plik jest za duży (maks. 10 MB).",
+  attachOpen: "Otwórz plik",
+  attachUploading: "Wysyłanie…",
 };

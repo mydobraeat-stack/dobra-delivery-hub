@@ -18,4 +18,9 @@ export default {
   inboxEmpty: "No support conversations yet.",
   open: "Open chat",
   lastActivity: "Last message {time}",
+  attach: "Attach photo or file",
+  attachRemove: "Remove attachment",
+  attachTooBig: "File is too large (max 10 MB).",
+  attachOpen: "Open file",
+  attachUploading: "Uploading…",
 };

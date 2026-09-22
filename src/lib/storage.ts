@@ -5,7 +5,8 @@ export type ImageBucket =
   | "restaurant-logos"
   | "menu-images"
   | "profile-photos"
-  | "driver-documents";
+  | "driver-documents"
+  | "chat-uploads";
 
 function isDirectUrl(value: string) {
   return value.startsWith("/") || value.startsWith("http");
