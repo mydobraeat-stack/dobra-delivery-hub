@@ -20,6 +20,10 @@ export default {
     confirm: "Confirm",
     contactSupport: "Contact support",
   },
+  signOutConfirm: {
+    title: "Sign out of Dobra?",
+    body: "You will need to log in again to place or track orders.",
+  },
   state: {
     loading: "Loading…",
     empty: "Nothing here yet",

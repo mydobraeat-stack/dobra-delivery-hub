@@ -18,6 +18,17 @@ import { InitialsAvatar, ProfileMenuItem, ProfileMenuList } from "@/components/d
 import { ChatButton } from "@/components/dobra/ChatButton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { useT } from "@/lib/i18n";
 import { accountQueryOptions } from "@/lib/profile";
 import { myProfileQuery } from "@/lib/my-profile";
@@ -129,14 +140,38 @@ function ProfileHub() {
         />
       )}
 
-      <Button
-        variant="outline"
-        className="h-12 w-full rounded-2xl border-2 border-brand/30 bg-card text-base font-semibold text-brand transition-transform hover:bg-brand/10 hover:text-brand active:scale-[0.99]"
-        onClick={handleSignOut}
-      >
-        <LogOut className="size-5" aria-hidden />
-        {t("common.actions.signOut")}
-      </Button>
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button
+            variant="outline"
+            className="h-12 w-full rounded-2xl border-2 border-brand/30 bg-card text-base font-semibold text-brand transition-transform hover:bg-brand/10 hover:text-brand active:scale-[0.99]"
+          >
+            <LogOut className="size-5" aria-hidden />
+            {t("common.actions.signOut")}
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent className="max-w-[20rem] rounded-2xl border-ink/10">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-lg font-bold text-foreground">
+              {t("common.signOutConfirm.title")}
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-sm text-foreground/70">
+              {t("common.signOutConfirm.body")}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="gap-2 sm:gap-2">
+            <AlertDialogCancel className="h-11 rounded-xl border-2 border-ink/15 bg-card text-base font-semibold text-foreground hover:bg-muted">
+              {t("common.actions.cancel")}
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleSignOut}
+              className="h-11 rounded-xl bg-brand text-base font-semibold text-primary-foreground hover:bg-brand/90"
+            >
+              {t("common.actions.signOut")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       <HelpCircle className="hidden" aria-hidden />
     </main>
   );
