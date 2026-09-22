@@ -98,6 +98,8 @@ export function playSound(name: SoundName) {
   if (!c) return;
   if (c.state === "suspended") void c.resume();
   const now = c.currentTime + 0.02;
+  // UI feedback blips stay much quieter than alert tones.
+  const peak = name === "tap" ? 0.07 : name === "pop" || name === "off" ? 0.11 : 0.22;
   for (const tone of PATTERNS[name] ?? PATTERNS["soft"]!) {
     const osc = c.createOscillator();
     const gain = c.createGain();
