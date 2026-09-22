@@ -1,6 +1,7 @@
 export default {
   orderLabel: "Dostawa paczki",
   pickupLabel: "Miejsce odbioru",
+  legPickup: "Jedź do miejsca odbioru",
   dropoffLabel: "Miejsce dostawy",
   categories: {
     title: "Czego potrzebujesz?",

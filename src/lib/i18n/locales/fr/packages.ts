@@ -1,6 +1,7 @@
 export default {
   orderLabel: "Livraison de colis",
   pickupLabel: "Point de retrait",
+  legPickup: "Rendez-vous au point de retrait",
   dropoffLabel: "Point de livraison",
   categories: {
     title: "De quoi avez-vous besoin ?",

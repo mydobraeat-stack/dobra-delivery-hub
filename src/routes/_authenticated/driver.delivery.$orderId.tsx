@@ -176,7 +176,11 @@ function DeliveryDetail() {
           data-testid="leg-banner"
           className="rounded-full bg-secondary px-4 py-2 text-center text-sm font-bold text-secondary-foreground"
         >
-          {onCustomerLeg ? t("driver.delivery.legCustomer") : t("driver.delivery.legRestaurant")}
+          {onCustomerLeg
+            ? t("driver.delivery.legCustomer")
+            : isPackage
+              ? t("package.legPickup")
+              : t("driver.delivery.legRestaurant")}
         </p>
       ) : null}
 

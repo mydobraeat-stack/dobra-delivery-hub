@@ -1,6 +1,7 @@
 export default {
   orderLabel: "Package delivery",
   pickupLabel: "Pickup point",
+  legPickup: "Head to the pickup point",
   dropoffLabel: "Drop-off point",
   categories: {
     title: "What do you need?",

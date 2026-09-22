@@ -1,6 +1,7 @@
 export default {
   orderLabel: "Доставка посилки",
   pickupLabel: "Місце забору",
+  legPickup: "Прямуйте до місця забору",
   dropoffLabel: "Місце доставки",
   categories: {
     title: "Що вам потрібно?",
