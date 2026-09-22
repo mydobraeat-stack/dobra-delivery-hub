@@ -20,6 +20,64 @@ export function Hero() {
   const t = useT();
   const navigate = useNavigate();
   const [address, setAddress] = useState("");
+  const [locating, setLocating] = useState(false);
+  const [locationFailed, setLocationFailed] = useState(false);
+  const [touched, setTouched] = useState(false);
+
+  const detectLocation = useCallback(() => {
+    if (typeof navigator === "undefined" || !navigator.geolocation) {
+      setLocationFailed(true);
+      return;
+    }
+    setLocating(true);
+    setLocationFailed(false);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        void reverseGeocodePublic({
+          data: {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          },
+        })
+          .then((found) => {
+            if (found) {
+              setAddress((current) => (current.trim() ? current : found));
+            } else {
+              setLocationFailed(true);
+            }
+          })
+          .catch(() => setLocationFailed(true))
+          .finally(() => setLocating(false));
+      },
+      () => {
+        setLocating(false);
+        setLocationFailed(true);
+      },
+      { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 },
+    );
+  }, []);
+
+  // Fill the address in for visitors who already allowed location access.
+  useEffect(() => {
+    let cancelled = false;
+    const permissions = typeof navigator !== "undefined" ? navigator.permissions : undefined;
+    if (!permissions?.query) {
+      detectLocation();
+      return;
+    }
+    permissions
+      .query({ name: "geolocation" as PermissionName })
+      .then((status) => {
+        if (!cancelled && status.state !== "denied") detectLocation();
+        else if (!cancelled) setLocationFailed(true);
+      })
+      .catch(() => {
+        if (!cancelled) detectLocation();
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [detectLocation]);
 
   // Start on a random dish each visit (after hydration), then cycle gently.
   const [start, setStart] = useState(0);
