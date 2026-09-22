@@ -83,17 +83,19 @@ function AdminRestaurants() {
           >
             {r.status}
           </span>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             {r.status !== "approved" ? (
               <Button
                 size="sm"
                 onClick={() => change.mutate({ id: r.id, status: "approved" })}
                 disabled={change.isPending}
               >
-                {t("admin.restaurants.approve")}
+                {r.status === "removed"
+                  ? t("admin.restaurants.restore")
+                  : t("admin.restaurants.approve")}
               </Button>
             ) : null}
-            {r.status !== "suspended" ? (
+            {r.status !== "suspended" && r.status !== "removed" ? (
               <Button
                 size="sm"
                 variant="outline"
@@ -102,6 +104,31 @@ function AdminRestaurants() {
               >
                 {t("admin.restaurants.suspend")}
               </Button>
+            ) : null}
+            {r.status !== "removed" ? (
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button size="sm" variant="destructive" disabled={change.isPending}>
+                    {t("admin.restaurants.delete")}
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>{t("admin.restaurants.deleteTitle")}</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      {t("admin.restaurants.deleteBody")}
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>{t("admin.restaurants.cancel")}</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => change.mutate({ id: r.id, status: "removed" })}
+                    >
+                      {t("admin.restaurants.confirmDelete")}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             ) : null}
           </div>
         </Card>
