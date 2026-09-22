@@ -33,6 +33,7 @@ export default {
     admin: "Адміністратор",
   },
   tabs: {
+    profile: "Профіль",
     home: "Головна",
     orders: "Замовлення",
     account: "Акаунт",
@@ -71,6 +72,20 @@ export default {
     Sides: "Гарніри",
     Desserts: "Десерти",
     Drinks: "Напої",
+  },
+  profileMenu: {
+    orders: "Історія замовлень",
+    account: "Акаунт",
+    promos: "Промокоди",
+    promosEmpty: "Промокодів поки немає. Пропозиції з’являться тут.",
+    language: "Мова",
+    faq: "Питання та допомога",
+    notifications: "Сповіщення",
+    verification: "Документи для перевірки",
+    business: "Ваш бізнес",
+    changePassword: "Змінити пароль",
+    passwordSent: "Посилання для зміни пароля надіслано на пошту.",
+    passwordFailed: "Не вдалося надіслати посилання.",
   },
   profile: {
     "title": "Ваш профіль",
