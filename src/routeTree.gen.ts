@@ -46,6 +46,7 @@ import { Route as AuthenticatedDriverEarningsRouteImport } from './routes/_authe
 import { Route as AuthenticatedDriverHelpRouteImport } from './routes/_authenticated/driver.help'
 import { Route as AuthenticatedOrdersOrderIdRouteImport } from './routes/_authenticated/orders.$orderId'
 import { Route as AuthenticatedProfileIndexRouteImport } from './routes/_authenticated/profile.index'
+import { Route as AuthenticatedProfileAccountRouteImport } from './routes/_authenticated/profile.account'
 import { Route as AuthenticatedProfileLanguageRouteImport } from './routes/_authenticated/profile.language'
 import { Route as AuthenticatedProfileNotificationsRouteImport } from './routes/_authenticated/profile.notifications'
 import { Route as AuthenticatedProfilePromosRouteImport } from './routes/_authenticated/profile.promos'
@@ -257,6 +258,12 @@ const AuthenticatedProfileIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedProfileRoute,
   } as any)
+const AuthenticatedProfileAccountRoute =
+  AuthenticatedProfileAccountRouteImport.update({
+    id: '/account',
+    path: '/account',
+    getParentRoute: () => AuthenticatedProfileRoute,
+  } as any)
 const AuthenticatedProfileLanguageRoute =
   AuthenticatedProfileLanguageRouteImport.update({
     id: '/language',
@@ -353,6 +360,7 @@ export interface FileRoutesByFullPath {
   '/driver/earnings': typeof AuthenticatedDriverEarningsRoute
   '/driver/help': typeof AuthenticatedDriverHelpRoute
   '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
+  '/profile/account': typeof AuthenticatedProfileAccountRoute
   '/profile/language': typeof AuthenticatedProfileLanguageRoute
   '/profile/notifications': typeof AuthenticatedProfileNotificationsRoute
   '/profile/promos': typeof AuthenticatedProfilePromosRoute
@@ -397,6 +405,7 @@ export interface FileRoutesByTo {
   '/driver/earnings': typeof AuthenticatedDriverEarningsRoute
   '/driver/help': typeof AuthenticatedDriverHelpRoute
   '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
+  '/profile/account': typeof AuthenticatedProfileAccountRoute
   '/profile/language': typeof AuthenticatedProfileLanguageRoute
   '/profile/notifications': typeof AuthenticatedProfileNotificationsRoute
   '/profile/promos': typeof AuthenticatedProfilePromosRoute
@@ -448,6 +457,7 @@ export interface FileRoutesById {
   '/_authenticated/driver/earnings': typeof AuthenticatedDriverEarningsRoute
   '/_authenticated/driver/help': typeof AuthenticatedDriverHelpRoute
   '/_authenticated/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
+  '/_authenticated/profile/account': typeof AuthenticatedProfileAccountRoute
   '/_authenticated/profile/language': typeof AuthenticatedProfileLanguageRoute
   '/_authenticated/profile/notifications': typeof AuthenticatedProfileNotificationsRoute
   '/_authenticated/profile/promos': typeof AuthenticatedProfilePromosRoute
@@ -499,6 +509,7 @@ export interface FileRouteTypes {
     | '/driver/earnings'
     | '/driver/help'
     | '/orders/$orderId'
+    | '/profile/account'
     | '/profile/language'
     | '/profile/notifications'
     | '/profile/promos'
@@ -543,6 +554,7 @@ export interface FileRouteTypes {
     | '/driver/earnings'
     | '/driver/help'
     | '/orders/$orderId'
+    | '/profile/account'
     | '/profile/language'
     | '/profile/notifications'
     | '/profile/promos'
@@ -593,6 +605,7 @@ export interface FileRouteTypes {
     | '/_authenticated/driver/earnings'
     | '/_authenticated/driver/help'
     | '/_authenticated/orders/$orderId'
+    | '/_authenticated/profile/account'
     | '/_authenticated/profile/language'
     | '/_authenticated/profile/notifications'
     | '/_authenticated/profile/promos'
@@ -890,6 +903,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProfileIndexRouteImport
       parentRoute: typeof AuthenticatedProfileRoute
     }
+    '/_authenticated/profile/account': {
+      id: '/_authenticated/profile/account'
+      path: '/account'
+      fullPath: '/profile/account'
+      preLoaderRoute: typeof AuthenticatedProfileAccountRouteImport
+      parentRoute: typeof AuthenticatedProfileRoute
+    }
     '/_authenticated/profile/language': {
       id: '/_authenticated/profile/language'
       path: '/language'
@@ -1031,6 +1051,7 @@ const AuthenticatedDriverRouteWithChildren =
   AuthenticatedDriverRoute._addFileChildren(AuthenticatedDriverRouteChildren)
 
 interface AuthenticatedProfileRouteChildren {
+  AuthenticatedProfileAccountRoute: typeof AuthenticatedProfileAccountRoute
   AuthenticatedProfileLanguageRoute: typeof AuthenticatedProfileLanguageRoute
   AuthenticatedProfileNotificationsRoute: typeof AuthenticatedProfileNotificationsRoute
   AuthenticatedProfilePromosRoute: typeof AuthenticatedProfilePromosRoute
@@ -1038,6 +1059,7 @@ interface AuthenticatedProfileRouteChildren {
 }
 
 const AuthenticatedProfileRouteChildren: AuthenticatedProfileRouteChildren = {
+  AuthenticatedProfileAccountRoute: AuthenticatedProfileAccountRoute,
   AuthenticatedProfileLanguageRoute: AuthenticatedProfileLanguageRoute,
   AuthenticatedProfileNotificationsRoute:
     AuthenticatedProfileNotificationsRoute,

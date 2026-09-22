@@ -20,19 +20,20 @@ const TABS: Record<"customer" | "vendor" | "driver", Tab[]> = {
   customer: [
     { to: "/customer", labelKey: "common.tabs.home", icon: Home },
     { to: "/customer/orders", labelKey: "common.tabs.orders", icon: Receipt },
-    { to: "/profile", labelKey: "common.tabs.account", icon: User },
+    { to: "/profile", labelKey: "common.tabs.profile", icon: User },
   ],
   vendor: [
     { to: "/vendor", labelKey: "common.tabs.orders", icon: ClipboardList },
     { to: "/vendor/menu", labelKey: "common.tabs.menu", icon: UtensilsCrossed },
     { to: "/vendor/store", labelKey: "common.tabs.store", icon: Store },
-    { to: "/profile", labelKey: "common.tabs.account", icon: User },
+    { to: "/profile", labelKey: "common.tabs.profile", icon: User },
   ],
   driver: [
     { to: "/driver", labelKey: "common.tabs.home", icon: Home },
     { to: "/driver/earnings", labelKey: "common.tabs.earnings", icon: Wallet },
     { to: "/driver/deliveries", labelKey: "common.tabs.deliveries", icon: Package },
     { to: "/driver/help", labelKey: "common.tabs.help", icon: LifeBuoy },
+    { to: "/profile", labelKey: "common.tabs.profile", icon: User },
   ],
 };
 

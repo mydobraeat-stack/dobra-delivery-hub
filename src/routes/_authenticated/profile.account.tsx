@@ -111,7 +111,6 @@ function AccountPage() {
             value={avatar}
             onChange={setAvatar}
             label={t("common.profile.photo")}
-            round
           />
           <div className="space-y-2">
             <Label htmlFor="full-name">{t("common.profile.fullName")}</Label>
