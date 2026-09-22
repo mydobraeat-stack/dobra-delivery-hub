@@ -145,8 +145,14 @@ function CustomerHome() {
             </Button>
           </div>
           {liveOrders.slice(0, 2).map((o) => (
-            <Link key={o.id} to="/orders/$orderId" params={{ orderId: o.id }}>
-              <Card className="border-ink/10 transition-shadow hover:shadow-soft">
+            <Link
+              key={o.id}
+              to="/orders/$orderId"
+              params={{ orderId: o.id }}
+              onClick={() => tapFeedback("tap")}
+              className="block transition-transform duration-200 active:scale-[0.98]"
+            >
+              <Card className="border-ink/10 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-soft">
                 <CardContent className="flex items-center justify-between gap-3 py-4">
                   <div className="min-w-0">
                     <p className="truncate font-semibold text-foreground">
