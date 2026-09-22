@@ -100,14 +100,43 @@ export const supportThreadsQuery = queryOptions({
   },
 });
 
-export async function sendChatMessage(threadId: string, body: string) {
+export type ChatAttachment = { url: string; name: string; type: string };
+
+export async function sendChatMessage(
+  threadId: string,
+  body: string,
+  attachment?: ChatAttachment | null,
+) {
   const senderId = await currentUserId();
   const text = body.trim();
-  if (!text) return;
-  const { error } = await supabase
-    .from("chat_messages")
-    .insert({ thread_id: threadId, sender_id: senderId, body: text.slice(0, 2000) });
+  if (!text && !attachment) return;
+  const { error } = await supabase.from("chat_messages").insert({
+    thread_id: threadId,
+    sender_id: senderId,
+    body: text.slice(0, 2000),
+    attachment_url: attachment?.url ?? null,
+    attachment_name: attachment?.name ?? null,
+    attachment_type: attachment?.type ?? null,
+  });
   if (error) throw error;
+}
+
+/** Uploads a chat attachment (image or file) and returns its stored reference. */
+export async function uploadChatFile(file: File): Promise<ChatAttachment> {
+  const senderId = await currentUserId();
+  const ext = (file.name.split(".").pop() || "bin").toLowerCase();
+  const path = `${senderId}/${crypto.randomUUID()}.${ext}`;
+  const { error } = await supabase.storage.from("chat-uploads").upload(path, file, {
+    cacheControl: "3600",
+    upsert: false,
+    contentType: file.type || "application/octet-stream",
+  });
+  if (error) throw error;
+  return {
+    url: `chat-uploads/${path}`,
+    name: file.name.slice(0, 120),
+    type: file.type || "application/octet-stream",
+  };
 }
 
 export async function markThreadRead(threadId: string, userId: string) {
