@@ -106,7 +106,7 @@ export function playSound(name: SoundName) {
     osc.type = "sine";
     osc.frequency.value = tone.freq;
     gain.gain.setValueAtTime(0.0001, now + tone.start);
-    gain.gain.exponentialRampToValueAtTime(0.22, now + tone.start + 0.02);
+    gain.gain.exponentialRampToValueAtTime(peak, now + tone.start + 0.02);
     gain.gain.exponentialRampToValueAtTime(0.0001, now + tone.start + tone.duration);
     osc.connect(gain).connect(c.destination);
     osc.start(now + tone.start);
