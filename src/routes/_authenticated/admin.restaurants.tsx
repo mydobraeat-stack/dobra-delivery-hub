@@ -3,7 +3,22 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { adminRestaurantsQuery, setRestaurantStatus } from "@/lib/admin";
+import {
+  adminRestaurantsQuery,
+  setRestaurantStatus,
+  type RestaurantStatus,
+} from "@/lib/admin";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { StoredImage } from "@/components/dobra/StoredImage";
 import { useT } from "@/lib/i18n";
 
