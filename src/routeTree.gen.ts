@@ -39,6 +39,7 @@ import { Route as AuthenticatedAdminSupportRouteImport } from './routes/_authent
 import { Route as AuthenticatedChatThreadIdRouteImport } from './routes/_authenticated/chat.$threadId'
 import { Route as AuthenticatedCustomerIndexRouteImport } from './routes/_authenticated/customer.index'
 import { Route as AuthenticatedCustomerOrdersRouteImport } from './routes/_authenticated/customer.orders'
+import { Route as AuthenticatedCustomerPackageRouteImport } from './routes/_authenticated/customer.package'
 import { Route as AuthenticatedDriverIndexRouteImport } from './routes/_authenticated/driver.index'
 import { Route as AuthenticatedDriverDeliveriesRouteImport } from './routes/_authenticated/driver.deliveries'
 import { Route as AuthenticatedDriverDocumentsRouteImport } from './routes/_authenticated/driver.documents'
@@ -54,6 +55,7 @@ import { Route as AuthenticatedRestaurantRestaurantIdRouteImport } from './route
 import { Route as AuthenticatedVendorIndexRouteImport } from './routes/_authenticated/vendor.index'
 import { Route as AuthenticatedVendorMenuRouteImport } from './routes/_authenticated/vendor.menu'
 import { Route as AuthenticatedVendorStoreRouteImport } from './routes/_authenticated/vendor.store'
+import { Route as AuthenticatedCustomerSoonCategoryRouteImport } from './routes/_authenticated/customer.soon.$category'
 import { Route as AuthenticatedDriverDeliveryOrderIdRouteImport } from './routes/_authenticated/driver.delivery.$orderId'
 import { Route as ApiPublicPushDispatchRouteImport } from './routes/api/public/push.dispatch'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
@@ -217,6 +219,12 @@ const AuthenticatedCustomerOrdersRoute =
     path: '/orders',
     getParentRoute: () => AuthenticatedCustomerRoute,
   } as any)
+const AuthenticatedCustomerPackageRoute =
+  AuthenticatedCustomerPackageRouteImport.update({
+    id: '/package',
+    path: '/package',
+    getParentRoute: () => AuthenticatedCustomerRoute,
+  } as any)
 const AuthenticatedDriverIndexRoute =
   AuthenticatedDriverIndexRouteImport.update({
     id: '/',
@@ -305,6 +313,12 @@ const AuthenticatedVendorStoreRoute =
     path: '/store',
     getParentRoute: () => AuthenticatedVendorRoute,
   } as any)
+const AuthenticatedCustomerSoonCategoryRoute =
+  AuthenticatedCustomerSoonCategoryRouteImport.update({
+    id: '/soon/$category',
+    path: '/soon/$category',
+    getParentRoute: () => AuthenticatedCustomerRoute,
+  } as any)
 const AuthenticatedDriverDeliveryOrderIdRoute =
   AuthenticatedDriverDeliveryOrderIdRouteImport.update({
     id: '/delivery/$orderId',
@@ -355,6 +369,7 @@ export interface FileRoutesByFullPath {
   '/admin/support': typeof AuthenticatedAdminSupportRoute
   '/chat/$threadId': typeof AuthenticatedChatThreadIdRoute
   '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
+  '/customer/package': typeof AuthenticatedCustomerPackageRoute
   '/driver/deliveries': typeof AuthenticatedDriverDeliveriesRoute
   '/driver/documents': typeof AuthenticatedDriverDocumentsRoute
   '/driver/earnings': typeof AuthenticatedDriverEarningsRoute
@@ -372,6 +387,7 @@ export interface FileRoutesByFullPath {
   '/driver/': typeof AuthenticatedDriverIndexRoute
   '/profile/': typeof AuthenticatedProfileIndexRoute
   '/vendor/': typeof AuthenticatedVendorIndexRoute
+  '/customer/soon/$category': typeof AuthenticatedCustomerSoonCategoryRoute
   '/driver/delivery/$orderId': typeof AuthenticatedDriverDeliveryOrderIdRoute
   '/api/public/push/dispatch': typeof ApiPublicPushDispatchRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
@@ -400,6 +416,7 @@ export interface FileRoutesByTo {
   '/admin/support': typeof AuthenticatedAdminSupportRoute
   '/chat/$threadId': typeof AuthenticatedChatThreadIdRoute
   '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
+  '/customer/package': typeof AuthenticatedCustomerPackageRoute
   '/driver/deliveries': typeof AuthenticatedDriverDeliveriesRoute
   '/driver/documents': typeof AuthenticatedDriverDocumentsRoute
   '/driver/earnings': typeof AuthenticatedDriverEarningsRoute
@@ -417,6 +434,7 @@ export interface FileRoutesByTo {
   '/driver': typeof AuthenticatedDriverIndexRoute
   '/profile': typeof AuthenticatedProfileIndexRoute
   '/vendor': typeof AuthenticatedVendorIndexRoute
+  '/customer/soon/$category': typeof AuthenticatedCustomerSoonCategoryRoute
   '/driver/delivery/$orderId': typeof AuthenticatedDriverDeliveryOrderIdRoute
   '/api/public/push/dispatch': typeof ApiPublicPushDispatchRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
@@ -452,6 +470,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/support': typeof AuthenticatedAdminSupportRoute
   '/_authenticated/chat/$threadId': typeof AuthenticatedChatThreadIdRoute
   '/_authenticated/customer/orders': typeof AuthenticatedCustomerOrdersRoute
+  '/_authenticated/customer/package': typeof AuthenticatedCustomerPackageRoute
   '/_authenticated/driver/deliveries': typeof AuthenticatedDriverDeliveriesRoute
   '/_authenticated/driver/documents': typeof AuthenticatedDriverDocumentsRoute
   '/_authenticated/driver/earnings': typeof AuthenticatedDriverEarningsRoute
@@ -469,6 +488,7 @@ export interface FileRoutesById {
   '/_authenticated/driver/': typeof AuthenticatedDriverIndexRoute
   '/_authenticated/profile/': typeof AuthenticatedProfileIndexRoute
   '/_authenticated/vendor/': typeof AuthenticatedVendorIndexRoute
+  '/_authenticated/customer/soon/$category': typeof AuthenticatedCustomerSoonCategoryRoute
   '/_authenticated/driver/delivery/$orderId': typeof AuthenticatedDriverDeliveryOrderIdRoute
   '/api/public/push/dispatch': typeof ApiPublicPushDispatchRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
@@ -504,6 +524,7 @@ export interface FileRouteTypes {
     | '/admin/support'
     | '/chat/$threadId'
     | '/customer/orders'
+    | '/customer/package'
     | '/driver/deliveries'
     | '/driver/documents'
     | '/driver/earnings'
@@ -521,6 +542,7 @@ export interface FileRouteTypes {
     | '/driver/'
     | '/profile/'
     | '/vendor/'
+    | '/customer/soon/$category'
     | '/driver/delivery/$orderId'
     | '/api/public/push/dispatch'
     | '/lovable/email/auth/preview'
@@ -549,6 +571,7 @@ export interface FileRouteTypes {
     | '/admin/support'
     | '/chat/$threadId'
     | '/customer/orders'
+    | '/customer/package'
     | '/driver/deliveries'
     | '/driver/documents'
     | '/driver/earnings'
@@ -566,6 +589,7 @@ export interface FileRouteTypes {
     | '/driver'
     | '/profile'
     | '/vendor'
+    | '/customer/soon/$category'
     | '/driver/delivery/$orderId'
     | '/api/public/push/dispatch'
     | '/lovable/email/auth/preview'
@@ -600,6 +624,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/support'
     | '/_authenticated/chat/$threadId'
     | '/_authenticated/customer/orders'
+    | '/_authenticated/customer/package'
     | '/_authenticated/driver/deliveries'
     | '/_authenticated/driver/documents'
     | '/_authenticated/driver/earnings'
@@ -617,6 +642,7 @@ export interface FileRouteTypes {
     | '/_authenticated/driver/'
     | '/_authenticated/profile/'
     | '/_authenticated/vendor/'
+    | '/_authenticated/customer/soon/$category'
     | '/_authenticated/driver/delivery/$orderId'
     | '/api/public/push/dispatch'
     | '/lovable/email/auth/preview'
@@ -854,6 +880,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCustomerOrdersRouteImport
       parentRoute: typeof AuthenticatedCustomerRoute
     }
+    '/_authenticated/customer/package': {
+      id: '/_authenticated/customer/package'
+      path: '/package'
+      fullPath: '/customer/package'
+      preLoaderRoute: typeof AuthenticatedCustomerPackageRouteImport
+      parentRoute: typeof AuthenticatedCustomerRoute
+    }
     '/_authenticated/driver/': {
       id: '/_authenticated/driver/'
       path: '/'
@@ -959,6 +992,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedVendorStoreRouteImport
       parentRoute: typeof AuthenticatedVendorRoute
     }
+    '/_authenticated/customer/soon/$category': {
+      id: '/_authenticated/customer/soon/$category'
+      path: '/soon/$category'
+      fullPath: '/customer/soon/$category'
+      preLoaderRoute: typeof AuthenticatedCustomerSoonCategoryRouteImport
+      parentRoute: typeof AuthenticatedCustomerRoute
+    }
     '/_authenticated/driver/delivery/$orderId': {
       id: '/_authenticated/driver/delivery/$orderId'
       path: '/delivery/$orderId'
@@ -1015,12 +1055,17 @@ const AuthenticatedAdminRouteWithChildren =
 
 interface AuthenticatedCustomerRouteChildren {
   AuthenticatedCustomerOrdersRoute: typeof AuthenticatedCustomerOrdersRoute
+  AuthenticatedCustomerPackageRoute: typeof AuthenticatedCustomerPackageRoute
   AuthenticatedCustomerIndexRoute: typeof AuthenticatedCustomerIndexRoute
+  AuthenticatedCustomerSoonCategoryRoute: typeof AuthenticatedCustomerSoonCategoryRoute
 }
 
 const AuthenticatedCustomerRouteChildren: AuthenticatedCustomerRouteChildren = {
   AuthenticatedCustomerOrdersRoute: AuthenticatedCustomerOrdersRoute,
+  AuthenticatedCustomerPackageRoute: AuthenticatedCustomerPackageRoute,
   AuthenticatedCustomerIndexRoute: AuthenticatedCustomerIndexRoute,
+  AuthenticatedCustomerSoonCategoryRoute:
+    AuthenticatedCustomerSoonCategoryRoute,
 }
 
 const AuthenticatedCustomerRouteWithChildren =

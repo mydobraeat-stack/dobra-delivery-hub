@@ -42,7 +42,9 @@ function CustomerOrders() {
         <CardContent className="flex items-center justify-between gap-3 py-4">
           <div className="min-w-0">
             <p className="truncate font-semibold text-foreground">
-              {byRestaurant[o.restaurant_id]?.name ?? t("customer.home.restaurantFallback")}
+              {o.restaurant_id
+                ? (byRestaurant[o.restaurant_id]?.name ?? t("customer.home.restaurantFallback"))
+                : t("package.orderLabel")}
             </p>
             <p className="text-xs text-foreground/60">
               {orderRef(o.id)} · {formatDate(o.created_at)} ·{" "}

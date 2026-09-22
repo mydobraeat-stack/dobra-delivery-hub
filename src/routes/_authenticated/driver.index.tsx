@@ -167,7 +167,10 @@ function DriverHome() {
     .reduce((sum, o) => sum + payout(Number(o.total)), 0);
 
   const acceptance = mine.length === 0 ? 100 : Math.round((done.length / mine.length) * 100);
-  const restaurantName = (id: string) => restaurants.find((r) => r.id === id)?.name ?? t("driver.home.restaurantFallback");
+  const restaurantName = (id: string | null) =>
+    !id
+      ? t("package.orderLabel")
+      : (restaurants.find((r) => r.id === id)?.name ?? t("driver.home.restaurantFallback"));
 
   return (
     <div className="pb-4">

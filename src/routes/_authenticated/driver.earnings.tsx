@@ -39,7 +39,10 @@ function DriverEarnings() {
     );
   }
 
-  const restaurantName = (id: string) => restaurants.find((r) => r.id === id)?.name ?? t("driver.home.restaurantFallback");
+  const restaurantName = (id: string | null) =>
+    !id
+      ? t("package.orderLabel")
+      : (restaurants.find((r) => r.id === id)?.name ?? t("driver.home.restaurantFallback"));
   const completed = (data?.mine ?? []).filter((o) => o.status === "delivered");
   const total = completed.reduce((sum, o) => sum + payout(Number(o.total)), 0);
   const today = new Date().toDateString();

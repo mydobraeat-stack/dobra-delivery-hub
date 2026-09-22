@@ -40,7 +40,10 @@ function DriverDeliveries() {
   const mine = data?.mine ?? [];
   const active = mine.filter((o) => !isFinished(o.status));
   const past = mine.filter((o) => isFinished(o.status));
-  const name = (id: string) => restaurants.find((r) => r.id === id)?.name ?? t("driver.home.restaurantFallback");
+  const name = (id: string | null) =>
+    !id
+      ? t("package.orderLabel")
+      : (restaurants.find((r) => r.id === id)?.name ?? t("driver.home.restaurantFallback"));
 
   const row = (o: (typeof mine)[number]) => (
     <Card key={o.id} className="border-ink/10">

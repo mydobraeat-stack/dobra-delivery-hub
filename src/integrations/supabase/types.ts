@@ -384,11 +384,16 @@ export type Database = {
           driver_id: string | null
           eta_minutes: number
           id: string
+          kind: string
           note: string | null
+          package_note: string | null
           payment_method: string
           payment_reference: string | null
           payment_status: string
-          restaurant_id: string
+          pickup_address: string | null
+          pickup_lat: number | null
+          pickup_lng: number | null
+          restaurant_id: string | null
           status: string
           subtotal: number
           total: number
@@ -405,11 +410,16 @@ export type Database = {
           driver_id?: string | null
           eta_minutes?: number
           id?: string
+          kind?: string
           note?: string | null
+          package_note?: string | null
           payment_method?: string
           payment_reference?: string | null
           payment_status?: string
-          restaurant_id: string
+          pickup_address?: string | null
+          pickup_lat?: number | null
+          pickup_lng?: number | null
+          restaurant_id?: string | null
           status?: string
           subtotal?: number
           total?: number
@@ -426,11 +436,16 @@ export type Database = {
           driver_id?: string | null
           eta_minutes?: number
           id?: string
+          kind?: string
           note?: string | null
+          package_note?: string | null
           payment_method?: string
           payment_reference?: string | null
           payment_status?: string
-          restaurant_id?: string
+          pickup_address?: string | null
+          pickup_lat?: number | null
+          pickup_lng?: number | null
+          restaurant_id?: string | null
           status?: string
           subtotal?: number
           total?: number

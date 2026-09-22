@@ -77,12 +77,23 @@ function DeliveryDetail() {
   });
   const dropOff = savedDrop ?? geocodedDrop ?? null;
 
-  const pickupSearch = restaurantForOrder
-    ? [restaurantForOrder.name, restaurantForOrder.city, restaurantForOrder.country]
-        .filter(Boolean)
-        .join(", ")
-    : null;
-  const { data: pickup } = useQuery(addressPointQuery(pickupSearch));
+  const isPackage = order?.kind === "package";
+  const pickupSearch = isPackage
+    ? (order?.pickup_address ?? null)
+    : restaurantForOrder
+      ? [restaurantForOrder.name, restaurantForOrder.city, restaurantForOrder.country]
+          .filter(Boolean)
+          .join(", ")
+      : null;
+  const savedPickup =
+    isPackage && order?.pickup_lat != null && order?.pickup_lng != null
+      ? { lat: order.pickup_lat, lng: order.pickup_lng }
+      : null;
+  const { data: geocodedPickup } = useQuery({
+    ...addressPointQuery(pickupSearch),
+    enabled: !savedPickup && Boolean(pickupSearch),
+  });
+  const pickup = savedPickup ?? geocodedPickup ?? null;
 
   // Leg 1 runs to the restaurant; leg 2 starts once the food is picked up.
   const onCustomerLeg = order?.status === "picked_up" || order?.status === "delivered";
@@ -95,7 +106,11 @@ function DeliveryDetail() {
     if (onCustomerLeg) {
       if (dropOff) list.push({ ...dropOff, label: order?.address ?? "Drop-off", kind: "dropoff" });
     } else if (pickup) {
-      list.push({ ...pickup, label: restaurantForOrder?.name ?? "Pickup", kind: "pickup" });
+      list.push({
+        ...pickup,
+        label: (isPackage ? order?.pickup_address : restaurantForOrder?.name) ?? "Pickup",
+        kind: "pickup",
+      });
     }
     return list;
   }, [me, pickup, dropOff, onCustomerLeg, order?.address, restaurantForOrder?.name]);
@@ -184,11 +199,18 @@ function DeliveryDetail() {
               <Store className="mt-0.5 size-5 shrink-0 text-primary" aria-hidden />
               <div className="min-w-0">
                 <p className="font-semibold text-foreground">
-                  {restaurant?.name ?? t("driver.delivery.restaurantFallback")}
+                  {isPackage
+                    ? (order.pickup_address ?? t("package.orderLabel"))
+                    : (restaurant?.name ?? t("driver.delivery.restaurantFallback"))}
                 </p>
                 <p className="text-xs text-foreground/60">
-                  {t("driver.delivery.pickup", { city: restaurant?.city ? ` · ${restaurant.city}` : "" })}
+                  {isPackage
+                    ? t("package.pickupLabel")
+                    : t("driver.delivery.pickup", { city: restaurant?.city ? ` · ${restaurant.city}` : "" })}
                 </p>
+                {isPackage && order.package_note ? (
+                  <p className="mt-1 text-xs text-foreground/70">{order.package_note}</p>
+                ) : null}
               </div>
             </div>
           )}
