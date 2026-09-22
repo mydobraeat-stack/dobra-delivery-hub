@@ -132,18 +132,44 @@ export function Hero() {
             <label htmlFor="hero-address" className="sr-only">
               {t("marketing.hero.addressLabel")}
             </label>
-            <Input
-              id="hero-address"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              placeholder={t("marketing.hero.addressPlaceholder")}
-              className="h-12 flex-1 bg-card text-base"
-              autoComplete="street-address"
-            />
+            <div className="relative min-w-0 flex-1">
+              <MapPin className="pointer-events-none absolute left-3 top-1/2 size-5 -translate-y-1/2 text-ink/40" />
+              <Input
+                id="hero-address"
+                value={address}
+                onChange={(e) => {
+                  setTouched(true);
+                  setAddress(e.target.value);
+                }}
+                placeholder={
+                  locating && !address ? t("marketing.hero.locating") : t("marketing.hero.addressPlaceholder")
+                }
+                className="h-12 w-full bg-card pl-10 pr-11 text-base"
+                autoComplete="street-address"
+              />
+              <button
+                type="button"
+                onClick={detectLocation}
+                aria-label={t("marketing.hero.useLocation")}
+                title={t("marketing.hero.useLocation")}
+                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-2 text-ink/60 transition-colors hover:bg-ink/5 hover:text-primary"
+              >
+                {locating ? (
+                  <Loader2 className="size-5 animate-spin" />
+                ) : (
+                  <LocateFixed className="size-5" />
+                )}
+              </button>
+            </div>
             <Button type="submit" size="lg" className="h-12 shrink-0 px-8">
               {t("marketing.hero.cta")}
             </Button>
           </form>
+
+          {locationFailed && !touched && !address ? (
+            <p className="mt-2 text-sm text-ink/60">{t("marketing.hero.locationDenied")}</p>
+          ) : null}
+
 
           <Link
             to="/get-started"
