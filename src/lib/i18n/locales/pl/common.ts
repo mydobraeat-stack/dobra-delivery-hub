@@ -24,6 +24,15 @@ export default {
     title: "Wylogować się z Dobra?",
     body: "Aby składać i śledzić zamówienia, trzeba zalogować się ponownie.",
   },
+  deleteAccount: {
+    link: "Usuń konto",
+    title: "Usunąć konto Dobra?",
+    body: "Konto zostanie trwale usunięte i nastąpi wylogowanie. Tej operacji nie można cofnąć.",
+    confirm: "Usuń konto",
+    deleting: "Usuwanie…",
+    done: "Twoje konto zostało usunięte.",
+    failed: "Nie udało się usunąć konta.",
+  },
   state: {
     loading: "Ładowanie…",
     empty: "Nic tu jeszcze nie ma",

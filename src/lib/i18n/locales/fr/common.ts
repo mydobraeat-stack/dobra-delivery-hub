@@ -24,6 +24,15 @@ export default {
     title: "Se déconnecter de Dobra ?",
     body: "Vous devrez vous reconnecter pour commander ou suivre vos commandes.",
   },
+  deleteAccount: {
+    link: "Supprimer le compte",
+    title: "Supprimer votre compte Dobra ?",
+    body: "Votre compte sera définitivement supprimé et vous serez déconnecté. Action irréversible.",
+    confirm: "Supprimer le compte",
+    deleting: "Suppression…",
+    done: "Votre compte a été supprimé.",
+    failed: "Impossible de supprimer le compte.",
+  },
   state: {
     loading: "Chargement…",
     empty: "Rien ici pour l'instant",

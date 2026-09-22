@@ -24,6 +24,15 @@ export default {
     title: "Sign out of Dobra?",
     body: "You will need to log in again to place or track orders.",
   },
+  deleteAccount: {
+    link: "Delete account",
+    title: "Delete your Dobra account?",
+    body: "This permanently removes your account and you will be signed out. This cannot be undone.",
+    confirm: "Delete account",
+    deleting: "Deleting…",
+    done: "Your account has been deleted.",
+    failed: "Could not delete the account.",
+  },
   state: {
     loading: "Loading…",
     empty: "Nothing here yet",
