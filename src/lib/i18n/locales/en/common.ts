@@ -33,6 +33,7 @@ export default {
     admin: "Admin",
   },
   tabs: {
+    profile: "Profile",
     home: "Home",
     orders: "Orders",
     account: "Account",
@@ -71,6 +72,20 @@ export default {
     Sides: "Sides",
     Desserts: "Desserts",
     Drinks: "Drinks",
+  },
+  profileMenu: {
+    orders: "Order history",
+    account: "Account",
+    promos: "Promo codes",
+    promosEmpty: "No promo codes yet. Offers you receive will appear here.",
+    language: "Language",
+    faq: "FAQ & Help",
+    notifications: "Notifications",
+    verification: "Verification documents",
+    business: "Your business",
+    changePassword: "Change password",
+    passwordSent: "Password reset link sent to your email.",
+    passwordFailed: "Could not send the reset link.",
   },
   profile: {
     "title": "Your profile",
