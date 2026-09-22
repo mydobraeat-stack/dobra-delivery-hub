@@ -4,6 +4,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { ImageUpload } from "@/components/dobra/ImageUpload";
+import { ProfileBackLink } from "@/components/dobra/ProfileMenu";
 import { useT, useI18n } from "@/lib/i18n";
 import { accountQueryOptions } from "@/lib/profile";
 import { myProfileQuery } from "@/lib/my-profile";
@@ -95,7 +96,8 @@ function AccountPage() {
   }
 
   return (
-    <main className="mx-auto max-w-2xl space-y-5 px-5 py-6">
+    <main className="mx-auto max-w-2xl space-y-4 px-5 py-6">
+      <ProfileBackLink label={t("common.actions.back")} />
       <div className="flex items-center justify-between gap-3">
         <h1 className="text-2xl font-bold text-foreground">{t("common.profileMenu.account")}</h1>
         <Badge variant="secondary">{t(`common.roles.${role}`)}</Badge>
