@@ -10,10 +10,10 @@ export function InitialsAvatar({
   src,
   className,
 }: {
-  name?: string | null;
-  email?: string | null;
-  src?: string | null;
-  className?: string;
+  name?: string | null | undefined;
+  email?: string | null | undefined;
+  src?: string | null | undefined;
+  className?: string | undefined;
 }) {
   const source = (name ?? "").trim() || (email ?? "").trim();
   const initials =
