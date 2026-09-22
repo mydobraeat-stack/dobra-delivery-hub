@@ -151,3 +151,26 @@ export const routeBetween = createServerFn({ method: "POST" })
       durationMinutes: Math.max(1, Math.round(seconds / 60)),
     };
   });
+
+/**
+ * Turns the visitor's device coordinates into a written street address.
+ * Public on purpose: the homepage hero uses it before anyone signs in.
+ * One call per visit, coordinates only, address text only in the response.
+ */
+export const reverseGeocodePublic = createServerFn({ method: "POST" })
+  .inputValidator((data) =>
+    z
+      .object({ lat: z.number().min(-90).max(90), lng: z.number().min(-180).max(180) })
+      .parse(data),
+  )
+  .handler(async ({ data }): Promise<string | null> => {
+    const latlng = `${data.lat.toFixed(6)},${data.lng.toFixed(6)}`;
+    const response = await fetch(
+      `${GATEWAY_URL}/maps/api/geocode/json?latlng=${encodeURIComponent(latlng)}`,
+      { headers: gatewayHeaders() },
+    );
+    const body = (await readOrThrow(response, "Reverse geocoding")) as {
+      results?: Array<{ formatted_address?: string }>;
+    };
+    return body.results?.[0]?.formatted_address ?? null;
+  });
