@@ -251,14 +251,17 @@ function CustomerHome() {
                       ? t("customer.home.removeFavouriteAria", { name: r.name })
                       : t("customer.home.addFavouriteAria", { name: r.name })
                   }
-                  onClick={() => toggle(r.id)}
-                  className="absolute right-3 top-3 z-10 rounded-full bg-card/90 p-2 shadow-soft"
+                  onClick={() => {
+                    tapFeedback(favourites.includes(r.id) ? "off" : "pop", [10, 30, 10]);
+                    toggle(r.id);
+                  }}
+                  className="absolute right-3 top-3 z-10 rounded-full bg-card/90 p-2 shadow-soft transition-transform hover:scale-110 active:scale-90"
                 >
                   <Heart
                     className={cn(
-                      "size-4",
+                      "size-4 transition-transform",
                       favourites.includes(r.id)
-                        ? "fill-destructive text-destructive"
+                        ? "scale-110 fill-destructive text-destructive"
                         : "text-foreground/60",
                     )}
                   />
@@ -266,9 +269,10 @@ function CustomerHome() {
                 <Link
                   to="/restaurant/$restaurantId"
                   params={{ restaurantId: r.id }}
-                  className="rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                  onClick={() => tapFeedback("tap")}
+                  className="block rounded-xl transition-transform duration-200 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                 >
-                  <Card className="h-full overflow-hidden border-ink/10 transition-shadow hover:shadow-soft">
+                  <Card className="h-full overflow-hidden border-ink/10 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-soft">
                     <StoredImage
                       value={r.logo_url}
                       alt={`${r.name} restaurant`}
