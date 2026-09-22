@@ -43,6 +43,12 @@ function Welcome() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background px-5 py-14">
       <div className="w-full max-w-md text-center">
+        {address?.trim() ? (
+          <p className="mx-auto mb-5 flex max-w-full items-center justify-center gap-2 rounded-full bg-card/80 px-4 py-2 text-sm font-medium text-foreground/80 shadow-soft">
+            <MapPin className="size-4 shrink-0 text-primary" />
+            <span className="truncate">{address}</span>
+          </p>
+        ) : null}
         <DobraLogo className="text-7xl" />
         <p className="mt-3 text-base font-medium text-foreground/70">{t("common.tagline")}</p>
 
