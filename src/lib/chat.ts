@@ -19,10 +19,14 @@ export type ChatMessage = {
   body: string;
   read_at: string | null;
   created_at: string;
+  attachment_url: string | null;
+  attachment_name: string | null;
+  attachment_type: string | null;
 };
 
 const THREAD_COLS = "id,kind,order_id,customer_id,counterpart_id,last_message_at";
-const MESSAGE_COLS = "id,thread_id,sender_id,body,read_at,created_at";
+const MESSAGE_COLS =
+  "id,thread_id,sender_id,body,read_at,created_at,attachment_url,attachment_name,attachment_type";
 
 export async function currentUserId() {
   const { data } = await supabase.auth.getUser();
