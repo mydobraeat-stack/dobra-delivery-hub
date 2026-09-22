@@ -1,5 +1,17 @@
 import { useEffect, useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { deleteMyAccount } from "@/lib/account.functions";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -46,6 +58,24 @@ function AccountPage() {
   const [avatar, setAvatar] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [sendingReset, setSendingReset] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const navigate = useNavigate();
+
+  async function removeAccount() {
+    setDeleting(true);
+    try {
+      await deleteMyAccount();
+      await queryClient.cancelQueries();
+      queryClient.clear();
+      await supabase.auth.signOut();
+      toast.success(t("common.deleteAccount.done"));
+      navigate({ to: "/auth", replace: true });
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : t("common.deleteAccount.failed"));
+    } finally {
+      setDeleting(false);
+    }
+  }
 
   useEffect(() => {
     if (!profile) return;
@@ -152,6 +182,40 @@ function AccountPage() {
             <Button variant="outline" onClick={sendPasswordReset} disabled={sendingReset}>
               {t("common.profileMenu.changePassword")}
             </Button>
+          </div>
+          <div className="border-t border-ink/10 pt-3">
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <button
+                  type="button"
+                  disabled={deleting}
+                  className="text-xs font-medium text-foreground/40 underline underline-offset-4 transition-colors hover:text-destructive"
+                >
+                  {deleting ? t("common.deleteAccount.deleting") : t("common.deleteAccount.link")}
+                </button>
+              </AlertDialogTrigger>
+              <AlertDialogContent className="max-w-[20rem] rounded-2xl border-ink/10">
+                <AlertDialogHeader>
+                  <AlertDialogTitle className="text-lg font-bold text-foreground">
+                    {t("common.deleteAccount.title")}
+                  </AlertDialogTitle>
+                  <AlertDialogDescription className="text-sm text-foreground/70">
+                    {t("common.deleteAccount.body")}
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter className="gap-2 sm:gap-2">
+                  <AlertDialogCancel className="h-11 rounded-xl border-2 border-ink/15 bg-card text-base font-semibold text-foreground hover:bg-muted">
+                    {t("common.actions.cancel")}
+                  </AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={removeAccount}
+                    className="h-11 rounded-xl bg-destructive text-base font-semibold text-destructive-foreground hover:bg-destructive/90"
+                  >
+                    {t("common.deleteAccount.confirm")}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         </CardContent>
       </Card>
