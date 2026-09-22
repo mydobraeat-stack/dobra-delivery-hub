@@ -187,11 +187,54 @@ export async function setProfileApproval(userId: string, status: "approved" | "r
   if (error) throw error;
 }
 
-export async function setRestaurantStatus(
-  restaurantId: string,
-  status: "approved" | "pending" | "suspended",
-) {
-  const { error } = await supabase.from("restaurants").update({ status }).eq("id", restaurantId);
+export type RestaurantStatus = "approved" | "pending" | "suspended" | "removed";
+
+export async function setRestaurantStatus(restaurantId: string, status: RestaurantStatus) {
+  const { error } = await supabase
+    .from("restaurants")
+    .update({ status, ...(status === "removed" ? { is_open: false } : {}) })
+    .eq("id", restaurantId);
+  if (error) throw error;
+}
+
+export type AdminOrderItem = { id: string; name: string; quantity: number; price: number };
+
+export function adminOrderItemsQuery(orderId: string) {
+  return queryOptions({
+    queryKey: ["admin", "order-items", orderId],
+    queryFn: async (): Promise<AdminOrderItem[]> => {
+      const { data, error } = await supabase
+        .from("order_items")
+        .select("id,quantity,price,menu_item_id")
+        .eq("order_id", orderId);
+      if (error) throw error;
+      const ids = (data ?? []).map((i) => i.menu_item_id).filter(Boolean) as string[];
+      let nameBy = new Map<string, string>();
+      if (ids.length) {
+        const { data: items, error: mErr } = await supabase
+          .from("menu_items")
+          .select("id,name")
+          .in("id", ids);
+        if (mErr) throw mErr;
+        nameBy = new Map((items ?? []).map((m) => [m.id, m.name]));
+      }
+      return (data ?? []).map((i) => ({
+        id: i.id,
+        quantity: i.quantity,
+        price: Number(i.price),
+        name: (i.menu_item_id ? nameBy.get(i.menu_item_id) : null) ?? "—",
+      }));
+    },
+  });
+}
+
+export async function adminCancelOrder(orderId: string) {
+  const { error } = await supabase.from("orders").update({ status: "cancelled" }).eq("id", orderId);
+  if (error) throw error;
+}
+
+export async function adminUnassignDriver(orderId: string) {
+  const { error } = await supabase.from("orders").update({ driver_id: null }).eq("id", orderId);
   if (error) throw error;
 }
 
