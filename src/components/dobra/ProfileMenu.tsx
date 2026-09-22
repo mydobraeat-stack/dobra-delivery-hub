@@ -51,7 +51,12 @@ export function ProfileMenuItem({
 }) {
   const inner = (
     <>
-      <Icon className="size-5 shrink-0 text-foreground/70" aria-hidden />
+      <span
+        className="flex size-10 shrink-0 items-center justify-center rounded-full bg-sun/40 ring-1 ring-brand/25 transition-colors group-hover:bg-sun/60"
+        aria-hidden
+      >
+        <Icon className="size-5 text-brand" aria-hidden />
+      </span>
       <span className="min-w-0 flex-1 text-base font-medium break-words text-foreground">
         {label}
       </span>
@@ -60,7 +65,7 @@ export function ProfileMenuItem({
   );
 
   const classes =
-    "flex w-full items-center gap-4 px-4 py-4 text-left transition-colors hover:bg-muted/60";
+    "group flex w-full items-center gap-4 px-4 py-3 text-left transition-colors hover:bg-muted/60 active:scale-[0.99]";
 
   if (to) {
     return (
