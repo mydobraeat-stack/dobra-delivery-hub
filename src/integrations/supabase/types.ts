@@ -16,6 +16,9 @@ export type Database = {
     Tables: {
       chat_messages: {
         Row: {
+          attachment_name: string | null
+          attachment_type: string | null
+          attachment_url: string | null
           body: string
           created_at: string
           id: string
@@ -24,6 +27,9 @@ export type Database = {
           thread_id: string
         }
         Insert: {
+          attachment_name?: string | null
+          attachment_type?: string | null
+          attachment_url?: string | null
           body: string
           created_at?: string
           id?: string
@@ -32,6 +38,9 @@ export type Database = {
           thread_id: string
         }
         Update: {
+          attachment_name?: string | null
+          attachment_type?: string | null
+          attachment_url?: string | null
           body?: string
           created_at?: string
           id?: string
@@ -706,6 +715,7 @@ export type Database = {
     }
     Functions: {
       can_access_chat_thread: { Args: { _thread_id: string }; Returns: boolean }
+      can_view_chat_file: { Args: { _object_name: string }; Returns: boolean }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
