@@ -65,7 +65,7 @@ export function ProfileMenuItem({
   );
 
   const classes =
-    "flex w-full items-center gap-4 px-4 py-4 text-left transition-colors hover:bg-muted/60";
+    "group flex w-full items-center gap-4 px-4 py-3 text-left transition-colors hover:bg-muted/60 active:scale-[0.99]";
 
   if (to) {
     return (
