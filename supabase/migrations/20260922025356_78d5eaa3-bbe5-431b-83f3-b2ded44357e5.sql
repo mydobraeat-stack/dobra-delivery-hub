@@ -1,0 +1,1 @@
+CREATE POLICY "Admins update all orders" ON public.orders FOR UPDATE TO authenticated USING (private.is_platform_admin()) WITH CHECK (private.is_platform_admin());
