@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { MapPin } from "lucide-react";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { DobraLogo } from "@/components/dobra/Logo";
