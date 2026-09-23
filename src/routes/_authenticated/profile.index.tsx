@@ -11,7 +11,9 @@ import {
   ShieldCheck,
   Store,
   Tag,
+  Trash2,
   User,
+
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { InitialsAvatar, ProfileMenuItem, ProfileMenuList } from "@/components/dobra/ProfileMenu";
@@ -114,7 +116,7 @@ function ProfileHub() {
           icon={Languages}
           label={t("common.profileMenu.language")}
         />
-        <ProfileMenuItem to={helpTo} icon={CircleHelp} label={t("common.profileMenu.faq")} />
+        <ProfileMenuItem to="/profile/faq" icon={CircleHelp} label={t("common.profileMenu.faq")} />
         <ProfileMenuItem
           to="/profile/notifications"
           icon={Bell}
@@ -141,7 +143,13 @@ function ProfileHub() {
             label={t("common.profileMenu.business")}
           />
         ) : null}
+        <ProfileMenuItem
+          to="/profile/delete"
+          icon={Trash2}
+          label={t("common.deleteAccount.menu")}
+        />
       </ProfileMenuList>
+
 
       {role === "admin" ? null : (
         <ChatButton
