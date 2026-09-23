@@ -16,7 +16,27 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { ImageUpload } from "@/components/dobra/ImageUpload";
-import { ProfileBackLink } from "@/components/dobra/ProfileMenu";
+import { ProfileBackLink, InitialsAvatar } from "@/components/dobra/ProfileMenu";
+import {
+  ChevronRight,
+  CreditCard,
+  FileText,
+  Image as ImageIcon,
+  Lock,
+  Mail,
+  Megaphone,
+  Smartphone,
+  User,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { useT, useI18n } from "@/lib/i18n";
 import { accountQueryOptions } from "@/lib/profile";
 import { myProfileQuery } from "@/lib/my-profile";
@@ -126,24 +146,46 @@ function AccountPage() {
   }
 
   return (
-    <main className="mx-auto max-w-2xl space-y-4 px-5 py-6">
-      <ProfileBackLink label={t("common.actions.back")} />
-      <div className="flex items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold text-foreground">{t("common.profileMenu.account")}</h1>
-        <Badge variant="secondary">{t(`common.roles.${role}`)}</Badge>
+    <main className="mx-auto max-w-2xl space-y-5 px-4 py-5">
+      <div className="relative flex items-center justify-center">
+        <div className="absolute left-0">
+          <ProfileBackLink label={t("common.actions.back")} />
+        </div>
+        <h1 className="text-lg font-bold text-foreground">{t("common.profileMenu.account")}</h1>
       </div>
 
-      <Card className="border-ink/10">
-        <CardHeader>
-          <CardTitle className="text-lg">{t("common.profile.personal")}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+      <ul className="overflow-hidden rounded-2xl border border-ink/10 bg-card">
+        <EditRow
+          icon={ImageIcon}
+          label={t("common.profile.photo")}
+          title={t("common.profile.photo")}
+          onSave={save}
+          saving={saving}
+          preview={
+            <InitialsAvatar
+              name={fullName}
+              email={profile?.email}
+              src={avatar}
+              className="size-9 border"
+            />
+          }
+        >
           <ImageUpload
             bucket="profile-photos"
             value={avatar}
             onChange={setAvatar}
             label={t("common.profile.photo")}
           />
+        </EditRow>
+
+        <EditRow
+          icon={User}
+          label={fullName || t("common.profile.namePlaceholder")}
+          title={t("common.profileMenu.editName")}
+          onSave={save}
+          saving={saving}
+          strong
+        >
           <div className="space-y-2">
             <Label htmlFor="full-name">{t("common.profile.fullName")}</Label>
             <Input
@@ -151,15 +193,6 @@ function AccountPage() {
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               placeholder={t("common.profile.namePlaceholder")}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="phone">{t("common.profile.phone")}</Label>
-            <Input
-              id="phone"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              placeholder="+48 600 000 000"
             />
           </div>
           <div className="space-y-2">
@@ -171,20 +204,52 @@ function AccountPage() {
               placeholder={t("common.profile.countryPlaceholder")}
             />
           </div>
+        </EditRow>
+
+        <Row icon={Mail} label={profile?.email ?? t("common.profile.email")} strong muted />
+
+        <ActionRow
+          icon={Lock}
+          label={t("common.profileMenu.changePassword")}
+          onClick={sendPasswordReset}
+          disabled={sendingReset}
+        />
+
+        <EditRow
+          icon={Smartphone}
+          label={t("common.profileMenu.changePhone")}
+          title={t("common.profileMenu.editPhone")}
+          onSave={save}
+          saving={saving}
+        >
           <div className="space-y-2">
-            <Label htmlFor="email">{t("common.profile.email")}</Label>
-            <Input id="email" value={profile?.email ?? ""} readOnly disabled />
+            <Label htmlFor="phone">{t("common.profile.phone")}</Label>
+            <Input
+              id="phone"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="+48 600 000 000"
+            />
           </div>
-          <div className="flex flex-wrap gap-2">
-            <Button onClick={save} disabled={saving || !profile}>
-              {saving ? t("common.actions.saving") : t("common.profile.saveChanges")}
-            </Button>
-            <Button variant="outline" onClick={sendPasswordReset} disabled={sendingReset}>
-              {t("common.profileMenu.changePassword")}
-            </Button>
-          </div>
-          <div className="border-t border-ink/10 pt-3">
-            <AlertDialog>
+        </EditRow>
+
+        <ActionRow
+          icon={CreditCard}
+          label={t("common.profileMenu.payments")}
+          onClick={() => toast.info(t("common.profileMenu.soon"))}
+        />
+        <ActionRow
+          icon={FileText}
+          label={t("common.profileMenu.invoice")}
+          onClick={() => toast.info(t("common.profileMenu.soon"))}
+        />
+        <LinkRow icon={Megaphone} label={t("common.profileMenu.managePrivacy")} to="/privacy" />
+      </ul>
+
+      <div className="flex items-center justify-between gap-3 px-1">
+        <Badge variant="secondary">{t(`common.roles.${role}`)}</Badge>
+        <div>
+          <AlertDialog>
               <AlertDialogTrigger asChild>
                 <button
                   type="button"
@@ -216,14 +281,155 @@ function AccountPage() {
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
-          </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
+
 
       {role === "customer" ? <CustomerSection /> : null}
       {role === "vendor" ? <VendorSection status={profile?.approval_status ?? null} /> : null}
       {role === "driver" ? <DriverSection status={profile?.approval_status ?? null} /> : null}
     </main>
+  );
+}
+
+const ROW =
+  "flex w-full items-center gap-4 px-4 py-4 text-left transition-colors hover:bg-muted/60";
+
+function RowInner({
+  icon: Icon,
+  label,
+  strong,
+  muted,
+  trailing,
+  preview,
+}: {
+  icon: LucideIcon;
+  label: string;
+  strong?: boolean | undefined;
+  muted?: boolean | undefined;
+  trailing?: React.ReactNode | undefined;
+  preview?: React.ReactNode | undefined;
+}) {
+  return (
+    <>
+      <Icon className="size-5 shrink-0 text-foreground/70" aria-hidden />
+      <span
+        className={`min-w-0 flex-1 break-words ${strong ? "text-base font-semibold" : "text-base"} ${
+          muted ? "text-foreground/80" : "text-foreground"
+        }`}
+      >
+        {label}
+      </span>
+      {preview}
+      {trailing}
+    </>
+  );
+}
+
+function Row(props: { icon: LucideIcon; label: string; strong?: boolean; muted?: boolean }) {
+  return (
+    <li className="border-b border-ink/10 last:border-b-0">
+      <div className={ROW}>
+        <RowInner {...props} />
+      </div>
+    </li>
+  );
+}
+
+function ActionRow({
+  icon,
+  label,
+  onClick,
+  disabled,
+}: {
+  icon: LucideIcon;
+  label: string;
+  onClick: () => void;
+  disabled?: boolean;
+}) {
+  return (
+    <li className="border-b border-ink/10 last:border-b-0">
+      <button type="button" onClick={onClick} disabled={disabled} className={ROW}>
+        <RowInner
+          icon={icon}
+          label={label}
+          trailing={<ChevronRight className="size-5 shrink-0 text-foreground/40" aria-hidden />}
+        />
+      </button>
+    </li>
+  );
+}
+
+function LinkRow({ icon, label, to }: { icon: LucideIcon; label: string; to: string }) {
+  return (
+    <li className="border-b border-ink/10 last:border-b-0">
+      <Link to={to} className={ROW}>
+        <RowInner
+          icon={icon}
+          label={label}
+          trailing={<ChevronRight className="size-5 shrink-0 text-foreground/40" aria-hidden />}
+        />
+      </Link>
+    </li>
+  );
+}
+
+function EditRow({
+  icon,
+  label,
+  title,
+  children,
+  onSave,
+  saving,
+  strong,
+  preview,
+}: {
+  icon: LucideIcon;
+  label: string;
+  title: string;
+  children: React.ReactNode;
+  onSave: () => Promise<void> | void;
+  saving?: boolean;
+  strong?: boolean;
+  preview?: React.ReactNode;
+}) {
+  const t = useT();
+  const [open, setOpen] = useState(false);
+
+  return (
+    <li className="border-b border-ink/10 last:border-b-0">
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <button type="button" className={ROW}>
+            <RowInner
+              icon={icon}
+              label={label}
+              strong={strong}
+              preview={preview}
+              trailing={<ChevronRight className="size-5 shrink-0 text-foreground/40" aria-hidden />}
+            />
+          </button>
+        </DialogTrigger>
+        <DialogContent className="max-w-[22rem] rounded-2xl border-ink/10">
+          <DialogHeader>
+            <DialogTitle className="text-lg font-bold text-foreground">{title}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">{children}</div>
+          <DialogFooter>
+            <Button
+              className="h-11 w-full rounded-xl text-base font-semibold"
+              disabled={saving}
+              onClick={async () => {
+                await onSave();
+                setOpen(false);
+              }}
+            >
+              {saving ? t("common.actions.saving") : t("common.profile.saveChanges")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </li>
   );
 }
 
