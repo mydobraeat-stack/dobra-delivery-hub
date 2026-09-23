@@ -78,24 +78,7 @@ function AccountPage() {
   const [avatar, setAvatar] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [sendingReset, setSendingReset] = useState(false);
-  const [deleting, setDeleting] = useState(false);
-  const navigate = useNavigate();
 
-  async function removeAccount() {
-    setDeleting(true);
-    try {
-      await deleteMyAccount();
-      await queryClient.cancelQueries();
-      queryClient.clear();
-      await supabase.auth.signOut();
-      toast.success(t("common.deleteAccount.done"));
-      navigate({ to: "/auth", replace: true });
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : t("common.deleteAccount.failed"));
-    } finally {
-      setDeleting(false);
-    }
-  }
 
   useEffect(() => {
     if (!profile) return;
