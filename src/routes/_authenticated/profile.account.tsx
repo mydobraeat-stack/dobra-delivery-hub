@@ -305,10 +305,10 @@ function RowInner({
 }: {
   icon: LucideIcon;
   label: string;
-  strong?: boolean;
-  muted?: boolean;
-  trailing?: React.ReactNode;
-  preview?: React.ReactNode;
+  strong?: boolean | undefined;
+  muted?: boolean | undefined;
+  trailing?: React.ReactNode | undefined;
+  preview?: React.ReactNode | undefined;
 }) {
   return (
     <>
