@@ -261,9 +261,9 @@ function AccountPage() {
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
-          </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
+
 
       {role === "customer" ? <CustomerSection /> : null}
       {role === "vendor" ? <VendorSection status={profile?.approval_status ?? null} /> : null}
