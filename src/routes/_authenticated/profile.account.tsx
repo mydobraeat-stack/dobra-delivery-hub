@@ -126,24 +126,46 @@ function AccountPage() {
   }
 
   return (
-    <main className="mx-auto max-w-2xl space-y-4 px-5 py-6">
-      <ProfileBackLink label={t("common.actions.back")} />
-      <div className="flex items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold text-foreground">{t("common.profileMenu.account")}</h1>
-        <Badge variant="secondary">{t(`common.roles.${role}`)}</Badge>
+    <main className="mx-auto max-w-2xl space-y-5 px-4 py-5">
+      <div className="relative flex items-center justify-center">
+        <div className="absolute left-0">
+          <ProfileBackLink label={t("common.actions.back")} />
+        </div>
+        <h1 className="text-lg font-bold text-foreground">{t("common.profileMenu.account")}</h1>
       </div>
 
-      <Card className="border-ink/10">
-        <CardHeader>
-          <CardTitle className="text-lg">{t("common.profile.personal")}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+      <ul className="overflow-hidden rounded-2xl border border-ink/10 bg-card">
+        <EditRow
+          icon={ImageIcon}
+          label={t("common.profile.photo")}
+          title={t("common.profile.photo")}
+          onSave={save}
+          saving={saving}
+          preview={
+            <InitialsAvatar
+              name={fullName}
+              email={profile?.email}
+              src={avatar}
+              className="size-9 border"
+            />
+          }
+        >
           <ImageUpload
             bucket="profile-photos"
             value={avatar}
             onChange={setAvatar}
             label={t("common.profile.photo")}
           />
+        </EditRow>
+
+        <EditRow
+          icon={User}
+          label={fullName || t("common.profile.namePlaceholder")}
+          title={t("common.profileMenu.editName")}
+          onSave={save}
+          saving={saving}
+          strong
+        >
           <div className="space-y-2">
             <Label htmlFor="full-name">{t("common.profile.fullName")}</Label>
             <Input
@@ -151,15 +173,6 @@ function AccountPage() {
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               placeholder={t("common.profile.namePlaceholder")}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="phone">{t("common.profile.phone")}</Label>
-            <Input
-              id="phone"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              placeholder="+48 600 000 000"
             />
           </div>
           <div className="space-y-2">
@@ -171,20 +184,52 @@ function AccountPage() {
               placeholder={t("common.profile.countryPlaceholder")}
             />
           </div>
+        </EditRow>
+
+        <Row icon={Mail} label={profile?.email ?? t("common.profile.email")} strong muted />
+
+        <ActionRow
+          icon={Lock}
+          label={t("common.profileMenu.changePassword")}
+          onClick={sendPasswordReset}
+          disabled={sendingReset}
+        />
+
+        <EditRow
+          icon={Smartphone}
+          label={t("common.profileMenu.changePhone")}
+          title={t("common.profileMenu.editPhone")}
+          onSave={save}
+          saving={saving}
+        >
           <div className="space-y-2">
-            <Label htmlFor="email">{t("common.profile.email")}</Label>
-            <Input id="email" value={profile?.email ?? ""} readOnly disabled />
+            <Label htmlFor="phone">{t("common.profile.phone")}</Label>
+            <Input
+              id="phone"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="+48 600 000 000"
+            />
           </div>
-          <div className="flex flex-wrap gap-2">
-            <Button onClick={save} disabled={saving || !profile}>
-              {saving ? t("common.actions.saving") : t("common.profile.saveChanges")}
-            </Button>
-            <Button variant="outline" onClick={sendPasswordReset} disabled={sendingReset}>
-              {t("common.profileMenu.changePassword")}
-            </Button>
-          </div>
-          <div className="border-t border-ink/10 pt-3">
-            <AlertDialog>
+        </EditRow>
+
+        <ActionRow
+          icon={CreditCard}
+          label={t("common.profileMenu.payments")}
+          onClick={() => toast.info(t("common.profileMenu.soon"))}
+        />
+        <ActionRow
+          icon={FileText}
+          label={t("common.profileMenu.invoice")}
+          onClick={() => toast.info(t("common.profileMenu.soon"))}
+        />
+        <LinkRow icon={Megaphone} label={t("common.profileMenu.managePrivacy")} to="/privacy" />
+      </ul>
+
+      <div className="flex items-center justify-between gap-3 px-1">
+        <Badge variant="secondary">{t(`common.roles.${role}`)}</Badge>
+        <div>
+          <AlertDialog>
               <AlertDialogTrigger asChild>
                 <button
                   type="button"
