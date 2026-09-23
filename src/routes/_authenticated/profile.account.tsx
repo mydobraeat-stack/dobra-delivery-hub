@@ -16,7 +16,27 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { ImageUpload } from "@/components/dobra/ImageUpload";
-import { ProfileBackLink } from "@/components/dobra/ProfileMenu";
+import { ProfileBackLink, InitialsAvatar } from "@/components/dobra/ProfileMenu";
+import {
+  ChevronRight,
+  CreditCard,
+  FileText,
+  Image as ImageIcon,
+  Lock,
+  Mail,
+  Megaphone,
+  Smartphone,
+  User,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { useT, useI18n } from "@/lib/i18n";
 import { accountQueryOptions } from "@/lib/profile";
 import { myProfileQuery } from "@/lib/my-profile";
