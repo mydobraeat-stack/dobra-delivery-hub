@@ -48,10 +48,12 @@ import { Route as AuthenticatedDriverHelpRouteImport } from './routes/_authentic
 import { Route as AuthenticatedOrdersOrderIdRouteImport } from './routes/_authenticated/orders.$orderId'
 import { Route as AuthenticatedProfileIndexRouteImport } from './routes/_authenticated/profile.index'
 import { Route as AuthenticatedProfileAccountRouteImport } from './routes/_authenticated/profile.account'
+import { Route as AuthenticatedProfileAppearanceRouteImport } from './routes/_authenticated/profile.appearance'
 import { Route as AuthenticatedProfileDeleteRouteImport } from './routes/_authenticated/profile.delete'
 import { Route as AuthenticatedProfileFaqRouteImport } from './routes/_authenticated/profile.faq'
 import { Route as AuthenticatedProfileLanguageRouteImport } from './routes/_authenticated/profile.language'
 import { Route as AuthenticatedProfileNotificationsRouteImport } from './routes/_authenticated/profile.notifications'
+import { Route as AuthenticatedProfilePrimeRouteImport } from './routes/_authenticated/profile.prime'
 import { Route as AuthenticatedProfilePromosRouteImport } from './routes/_authenticated/profile.promos'
 import { Route as AuthenticatedRestaurantRestaurantIdRouteImport } from './routes/_authenticated/restaurant.$restaurantId'
 import { Route as AuthenticatedVendorIndexRouteImport } from './routes/_authenticated/vendor.index'
@@ -274,6 +276,12 @@ const AuthenticatedProfileAccountRoute =
     path: '/account',
     getParentRoute: () => AuthenticatedProfileRoute,
   } as any)
+const AuthenticatedProfileAppearanceRoute =
+  AuthenticatedProfileAppearanceRouteImport.update({
+    id: '/appearance',
+    path: '/appearance',
+    getParentRoute: () => AuthenticatedProfileRoute,
+  } as any)
 const AuthenticatedProfileDeleteRoute =
   AuthenticatedProfileDeleteRouteImport.update({
     id: '/delete',
@@ -295,6 +303,12 @@ const AuthenticatedProfileNotificationsRoute =
   AuthenticatedProfileNotificationsRouteImport.update({
     id: '/notifications',
     path: '/notifications',
+    getParentRoute: () => AuthenticatedProfileRoute,
+  } as any)
+const AuthenticatedProfilePrimeRoute =
+  AuthenticatedProfilePrimeRouteImport.update({
+    id: '/prime',
+    path: '/prime',
     getParentRoute: () => AuthenticatedProfileRoute,
   } as any)
 const AuthenticatedProfilePromosRoute =
@@ -389,10 +403,12 @@ export interface FileRoutesByFullPath {
   '/driver/help': typeof AuthenticatedDriverHelpRoute
   '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/profile/account': typeof AuthenticatedProfileAccountRoute
+  '/profile/appearance': typeof AuthenticatedProfileAppearanceRoute
   '/profile/delete': typeof AuthenticatedProfileDeleteRoute
   '/profile/faq': typeof AuthenticatedProfileFaqRoute
   '/profile/language': typeof AuthenticatedProfileLanguageRoute
   '/profile/notifications': typeof AuthenticatedProfileNotificationsRoute
+  '/profile/prime': typeof AuthenticatedProfilePrimeRoute
   '/profile/promos': typeof AuthenticatedProfilePromosRoute
   '/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
   '/vendor/menu': typeof AuthenticatedVendorMenuRoute
@@ -438,10 +454,12 @@ export interface FileRoutesByTo {
   '/driver/help': typeof AuthenticatedDriverHelpRoute
   '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/profile/account': typeof AuthenticatedProfileAccountRoute
+  '/profile/appearance': typeof AuthenticatedProfileAppearanceRoute
   '/profile/delete': typeof AuthenticatedProfileDeleteRoute
   '/profile/faq': typeof AuthenticatedProfileFaqRoute
   '/profile/language': typeof AuthenticatedProfileLanguageRoute
   '/profile/notifications': typeof AuthenticatedProfileNotificationsRoute
+  '/profile/prime': typeof AuthenticatedProfilePrimeRoute
   '/profile/promos': typeof AuthenticatedProfilePromosRoute
   '/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
   '/vendor/menu': typeof AuthenticatedVendorMenuRoute
@@ -494,10 +512,12 @@ export interface FileRoutesById {
   '/_authenticated/driver/help': typeof AuthenticatedDriverHelpRoute
   '/_authenticated/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/_authenticated/profile/account': typeof AuthenticatedProfileAccountRoute
+  '/_authenticated/profile/appearance': typeof AuthenticatedProfileAppearanceRoute
   '/_authenticated/profile/delete': typeof AuthenticatedProfileDeleteRoute
   '/_authenticated/profile/faq': typeof AuthenticatedProfileFaqRoute
   '/_authenticated/profile/language': typeof AuthenticatedProfileLanguageRoute
   '/_authenticated/profile/notifications': typeof AuthenticatedProfileNotificationsRoute
+  '/_authenticated/profile/prime': typeof AuthenticatedProfilePrimeRoute
   '/_authenticated/profile/promos': typeof AuthenticatedProfilePromosRoute
   '/_authenticated/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
   '/_authenticated/vendor/menu': typeof AuthenticatedVendorMenuRoute
@@ -550,10 +570,12 @@ export interface FileRouteTypes {
     | '/driver/help'
     | '/orders/$orderId'
     | '/profile/account'
+    | '/profile/appearance'
     | '/profile/delete'
     | '/profile/faq'
     | '/profile/language'
     | '/profile/notifications'
+    | '/profile/prime'
     | '/profile/promos'
     | '/restaurant/$restaurantId'
     | '/vendor/menu'
@@ -599,10 +621,12 @@ export interface FileRouteTypes {
     | '/driver/help'
     | '/orders/$orderId'
     | '/profile/account'
+    | '/profile/appearance'
     | '/profile/delete'
     | '/profile/faq'
     | '/profile/language'
     | '/profile/notifications'
+    | '/profile/prime'
     | '/profile/promos'
     | '/restaurant/$restaurantId'
     | '/vendor/menu'
@@ -654,10 +678,12 @@ export interface FileRouteTypes {
     | '/_authenticated/driver/help'
     | '/_authenticated/orders/$orderId'
     | '/_authenticated/profile/account'
+    | '/_authenticated/profile/appearance'
     | '/_authenticated/profile/delete'
     | '/_authenticated/profile/faq'
     | '/_authenticated/profile/language'
     | '/_authenticated/profile/notifications'
+    | '/_authenticated/profile/prime'
     | '/_authenticated/profile/promos'
     | '/_authenticated/restaurant/$restaurantId'
     | '/_authenticated/vendor/menu'
@@ -968,6 +994,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProfileAccountRouteImport
       parentRoute: typeof AuthenticatedProfileRoute
     }
+    '/_authenticated/profile/appearance': {
+      id: '/_authenticated/profile/appearance'
+      path: '/appearance'
+      fullPath: '/profile/appearance'
+      preLoaderRoute: typeof AuthenticatedProfileAppearanceRouteImport
+      parentRoute: typeof AuthenticatedProfileRoute
+    }
     '/_authenticated/profile/delete': {
       id: '/_authenticated/profile/delete'
       path: '/delete'
@@ -994,6 +1027,13 @@ declare module '@tanstack/react-router' {
       path: '/notifications'
       fullPath: '/profile/notifications'
       preLoaderRoute: typeof AuthenticatedProfileNotificationsRouteImport
+      parentRoute: typeof AuthenticatedProfileRoute
+    }
+    '/_authenticated/profile/prime': {
+      id: '/_authenticated/profile/prime'
+      path: '/prime'
+      fullPath: '/profile/prime'
+      preLoaderRoute: typeof AuthenticatedProfilePrimeRouteImport
       parentRoute: typeof AuthenticatedProfileRoute
     }
     '/_authenticated/profile/promos': {
@@ -1136,21 +1176,25 @@ const AuthenticatedDriverRouteWithChildren =
 
 interface AuthenticatedProfileRouteChildren {
   AuthenticatedProfileAccountRoute: typeof AuthenticatedProfileAccountRoute
+  AuthenticatedProfileAppearanceRoute: typeof AuthenticatedProfileAppearanceRoute
   AuthenticatedProfileDeleteRoute: typeof AuthenticatedProfileDeleteRoute
   AuthenticatedProfileFaqRoute: typeof AuthenticatedProfileFaqRoute
   AuthenticatedProfileLanguageRoute: typeof AuthenticatedProfileLanguageRoute
   AuthenticatedProfileNotificationsRoute: typeof AuthenticatedProfileNotificationsRoute
+  AuthenticatedProfilePrimeRoute: typeof AuthenticatedProfilePrimeRoute
   AuthenticatedProfilePromosRoute: typeof AuthenticatedProfilePromosRoute
   AuthenticatedProfileIndexRoute: typeof AuthenticatedProfileIndexRoute
 }
 
 const AuthenticatedProfileRouteChildren: AuthenticatedProfileRouteChildren = {
   AuthenticatedProfileAccountRoute: AuthenticatedProfileAccountRoute,
+  AuthenticatedProfileAppearanceRoute: AuthenticatedProfileAppearanceRoute,
   AuthenticatedProfileDeleteRoute: AuthenticatedProfileDeleteRoute,
   AuthenticatedProfileFaqRoute: AuthenticatedProfileFaqRoute,
   AuthenticatedProfileLanguageRoute: AuthenticatedProfileLanguageRoute,
   AuthenticatedProfileNotificationsRoute:
     AuthenticatedProfileNotificationsRoute,
+  AuthenticatedProfilePrimeRoute: AuthenticatedProfilePrimeRoute,
   AuthenticatedProfilePromosRoute: AuthenticatedProfilePromosRoute,
   AuthenticatedProfileIndexRoute: AuthenticatedProfileIndexRoute,
 }
