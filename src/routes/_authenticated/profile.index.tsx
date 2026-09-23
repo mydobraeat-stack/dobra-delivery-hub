@@ -112,12 +112,28 @@ function ProfileHub() {
 
       <ProfileMenuList>
         {role === "customer" ? (
-          <ProfileMenuItem to="/profile/promos" icon={Tag} label={t("common.profileMenu.promos")} />
+          <>
+            <ProfileMenuItem
+              to="/profile/prime"
+              icon={Crown}
+              label={t("common.profileMenu.prime")}
+            />
+            <ProfileMenuItem
+              to="/profile/promos"
+              icon={Tag}
+              label={t("common.profileMenu.promos")}
+            />
+          </>
         ) : null}
         <ProfileMenuItem
           to="/profile/language"
           icon={Languages}
           label={t("common.profileMenu.language")}
+        />
+        <ProfileMenuItem
+          to="/profile/appearance"
+          icon={Palette}
+          label={t("common.profileMenu.appearance")}
         />
         <ProfileMenuItem to="/profile/faq" icon={CircleHelp} label={t("common.profileMenu.faq")} />
         <ProfileMenuItem
