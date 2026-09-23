@@ -25,6 +25,13 @@ export default {
     body: "Aby składać i śledzić zamówienia, trzeba zalogować się ponownie.",
   },
   deleteAccount: {
+    menu: "Usuń moje konto i dane",
+    pageTitle: "Usuń moje konto i dane",
+    warning: "Twoje konto Dobra i dane osobowe zostaną trwale usunięte. Tej operacji nie można cofnąć.",
+    point1: "Imię i nazwisko, e-mail, telefon oraz zdjęcie zostaną trwale usunięte.",
+    point2: "Wcześniejsze zamówienia pozostaną w formie zanonimizowanej ze względów prawnych i księgowych.",
+    point3: "Nastąpi natychmiastowe wylogowanie, a ponowne logowanie na to konto nie będzie możliwe.",
+    typePrompt: "Wpisz DELETE, aby potwierdzić",
     link: "Usuń konto",
     title: "Usunąć konto Dobra?",
     body: "Konto zostanie trwale usunięte i nastąpi wylogowanie. Tej operacji nie można cofnąć.",
@@ -156,5 +163,36 @@ export default {
     blocked: "Powiadomienia są zablokowane w ustawieniach przeglądarki — zezwól na powiadomienia dla tej strony.",
     unsupported: "Ta przeglądarka nie obsługuje powiadomień push. Na iPhonie najpierw dodaj Dobra do ekranu głównego.",
     error: "Nie udało się włączyć powiadomień push. Spróbuj ponownie.",
+  },
+  version: "Wersja {version}",
+  faq: {
+    title: "FAQ i pomoc",
+    subtitle: "Szybkie odpowiedzi na najczęstsze pytania.",
+    items: {
+      track: {
+        q: "Jak śledzić zamówienie?",
+        a: "Otwórz Zamówienia na dolnym pasku i dotknij aktywnego zamówienia. Zobaczysz każdy etap, przewidywany czas oraz kuriera na mapie po odbiorze.",
+      },
+      payment: {
+        q: "Jakie są metody płatności?",
+        a: "Możesz zapłacić gotówką przy odbiorze lub kartą przy składaniu zamówienia. Dostępne opcje widać na ekranie płatności.",
+      },
+      driver: {
+        q: "Jak skontaktować się z kurierem?",
+        a: "Gdy kurier zostanie przypisany, otwórz ekran śledzenia i dotknij przycisku czatu, aby napisać do niego bezpośrednio.",
+      },
+      cancel: {
+        q: "Jak anulować zamówienie?",
+        a: "Możesz anulować, dopóki restauracja nie przyjmie zamówienia. Później napisz do wsparcia z tego ekranu, a pomożemy.",
+      },
+      refund: {
+        q: "Coś było nie tak z zamówieniem. Co dalej?",
+        a: "Napisz do wsparcia z tej strony, podając numer zamówienia. Zwroty za braki lub pomyłki rozpatrujemy indywidualnie.",
+      },
+      account: {
+        q: "Jak zmienić dane lub usunąć konto?",
+        a: "Wejdź w Profil, potem Konto, aby zmienić imię, telefon, zdjęcie lub hasło. Usuń moje konto i dane trwale kasuje dane osobowe.",
+      },
+    },
   },
 };

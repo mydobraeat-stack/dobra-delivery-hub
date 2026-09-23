@@ -489,6 +489,7 @@ export type Database = {
           avatar_url: string | null
           country: string | null
           created_at: string
+          deleted_at: string | null
           email: string | null
           full_name: string | null
           id: string
@@ -500,6 +501,7 @@ export type Database = {
           avatar_url?: string | null
           country?: string | null
           created_at?: string
+          deleted_at?: string | null
           email?: string | null
           full_name?: string | null
           id: string
@@ -511,6 +513,7 @@ export type Database = {
           avatar_url?: string | null
           country?: string | null
           created_at?: string
+          deleted_at?: string | null
           email?: string | null
           full_name?: string | null
           id?: string
@@ -714,6 +717,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      anonymize_account: { Args: { _user_id: string }; Returns: undefined }
       can_access_chat_thread: { Args: { _thread_id: string }; Returns: boolean }
       can_view_chat_file: { Args: { _object_name: string }; Returns: boolean }
       has_role: {

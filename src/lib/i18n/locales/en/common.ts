@@ -25,6 +25,13 @@ export default {
     body: "You will need to log in again to place or track orders.",
   },
   deleteAccount: {
+    menu: "Delete my account and data",
+    pageTitle: "Delete my account and data",
+    warning: "This will permanently delete your Dobra account and personal data. This cannot be undone.",
+    point1: "Your name, email, phone number and photo are permanently erased.",
+    point2: "Past orders are kept in anonymised form for legal and accounting reasons.",
+    point3: "You will be signed out immediately and cannot sign in again with this account.",
+    typePrompt: "Type DELETE to confirm",
     link: "Delete account",
     title: "Delete your Dobra account?",
     body: "This permanently removes your account and you will be signed out. This cannot be undone.",
@@ -156,5 +163,36 @@ export default {
     blocked: "Alerts are blocked in your browser settings — allow notifications for this site to turn them on.",
     unsupported: "This browser does not support push alerts. On iPhone, add Dobra to your home screen first.",
     error: "Could not turn on push alerts. Please try again.",
+  },
+  version: "Version {version}",
+  faq: {
+    title: "FAQ & Help",
+    subtitle: "Quick answers to the questions we hear most.",
+    items: {
+      track: {
+        q: "How do I track my order?",
+        a: "Open Orders from the bottom bar and tap your live order. You will see each step, the estimated time and the driver on the map once the order is picked up.",
+      },
+      payment: {
+        q: "What payment methods are accepted?",
+        a: "You can pay with cash on delivery or by card at checkout. The available options are shown on the checkout screen before you confirm.",
+      },
+      driver: {
+        q: "How do I contact a driver?",
+        a: "Once a driver is assigned, open the order tracking screen and tap the chat button to message them directly.",
+      },
+      cancel: {
+        q: "How do I cancel an order?",
+        a: "You can cancel while the order is still new, before the restaurant accepts it. After that, contact support from this screen and we will help.",
+      },
+      refund: {
+        q: "Something was wrong with my order. What now?",
+        a: "Message support from this page with your order number. Refunds for missing or incorrect items are handled case by case.",
+      },
+      account: {
+        q: "How do I change my details or delete my account?",
+        a: "Go to Profile, then Account to edit your name, phone, photo or password. Delete my account and data removes your personal data permanently.",
+      },
+    },
   },
 };

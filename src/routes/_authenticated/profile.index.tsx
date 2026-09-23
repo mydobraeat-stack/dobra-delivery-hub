@@ -11,7 +11,9 @@ import {
   ShieldCheck,
   Store,
   Tag,
+  Trash2,
   User,
+
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { InitialsAvatar, ProfileMenuItem, ProfileMenuList } from "@/components/dobra/ProfileMenu";
@@ -33,7 +35,10 @@ import { useT } from "@/lib/i18n";
 import { accountQueryOptions } from "@/lib/profile";
 import { myProfileQuery } from "@/lib/my-profile";
 
+const APP_VERSION = "1.0.0";
+
 export const Route = createFileRoute("/_authenticated/profile/")({
+
   head: () => ({
     meta: [
       { title: "Profile — Dobra" },
@@ -114,7 +119,7 @@ function ProfileHub() {
           icon={Languages}
           label={t("common.profileMenu.language")}
         />
-        <ProfileMenuItem to={helpTo} icon={CircleHelp} label={t("common.profileMenu.faq")} />
+        <ProfileMenuItem to="/profile/faq" icon={CircleHelp} label={t("common.profileMenu.faq")} />
         <ProfileMenuItem
           to="/profile/notifications"
           icon={Bell}
@@ -141,7 +146,13 @@ function ProfileHub() {
             label={t("common.profileMenu.business")}
           />
         ) : null}
+        <ProfileMenuItem
+          to="/profile/delete"
+          icon={Trash2}
+          label={t("common.deleteAccount.menu")}
+        />
       </ProfileMenuList>
+
 
       {role === "admin" ? null : (
         <ChatButton
@@ -185,7 +196,11 @@ function ProfileHub() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      <p className="pb-2 text-center text-xs text-foreground/40">
+        {t("common.version", { version: APP_VERSION })}
+      </p>
       <HelpCircle className="hidden" aria-hidden />
+
     </main>
   );
 }
