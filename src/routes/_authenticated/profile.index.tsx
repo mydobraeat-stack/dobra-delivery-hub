@@ -88,11 +88,24 @@ function ProfileHub() {
         </Badge>
       </div>
 
-      <h1 className="text-2xl font-bold text-foreground">{t("common.actions.profile")}</h1>
+      <div className="flex items-center justify-between gap-3">
+        <h1 className="text-2xl font-bold text-foreground">{t("common.actions.profile")}</h1>
+        <Button
+          asChild
+          variant="outline"
+          size="sm"
+          className="h-9 rounded-full border-2 border-brand/30 bg-card px-4 text-sm font-semibold text-brand hover:bg-brand/10 hover:text-brand"
+        >
+          <Link to={helpTo}>{t("common.tabs.help")}</Link>
+        </Button>
+      </div>
 
       <ProfileMenuList>
         <ProfileMenuItem to={ordersTo} icon={Receipt} label={t("common.profileMenu.orders")} />
         <ProfileMenuItem to="/profile/account" icon={User} label={t("common.profileMenu.account")} />
+      </ProfileMenuList>
+
+      <ProfileMenuList>
         {role === "customer" ? (
           <ProfileMenuItem to="/profile/promos" icon={Tag} label={t("common.profileMenu.promos")} />
         ) : null}
