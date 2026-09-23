@@ -48,6 +48,8 @@ import { Route as AuthenticatedDriverHelpRouteImport } from './routes/_authentic
 import { Route as AuthenticatedOrdersOrderIdRouteImport } from './routes/_authenticated/orders.$orderId'
 import { Route as AuthenticatedProfileIndexRouteImport } from './routes/_authenticated/profile.index'
 import { Route as AuthenticatedProfileAccountRouteImport } from './routes/_authenticated/profile.account'
+import { Route as AuthenticatedProfileDeleteRouteImport } from './routes/_authenticated/profile.delete'
+import { Route as AuthenticatedProfileFaqRouteImport } from './routes/_authenticated/profile.faq'
 import { Route as AuthenticatedProfileLanguageRouteImport } from './routes/_authenticated/profile.language'
 import { Route as AuthenticatedProfileNotificationsRouteImport } from './routes/_authenticated/profile.notifications'
 import { Route as AuthenticatedProfilePromosRouteImport } from './routes/_authenticated/profile.promos'
@@ -272,6 +274,17 @@ const AuthenticatedProfileAccountRoute =
     path: '/account',
     getParentRoute: () => AuthenticatedProfileRoute,
   } as any)
+const AuthenticatedProfileDeleteRoute =
+  AuthenticatedProfileDeleteRouteImport.update({
+    id: '/delete',
+    path: '/delete',
+    getParentRoute: () => AuthenticatedProfileRoute,
+  } as any)
+const AuthenticatedProfileFaqRoute = AuthenticatedProfileFaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => AuthenticatedProfileRoute,
+} as any)
 const AuthenticatedProfileLanguageRoute =
   AuthenticatedProfileLanguageRouteImport.update({
     id: '/language',
@@ -376,6 +389,8 @@ export interface FileRoutesByFullPath {
   '/driver/help': typeof AuthenticatedDriverHelpRoute
   '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/profile/account': typeof AuthenticatedProfileAccountRoute
+  '/profile/delete': typeof AuthenticatedProfileDeleteRoute
+  '/profile/faq': typeof AuthenticatedProfileFaqRoute
   '/profile/language': typeof AuthenticatedProfileLanguageRoute
   '/profile/notifications': typeof AuthenticatedProfileNotificationsRoute
   '/profile/promos': typeof AuthenticatedProfilePromosRoute
@@ -423,6 +438,8 @@ export interface FileRoutesByTo {
   '/driver/help': typeof AuthenticatedDriverHelpRoute
   '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/profile/account': typeof AuthenticatedProfileAccountRoute
+  '/profile/delete': typeof AuthenticatedProfileDeleteRoute
+  '/profile/faq': typeof AuthenticatedProfileFaqRoute
   '/profile/language': typeof AuthenticatedProfileLanguageRoute
   '/profile/notifications': typeof AuthenticatedProfileNotificationsRoute
   '/profile/promos': typeof AuthenticatedProfilePromosRoute
@@ -477,6 +494,8 @@ export interface FileRoutesById {
   '/_authenticated/driver/help': typeof AuthenticatedDriverHelpRoute
   '/_authenticated/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/_authenticated/profile/account': typeof AuthenticatedProfileAccountRoute
+  '/_authenticated/profile/delete': typeof AuthenticatedProfileDeleteRoute
+  '/_authenticated/profile/faq': typeof AuthenticatedProfileFaqRoute
   '/_authenticated/profile/language': typeof AuthenticatedProfileLanguageRoute
   '/_authenticated/profile/notifications': typeof AuthenticatedProfileNotificationsRoute
   '/_authenticated/profile/promos': typeof AuthenticatedProfilePromosRoute
@@ -531,6 +550,8 @@ export interface FileRouteTypes {
     | '/driver/help'
     | '/orders/$orderId'
     | '/profile/account'
+    | '/profile/delete'
+    | '/profile/faq'
     | '/profile/language'
     | '/profile/notifications'
     | '/profile/promos'
@@ -578,6 +599,8 @@ export interface FileRouteTypes {
     | '/driver/help'
     | '/orders/$orderId'
     | '/profile/account'
+    | '/profile/delete'
+    | '/profile/faq'
     | '/profile/language'
     | '/profile/notifications'
     | '/profile/promos'
@@ -631,6 +654,8 @@ export interface FileRouteTypes {
     | '/_authenticated/driver/help'
     | '/_authenticated/orders/$orderId'
     | '/_authenticated/profile/account'
+    | '/_authenticated/profile/delete'
+    | '/_authenticated/profile/faq'
     | '/_authenticated/profile/language'
     | '/_authenticated/profile/notifications'
     | '/_authenticated/profile/promos'
@@ -943,6 +968,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProfileAccountRouteImport
       parentRoute: typeof AuthenticatedProfileRoute
     }
+    '/_authenticated/profile/delete': {
+      id: '/_authenticated/profile/delete'
+      path: '/delete'
+      fullPath: '/profile/delete'
+      preLoaderRoute: typeof AuthenticatedProfileDeleteRouteImport
+      parentRoute: typeof AuthenticatedProfileRoute
+    }
+    '/_authenticated/profile/faq': {
+      id: '/_authenticated/profile/faq'
+      path: '/faq'
+      fullPath: '/profile/faq'
+      preLoaderRoute: typeof AuthenticatedProfileFaqRouteImport
+      parentRoute: typeof AuthenticatedProfileRoute
+    }
     '/_authenticated/profile/language': {
       id: '/_authenticated/profile/language'
       path: '/language'
@@ -1097,6 +1136,8 @@ const AuthenticatedDriverRouteWithChildren =
 
 interface AuthenticatedProfileRouteChildren {
   AuthenticatedProfileAccountRoute: typeof AuthenticatedProfileAccountRoute
+  AuthenticatedProfileDeleteRoute: typeof AuthenticatedProfileDeleteRoute
+  AuthenticatedProfileFaqRoute: typeof AuthenticatedProfileFaqRoute
   AuthenticatedProfileLanguageRoute: typeof AuthenticatedProfileLanguageRoute
   AuthenticatedProfileNotificationsRoute: typeof AuthenticatedProfileNotificationsRoute
   AuthenticatedProfilePromosRoute: typeof AuthenticatedProfilePromosRoute
@@ -1105,6 +1146,8 @@ interface AuthenticatedProfileRouteChildren {
 
 const AuthenticatedProfileRouteChildren: AuthenticatedProfileRouteChildren = {
   AuthenticatedProfileAccountRoute: AuthenticatedProfileAccountRoute,
+  AuthenticatedProfileDeleteRoute: AuthenticatedProfileDeleteRoute,
+  AuthenticatedProfileFaqRoute: AuthenticatedProfileFaqRoute,
   AuthenticatedProfileLanguageRoute: AuthenticatedProfileLanguageRoute,
   AuthenticatedProfileNotificationsRoute:
     AuthenticatedProfileNotificationsRoute,
