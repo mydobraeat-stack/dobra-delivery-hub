@@ -114,6 +114,8 @@ export default {
     editPhone: "Numéro de téléphone",
     editPhoto: "Photo de profil",
     soon: "Bientôt disponible.",
+    prime: "Dobra Prime",
+    appearance: "Apparence",
   },
   profile: {
     "title": "Votre profil",
@@ -194,5 +196,33 @@ export default {
         a: "Allez dans Profil, puis Compte pour modifier votre nom, téléphone, photo ou mot de passe. Supprimer mon compte et mes données efface définitivement vos données.",
       },
     },
+  },
+  appearance: {
+    "title": "Apparence",
+    "help": "Choisissez l'apparence de Dobra sur cet appareil.",
+    "light": "Clair",
+    "dark": "Sombre",
+    "system": "Comme mon appareil"
+  },
+  prime: {
+    "title": "Dobra Prime",
+    "subtitle": "Livraison offerte et avantages membres, chaque mois.",
+    "price": "{price} / mois",
+    "join": "Rejoindre Dobra Prime",
+    "cancel": "Résilier l'abonnement",
+    "cancelled": "Votre abonnement prendra fin à la fin de la période payée.",
+    "welcome": "Bienvenue dans Dobra Prime !",
+    "error": "Une erreur est survenue. Réessayez.",
+    "paymentsMissing": "Le paiement par carte n'est pas encore configuré. Réessayez plus tard.",
+    "renewsOn": "Actif — renouvellement le {date}.",
+    "endsOn": "Actif — se termine le {date}.",
+    "activeNow": "Votre abonnement est actif.",
+    "terms": "Facturé chaque mois. Résiliable à tout moment.",
+    "benefits": {
+      "delivery": "Livraison offerte sur chaque commande de repas",
+      "discount": "Offres réservées aux membres chez nos restaurants partenaires",
+      "support": "Assistance prioritaire, réponses plus rapides",
+      "priority": "Vos commandes sont prioritaires aux heures de pointe"
+    }
   },
 };

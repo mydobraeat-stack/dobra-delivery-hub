@@ -114,6 +114,8 @@ export default {
     editPhone: "Numer telefonu",
     editPhoto: "Zdjęcie profilowe",
     soon: "Wkrótce dostępne.",
+    prime: "Dobra Prime",
+    appearance: "Wygląd",
   },
   profile: {
     "title": "Twój profil",
@@ -194,5 +196,33 @@ export default {
         a: "Wejdź w Profil, potem Konto, aby zmienić imię, telefon, zdjęcie lub hasło. Usuń moje konto i dane trwale kasuje dane osobowe.",
       },
     },
+  },
+  appearance: {
+    "title": "Wygląd",
+    "help": "Wybierz, jak Dobra ma wyglądać na tym urządzeniu.",
+    "light": "Jasny",
+    "dark": "Ciemny",
+    "system": "Jak w urządzeniu"
+  },
+  prime: {
+    "title": "Dobra Prime",
+    "subtitle": "Darmowa dostawa i korzyści dla członków, co miesiąc.",
+    "price": "{price} / miesiąc",
+    "join": "Dołącz do Dobra Prime",
+    "cancel": "Anuluj członkostwo",
+    "cancelled": "Twoje członkostwo zakończy się po opłaconym okresie.",
+    "welcome": "Witamy w Dobra Prime!",
+    "error": "Coś poszło nie tak. Spróbuj ponownie.",
+    "paymentsMissing": "Płatności kartą nie są jeszcze skonfigurowane. Spróbuj później.",
+    "renewsOn": "Aktywne — odnowi się {date}.",
+    "endsOn": "Aktywne — kończy się {date}.",
+    "activeNow": "Twoje członkostwo jest aktywne.",
+    "terms": "Rozliczenie miesięczne. Możesz anulować w każdej chwili.",
+    "benefits": {
+      "delivery": "Darmowa dostawa każdego zamówienia z jedzeniem",
+      "discount": "Oferty tylko dla członków w restauracjach partnerskich",
+      "support": "Priorytetowa pomoc i szybsze odpowiedzi",
+      "priority": "Twoje zamówienia mają pierwszeństwo w godzinach szczytu"
+    }
   },
 };

@@ -114,6 +114,8 @@ export default {
     editPhone: "Phone number",
     editPhoto: "Profile photo",
     soon: "Coming soon.",
+    prime: "Dobra Prime",
+    appearance: "Appearance",
   },
   profile: {
     "title": "Your profile",
@@ -194,5 +196,33 @@ export default {
         a: "Go to Profile, then Account to edit your name, phone, photo or password. Delete my account and data removes your personal data permanently.",
       },
     },
+  },
+  appearance: {
+    "title": "Appearance",
+    "help": "Choose how Dobra looks on this device.",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "Match my device"
+  },
+  prime: {
+    "title": "Dobra Prime",
+    "subtitle": "Free delivery and member perks, every month.",
+    "price": "{price} / month",
+    "join": "Join Dobra Prime",
+    "cancel": "Cancel membership",
+    "cancelled": "Your membership ends at the end of the paid period.",
+    "welcome": "Welcome to Dobra Prime!",
+    "error": "Something went wrong. Please try again.",
+    "paymentsMissing": "Card payments are not set up yet. Please try again later.",
+    "renewsOn": "Active — renews on {date}.",
+    "endsOn": "Active — ends on {date}.",
+    "activeNow": "Your membership is active.",
+    "terms": "Billed monthly. Cancel any time.",
+    "benefits": {
+      "delivery": "Free delivery on every food order",
+      "discount": "Member-only offers from partner restaurants",
+      "support": "Priority support, faster answers",
+      "priority": "Your orders get priority at busy times"
+    }
   },
 };
