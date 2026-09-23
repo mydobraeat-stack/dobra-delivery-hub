@@ -248,41 +248,14 @@ function AccountPage() {
 
       <div className="flex items-center justify-between gap-3 px-1">
         <Badge variant="secondary">{t(`common.roles.${role}`)}</Badge>
-        <div>
-          <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <button
-                  type="button"
-                  disabled={deleting}
-                  className="text-xs font-medium text-foreground/40 underline underline-offset-4 transition-colors hover:text-destructive"
-                >
-                  {deleting ? t("common.deleteAccount.deleting") : t("common.deleteAccount.link")}
-                </button>
-              </AlertDialogTrigger>
-              <AlertDialogContent className="max-w-[20rem] rounded-2xl border-ink/10">
-                <AlertDialogHeader>
-                  <AlertDialogTitle className="text-lg font-bold text-foreground">
-                    {t("common.deleteAccount.title")}
-                  </AlertDialogTitle>
-                  <AlertDialogDescription className="text-sm text-foreground/70">
-                    {t("common.deleteAccount.body")}
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter className="gap-2 sm:gap-2">
-                  <AlertDialogCancel className="h-11 rounded-xl border-2 border-ink/15 bg-card text-base font-semibold text-foreground hover:bg-muted">
-                    {t("common.actions.cancel")}
-                  </AlertDialogCancel>
-                  <AlertDialogAction
-                    onClick={removeAccount}
-                    className="h-11 rounded-xl bg-destructive text-base font-semibold text-destructive-foreground hover:bg-destructive/90"
-                  >
-                    {t("common.deleteAccount.confirm")}
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-        </div>
+        <Link
+          to="/profile/delete"
+          className="text-xs font-medium text-foreground/40 underline underline-offset-4 transition-colors hover:text-destructive"
+        >
+          {t("common.deleteAccount.link")}
+        </Link>
       </div>
+
 
 
       {role === "customer" ? <CustomerSection /> : null}
