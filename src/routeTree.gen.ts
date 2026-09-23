@@ -53,6 +53,7 @@ import { Route as AuthenticatedProfileDeleteRouteImport } from './routes/_authen
 import { Route as AuthenticatedProfileFaqRouteImport } from './routes/_authenticated/profile.faq'
 import { Route as AuthenticatedProfileLanguageRouteImport } from './routes/_authenticated/profile.language'
 import { Route as AuthenticatedProfileNotificationsRouteImport } from './routes/_authenticated/profile.notifications'
+import { Route as AuthenticatedProfilePrimeRouteImport } from './routes/_authenticated/profile.prime'
 import { Route as AuthenticatedProfilePromosRouteImport } from './routes/_authenticated/profile.promos'
 import { Route as AuthenticatedRestaurantRestaurantIdRouteImport } from './routes/_authenticated/restaurant.$restaurantId'
 import { Route as AuthenticatedVendorIndexRouteImport } from './routes/_authenticated/vendor.index'
@@ -304,6 +305,12 @@ const AuthenticatedProfileNotificationsRoute =
     path: '/notifications',
     getParentRoute: () => AuthenticatedProfileRoute,
   } as any)
+const AuthenticatedProfilePrimeRoute =
+  AuthenticatedProfilePrimeRouteImport.update({
+    id: '/prime',
+    path: '/prime',
+    getParentRoute: () => AuthenticatedProfileRoute,
+  } as any)
 const AuthenticatedProfilePromosRoute =
   AuthenticatedProfilePromosRouteImport.update({
     id: '/promos',
@@ -401,6 +408,7 @@ export interface FileRoutesByFullPath {
   '/profile/faq': typeof AuthenticatedProfileFaqRoute
   '/profile/language': typeof AuthenticatedProfileLanguageRoute
   '/profile/notifications': typeof AuthenticatedProfileNotificationsRoute
+  '/profile/prime': typeof AuthenticatedProfilePrimeRoute
   '/profile/promos': typeof AuthenticatedProfilePromosRoute
   '/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
   '/vendor/menu': typeof AuthenticatedVendorMenuRoute
@@ -451,6 +459,7 @@ export interface FileRoutesByTo {
   '/profile/faq': typeof AuthenticatedProfileFaqRoute
   '/profile/language': typeof AuthenticatedProfileLanguageRoute
   '/profile/notifications': typeof AuthenticatedProfileNotificationsRoute
+  '/profile/prime': typeof AuthenticatedProfilePrimeRoute
   '/profile/promos': typeof AuthenticatedProfilePromosRoute
   '/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
   '/vendor/menu': typeof AuthenticatedVendorMenuRoute
@@ -508,6 +517,7 @@ export interface FileRoutesById {
   '/_authenticated/profile/faq': typeof AuthenticatedProfileFaqRoute
   '/_authenticated/profile/language': typeof AuthenticatedProfileLanguageRoute
   '/_authenticated/profile/notifications': typeof AuthenticatedProfileNotificationsRoute
+  '/_authenticated/profile/prime': typeof AuthenticatedProfilePrimeRoute
   '/_authenticated/profile/promos': typeof AuthenticatedProfilePromosRoute
   '/_authenticated/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
   '/_authenticated/vendor/menu': typeof AuthenticatedVendorMenuRoute
@@ -565,6 +575,7 @@ export interface FileRouteTypes {
     | '/profile/faq'
     | '/profile/language'
     | '/profile/notifications'
+    | '/profile/prime'
     | '/profile/promos'
     | '/restaurant/$restaurantId'
     | '/vendor/menu'
@@ -615,6 +626,7 @@ export interface FileRouteTypes {
     | '/profile/faq'
     | '/profile/language'
     | '/profile/notifications'
+    | '/profile/prime'
     | '/profile/promos'
     | '/restaurant/$restaurantId'
     | '/vendor/menu'
@@ -671,6 +683,7 @@ export interface FileRouteTypes {
     | '/_authenticated/profile/faq'
     | '/_authenticated/profile/language'
     | '/_authenticated/profile/notifications'
+    | '/_authenticated/profile/prime'
     | '/_authenticated/profile/promos'
     | '/_authenticated/restaurant/$restaurantId'
     | '/_authenticated/vendor/menu'
@@ -1016,6 +1029,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProfileNotificationsRouteImport
       parentRoute: typeof AuthenticatedProfileRoute
     }
+    '/_authenticated/profile/prime': {
+      id: '/_authenticated/profile/prime'
+      path: '/prime'
+      fullPath: '/profile/prime'
+      preLoaderRoute: typeof AuthenticatedProfilePrimeRouteImport
+      parentRoute: typeof AuthenticatedProfileRoute
+    }
     '/_authenticated/profile/promos': {
       id: '/_authenticated/profile/promos'
       path: '/promos'
@@ -1161,6 +1181,7 @@ interface AuthenticatedProfileRouteChildren {
   AuthenticatedProfileFaqRoute: typeof AuthenticatedProfileFaqRoute
   AuthenticatedProfileLanguageRoute: typeof AuthenticatedProfileLanguageRoute
   AuthenticatedProfileNotificationsRoute: typeof AuthenticatedProfileNotificationsRoute
+  AuthenticatedProfilePrimeRoute: typeof AuthenticatedProfilePrimeRoute
   AuthenticatedProfilePromosRoute: typeof AuthenticatedProfilePromosRoute
   AuthenticatedProfileIndexRoute: typeof AuthenticatedProfileIndexRoute
 }
@@ -1173,6 +1194,7 @@ const AuthenticatedProfileRouteChildren: AuthenticatedProfileRouteChildren = {
   AuthenticatedProfileLanguageRoute: AuthenticatedProfileLanguageRoute,
   AuthenticatedProfileNotificationsRoute:
     AuthenticatedProfileNotificationsRoute,
+  AuthenticatedProfilePrimeRoute: AuthenticatedProfilePrimeRoute,
   AuthenticatedProfilePromosRoute: AuthenticatedProfilePromosRoute,
   AuthenticatedProfileIndexRoute: AuthenticatedProfileIndexRoute,
 }
