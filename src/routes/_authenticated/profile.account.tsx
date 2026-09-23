@@ -292,6 +292,147 @@ function AccountPage() {
   );
 }
 
+const ROW =
+  "flex w-full items-center gap-4 px-4 py-4 text-left transition-colors hover:bg-muted/60";
+
+function RowInner({
+  icon: Icon,
+  label,
+  strong,
+  muted,
+  trailing,
+  preview,
+}: {
+  icon: LucideIcon;
+  label: string;
+  strong?: boolean;
+  muted?: boolean;
+  trailing?: React.ReactNode;
+  preview?: React.ReactNode;
+}) {
+  return (
+    <>
+      <Icon className="size-5 shrink-0 text-foreground/70" aria-hidden />
+      <span
+        className={`min-w-0 flex-1 break-words ${strong ? "text-base font-semibold" : "text-base"} ${
+          muted ? "text-foreground/80" : "text-foreground"
+        }`}
+      >
+        {label}
+      </span>
+      {preview}
+      {trailing}
+    </>
+  );
+}
+
+function Row(props: { icon: LucideIcon; label: string; strong?: boolean; muted?: boolean }) {
+  return (
+    <li className="border-b border-ink/10 last:border-b-0">
+      <div className={ROW}>
+        <RowInner {...props} />
+      </div>
+    </li>
+  );
+}
+
+function ActionRow({
+  icon,
+  label,
+  onClick,
+  disabled,
+}: {
+  icon: LucideIcon;
+  label: string;
+  onClick: () => void;
+  disabled?: boolean;
+}) {
+  return (
+    <li className="border-b border-ink/10 last:border-b-0">
+      <button type="button" onClick={onClick} disabled={disabled} className={ROW}>
+        <RowInner
+          icon={icon}
+          label={label}
+          trailing={<ChevronRight className="size-5 shrink-0 text-foreground/40" aria-hidden />}
+        />
+      </button>
+    </li>
+  );
+}
+
+function LinkRow({ icon, label, to }: { icon: LucideIcon; label: string; to: string }) {
+  return (
+    <li className="border-b border-ink/10 last:border-b-0">
+      <Link to={to} className={ROW}>
+        <RowInner
+          icon={icon}
+          label={label}
+          trailing={<ChevronRight className="size-5 shrink-0 text-foreground/40" aria-hidden />}
+        />
+      </Link>
+    </li>
+  );
+}
+
+function EditRow({
+  icon,
+  label,
+  title,
+  children,
+  onSave,
+  saving,
+  strong,
+  preview,
+}: {
+  icon: LucideIcon;
+  label: string;
+  title: string;
+  children: React.ReactNode;
+  onSave: () => Promise<void> | void;
+  saving?: boolean;
+  strong?: boolean;
+  preview?: React.ReactNode;
+}) {
+  const t = useT();
+  const [open, setOpen] = useState(false);
+
+  return (
+    <li className="border-b border-ink/10 last:border-b-0">
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <button type="button" className={ROW}>
+            <RowInner
+              icon={icon}
+              label={label}
+              strong={strong}
+              preview={preview}
+              trailing={<ChevronRight className="size-5 shrink-0 text-foreground/40" aria-hidden />}
+            />
+          </button>
+        </DialogTrigger>
+        <DialogContent className="max-w-[22rem] rounded-2xl border-ink/10">
+          <DialogHeader>
+            <DialogTitle className="text-lg font-bold text-foreground">{title}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">{children}</div>
+          <DialogFooter>
+            <Button
+              className="h-11 w-full rounded-xl text-base font-semibold"
+              disabled={saving}
+              onClick={async () => {
+                await onSave();
+                setOpen(false);
+              }}
+            >
+              {saving ? t("common.actions.saving") : t("common.profile.saveChanges")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </li>
+  );
+}
+
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div className="min-w-0 rounded-xl border border-ink/10 bg-muted/50 px-4 py-3">
