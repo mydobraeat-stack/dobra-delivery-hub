@@ -35,7 +35,10 @@ import { useT } from "@/lib/i18n";
 import { accountQueryOptions } from "@/lib/profile";
 import { myProfileQuery } from "@/lib/my-profile";
 
+const APP_VERSION = "1.0.0";
+
 export const Route = createFileRoute("/_authenticated/profile/")({
+
   head: () => ({
     meta: [
       { title: "Profile — Dobra" },
@@ -193,7 +196,11 @@ function ProfileHub() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      <p className="pb-2 text-center text-xs text-foreground/40">
+        {t("common.version", { version: APP_VERSION })}
+      </p>
       <HelpCircle className="hidden" aria-hidden />
+
     </main>
   );
 }
