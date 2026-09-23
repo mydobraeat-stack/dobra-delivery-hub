@@ -417,7 +417,16 @@ export async function placeOrder({
   if (lines.length === 0) throw new Error("Your basket is empty.");
   const userId = await currentUserId();
   const subtotal = lines.reduce((sum, l) => sum + l.price * l.quantity, 0);
-  const deliveryFee = Number(restaurant.delivery_fee ?? 0);
+  // Dobra Prime members pay no delivery fee on food orders.
+  const { data: prime } = await supabase
+    .from("prime_memberships")
+    .select("status,current_period_end")
+    .eq("user_id", userId)
+    .maybeSingle();
+  const primeActive =
+    prime?.status === "active" &&
+    (!prime.current_period_end || new Date(prime.current_period_end).getTime() > Date.now());
+  const deliveryFee = primeActive ? 0 : Number(restaurant.delivery_fee ?? 0);
   const currency = lines[0]!.currency;
 
   const { data, error } = await supabase
