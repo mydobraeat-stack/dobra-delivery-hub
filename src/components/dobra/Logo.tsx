@@ -9,7 +9,7 @@ export function DobraLogo({ className }: { className?: string }) {
         alt="Dobra"
         width={969}
         height={426}
-        className="h-[1.1em] w-auto max-w-full object-contain"
+        className="h-[1.45em] w-auto max-w-full object-contain"
         loading="eager"
         decoding="async"
       />
