@@ -25,6 +25,13 @@ export default {
     body: "Vous devrez vous reconnecter pour commander ou suivre vos commandes.",
   },
   deleteAccount: {
+    menu: "Supprimer mon compte et mes données",
+    pageTitle: "Supprimer mon compte et mes données",
+    warning: "Votre compte Dobra et vos données personnelles seront supprimés définitivement. Action irréversible.",
+    point1: "Votre nom, e-mail, téléphone et photo sont effacés définitivement.",
+    point2: "Les commandes passées sont conservées sous forme anonymisée pour des raisons légales et comptables.",
+    point3: "Vous serez déconnecté immédiatement et ne pourrez plus vous reconnecter à ce compte.",
+    typePrompt: "Tapez DELETE pour confirmer",
     link: "Supprimer le compte",
     title: "Supprimer votre compte Dobra ?",
     body: "Votre compte sera définitivement supprimé et vous serez déconnecté. Action irréversible.",
@@ -156,5 +163,36 @@ export default {
     blocked: "Les notifications sont bloquées dans votre navigateur — autorisez-les pour ce site.",
     unsupported: "Ce navigateur ne prend pas en charge les alertes push. Sur iPhone, ajoutez d’abord Dobra à l’écran d’accueil.",
     error: "Impossible d’activer les alertes push. Réessayez.",
+  },
+  version: "Version {version}",
+  faq: {
+    title: "FAQ et aide",
+    subtitle: "Des réponses rapides aux questions les plus fréquentes.",
+    items: {
+      track: {
+        q: "Comment suivre ma commande ?",
+        a: "Ouvrez Commandes dans la barre du bas et touchez votre commande en cours. Vous verrez chaque étape, le temps estimé et le livreur sur la carte après le retrait.",
+      },
+      payment: {
+        q: "Quels moyens de paiement sont acceptés ?",
+        a: "Vous pouvez payer en espèces à la livraison ou par carte lors de la commande. Les options disponibles s'affichent avant la confirmation.",
+      },
+      driver: {
+        q: "Comment contacter le livreur ?",
+        a: "Dès qu'un livreur est assigné, ouvrez l'écran de suivi et touchez le bouton de discussion pour lui écrire.",
+      },
+      cancel: {
+        q: "Comment annuler une commande ?",
+        a: "Vous pouvez annuler tant que le restaurant n'a pas accepté la commande. Ensuite, contactez l'assistance depuis cet écran.",
+      },
+      refund: {
+        q: "Un problème avec ma commande, que faire ?",
+        a: "Écrivez à l'assistance depuis cette page avec votre numéro de commande. Les remboursements sont traités au cas par cas.",
+      },
+      account: {
+        q: "Comment modifier mes informations ou supprimer mon compte ?",
+        a: "Allez dans Profil, puis Compte pour modifier votre nom, téléphone, photo ou mot de passe. Supprimer mon compte et mes données efface définitivement vos données.",
+      },
+    },
   },
 };
