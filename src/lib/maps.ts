@@ -1,10 +1,21 @@
 import { queryOptions } from "@tanstack/react-query";
 import { geocodeAddress, routeBetween, suggestAddresses } from "./maps.functions";
 
-/** True when the browser map key is available; otherwise screens show a friendly note. */
-export const mapsBrowserKey = import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY"] as
+/** Dobra's own browser key (website-restricted in Google Cloud, safe to ship). Used on mydobra.pl. */
+const OWN_BROWSER_KEY = "AIzaSyD3E9wt1qM2NJSXdu4rwvGgC7rY1lZvkbQ";
+const MANAGED_BROWSER_KEY = import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY"] as
   | string
   | undefined;
+
+function pickBrowserKey(): string | undefined {
+  if (typeof window === "undefined") return MANAGED_BROWSER_KEY ?? OWN_BROWSER_KEY;
+  const host = window.location.hostname;
+  const onLovable = host.endsWith(".lovable.app") || host.endsWith(".lovableproject.com");
+  return onLovable ? (MANAGED_BROWSER_KEY ?? OWN_BROWSER_KEY) : OWN_BROWSER_KEY;
+}
+
+/** True when a browser map key is available; otherwise screens show a friendly note. */
+export const mapsBrowserKey = pickBrowserKey();
 
 export function addressPointQuery(address: string | null | undefined) {
   return queryOptions({
