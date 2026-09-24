@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useT } from "@/lib/i18n";
 import { SiteHeader } from "./SiteHeader";
@@ -12,6 +13,17 @@ export function LegalPage({ doc }: { doc: LegalDocument }) {
     <div className="flex min-h-screen flex-col bg-background">
       <SiteHeader />
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+        <button
+          type="button"
+          onClick={() => {
+            if (window.history.length > 1) window.history.back();
+            else window.location.href = "/";
+          }}
+          className="mb-6 inline-flex items-center gap-1.5 text-sm font-medium text-foreground/70 hover:text-foreground"
+        >
+          <ChevronLeft className="size-4" aria-hidden />
+          {t("common.actions.back")}
+        </button>
         <header className="border-b border-ink/10 pb-8">
           <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
             {doc.title}
