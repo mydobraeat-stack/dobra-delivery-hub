@@ -94,6 +94,11 @@ function AuthPage() {
     setLoading(true);
 
     if (isSignup) {
+      if (!consent) {
+        setLoading(false);
+        setConsentOpen(true);
+        return;
+      }
       const { data, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
@@ -294,6 +299,14 @@ function AuthPage() {
           </Button>
         </DialogContent>
       </Dialog>
+      <ConsentDialog
+        open={consentOpen}
+        onAccept={(c) => {
+          setConsent(c);
+          setConsentOpen(false);
+        }}
+        onDeny={denyConsent}
+      />
     </main>
   );
 }
