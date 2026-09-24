@@ -130,7 +130,6 @@ function RootShell({ children }: { children: ReactNode }) {
       <body>
         {children}
         <Toaster />
-        <LocationHelpDialog />
         <Scripts />
       </body>
 
