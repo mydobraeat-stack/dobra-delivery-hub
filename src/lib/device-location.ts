@@ -2,8 +2,6 @@ import { reverseGeocodePublic } from "@/lib/maps.functions";
 
 export const PRECISE: PositionOptions = { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 };
 
-export const LOCATION_HELP_EVENT = "dobra:location-help";
-
 export function getPrecisePosition(): Promise<{ lat: number; lng: number; accuracy: number }> {
   return new Promise((resolve, reject) => {
     if (typeof navigator === "undefined" || !("geolocation" in navigator)) {
@@ -12,11 +10,7 @@ export function getPrecisePosition(): Promise<{ lat: number; lng: number; accura
     }
     navigator.geolocation.getCurrentPosition(
       (p) => resolve({ lat: p.coords.latitude, lng: p.coords.longitude, accuracy: p.coords.accuracy }),
-      (err) => {
-        // Blocked: open the "how to allow location" guide for this device.
-        if (err.code === err.PERMISSION_DENIED) window.dispatchEvent(new Event(LOCATION_HELP_EVENT));
-        reject(err);
-      },
+      reject,
       PRECISE,
     );
   });
