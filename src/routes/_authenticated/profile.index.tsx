@@ -11,6 +11,7 @@ import {
   LogOut,
   Receipt,
   ShieldCheck,
+  Cookie,
   Store,
   Tag,
   Trash2,
@@ -34,6 +35,9 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useT } from "@/lib/i18n";
+import { ConsentDialog, readConsent, CONSENT_KEY, type Consent } from "@/components/dobra/ConsentDialog";
+import { useState } from "react";
+import { toast } from "sonner";
 import { accountQueryOptions } from "@/lib/profile";
 import { myProfileQuery } from "@/lib/my-profile";
 
@@ -64,6 +68,24 @@ function ProfileHub() {
   const { data: account } = useQuery(accountQueryOptions);
   const { data: profile } = useQuery(myProfileQuery);
   const role = account?.role ?? "customer";
+  const [privacyOpen, setPrivacyOpen] = useState(false);
+  const [savedConsent, setSavedConsent] = useState<Consent | null>(null);
+
+  async function openPrivacy() {
+    const { data } = await supabase.auth.getUser();
+    const fromAccount = data.user?.user_metadata?.["privacy_consent"] as Consent | undefined;
+    setSavedConsent(fromAccount ?? readConsent());
+    setPrivacyOpen(true);
+  }
+
+  async function savePrivacy(c: Consent) {
+    setPrivacyOpen(false);
+    setSavedConsent(c);
+    localStorage.setItem(CONSENT_KEY, JSON.stringify(c));
+    const { error } = await supabase.auth.updateUser({ data: { privacy_consent: c } });
+    if (error) toast.error(t("common.state.error"));
+    else toast.success(t("common.state.saved"));
+  }
 
   async function handleSignOut() {
     await queryClient.cancelQueries();
@@ -111,6 +133,13 @@ function ProfileHub() {
         <ProfileMenuItem to={ordersTo} icon={Receipt} label={t("common.profileMenu.orders")} />
         <ProfileMenuItem to="/profile/account" icon={User} label={t("common.profileMenu.account")} />
       </ProfileMenuList>
+      <ConsentDialog
+        open={privacyOpen}
+        mode="settings"
+        initial={savedConsent}
+        onAccept={savePrivacy}
+        onDeny={() => setPrivacyOpen(false)}
+      />
 
       <ProfileMenuList>
         {role === "customer" ? (
@@ -164,6 +193,11 @@ function ProfileHub() {
             label={t("common.profileMenu.business")}
           />
         ) : null}
+        <ProfileMenuItem
+          icon={Cookie}
+          label={t("auth.consent.title")}
+          onClick={openPrivacy}
+        />
         <ProfileMenuItem
           to="/profile/delete"
           icon={Trash2}

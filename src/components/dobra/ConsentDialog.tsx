@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ChevronDown } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
@@ -38,7 +38,11 @@ export function ConsentDialog({
   open,
   onAccept,
   onDeny,
+  initial,
+  mode = "signup",
 }: {
+  initial?: Consent | null;
+  mode?: "signup" | "settings";
   open: boolean;
   onAccept: (c: Consent) => void;
   onDeny: () => void;
@@ -48,6 +52,12 @@ export function ConsentDialog({
   const [marketing, setMarketing] = useState(true);
   const [functional, setFunctional] = useState(true);
   const [expanded, setExpanded] = useState<Cat | null>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    setMarketing(initial ? initial.marketing : true);
+    setFunctional(initial ? initial.functional : true);
+  }, [open, initial]);
 
   function finish(m: boolean, f: boolean) {
     const c: Consent = {
@@ -153,7 +163,7 @@ export function ConsentDialog({
           <div className="flex items-center gap-3">
             <button
               type="button"
-              onClick={onDeny}
+              onClick={() => (mode === "settings" ? finish(false, false) : onDeny())}
               className="flex-1 py-2 text-sm font-semibold text-foreground/70 underline-offset-4 hover:underline"
             >
               {t("auth.consent.deny")}
