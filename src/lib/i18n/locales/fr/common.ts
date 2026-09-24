@@ -229,5 +229,16 @@ export default {
     useMine: "Utiliser ma position actuelle",
     locating: "Recherche de votre position exacte…",
     denied: "La localisation est bloquée — autorisez-la dans les réglages du navigateur.",
+    help: {
+      title: "Autoriser l'accès à la position",
+      intro: "Dobra a besoin de votre position pour trouver votre adresse exacte et les restaurants proches. Elle est bloquée — voici comment l'activer :",
+      ios: "Ouvrez Réglages|Allez dans Confidentialité et sécurité → Service de localisation et activez-le|Choisissez Safari (ou votre navigateur) puis « Lorsque l'app est active »|Revenez et touchez « Réessayer »",
+      android: "Touchez l'icône cadenas ou réglages près de l'adresse du site|Autorisations → Position → Autoriser|Si c'est toujours désactivé : Paramètres → Localisation → activer|Revenez et touchez « Réessayer »",
+      safari: "Ouvrez Safari → Réglages pour ce site web|Réglez Localisation sur Autoriser|Sur Mac, vérifiez aussi Réglages Système → Confidentialité et sécurité → Service de localisation|Touchez « Réessayer »",
+      firefox: "Cliquez sur l'icône de réglages à gauche de l'adresse|À côté de Position, retirez le blocage ou choisissez Autoriser|Touchez « Réessayer »",
+      chrome: "Cliquez sur l'icône de réglages à gauche de l'adresse|Sous Position, choisissez Autoriser (ou réinitialisez)|Touchez « Réessayer » ou rechargez la page",
+      retry: "Réessayer",
+      reload: "Recharger la page",
+    },
   },
 };

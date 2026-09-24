@@ -1,3 +1,4 @@
+import { LocationHelpDialog } from "@/components/dobra/LocationHelpDialog";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -155,6 +156,7 @@ function RootComponent() {
         <I18nProvider>
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <Outlet />
+          <LocationHelpDialog />
         </I18nProvider>
       </ThemeProvider>
     </QueryClientProvider>

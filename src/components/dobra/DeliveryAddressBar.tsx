@@ -47,6 +47,9 @@ export function DeliveryAddressBar() {
       /* ignore */
     }
     if (!manualChoice) void detect(false);
+    const again = () => void detect(false);
+    window.addEventListener("dobra:location-granted", again);
+    return () => window.removeEventListener("dobra:location-granted", again);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -70,11 +73,11 @@ export function DeliveryAddressBar() {
       >
         <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary">
           {locating ? (
-            <Loader2 className="size-4 animate-spin text-accent" aria-hidden />
+            <Loader2 className="size-4 animate-spin text-primary-foreground" aria-hidden />
           ) : current && (current as { source?: string }).source === "gps" ? (
-            <LocateFixed className="size-4 text-accent" aria-hidden />
+            <LocateFixed className="size-4 text-primary-foreground" aria-hidden />
           ) : (
-            <Home className="size-4 text-accent" aria-hidden />
+            <Home className="size-4 text-primary-foreground" aria-hidden />
           )}
         </span>
         <span
