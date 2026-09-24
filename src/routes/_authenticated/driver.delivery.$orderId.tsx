@@ -61,10 +61,12 @@ function DeliveryDetail() {
   const [me, setMe] = useState<{ lat: number; lng: number } | null>(null);
   useEffect(() => {
     if (!("geolocation" in navigator)) return;
-    navigator.geolocation.getCurrentPosition(
+    const id = navigator.geolocation.watchPosition(
       (pos) => setMe({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
       () => undefined,
+      { enableHighAccuracy: true, maximumAge: 5000, timeout: 20000 },
     );
+    return () => navigator.geolocation.clearWatch(id);
   }, []);
 
   const savedDrop =

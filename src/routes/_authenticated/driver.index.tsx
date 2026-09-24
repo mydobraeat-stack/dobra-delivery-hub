@@ -102,26 +102,31 @@ function DriverHome() {
   // Read the device location once for the map marker.
   useEffect(() => {
     if (!approved || !("geolocation" in navigator)) return;
-    navigator.geolocation.getCurrentPosition(
+    const id = navigator.geolocation.watchPosition(
       (pos) => setMe({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
       () => undefined,
+      { enableHighAccuracy: true, maximumAge: 5000, timeout: 20000 },
     );
+    return () => navigator.geolocation.clearWatch(id);
   }, [approved]);
 
   // While online, publish the live location every 45 seconds.
   useEffect(() => {
     if (!approved || !online || !("geolocation" in navigator)) return;
-    const push = () =>
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          setMe({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-          void saveDriverLocation(pos.coords.latitude, pos.coords.longitude).catch(() => undefined);
-        },
-        () => undefined,
-      );
-    push();
-    const timer = window.setInterval(push, 45_000);
-    return () => window.clearInterval(timer);
+    // Live GPS: publish at most every 10 seconds while online.
+    let last = 0;
+    const id = navigator.geolocation.watchPosition(
+      (pos) => {
+        setMe({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        const now = Date.now();
+        if (now - last < 10_000) return;
+        last = now;
+        void saveDriverLocation(pos.coords.latitude, pos.coords.longitude).catch(() => undefined);
+      },
+      () => undefined,
+      { enableHighAccuracy: true, maximumAge: 5000, timeout: 20000 },
+    );
+    return () => navigator.geolocation.clearWatch(id);
   }, [approved, online]);
 
   const toggle = useMutation({

@@ -55,7 +55,7 @@ export function Hero() {
         setLocating(false);
         setLocationFailed(true);
       },
-      { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 },
     );
   }, []);
 

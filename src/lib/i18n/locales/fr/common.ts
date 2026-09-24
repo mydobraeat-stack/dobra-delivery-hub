@@ -225,4 +225,9 @@ export default {
       "priority": "Vos commandes sont prioritaires aux heures de pointe"
     }
   },
+  location: {
+    useMine: "Utiliser ma position actuelle",
+    locating: "Recherche de votre position exacte…",
+    denied: "La localisation est bloquée — autorisez-la dans les réglages du navigateur.",
+  },
 };
