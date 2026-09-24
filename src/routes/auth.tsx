@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DobraLogo } from "@/components/dobra/Logo";
 import { useT } from "@/lib/i18n";
+import { ConsentDialog, readConsent, type Consent } from "@/components/dobra/ConsentDialog";
 
 const searchSchema = z.object({
   mode: z.enum(["signup", "login"]).catch("login"),
@@ -58,8 +59,22 @@ function AuthPage() {
   const [verifiedOpen, setVerifiedOpen] = useState(verified);
   const [checkEmailOpen, setCheckEmailOpen] = useState(false);
   const [hasSession, setHasSession] = useState(false);
+  const [consent, setConsent] = useState<Consent | null>(null);
+  const [consentOpen, setConsentOpen] = useState(false);
 
   const isSignup = mode === "signup";
+
+  useEffect(() => {
+    const saved = readConsent();
+    setConsent(saved);
+    setConsentOpen(isSignup && !saved);
+  }, [isSignup]);
+
+  function denyConsent() {
+    setConsentOpen(false);
+    if (window.history.length > 1) window.history.back();
+    else navigate({ to: "/get-started" });
+  }
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -84,7 +99,7 @@ function AuthPage() {
         password,
         options: {
           emailRedirectTo: `${window.location.origin}/auth?mode=login&verified=1`,
-          data: { role, full_name: fullName, country },
+          data: { role, full_name: fullName, country, privacy_consent: consent ?? readConsent() },
         },
       });
       setLoading(false);

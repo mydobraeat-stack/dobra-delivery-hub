@@ -125,7 +125,7 @@ export function ConsentDialog({
                 <Switch
                   checked={value}
                   disabled={!set}
-                  onCheckedChange={set}
+                  onCheckedChange={(v) => set?.(v)}
                   aria-label={t(`auth.consent.${key}`)}
                   className={cn(!set && "opacity-50")}
                 />
