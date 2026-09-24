@@ -2,7 +2,7 @@ import { queryOptions } from "@tanstack/react-query";
 import { geocodeAddress, routeBetween, suggestAddresses } from "./maps.functions";
 
 /** Dobra's own browser key (website-restricted in Google Cloud, safe to ship). Used on mydobra.pl. */
-const OWN_BROWSER_KEY = "AIzaSyD3E9wt1qM2NJSXdu4rwvGgC7rY1lZvkbQ";
+const OWN_BROWSER_KEY = "AIzaSyCCmlFzR4UHU5qYXjQwcs7eeDrlgzRX2EE"; // own website-restricted key (mydobra.pl)
 const MANAGED_BROWSER_KEY = import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY"] as
   | string
   | undefined;
