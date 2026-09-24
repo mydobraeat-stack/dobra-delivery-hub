@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ChevronLeft } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
@@ -86,6 +86,16 @@ export function ConsentDialog({
         onInteractOutside={(e) => e.preventDefault()}
       >
         <div className="p-6 pb-3">
+          {mode === "settings" ? (
+            <button
+              type="button"
+              onClick={onDeny}
+              className="mb-3 inline-flex items-center gap-1.5 text-sm font-medium text-foreground/70 hover:text-foreground"
+            >
+              <ChevronLeft className="size-4" aria-hidden />
+              {t("common.actions.back")}
+            </button>
+          ) : null}
           <DialogTitle className="text-xl font-bold">{t("auth.consent.title")}</DialogTitle>
           <DialogDescription className="mt-2 text-sm text-foreground/70">
             {t("auth.consent.desc")}

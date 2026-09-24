@@ -1,3 +1,4 @@
+import { ProfileBackLink } from "@/components/dobra/ProfileMenu";
 import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -118,6 +119,7 @@ function DriverDocuments() {
 
   return (
     <main className="mx-auto max-w-4xl space-y-6 px-5 py-6">
+      <ProfileBackLink label={t("common.actions.back")} />
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-bold text-foreground">{t("driver.documents.title")}</h1>
         <Badge variant={docsStatus === "approved" ? "default" : "secondary"}>
