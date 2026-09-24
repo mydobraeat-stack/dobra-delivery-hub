@@ -225,4 +225,9 @@ export default {
       "priority": "Your orders get priority at busy times"
     }
   },
+  location: {
+    useMine: "Use my current location",
+    locating: "Finding your exact location…",
+    denied: "Location is blocked — allow it in your browser settings.",
+  },
 };

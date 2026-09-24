@@ -1,3 +1,5 @@
+import { LocateFixed } from "lucide-react";
+import { locateDevice } from "@/lib/device-location";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChevronDown, ChevronUp, Plus, Trash2 } from "lucide-react";
@@ -461,6 +463,26 @@ export function RestaurantDialog({
               placeholder={t("vendor.restaurantDialog.addressPlaceholder")}
               autoComplete="street-address"
             />
+            <button
+              type="button"
+              className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-accent"
+              onClick={async () => {
+                try {
+                  const here = await locateDevice();
+                  const pc = here.address.match(/\b\d{2}-\d{3}\b/)?.[0];
+                  setForm((f) => ({
+                    ...f,
+                    address_line: here.address.split(",")[0]?.trim() ?? here.address,
+                    postal_code: pc ?? f.postal_code,
+                  }));
+                } catch {
+                  toast.error(t("common.location.denied"));
+                }
+              }}
+            >
+              <LocateFixed className="size-4" aria-hidden />
+              {t("common.location.useMine")}
+            </button>
           </Field>
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label={t("vendor.restaurantDialog.postalLabel")}>

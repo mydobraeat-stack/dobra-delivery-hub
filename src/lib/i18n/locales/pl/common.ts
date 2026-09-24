@@ -225,4 +225,9 @@ export default {
       "priority": "Twoje zamówienia mają pierwszeństwo w godzinach szczytu"
     }
   },
+  location: {
+    useMine: "Użyj mojej lokalizacji",
+    locating: "Ustalanie dokładnej lokalizacji…",
+    denied: "Lokalizacja jest zablokowana — zezwól na nią w ustawieniach przeglądarki.",
+  },
 };

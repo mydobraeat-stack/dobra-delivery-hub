@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { MapPin } from "lucide-react";
+import { LocateFixed, Loader2, MapPin } from "lucide-react";
+import { locateDevice } from "@/lib/device-location";
+import { toast } from "sonner";
 import { MapView, type MapPoint } from "@/components/dobra/MapView";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -52,6 +54,21 @@ export function AddressPicker({ value, onChange, id = "address", label, placehol
     }
   };
 
+  const [locating, setLocating] = useState(false);
+  const useMyLocation = async () => {
+    setLocating(true);
+    setOpen(false);
+    try {
+      const here = await locateDevice();
+      setQuery(here.address);
+      onChange(here);
+    } catch {
+      toast.error(t("common.location.denied"));
+    } finally {
+      setLocating(false);
+    }
+  };
+
   const points: MapPoint[] =
     value.lat != null && value.lng != null
       ? [{ lat: value.lat, lng: value.lng, label: value.address, kind: "dropoff" }]
@@ -89,6 +106,15 @@ export function AddressPicker({ value, onChange, id = "address", label, placehol
           </ul>
         ) : null}
       </div>
+      <button
+        type="button"
+        onClick={() => void useMyLocation()}
+        disabled={locating}
+        className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent disabled:opacity-60"
+      >
+        {locating ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <LocateFixed className="size-4" aria-hidden />}
+        {locating ? t("common.location.locating") : t("common.location.useMine")}
+      </button>
       {isError ? (
         <p className="text-xs text-foreground/50">{t("customer.checkout.addressSuggestionsOff")}</p>
       ) : null}
