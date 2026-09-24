@@ -47,6 +47,9 @@ export function DeliveryAddressBar() {
       /* ignore */
     }
     if (!manualChoice) void detect(false);
+    const again = () => void detect(false);
+    window.addEventListener("dobra:location-granted", again);
+    return () => window.removeEventListener("dobra:location-granted", again);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

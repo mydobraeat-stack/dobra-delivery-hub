@@ -1,3 +1,4 @@
+import { LocationHelpDialog } from "@/components/dobra/LocationHelpDialog";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -129,6 +130,7 @@ function RootShell({ children }: { children: ReactNode }) {
       <body>
         {children}
         <Toaster />
+        <LocationHelpDialog />
         <Scripts />
       </body>
 

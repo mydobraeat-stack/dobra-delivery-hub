@@ -229,5 +229,16 @@ export default {
     useMine: "Use my current location",
     locating: "Finding your exact location…",
     denied: "Location is blocked — allow it in your browser settings.",
+    help: {
+      title: "Allow location access",
+      intro: "Dobra needs your location to find your exact address and nearby restaurants. It's blocked right now — here's how to turn it on:",
+      ios: "Open the Settings app|Go to Privacy & Security → Location Services and turn it on|Scroll to Safari (or your browser) and choose “While Using the App”|Come back and tap “Try again”",
+      android: "Tap the lock or settings icon next to the web address|Tap Permissions → Location and choose Allow|If it's still off: Settings → Location → turn on “Use location”|Come back and tap “Try again”",
+      safari: "Open Safari → Settings for this website (in the Safari menu)|Set Location to Allow|On Mac also check System Settings → Privacy & Security → Location Services|Tap “Try again”",
+      firefox: "Click the settings icon to the left of the web address|Next to Location, clear the block or choose Allow|Tap “Try again”",
+      chrome: "Click the settings icon to the left of the web address|Under Location, choose Allow (or reset permissions)|Tap “Try again” or reload the page",
+      retry: "Try again",
+      reload: "Reload page",
+    },
   },
 };

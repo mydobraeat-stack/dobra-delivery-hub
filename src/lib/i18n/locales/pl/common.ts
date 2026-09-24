@@ -229,5 +229,16 @@ export default {
     useMine: "Użyj mojej lokalizacji",
     locating: "Ustalanie dokładnej lokalizacji…",
     denied: "Lokalizacja jest zablokowana — zezwól na nią w ustawieniach przeglądarki.",
+    help: {
+      title: "Zezwól na dostęp do lokalizacji",
+      intro: "Dobra potrzebuje Twojej lokalizacji, aby znaleźć dokładny adres i pobliskie restauracje. Obecnie jest zablokowana — oto jak ją włączyć:",
+      ios: "Otwórz Ustawienia|Przejdź do Prywatność i ochrona → Usługi lokalizacji i włącz je|Znajdź Safari (lub swoją przeglądarkę) i wybierz „Podczas używania aplikacji”|Wróć i stuknij „Spróbuj ponownie”",
+      android: "Stuknij ikonę kłódki lub ustawień obok adresu strony|Stuknij Uprawnienia → Lokalizacja i wybierz Zezwól|Jeśli nadal wyłączona: Ustawienia → Lokalizacja → włącz|Wróć i stuknij „Spróbuj ponownie”",
+      safari: "Otwórz Safari → Ustawienia tej witryny|Ustaw Lokalizację na Zezwól|Na Macu sprawdź też Ustawienia systemowe → Prywatność i ochrona → Usługi lokalizacji|Stuknij „Spróbuj ponownie”",
+      firefox: "Kliknij ikonę ustawień po lewej stronie adresu|Przy Lokalizacji usuń blokadę lub wybierz Zezwól|Stuknij „Spróbuj ponownie”",
+      chrome: "Kliknij ikonę ustawień po lewej stronie adresu|W sekcji Lokalizacja wybierz Zezwól (lub zresetuj uprawnienia)|Stuknij „Spróbuj ponownie” lub odśwież stronę",
+      retry: "Spróbuj ponownie",
+      reload: "Odśwież stronę",
+    },
   },
 };
