@@ -26,6 +26,11 @@ export function AddressPicker({ value, onChange, id = "address", label, placehol
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
+    if (!open) setQuery(value.address);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value.address]);
+
+  useEffect(() => {
     const id = setTimeout(() => setDebounced(query), 350);
     return () => clearTimeout(id);
   }, [query]);

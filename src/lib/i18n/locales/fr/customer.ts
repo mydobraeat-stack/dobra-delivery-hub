@@ -59,6 +59,14 @@ export default {
     itemPlural: "{n} articles",
     viewBasket: "Voir le panier",
   },
+  address: {
+    set: "Définir l'adresse de livraison",
+    change: "Changer l'adresse de livraison",
+    title: "Adresse de livraison",
+    saved: "Adresses enregistrées",
+    new: "Saisir une nouvelle adresse",
+    use: "Utiliser cette adresse",
+  },
   checkout: {
     keepBrowsing: "Continuer mes achats",
     basketTitle: "Votre panier",
