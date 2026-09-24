@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  ArrowLeft,
   Bell,
   CircleHelp,
   ClipboardList,
@@ -100,6 +101,13 @@ function ProfileHub() {
 
   return (
     <main className="mx-auto max-w-2xl space-y-5 px-5 py-6">
+      <Link
+        to="/home"
+        aria-label={t("common.actions.back")}
+        className="inline-flex size-10 items-center justify-center rounded-full bg-sun/40 text-brand ring-1 ring-brand/25 transition active:scale-95 hover:bg-sun/60"
+      >
+        <ArrowLeft className="size-5" />
+      </Link>
       <div className="flex items-center gap-4">
         <InitialsAvatar
           name={profile?.full_name}
