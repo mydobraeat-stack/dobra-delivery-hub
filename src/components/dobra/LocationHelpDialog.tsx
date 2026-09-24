@@ -39,7 +39,7 @@ export function LocationHelpDialog() {
       <DialogContent className="max-w-md">
         <DialogHeader>
           <div className="mx-auto mb-2 flex size-12 items-center justify-center rounded-full bg-primary">
-            <MapPin className="size-6 text-accent" aria-hidden />
+            <MapPin className="size-6 text-primary-foreground" aria-hidden />
           </div>
           <DialogTitle className="text-center">{t("common.location.help.title")}</DialogTitle>
           <DialogDescription className="text-center">{t("common.location.help.intro")}</DialogDescription>

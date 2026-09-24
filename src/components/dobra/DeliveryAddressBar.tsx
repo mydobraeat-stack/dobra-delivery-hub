@@ -73,11 +73,11 @@ export function DeliveryAddressBar() {
       >
         <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary">
           {locating ? (
-            <Loader2 className="size-4 animate-spin text-accent" aria-hidden />
+            <Loader2 className="size-4 animate-spin text-primary-foreground" aria-hidden />
           ) : current && (current as { source?: string }).source === "gps" ? (
-            <LocateFixed className="size-4 text-accent" aria-hidden />
+            <LocateFixed className="size-4 text-primary-foreground" aria-hidden />
           ) : (
-            <Home className="size-4 text-accent" aria-hidden />
+            <Home className="size-4 text-primary-foreground" aria-hidden />
           )}
         </span>
         <span
