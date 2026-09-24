@@ -1,5 +1,7 @@
-import { useState } from "react";
-import { ChevronDown, Home, MapPin } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ChevronDown, Home, Loader2, LocateFixed, MapPin } from "lucide-react";
+import { toast } from "sonner";
+import { locateDevice } from "@/lib/device-location";
 import { AddressPicker, type PickedAddress } from "@/components/dobra/AddressPicker";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -14,8 +16,42 @@ export function DeliveryAddressBar() {
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState<PickedAddress>({ address: "", lat: null, lng: null });
 
+  const [locating, setLocating] = useState(false);
+  const tried = useRef(false);
+
+  const detect = async (manual: boolean) => {
+    setLocating(true);
+    try {
+      const here = await locateDevice();
+      save({ ...here, source: "gps" } as PickedAddress);
+      if (manual) {
+        tapFeedback("pop");
+        setOpen(false);
+      }
+    } catch {
+      if (manual) toast.error(t("common.location.denied"));
+    } finally {
+      setLocating(false);
+    }
+  };
+
+  // Use the device's exact position unless the customer picked an address by hand.
+  useEffect(() => {
+    if (tried.current) return;
+    tried.current = true;
+    let manualChoice = false;
+    try {
+      const raw = window.localStorage.getItem("dobra.deliveryAddress.v1");
+      manualChoice = raw ? JSON.parse(raw).source === "manual" : false;
+    } catch {
+      /* ignore */
+    }
+    if (!manualChoice) void detect(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const choose = (a: PickedAddress) => {
-    save(a);
+    save({ ...a, source: "manual" } as PickedAddress);
     tapFeedback("pop");
     setOpen(false);
   };
@@ -33,7 +69,13 @@ export function DeliveryAddressBar() {
         aria-label={t("customer.address.change")}
       >
         <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary">
-          <Home className="size-4 text-accent" aria-hidden />
+          {locating ? (
+            <Loader2 className="size-4 animate-spin text-accent" aria-hidden />
+          ) : current && (current as { source?: string }).source === "gps" ? (
+            <LocateFixed className="size-4 text-accent" aria-hidden />
+          ) : (
+            <Home className="size-4 text-accent" aria-hidden />
+          )}
         </span>
         <span
           className={cn(
@@ -41,7 +83,7 @@ export function DeliveryAddressBar() {
             current ? "text-foreground" : "text-foreground/60",
           )}
         >
-          {loading ? "…" : (current?.address ?? t("customer.address.set"))}
+          {locating && !current ? t("common.location.locating") : loading ? "…" : (current?.address ?? t("customer.address.set"))}
         </span>
         <ChevronDown className="size-4 shrink-0 text-foreground/60" aria-hidden />
       </button>
@@ -51,6 +93,15 @@ export function DeliveryAddressBar() {
           <DialogHeader>
             <DialogTitle>{t("customer.address.title")}</DialogTitle>
           </DialogHeader>
+          <Button
+            variant="outline"
+            className="w-full justify-start gap-2 border-accent text-accent"
+            disabled={locating}
+            onClick={() => void detect(true)}
+          >
+            {locating ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <LocateFixed className="size-4" aria-hidden />}
+            {locating ? t("common.location.locating") : t("common.location.useMine")}
+          </Button>
           {saved.length > 0 || current ? (
             <div className="space-y-2">
               <p className="text-xs font-semibold uppercase text-foreground/60">
