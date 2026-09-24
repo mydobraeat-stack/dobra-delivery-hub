@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDeliveryAddress } from "@/lib/delivery-address";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -47,6 +48,14 @@ function CheckoutPage() {
   const restaurant = data?.restaurant ?? null;
 
   const [address, setAddress] = useState<PickedAddress>({ address: "", lat: null, lng: null });
+  const { current: defaultAddress } = useDeliveryAddress();
+  const [prefilled, setPrefilled] = useState(false);
+  useEffect(() => {
+    if (!prefilled && defaultAddress) {
+      setAddress(defaultAddress);
+      setPrefilled(true);
+    }
+  }, [defaultAddress, prefilled]);
   const [note, setNote] = useState("");
   const [placed, setPlaced] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cash");

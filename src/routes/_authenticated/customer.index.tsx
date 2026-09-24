@@ -5,6 +5,7 @@ import { Clock, Heart, Search, Star } from "lucide-react";
 import { StoredImage } from "@/components/dobra/StoredImage";
 import { useI18n } from "@/lib/i18n";
 import { CategoryGrid } from "@/components/dobra/CategoryGrid";
+import { DeliveryAddressBar } from "@/components/dobra/DeliveryAddressBar";
 import { StatusBadge } from "@/components/dobra/StatusBadge";
 import { accountQueryOptions } from "@/lib/profile";
 import {
@@ -116,6 +117,7 @@ function CustomerHome() {
 
   return (
     <main className="mx-auto max-w-4xl space-y-8 px-5 py-6">
+      <DeliveryAddressBar />
       <h1 className="text-2xl font-bold text-foreground">
         {account?.fullName
           ? t("customer.home.greetingNamed", { name: account.fullName.split(" ")[0] ?? "" })
