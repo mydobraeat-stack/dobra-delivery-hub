@@ -41,9 +41,9 @@ export function ImageLightbox({ value, alt, onClose }: Props) {
     >
       <button
         type="button"
-        onClick={onClose}
+        onClick={(e) => { e.stopPropagation(); onClose(); }}
         aria-label={t("common.actions.close")}
-        className="absolute top-4 right-4 grid size-10 place-items-center rounded-full bg-background/90 text-foreground shadow-soft transition hover:scale-105 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+        className="absolute top-4 right-4 z-20 grid size-10 place-items-center rounded-full bg-background/90 text-foreground shadow-soft transition hover:scale-105 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
       >
         <X className="size-5" aria-hidden />
       </button>
@@ -62,7 +62,7 @@ export function ImageLightbox({ value, alt, onClose }: Props) {
                     className="max-h-[85vh] max-w-full rounded-2xl object-contain shadow-soft"
                   />
                 </TransformComponent>
-                <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 gap-2">
+                <div className="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 gap-2">
                   {[
                     { icon: ZoomOut, fn: () => zoomOut(), label: "−" },
                     { icon: RotateCcw, fn: () => resetTransform(), label: "reset" },
