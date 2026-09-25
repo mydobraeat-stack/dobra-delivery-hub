@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { X } from "lucide-react";
+import { RotateCcw, X, ZoomIn, ZoomOut } from "lucide-react";
+import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import { useImageUrl } from "@/lib/storage";
 import { useT } from "@/lib/i18n";
 
@@ -47,12 +48,41 @@ export function ImageLightbox({ value, alt, onClose }: Props) {
         <X className="size-5" aria-hidden />
       </button>
       {url ? (
-        <img
-          src={url}
-          alt={alt}
-          onClick={(e) => e.stopPropagation()}
-          className="max-h-[85vh] max-w-full rounded-2xl object-contain shadow-soft"
-        />
+        <div className="h-full w-full" onClick={(e) => e.stopPropagation()}>
+          <TransformWrapper minScale={1} maxScale={5} doubleClick={{ mode: "toggle", step: 2 }} centerOnInit>
+            {({ zoomIn, zoomOut, resetTransform }) => (
+              <>
+                <TransformComponent
+                  wrapperStyle={{ width: "100%", height: "100%" }}
+                  contentStyle={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}
+                >
+                  <img
+                    src={url}
+                    alt={alt}
+                    className="max-h-[85vh] max-w-full rounded-2xl object-contain shadow-soft"
+                  />
+                </TransformComponent>
+                <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 gap-2">
+                  {[
+                    { icon: ZoomOut, fn: () => zoomOut(), label: "−" },
+                    { icon: RotateCcw, fn: () => resetTransform(), label: "reset" },
+                    { icon: ZoomIn, fn: () => zoomIn(), label: "+" },
+                  ].map(({ icon: Icon, fn, label }) => (
+                    <button
+                      key={label}
+                      type="button"
+                      aria-label={label}
+                      onClick={fn}
+                      className="grid size-11 place-items-center rounded-full bg-background/90 text-foreground shadow-soft transition hover:scale-105"
+                    >
+                      <Icon className="size-5" aria-hidden />
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+          </TransformWrapper>
+        </div>
       ) : (
         <div className="size-24 animate-pulse rounded-2xl bg-background/20" aria-hidden />
       )}
