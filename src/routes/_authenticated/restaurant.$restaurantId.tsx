@@ -92,7 +92,7 @@ function RestaurantPage() {
                   width={1024}
                   height={640}
                   eager
-                  className="h-44 w-full object-cover"
+                  className="aspect-[16/10] h-auto w-full bg-muted object-contain"
                 />
               </button>
               <div className="space-y-2 p-5">

@@ -286,7 +286,7 @@ function CustomerHome() {
                       alt={`${r.name} restaurant`}
                       width={1024}
                       height={640}
-                      className="h-32 w-full object-cover"
+                      className="aspect-[16/10] h-auto w-full bg-muted object-contain"
                     />
                     <CardContent className="space-y-1 py-4">
                       <div className="flex items-center gap-2">
