@@ -20,7 +20,7 @@ function Reveal({ children, className, id }: { children: React.ReactNode; classN
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return setShown(true);
     const io = new IntersectionObserver(
       ([e]) => {
-        if (e.isIntersecting) {
+        if (e?.isIntersecting) {
           setShown(true);
           io.disconnect();
         }
