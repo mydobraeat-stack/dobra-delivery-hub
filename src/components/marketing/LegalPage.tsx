@@ -84,7 +84,7 @@ export function LegalPage({ doc }: { doc: LegalDocument }) {
   );
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="flex min-h-screen flex-col bg-card">
       <SiteHeader />
 
       <div className="border-b border-border bg-secondary/40">
