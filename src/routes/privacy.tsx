@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LegalPage } from "@/components/marketing/LegalPage";
-import { PRIVACY_DOC } from "@/components/marketing/legal-content";
 
 export const Route = createFileRoute("/privacy")({
   head: () => ({
@@ -13,5 +12,5 @@ export const Route = createFileRoute("/privacy")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: () => <LegalPage doc={PRIVACY_DOC} />,
+  component: () => <LegalPage kind="privacy" />,
 });
