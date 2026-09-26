@@ -6,7 +6,9 @@ import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { SiteHeader } from "./SiteHeader";
 import { SiteFooter } from "./SiteFooter";
-import type { LegalDocument } from "./legal-content";
+import { PRIVACY_DOC, TERMS_DOC } from "./legal-content";
+import { LEGAL_TRANSLATIONS } from "./legal-translations";
+import { useI18n } from "@/lib/i18n";
 
 const slug = (i: number) => `section-${i + 1}`;
 
@@ -46,8 +48,13 @@ function Reveal({ children, className, id }: { children: React.ReactNode; classN
 }
 
 /** Professional, readable shell for long-form legal documents. */
-export function LegalPage({ doc }: { doc: LegalDocument }) {
+const TOC_LABEL = { pl: "Spis treści", en: "Contents", uk: "Зміст", fr: "Sommaire" } as const;
+
+export function LegalPage({ kind }: { kind: "privacy" | "terms" }) {
   const t = useT();
+  const { locale } = useI18n();
+  const lang = (locale in TOC_LABEL ? locale : "en") as keyof typeof TOC_LABEL;
+  const doc = lang === "pl" ? (kind === "privacy" ? PRIVACY_DOC : TERMS_DOC) : LEGAL_TRANSLATIONS[lang][kind];
   const [active, setActive] = useState(0);
 
   useEffect(() => {
@@ -128,14 +135,14 @@ export function LegalPage({ doc }: { doc: LegalDocument }) {
       <div className="mx-auto grid w-full max-w-6xl flex-1 gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[260px_minmax(0,1fr)] lg:px-8 lg:py-14">
         <aside className="hidden lg:block">
           <nav className="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto pr-2">
-            <p className="mb-3 text-xs font-bold uppercase tracking-wider text-foreground/50">Spis treści</p>
+            <p className="mb-3 text-xs font-bold uppercase tracking-wider text-foreground/50">{TOC_LABEL[lang]}</p>
             {toc}
           </nav>
         </aside>
 
         <main className="min-w-0">
           <details className="mb-8 rounded-2xl border border-border bg-card p-4 lg:hidden">
-            <summary className="cursor-pointer text-sm font-bold text-foreground">Spis treści</summary>
+            <summary className="cursor-pointer text-sm font-bold text-foreground">{TOC_LABEL[lang]}</summary>
             <div className="mt-3">{toc}</div>
           </details>
 
