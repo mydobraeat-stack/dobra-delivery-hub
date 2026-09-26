@@ -21,7 +21,7 @@ export const PRIVACY_DOC: LegalDocument = {
     {
       heading: "1. Administrator danych",
       paragraphs: [
-        "Administratorem danych osobowych jest NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Kościańska 34/8, 54-027 Wrocław, Polska, KRS 0000791473, NIP 8982251132, REGON 383675818 („Dobra”, „Administrator”).",
+        "Administratorem danych osobowych jest NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska, KRS 0000791473, NIP 8982251132, REGON 383675818 („Dobra”, „Administrator”).",
         "Kontakt w sprawach prywatności i ochrony danych: legal@mydobra.pl. Obsługa Klienta: support@mydobra.pl, tel. +48 505 645 999.",
         "Jeżeli Dobra wyznaczy Inspektora Ochrony Danych, jego dane kontaktowe zostaną opublikowane w Platformie i w niniejszej Polityce.",
       ],
@@ -222,7 +222,7 @@ export const PRIVACY_DOC: LegalDocument = {
     {
       heading: "25. Kontakt",
       paragraphs: [
-        "NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Kościańska 34/8, 54-027 Wrocław, Polska.",
+        "NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska.",
         "KRS: 0000791473 | NIP: 8982251132 | REGON: 383675818",
         "Sprawy prywatności i RODO: legal@mydobra.pl. Obsługa Klienta: support@mydobra.pl, tel. +48 505 645 999.",
       ],
@@ -243,7 +243,7 @@ export const TERMS_DOC: LegalDocument = {
   meta: ["Wersja 1.0", "Terytorium: Rzeczpospolita Polska"],
   intro: [
     "Niniejszy Regulamin określa zasady dostępu do i korzystania z aplikacji mobilnej Dobra, strony internetowej oraz powiązanych usług („Platforma Dobra”).",
-    "Platforma Dobra jest prowadzona przez NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Kościańska 34/8, 54-027 Wrocław, Polska. KRS: 0000791473, NIP: 8982251132, REGON: 383675818, kapitał zakładowy: 5 000 PLN.",
+    "Platforma Dobra jest prowadzona przez NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. KRS: 0000791473, NIP: 8982251132, REGON: 383675818, kapitał zakładowy: 5 000 PLN.",
     "Obsługa Klienta: support@mydobra.pl, tel. +48 505 645 999. Kontakt prawny i dotyczący prywatności: legal@mydobra.pl.",
   ],
   sections: [
@@ -384,7 +384,7 @@ export const TERMS_DOC: LegalDocument = {
     {
       heading: "16. Reklamacje",
       paragraphs: [
-        "Reklamacje dotyczące Platformy Dobra lub usług dostawy można składać na adres: NICKOVWAY SP. Z O.O., ul. Kościańska 34/8, 54-027 Wrocław, Polska, e-mail: support@mydobra.pl, tel. +48 505 645 999.",
+        "Reklamacje dotyczące Platformy Dobra lub usług dostawy można składać na adres: NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska, e-mail: support@mydobra.pl, tel. +48 505 645 999.",
         "Reklamacja powinna, jeżeli to możliwe, zawierać imię i nazwisko Klienta, numer zamówienia, opis problemu oraz oczekiwany sposób rozwiązania sprawy. Dobra rozpatruje reklamacje w terminie wymaganym przepisami prawa.",
       ],
     },
@@ -493,7 +493,7 @@ export const TERMS_DOC: LegalDocument = {
       paragraphs: [
         "Obsługa Klienta: support@mydobra.pl, tel. +48 505 645 999 — sprawy dotyczące zamówień, dostaw, zwrotów, kont i reklamacji.",
         "Sprawy prawne i prywatność: legal@mydobra.pl.",
-        "Operator Platformy: NICKOVWAY SP. Z O.O., ul. Kościańska 34/8, 54-027 Wrocław, Polska. KRS: 0000791473 | NIP: 8982251132 | REGON: 383675818 | Kapitał zakładowy: 5 000 PLN.",
+        "Operator Platformy: NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. KRS: 0000791473 | NIP: 8982251132 | REGON: 383675818 | Kapitał zakładowy: 5 000 PLN.",
       ],
     },
   ],
