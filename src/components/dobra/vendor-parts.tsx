@@ -1,4 +1,5 @@
 import { LocateFixed } from "lucide-react";
+import { ConfirmAction } from "@/components/dobra/ConfirmButton";
 import { locateDevice } from "@/lib/device-location";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -351,15 +352,23 @@ export function MenuSection({
                 <Button size="sm" variant="outline" onClick={() => onEdit(item)}>
                   {t("vendor.menuSection.edit")}
                 </Button>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  aria-label={t("vendor.menuSection.delete", { name: item.name })}
-                  disabled={remove.isPending}
-                  onClick={() => remove.mutate(item.id)}
-                >
-                  <Trash2 className="size-4" aria-hidden />
-                </Button>
+                <ConfirmAction
+                  title={t("common.state.confirmDeleteTitle")}
+                  body={t("common.state.confirmDeleteBody")}
+                  confirmLabel={t("common.state.delete")}
+                  cancelLabel={t("common.state.cancel")}
+                  onConfirm={() => remove.mutate(item.id)}
+                  trigger={
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      aria-label={t("vendor.menuSection.delete", { name: item.name })}
+                      disabled={remove.isPending}
+                    >
+                      <Trash2 className="size-4" aria-hidden />
+                    </Button>
+                  }
+                />
               </div>
             </CardContent>
           </Card>
