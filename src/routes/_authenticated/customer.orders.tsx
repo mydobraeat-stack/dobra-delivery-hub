@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { EmptyState, ErrorState, ListSkeleton } from "@/components/dobra/QueryStates";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { StatusBadge } from "@/components/dobra/StatusBadge";
@@ -27,7 +28,7 @@ export const Route = createFileRoute("/_authenticated/customer/orders")({
 
 function CustomerOrders() {
   const { t, formatMoney, formatDate } = useI18n();
-  const { data: orders = [], isLoading } = useQuery(myOrdersQuery);
+  const { data: orders = [], isLoading, isError, refetch } = useQuery(myOrdersQuery);
   const { data: restaurants = [] } = useQuery(restaurantsQuery);
   const byRestaurant = useMemo(
     () => Object.fromEntries(restaurants.map((r) => [r.id, r])),
@@ -66,14 +67,18 @@ function CustomerOrders() {
       <section className="space-y-3">
         <h2 className="text-lg font-bold text-foreground">{t("customer.orders.liveNow")}</h2>
         {isLoading ? (
-          <p className="text-sm text-foreground/60">{t("common.state.loading")}</p>
+          <ListSkeleton />
+        ) : isError ? (
+          <ErrorState onRetry={() => refetch()} />
         ) : live.length === 0 ? (
-          <div className="space-y-3">
-            <p className="text-sm text-foreground/60">{t("customer.orders.noLiveOrders")}</p>
-            <Button asChild size="sm">
-              <Link to="/customer">{t("customer.orders.orderSomething")}</Link>
-            </Button>
-          </div>
+          <EmptyState
+            message={t("customer.orders.noLiveOrders")}
+            action={
+              <Button asChild size="sm">
+                <Link to="/customer">{t("customer.orders.orderSomething")}</Link>
+              </Button>
+            }
+          />
         ) : (
           <div className="space-y-3">{live.map(row)}</div>
         )}
@@ -81,8 +86,10 @@ function CustomerOrders() {
 
       <section className="space-y-3">
         <h2 className="text-lg font-bold text-foreground">{t("customer.orders.pastOrders")}</h2>
-        {past.length === 0 ? (
-          <p className="text-sm text-foreground/60">{t("customer.orders.noPastOrders")}</p>
+        {isLoading ? (
+          <ListSkeleton rows={2} />
+        ) : isError ? null : past.length === 0 ? (
+          <EmptyState message={t("customer.orders.noPastOrders")} />
         ) : (
           <div className="space-y-3">{past.map(row)}</div>
         )}

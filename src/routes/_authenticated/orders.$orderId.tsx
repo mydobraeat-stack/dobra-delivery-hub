@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { ConfirmAction } from "@/components/dobra/ConfirmButton";
+import { ListSkeleton } from "@/components/dobra/QueryStates";
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Check, MapPin, Star } from "lucide-react";
@@ -126,7 +128,7 @@ function OrderTracking() {
         </Link>
 
         {isLoading ? (
-          <p className="text-sm text-foreground/60">{t("customer.tracking.loadingOrder")}</p>
+          <ListSkeleton rows={3} />
         ) : !order ? (
           <p className="text-sm text-foreground/60">{t("customer.tracking.notFound")}</p>
         ) : (
@@ -244,13 +246,18 @@ function OrderTracking() {
             </Card>
 
             {order.status === "pending" ? (
-              <Button
-                variant="outline"
-                disabled={cancel.isPending}
-                onClick={() => cancel.mutate()}
-              >
-                {t("customer.tracking.cancelOrder")}
-              </Button>
+              <ConfirmAction
+                title={t("common.state.confirmCancelTitle")}
+                body={t("common.state.confirmCancelBody")}
+                confirmLabel={t("customer.tracking.cancelOrder")}
+                cancelLabel={t("common.state.keep")}
+                onConfirm={() => cancel.mutate()}
+                trigger={
+                  <Button variant="outline" disabled={cancel.isPending}>
+                    {t("customer.tracking.cancelOrder")}
+                  </Button>
+                }
+              />
             ) : null}
 
             {order.status === "delivered" && order.restaurant_id ? (

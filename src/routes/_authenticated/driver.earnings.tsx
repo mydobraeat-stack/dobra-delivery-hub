@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { EmptyState, ErrorState, ListSkeleton } from "@/components/dobra/QueryStates";
 import { useQuery } from "@tanstack/react-query";
 import { useI18n } from "@/lib/i18n";
 import { accountQueryOptions } from "@/lib/profile";
@@ -27,7 +28,7 @@ function DriverEarnings() {
   const { t, formatMoney, formatDate } = useI18n();
   const { data: account } = useQuery(accountQueryOptions);
   const approved = account?.approvalStatus === "approved";
-  const { data } = useQuery({ ...driverOrdersQuery, enabled: approved });
+  const { data, isLoading, isError, refetch } = useQuery({ ...driverOrdersQuery, enabled: approved });
   const { data: restaurants = [] } = useQuery({ ...restaurantsQuery, enabled: approved });
 
   if (!approved) {
@@ -67,8 +68,12 @@ function DriverEarnings() {
 
       <section className="space-y-3">
         <h2 className="text-lg font-bold text-foreground">{t("driver.earnings.paymentHistory")}</h2>
-        {completed.length === 0 ? (
-          <p className="text-sm text-foreground/60">{t("driver.earnings.noneCompleted")}</p>
+        {isLoading ? (
+          <ListSkeleton rows={2} />
+        ) : isError ? (
+          <ErrorState onRetry={() => refetch()} />
+        ) : completed.length === 0 ? (
+          <EmptyState message={t("driver.earnings.noneCompleted")} />
         ) : (
           completed.map((o) => (
             <Card key={o.id} className="border-ink/10">

@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { ListSkeleton } from "@/components/dobra/QueryStates";
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, Clock, Minus, Plus, Star } from "lucide-react";
@@ -71,7 +72,7 @@ function RestaurantPage() {
         </Link>
 
         {isLoading ? (
-          <p className="text-sm text-foreground/60">{t("customer.restaurant.loadingMenu")}</p>
+          <ListSkeleton rows={3} tall />
         ) : !restaurant ? (
           <p className="text-sm text-foreground/60">{t("customer.restaurant.unavailable")}</p>
         ) : (
