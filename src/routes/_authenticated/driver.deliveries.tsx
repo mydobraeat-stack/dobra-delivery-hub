@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { EmptyState, ErrorState, ListSkeleton } from "@/components/dobra/QueryStates";
 import { useQuery } from "@tanstack/react-query";
 import { useI18n } from "@/lib/i18n";
 import { accountQueryOptions } from "@/lib/profile";
@@ -25,7 +26,7 @@ function DriverDeliveries() {
   const { t, formatMoney, formatDate } = useI18n();
   const { data: account } = useQuery(accountQueryOptions);
   const approved = account?.approvalStatus === "approved";
-  const { data } = useQuery({ ...driverOrdersQuery, enabled: approved });
+  const { data, isLoading, isError, refetch } = useQuery({ ...driverOrdersQuery, enabled: approved });
   const { data: restaurants = [] } = useQuery({ ...restaurantsQuery, enabled: approved });
 
   if (!approved) {
@@ -67,8 +68,12 @@ function DriverDeliveries() {
 
       <section className="space-y-3">
         <h2 className="text-lg font-bold text-foreground">{t("driver.deliveries.active")}</h2>
-        {active.length === 0 ? (
-          <p className="text-sm text-foreground/60">{t("driver.deliveries.noneInProgress")}</p>
+        {isLoading ? (
+          <ListSkeleton rows={2} />
+        ) : isError ? (
+          <ErrorState onRetry={() => refetch()} />
+        ) : active.length === 0 ? (
+          <EmptyState message={t("driver.deliveries.noneInProgress")} />
         ) : (
           active.map(row)
         )}
@@ -76,8 +81,12 @@ function DriverDeliveries() {
 
       <section className="space-y-3">
         <h2 className="text-lg font-bold text-foreground">{t("driver.deliveries.past")}</h2>
-        {past.length === 0 ? (
-          <p className="text-sm text-foreground/60">{t("driver.deliveries.noneCompleted")}</p>
+        {isLoading ? (
+          <ListSkeleton rows={2} />
+        ) : isError ? (
+          <ErrorState onRetry={() => refetch()} />
+        ) : past.length === 0 ? (
+          <EmptyState message={t("driver.deliveries.noneCompleted")} />
         ) : (
           past.map(row)
         )}

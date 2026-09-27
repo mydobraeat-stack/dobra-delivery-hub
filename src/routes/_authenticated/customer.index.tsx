@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { EmptyState, ErrorState, ListSkeleton } from "@/components/dobra/QueryStates";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Clock, Heart, Search, Star } from "lucide-react";
@@ -66,7 +67,12 @@ function useFavourites() {
 function CustomerHome() {
   const { t, formatMoney } = useI18n();
   const { data: account } = useQuery(accountQueryOptions);
-  const { data: restaurants = [] } = useQuery(restaurantsQuery);
+  const {
+    data: restaurants = [],
+    isLoading: restaurantsLoading,
+    isError: restaurantsError,
+    refetch: refetchRestaurants,
+  } = useQuery(restaurantsQuery);
   const { data: dishes = [] } = useQuery(allMenuItemsQuery);
   const { data: orders = [] } = useQuery(myOrdersQuery);
   const { favourites, toggle } = useFavourites();
@@ -246,8 +252,12 @@ function CustomerHome() {
         <h2 className="text-lg font-bold text-foreground">
           {query ? t("customer.home.searchResults") : t("customer.home.nearYou")}
         </h2>
-        {results.length === 0 ? (
-          <p className="text-sm text-foreground/60">{t("customer.home.noMatch")}</p>
+        {restaurantsLoading ? (
+          <ListSkeleton rows={2} tall />
+        ) : restaurantsError ? (
+          <ErrorState onRetry={() => refetchRestaurants()} />
+        ) : results.length === 0 ? (
+          <EmptyState message={t("customer.home.noMatch")} />
         ) : (
           <div className="grid gap-4 @sm:grid-cols-2">
             {results.map((r) => (

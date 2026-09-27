@@ -1,4 +1,5 @@
 import { ProfileBackLink } from "@/components/dobra/ProfileMenu";
+import { ListSkeleton } from "@/components/dobra/QueryStates";
 import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -173,7 +174,7 @@ function DriverDocuments() {
 
       <section className="space-y-3">
         <h2 className="text-lg font-bold text-foreground">{t("driver.documents.paperworkTitle")}</h2>
-        {isLoading ? <p className="text-sm text-foreground/60">{t("common.state.loading")}</p> : null}
+        {isLoading ? <ListSkeleton rows={3} /> : null}
         {requiredDocs.map((type) => {
           const doc = docFor(type.id);
           const capture =

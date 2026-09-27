@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 import { Toaster } from "@/components/ui/sonner";
+import { OfflineBanner } from "@/components/dobra/QueryStates";
 
 
 import appCss from "../styles.css?url";
@@ -129,6 +130,7 @@ function RootShell({ children }: { children: ReactNode }) {
       <body>
         {children}
         <Toaster />
+        <OfflineBanner />
         <Scripts />
       </body>
 

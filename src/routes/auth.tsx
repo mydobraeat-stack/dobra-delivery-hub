@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DobraLogo } from "@/components/dobra/Logo";
 import { useT } from "@/lib/i18n";
+import { friendlyAuthError } from "@/lib/auth-errors";
 import { ConsentDialog, readConsent, type Consent } from "@/components/dobra/ConsentDialog";
 
 const searchSchema = z.object({
@@ -109,7 +110,7 @@ function AuthPage() {
       });
       setLoading(false);
       if (signUpError) {
-        setError(signUpError.message);
+        setError(friendlyAuthError(signUpError.message, t));
         return;
       }
       if (!data.session) {
@@ -124,7 +125,7 @@ function AuthPage() {
     const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
     if (signInError) {
-      setError(signInError.message);
+      setError(friendlyAuthError(signInError.message, t));
       return;
     }
     navigate({ to: "/home", replace: true });
@@ -223,7 +224,7 @@ function AuthPage() {
             </div>
           </div>
 
-          {error ? <p className="text-sm text-destructive">{error}</p> : null}
+          {error ? <p role="alert" className="text-sm text-destructive">{error}</p> : null}
           {message ? <p className="text-sm text-foreground/70">{message}</p> : null}
 
           <Button type="submit" className="w-full" size="lg" disabled={loading}>

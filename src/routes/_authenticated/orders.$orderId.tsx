@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { ListSkeleton } from "@/components/dobra/QueryStates";
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Check, MapPin, Star } from "lucide-react";
@@ -126,7 +127,7 @@ function OrderTracking() {
         </Link>
 
         {isLoading ? (
-          <p className="text-sm text-foreground/60">{t("customer.tracking.loadingOrder")}</p>
+          <ListSkeleton rows={3} />
         ) : !order ? (
           <p className="text-sm text-foreground/60">{t("customer.tracking.notFound")}</p>
         ) : (
