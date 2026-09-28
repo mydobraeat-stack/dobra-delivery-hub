@@ -30,12 +30,20 @@ import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/h
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedVendorRouteImport } from './routes/_authenticated/vendor'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedAdminAnalyticsRouteImport } from './routes/_authenticated/admin.analytics'
 import { Route as AuthenticatedAdminApprovalsRouteImport } from './routes/_authenticated/admin.approvals'
+import { Route as AuthenticatedAdminAuditRouteImport } from './routes/_authenticated/admin.audit'
+import { Route as AuthenticatedAdminDisputesRouteImport } from './routes/_authenticated/admin.disputes'
 import { Route as AuthenticatedAdminDriversRouteImport } from './routes/_authenticated/admin.drivers'
+import { Route as AuthenticatedAdminFeedbackRouteImport } from './routes/_authenticated/admin.feedback'
 import { Route as AuthenticatedAdminOrdersRouteImport } from './routes/_authenticated/admin.orders'
+import { Route as AuthenticatedAdminPlatformRouteImport } from './routes/_authenticated/admin.platform'
+import { Route as AuthenticatedAdminPricingRouteImport } from './routes/_authenticated/admin.pricing'
+import { Route as AuthenticatedAdminPromosRouteImport } from './routes/_authenticated/admin.promos'
 import { Route as AuthenticatedAdminRestaurantsRouteImport } from './routes/_authenticated/admin.restaurants'
 import { Route as AuthenticatedAdminReviewsRouteImport } from './routes/_authenticated/admin.reviews'
 import { Route as AuthenticatedAdminSupportRouteImport } from './routes/_authenticated/admin.support'
+import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin.users'
 import { Route as AuthenticatedChatThreadIdRouteImport } from './routes/_authenticated/chat.$threadId'
 import { Route as AuthenticatedCustomerIndexRouteImport } from './routes/_authenticated/customer.index'
 import { Route as AuthenticatedCustomerOrdersRouteImport } from './routes/_authenticated/customer.orders'
@@ -169,10 +177,27 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminAnalyticsRoute =
+  AuthenticatedAdminAnalyticsRouteImport.update({
+    id: '/analytics',
+    path: '/analytics',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminApprovalsRoute =
   AuthenticatedAdminApprovalsRouteImport.update({
     id: '/approvals',
     path: '/approvals',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminAuditRoute = AuthenticatedAdminAuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+const AuthenticatedAdminDisputesRoute =
+  AuthenticatedAdminDisputesRouteImport.update({
+    id: '/disputes',
+    path: '/disputes',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminDriversRoute =
@@ -181,10 +206,34 @@ const AuthenticatedAdminDriversRoute =
     path: '/drivers',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminFeedbackRoute =
+  AuthenticatedAdminFeedbackRouteImport.update({
+    id: '/feedback',
+    path: '/feedback',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminOrdersRoute =
   AuthenticatedAdminOrdersRouteImport.update({
     id: '/orders',
     path: '/orders',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminPlatformRoute =
+  AuthenticatedAdminPlatformRouteImport.update({
+    id: '/platform',
+    path: '/platform',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminPricingRoute =
+  AuthenticatedAdminPricingRouteImport.update({
+    id: '/pricing',
+    path: '/pricing',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminPromosRoute =
+  AuthenticatedAdminPromosRouteImport.update({
+    id: '/promos',
+    path: '/promos',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminRestaurantsRoute =
@@ -205,6 +254,11 @@ const AuthenticatedAdminSupportRoute =
     path: '/support',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
 const AuthenticatedChatThreadIdRoute =
   AuthenticatedChatThreadIdRouteImport.update({
     id: '/chat/$threadId',
@@ -388,12 +442,20 @@ export interface FileRoutesByFullPath {
   '/home': typeof AuthenticatedHomeRoute
   '/profile': typeof AuthenticatedProfileRouteWithChildren
   '/vendor': typeof AuthenticatedVendorRouteWithChildren
+  '/admin/analytics': typeof AuthenticatedAdminAnalyticsRoute
   '/admin/approvals': typeof AuthenticatedAdminApprovalsRoute
+  '/admin/audit': typeof AuthenticatedAdminAuditRoute
+  '/admin/disputes': typeof AuthenticatedAdminDisputesRoute
   '/admin/drivers': typeof AuthenticatedAdminDriversRoute
+  '/admin/feedback': typeof AuthenticatedAdminFeedbackRoute
   '/admin/orders': typeof AuthenticatedAdminOrdersRoute
+  '/admin/platform': typeof AuthenticatedAdminPlatformRoute
+  '/admin/pricing': typeof AuthenticatedAdminPricingRoute
+  '/admin/promos': typeof AuthenticatedAdminPromosRoute
   '/admin/restaurants': typeof AuthenticatedAdminRestaurantsRoute
   '/admin/reviews': typeof AuthenticatedAdminReviewsRoute
   '/admin/support': typeof AuthenticatedAdminSupportRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/chat/$threadId': typeof AuthenticatedChatThreadIdRoute
   '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
   '/customer/package': typeof AuthenticatedCustomerPackageRoute
@@ -439,12 +501,20 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/checkout': typeof AuthenticatedCheckoutRoute
   '/home': typeof AuthenticatedHomeRoute
+  '/admin/analytics': typeof AuthenticatedAdminAnalyticsRoute
   '/admin/approvals': typeof AuthenticatedAdminApprovalsRoute
+  '/admin/audit': typeof AuthenticatedAdminAuditRoute
+  '/admin/disputes': typeof AuthenticatedAdminDisputesRoute
   '/admin/drivers': typeof AuthenticatedAdminDriversRoute
+  '/admin/feedback': typeof AuthenticatedAdminFeedbackRoute
   '/admin/orders': typeof AuthenticatedAdminOrdersRoute
+  '/admin/platform': typeof AuthenticatedAdminPlatformRoute
+  '/admin/pricing': typeof AuthenticatedAdminPricingRoute
+  '/admin/promos': typeof AuthenticatedAdminPromosRoute
   '/admin/restaurants': typeof AuthenticatedAdminRestaurantsRoute
   '/admin/reviews': typeof AuthenticatedAdminReviewsRoute
   '/admin/support': typeof AuthenticatedAdminSupportRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/chat/$threadId': typeof AuthenticatedChatThreadIdRoute
   '/customer/orders': typeof AuthenticatedCustomerOrdersRoute
   '/customer/package': typeof AuthenticatedCustomerPackageRoute
@@ -497,12 +567,20 @@ export interface FileRoutesById {
   '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRouteWithChildren
   '/_authenticated/vendor': typeof AuthenticatedVendorRouteWithChildren
+  '/_authenticated/admin/analytics': typeof AuthenticatedAdminAnalyticsRoute
   '/_authenticated/admin/approvals': typeof AuthenticatedAdminApprovalsRoute
+  '/_authenticated/admin/audit': typeof AuthenticatedAdminAuditRoute
+  '/_authenticated/admin/disputes': typeof AuthenticatedAdminDisputesRoute
   '/_authenticated/admin/drivers': typeof AuthenticatedAdminDriversRoute
+  '/_authenticated/admin/feedback': typeof AuthenticatedAdminFeedbackRoute
   '/_authenticated/admin/orders': typeof AuthenticatedAdminOrdersRoute
+  '/_authenticated/admin/platform': typeof AuthenticatedAdminPlatformRoute
+  '/_authenticated/admin/pricing': typeof AuthenticatedAdminPricingRoute
+  '/_authenticated/admin/promos': typeof AuthenticatedAdminPromosRoute
   '/_authenticated/admin/restaurants': typeof AuthenticatedAdminRestaurantsRoute
   '/_authenticated/admin/reviews': typeof AuthenticatedAdminReviewsRoute
   '/_authenticated/admin/support': typeof AuthenticatedAdminSupportRoute
+  '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
   '/_authenticated/chat/$threadId': typeof AuthenticatedChatThreadIdRoute
   '/_authenticated/customer/orders': typeof AuthenticatedCustomerOrdersRoute
   '/_authenticated/customer/package': typeof AuthenticatedCustomerPackageRoute
@@ -555,12 +633,20 @@ export interface FileRouteTypes {
     | '/home'
     | '/profile'
     | '/vendor'
+    | '/admin/analytics'
     | '/admin/approvals'
+    | '/admin/audit'
+    | '/admin/disputes'
     | '/admin/drivers'
+    | '/admin/feedback'
     | '/admin/orders'
+    | '/admin/platform'
+    | '/admin/pricing'
+    | '/admin/promos'
     | '/admin/restaurants'
     | '/admin/reviews'
     | '/admin/support'
+    | '/admin/users'
     | '/chat/$threadId'
     | '/customer/orders'
     | '/customer/package'
@@ -606,12 +692,20 @@ export interface FileRouteTypes {
     | '/terms'
     | '/checkout'
     | '/home'
+    | '/admin/analytics'
     | '/admin/approvals'
+    | '/admin/audit'
+    | '/admin/disputes'
     | '/admin/drivers'
+    | '/admin/feedback'
     | '/admin/orders'
+    | '/admin/platform'
+    | '/admin/pricing'
+    | '/admin/promos'
     | '/admin/restaurants'
     | '/admin/reviews'
     | '/admin/support'
+    | '/admin/users'
     | '/chat/$threadId'
     | '/customer/orders'
     | '/customer/package'
@@ -663,12 +757,20 @@ export interface FileRouteTypes {
     | '/_authenticated/home'
     | '/_authenticated/profile'
     | '/_authenticated/vendor'
+    | '/_authenticated/admin/analytics'
     | '/_authenticated/admin/approvals'
+    | '/_authenticated/admin/audit'
+    | '/_authenticated/admin/disputes'
     | '/_authenticated/admin/drivers'
+    | '/_authenticated/admin/feedback'
     | '/_authenticated/admin/orders'
+    | '/_authenticated/admin/platform'
+    | '/_authenticated/admin/pricing'
+    | '/_authenticated/admin/promos'
     | '/_authenticated/admin/restaurants'
     | '/_authenticated/admin/reviews'
     | '/_authenticated/admin/support'
+    | '/_authenticated/admin/users'
     | '/_authenticated/chat/$threadId'
     | '/_authenticated/customer/orders'
     | '/_authenticated/customer/package'
@@ -868,11 +970,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/analytics': {
+      id: '/_authenticated/admin/analytics'
+      path: '/analytics'
+      fullPath: '/admin/analytics'
+      preLoaderRoute: typeof AuthenticatedAdminAnalyticsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/approvals': {
       id: '/_authenticated/admin/approvals'
       path: '/approvals'
       fullPath: '/admin/approvals'
       preLoaderRoute: typeof AuthenticatedAdminApprovalsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/audit': {
+      id: '/_authenticated/admin/audit'
+      path: '/audit'
+      fullPath: '/admin/audit'
+      preLoaderRoute: typeof AuthenticatedAdminAuditRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/disputes': {
+      id: '/_authenticated/admin/disputes'
+      path: '/disputes'
+      fullPath: '/admin/disputes'
+      preLoaderRoute: typeof AuthenticatedAdminDisputesRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/drivers': {
@@ -882,11 +1005,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminDriversRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/feedback': {
+      id: '/_authenticated/admin/feedback'
+      path: '/feedback'
+      fullPath: '/admin/feedback'
+      preLoaderRoute: typeof AuthenticatedAdminFeedbackRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/orders': {
       id: '/_authenticated/admin/orders'
       path: '/orders'
       fullPath: '/admin/orders'
       preLoaderRoute: typeof AuthenticatedAdminOrdersRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/platform': {
+      id: '/_authenticated/admin/platform'
+      path: '/platform'
+      fullPath: '/admin/platform'
+      preLoaderRoute: typeof AuthenticatedAdminPlatformRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/pricing': {
+      id: '/_authenticated/admin/pricing'
+      path: '/pricing'
+      fullPath: '/admin/pricing'
+      preLoaderRoute: typeof AuthenticatedAdminPricingRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/promos': {
+      id: '/_authenticated/admin/promos'
+      path: '/promos'
+      fullPath: '/admin/promos'
+      preLoaderRoute: typeof AuthenticatedAdminPromosRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/restaurants': {
@@ -908,6 +1059,13 @@ declare module '@tanstack/react-router' {
       path: '/support'
       fullPath: '/admin/support'
       preLoaderRoute: typeof AuthenticatedAdminSupportRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/users': {
+      id: '/_authenticated/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AuthenticatedAdminUsersRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/chat/$threadId': {
@@ -1110,22 +1268,38 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminAnalyticsRoute: typeof AuthenticatedAdminAnalyticsRoute
   AuthenticatedAdminApprovalsRoute: typeof AuthenticatedAdminApprovalsRoute
+  AuthenticatedAdminAuditRoute: typeof AuthenticatedAdminAuditRoute
+  AuthenticatedAdminDisputesRoute: typeof AuthenticatedAdminDisputesRoute
   AuthenticatedAdminDriversRoute: typeof AuthenticatedAdminDriversRoute
+  AuthenticatedAdminFeedbackRoute: typeof AuthenticatedAdminFeedbackRoute
   AuthenticatedAdminOrdersRoute: typeof AuthenticatedAdminOrdersRoute
+  AuthenticatedAdminPlatformRoute: typeof AuthenticatedAdminPlatformRoute
+  AuthenticatedAdminPricingRoute: typeof AuthenticatedAdminPricingRoute
+  AuthenticatedAdminPromosRoute: typeof AuthenticatedAdminPromosRoute
   AuthenticatedAdminRestaurantsRoute: typeof AuthenticatedAdminRestaurantsRoute
   AuthenticatedAdminReviewsRoute: typeof AuthenticatedAdminReviewsRoute
   AuthenticatedAdminSupportRoute: typeof AuthenticatedAdminSupportRoute
+  AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminAnalyticsRoute: AuthenticatedAdminAnalyticsRoute,
   AuthenticatedAdminApprovalsRoute: AuthenticatedAdminApprovalsRoute,
+  AuthenticatedAdminAuditRoute: AuthenticatedAdminAuditRoute,
+  AuthenticatedAdminDisputesRoute: AuthenticatedAdminDisputesRoute,
   AuthenticatedAdminDriversRoute: AuthenticatedAdminDriversRoute,
+  AuthenticatedAdminFeedbackRoute: AuthenticatedAdminFeedbackRoute,
   AuthenticatedAdminOrdersRoute: AuthenticatedAdminOrdersRoute,
+  AuthenticatedAdminPlatformRoute: AuthenticatedAdminPlatformRoute,
+  AuthenticatedAdminPricingRoute: AuthenticatedAdminPricingRoute,
+  AuthenticatedAdminPromosRoute: AuthenticatedAdminPromosRoute,
   AuthenticatedAdminRestaurantsRoute: AuthenticatedAdminRestaurantsRoute,
   AuthenticatedAdminReviewsRoute: AuthenticatedAdminReviewsRoute,
   AuthenticatedAdminSupportRoute: AuthenticatedAdminSupportRoute,
+  AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
 
