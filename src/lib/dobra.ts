@@ -405,6 +405,73 @@ export type CheckoutInput = {
   destLng?: number | null;
 };
 
+/* ----------------------------- admin pricing ----------------------------- */
+
+export type CountryPricing = {
+  country: string;
+  currency: string;
+  enabled: boolean;
+  commission_pct: number;
+  service_fee: number;
+  delivery_fee: number;
+  min_order: number;
+  package_base_fee: number;
+  package_per_km: number;
+  package_min_fee: number;
+};
+
+export const DEFAULT_PRICING: CountryPricing = {
+  country: "Poland",
+  currency: "PLN",
+  enabled: true,
+  commission_pct: 15,
+  service_fee: 0,
+  delivery_fee: 0,
+  min_order: 0,
+  package_base_fee: 12,
+  package_per_km: 2.5,
+  package_min_fee: 12,
+};
+
+export async function fetchPricing(country: string | null | undefined): Promise<CountryPricing> {
+  const { data } = await supabase.from("country_pricing").select("*");
+  const rows = (data ?? []) as CountryPricing[];
+  const hit = rows.find((r) => r.country.toLowerCase() === (country ?? "").toLowerCase());
+  const base = hit ?? rows.find((r) => r.country === "Poland") ?? DEFAULT_PRICING;
+  return Object.fromEntries(
+    Object.entries(base).map(([k, v]) => [k, typeof v === "string" && k !== "country" && k !== "currency" ? Number(v) : v]),
+  ) as CountryPricing;
+}
+
+export function pricingQuery(country: string | null | undefined) {
+  return {
+    queryKey: ["pricing", country ?? "default"],
+    queryFn: () => fetchPricing(country),
+    staleTime: 60_000,
+  };
+}
+
+/** City override > restaurant fee > country default. */
+export async function cityDeliveryOverride(city: string | null | undefined) {
+  if (!city) return null;
+  const { data } = await supabase
+    .from("cities")
+    .select("delivery_fee_override")
+    .ilike("name", city)
+    .maybeSingle();
+  return data?.delivery_fee_override != null ? Number(data.delivery_fee_override) : null;
+}
+
+export async function previewPromo(code: string, subtotal: number, country?: string | null) {
+  const { data, error } = await supabase.rpc("preview_promo", {
+    _code: code,
+    _subtotal: subtotal,
+    _country: country ?? undefined,
+  });
+  if (error) throw new Error(error.message);
+  return Number(data ?? 0);
+}
+
 export async function placeOrder({
   restaurant,
   lines,
@@ -413,7 +480,8 @@ export async function placeOrder({
   paymentMethod,
   destLat,
   destLng,
-}: CheckoutInput) {
+  promoCode,
+}: CheckoutInput & { promoCode?: string | null }) {
   if (lines.length === 0) throw new Error("Your basket is empty.");
   const userId = await currentUserId();
   const subtotal = lines.reduce((sum, l) => sum + l.price * l.quantity, 0);
@@ -426,7 +494,13 @@ export async function placeOrder({
   const primeActive =
     prime?.status === "active" &&
     (!prime.current_period_end || new Date(prime.current_period_end).getTime() > Date.now());
-  const deliveryFee = primeActive ? 0 : Number(restaurant.delivery_fee ?? 0);
+  const pricing = await fetchPricing(restaurant.country);
+  const override = await cityDeliveryOverride((restaurant as { city?: string | null }).city);
+  const baseFee = override ?? Number(restaurant.delivery_fee ?? pricing.delivery_fee);
+  const deliveryFee = primeActive ? 0 : baseFee;
+  const serviceFee = Number(pricing.service_fee ?? 0);
+  const minOrder = Math.max(Number(restaurant.min_order ?? 0), Number(pricing.min_order ?? 0));
+  if (subtotal < minOrder) throw new Error(`Minimum order is ${minOrder} ${lines[0]!.currency}.`);
   const currency = lines[0]!.currency;
 
   const { data, error } = await supabase
@@ -439,7 +513,9 @@ export async function placeOrder({
       currency,
       subtotal,
       delivery_fee: deliveryFee,
-      total: subtotal + deliveryFee,
+      service_fee: serviceFee,
+      promo_code: promoCode?.trim() || null,
+      total: subtotal + deliveryFee + serviceFee,
       address,
       dest_lat: destLat ?? null,
       dest_lng: destLng ?? null,
@@ -466,8 +542,7 @@ export async function placeOrder({
 
 /* --------------------------- package deliveries --------------------------- */
 
-export const PACKAGE_BASE_FEE = 12;
-export const PACKAGE_PER_KM = 2.5;
+/** Fallbacks only — real values come from admin Settings > Pricing. */
 export const PACKAGE_CURRENCY = "PLN";
 
 function haversineKm(a: { lat: number; lng: number }, b: { lat: number; lng: number }) {
@@ -485,9 +560,11 @@ function haversineKm(a: { lat: number; lng: number }, b: { lat: number; lng: num
 export function packageQuote(
   pickup: { lat: number; lng: number } | null,
   dropoff: { lat: number; lng: number } | null,
+  pricing: CountryPricing = DEFAULT_PRICING,
 ) {
   const km = pickup && dropoff ? haversineKm(pickup, dropoff) : 0;
-  const fee = Math.round((PACKAGE_BASE_FEE + km * PACKAGE_PER_KM) * 100) / 100;
+  const raw = Number(pricing.package_base_fee) + km * Number(pricing.package_per_km);
+  const fee = Math.round(Math.max(raw, Number(pricing.package_min_fee)) * 100) / 100;
   const etaMinutes = Math.max(20, Math.round(15 + km * 4));
   return { km, fee, etaMinutes };
 }
@@ -503,8 +580,9 @@ export type PackageInput = {
   paymentMethod: PaymentMethod;
 };
 
-export async function placePackageDelivery(input: PackageInput) {
+export async function placePackageDelivery(input: PackageInput & { country?: string | null }) {
   const userId = await currentUserId();
+  const pricing = await fetchPricing(input.country ?? "Poland");
   const quote = packageQuote(
     input.pickupLat != null && input.pickupLng != null
       ? { lat: input.pickupLat, lng: input.pickupLng }
@@ -512,17 +590,19 @@ export async function placePackageDelivery(input: PackageInput) {
     input.dropLat != null && input.dropLng != null
       ? { lat: input.dropLat, lng: input.dropLng }
       : null,
+    pricing,
   );
 
   const { data, error } = await supabase
     .from("orders")
     .insert({
       customer_id: userId,
+      country: pricing.country,
       restaurant_id: null,
       kind: "package",
       // Packages are immediately available for drivers to claim.
       status: "ready",
-      currency: PACKAGE_CURRENCY,
+      currency: pricing.currency,
       subtotal: 0,
       delivery_fee: quote.fee,
       total: quote.fee,
