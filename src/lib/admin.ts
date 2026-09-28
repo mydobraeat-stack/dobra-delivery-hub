@@ -58,6 +58,12 @@ export type AdminOrder = {
   driver_id: string | null;
   payment_method: string | null;
   payment_status: string | null;
+  kind?: string;
+  refund_amount?: number;
+  refund_status?: string | null;
+  cancel_reason?: string | null;
+  address?: string | null;
+  pickup_address?: string | null;
   customerName: string;
   restaurantName: string;
   driverName: string;
@@ -154,10 +160,10 @@ export const adminOrdersQuery = queryOptions({
         supabase
           .from("orders")
           .select(
-            "id,status,total,currency,country,created_at,customer_id,restaurant_id,driver_id",
+            "id,status,total,currency,country,created_at,customer_id,restaurant_id,driver_id,payment_method,payment_status,kind,refund_amount,refund_status,cancel_reason,address,pickup_address",
           )
           .order("created_at", { ascending: false })
-          .limit(200),
+          .limit(500),
         supabase.from("restaurants").select("id,name"),
       ]);
     if (error) throw error;
@@ -171,7 +177,9 @@ export const adminOrdersQuery = queryOptions({
       payment_method: (o as { payment_method?: string | null }).payment_method ?? null,
       payment_status: (o as { payment_status?: string | null }).payment_status ?? null,
       customerName: nameBy.get(o.customer_id) ?? "—",
-      restaurantName: (o.restaurant_id ? restaurantBy.get(o.restaurant_id) : null) ?? "—",
+      restaurantName:
+        (o.restaurant_id ? restaurantBy.get(o.restaurant_id) : null) ??
+        ((o as { kind?: string }).kind === "package" ? "Package delivery" : "—"),
       driverName: o.driver_id ? (nameBy.get(o.driver_id) ?? "Assigned") : "Unassigned",
     })) as AdminOrder[];
   },

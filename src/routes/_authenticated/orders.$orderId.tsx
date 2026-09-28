@@ -9,6 +9,9 @@ import { AppHeader } from "@/components/dobra/AppHeader";
 import { PhoneFrame } from "@/components/dobra/PhoneFrame";
 import { StoredImage } from "@/components/dobra/StoredImage";
 import { ChatButton } from "@/components/dobra/ChatButton";
+import { ActionDialog } from "@/components/admin/ActionDialog";
+import { reportProblem } from "@/lib/admin-ops";
+import { Button as ReportBtn } from "@/components/ui/button";
 import { StatusBadge } from "@/components/dobra/StatusBadge";
 import { MapView, type MapPoint } from "@/components/dobra/MapView";
 import { SuccessOverlay } from "@/components/dobra/SuccessOverlay";
@@ -156,6 +159,7 @@ function OrderTracking() {
                   />
                 ) : null}
                 <ChatButton kind="support" label={t("chat.contactSupport")} variant="ghost" />
+                <ReportProblem orderId={orderId} />
               </div>
             </div>
 
@@ -375,5 +379,24 @@ function DeliveryMap({
         ) : null}
       </CardContent>
     </Card>
+  );
+}
+
+function ReportProblem({ orderId }: { orderId: string }) {
+  return (
+    <ActionDialog
+      trigger={
+        <ReportBtn variant="ghost" size="sm">
+          Report a problem
+        </ReportBtn>
+      }
+      title="Report a problem"
+      description="Tell us what went wrong. Our team will review it and get back to you."
+      reasonLabel="What happened?"
+      reasonRequired
+      confirmLabel="Send report"
+      successMessage="Thanks, our team will look into it."
+      onConfirm={(r) => reportProblem(orderId, r)}
+    />
   );
 }

@@ -4,6 +4,7 @@ import { CartBar } from "@/components/dobra/CartBar";
 import { PhoneFrame } from "@/components/dobra/PhoneFrame";
 import { TabBar } from "@/components/dobra/TabBar";
 import { useT } from "@/lib/i18n";
+import { MaintenanceGate } from "@/components/dobra/PlatformGates";
 
 export const Route = createFileRoute("/_authenticated/customer")({
   component: CustomerLayout,
@@ -14,7 +15,9 @@ function CustomerLayout() {
   return (
     <PhoneFrame className="min-h-screen pb-40">
       <AppHeader subtitle={t("common.roles.customer")} />
-      <Outlet />
+      <MaintenanceGate>
+        <Outlet />
+      </MaintenanceGate>
       <CartBar raised />
       <TabBar role="customer" />
     </PhoneFrame>

@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { StoredImage } from "@/components/dobra/StoredImage";
 import { useT } from "@/lib/i18n";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/admin/restaurants")({
   component: AdminRestaurants,
@@ -83,6 +84,7 @@ function AdminRestaurants() {
           >
             {r.status}
           </span>
+          <RestaurantExtras id={r.id} />
           <div className="flex flex-wrap gap-2">
             {r.status !== "approved" ? (
               <Button
@@ -133,6 +135,51 @@ function AdminRestaurants() {
           </div>
         </Card>
       ))}
+    </div>
+  );
+}
+
+function RestaurantExtras({ id }: { id: string }) {
+  const qc = useQueryClient();
+  const { data } = useQuery({
+    queryKey: ["admin", "restaurant-extras", id],
+    queryFn: async () => {
+      const { data } = await supabase.from("restaurants").select("featured,commission_rate").eq("id", id).single();
+      return data;
+    },
+  });
+  const save = async (patch: { featured?: boolean; commission_rate?: number | null }) => {
+    const { error } = await supabase.from("restaurants").update(patch).eq("id", id);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success("Restaurant updated");
+    qc.invalidateQueries({ queryKey: ["admin", "restaurant-extras", id] });
+    qc.invalidateQueries({ queryKey: ["restaurants"] });
+  };
+  if (!data) return null;
+  return (
+    <div className="flex flex-wrap items-center gap-3 text-sm">
+      <label className="flex items-center gap-1.5">
+        <input type="checkbox" checked={data.featured} onChange={(e) => save({ featured: e.target.checked })} />
+        Featured
+      </label>
+      <label className="flex items-center gap-1.5">
+        Commission %
+        <input
+          aria-label="Commission percent"
+          type="number"
+          step="0.1"
+          placeholder="default"
+          defaultValue={data.commission_rate ?? ""}
+          onBlur={(e) => {
+            const v = e.target.value === "" ? null : Number(e.target.value);
+            if (v !== data.commission_rate) save({ commission_rate: v });
+          }}
+          className="h-8 w-20 rounded-md border border-input bg-background px-2"
+        />
+      </label>
     </div>
   );
 }

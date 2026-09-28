@@ -10,7 +10,8 @@ import { PhoneFrame } from "@/components/dobra/PhoneFrame";
 import { StoredImage } from "@/components/dobra/StoredImage";
 import { cartSubtotal, clearCart, setQuantity, useCart } from "@/lib/cart";
 import { createCardCheckoutSession } from "@/lib/payments.functions";
-import { placeOrder, restaurantQuery, type PaymentMethod } from "@/lib/dobra";
+import { placeOrder, previewPromo, pricingQuery, restaurantQuery, type PaymentMethod } from "@/lib/dobra";
+import { useQuery as usePricingQuery } from "@tanstack/react-query";
 import { useI18n } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -63,8 +64,29 @@ function CheckoutPage() {
 
   const subtotal = cartSubtotal(cart);
   const fee = Number(restaurant?.delivery_fee ?? 0);
-  const total = subtotal + fee;
-  const belowMinimum = restaurant ? subtotal < Number(restaurant.min_order ?? 0) : false;
+  const { data: pricing } = usePricingQuery({ ...pricingQuery(restaurant?.country), enabled: Boolean(restaurant) });
+  const serviceFee = Number(pricing?.service_fee ?? 0);
+  const [promoInput, setPromoInput] = useState("");
+  const [promo, setPromo] = useState<{ code: string; discount: number } | null>(null);
+  const [promoBusy, setPromoBusy] = useState(false);
+  const discount = promo?.discount ?? 0;
+  const total = Math.max(0, subtotal + fee + serviceFee - discount);
+  const minOrder = Math.max(Number(restaurant?.min_order ?? 0), Number(pricing?.min_order ?? 0));
+  const belowMinimum = restaurant ? subtotal < minOrder : false;
+  const applyPromo = async () => {
+    if (!promoInput.trim()) return;
+    setPromoBusy(true);
+    try {
+      const d = await previewPromo(promoInput.trim(), subtotal, restaurant?.country);
+      setPromo({ code: promoInput.trim().toUpperCase(), discount: d });
+      toast.success(`Promo applied: -${formatMoney(d)}`);
+    } catch (e) {
+      setPromo(null);
+      toast.error((e as Error).message);
+    } finally {
+      setPromoBusy(false);
+    }
+  };
 
   const submit = useMutation({
     mutationFn: async () => {
@@ -76,6 +98,7 @@ function CheckoutPage() {
         paymentMethod,
         destLat: address.lat,
         destLng: address.lng,
+        promoCode: promo?.code ?? null,
       });
       if (paymentMethod === "card") {
         const session = await startCardPayment({
@@ -236,6 +259,35 @@ function CheckoutPage() {
                 <div className="flex justify-between">
                   <span className="text-foreground/70">{t("customer.checkout.delivery")}</span>
                   <span>{formatMoney(fee)}</span>
+                </div>
+                {serviceFee > 0 ? (
+                  <div className="flex justify-between">
+                    <span className="text-foreground/70">Service fee</span>
+                    <span>{formatMoney(serviceFee)}</span>
+                  </div>
+                ) : null}
+                {discount > 0 ? (
+                  <div className="flex justify-between text-primary">
+                    <span>Promo {promo?.code}</span>
+                    <span>-{formatMoney(discount)}</span>
+                  </div>
+                ) : null}
+                <div className="flex gap-2 pt-1">
+                  <input
+                    aria-label="Promo code"
+                    value={promoInput}
+                    onChange={(e) => setPromoInput(e.target.value)}
+                    placeholder="Promo code"
+                    className="h-9 min-w-0 flex-1 rounded-md border border-input bg-background px-3 text-sm uppercase"
+                  />
+                  <button
+                    type="button"
+                    onClick={applyPromo}
+                    disabled={promoBusy || !promoInput.trim()}
+                    className="h-9 shrink-0 rounded-md bg-sun px-3 text-sm font-semibold text-foreground disabled:opacity-50"
+                  >
+                    Apply
+                  </button>
                 </div>
                 <div className="flex justify-between border-t border-ink/10 pt-2 text-base font-bold">
                   <span>{t("customer.checkout.total")}</span>

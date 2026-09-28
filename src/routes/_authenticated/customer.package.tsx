@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Package } from "lucide-react";
 import { toast } from "sonner";
 import { AddressPicker, type PickedAddress } from "@/components/dobra/AddressPicker";
@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useI18n } from "@/lib/i18n";
 import {
-  PACKAGE_CURRENCY,
+  pricingQuery,
   packageQuote,
   placePackageDelivery,
   type PaymentMethod,
@@ -48,9 +48,12 @@ function PackageRequest() {
   const [description, setDescription] = useState("");
   const [payment, setPayment] = useState<PaymentMethod>("cash");
 
+  const country = /cameroon|cameroun/i.test(pickup.address) ? "Cameroon" : "Poland";
+  const { data: pricing } = useQuery(pricingQuery(country));
   const quote = packageQuote(
     pickup.lat != null && pickup.lng != null ? { lat: pickup.lat, lng: pickup.lng } : null,
     drop.lat != null && drop.lng != null ? { lat: drop.lat, lng: drop.lng } : null,
+    pricing,
   );
 
   const ready = Boolean(pickup.address.trim() && drop.address.trim() && description.trim());
@@ -66,6 +69,7 @@ function PackageRequest() {
         dropLng: drop.lng,
         description,
         paymentMethod: payment,
+        country,
       }),
     onSuccess: (orderId) => {
       toast.success(t("package.request.created"));
@@ -124,7 +128,7 @@ function PackageRequest() {
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <span className="text-sm text-foreground/70">{t("package.request.fee")}</span>
             <span className="text-lg font-bold text-foreground">
-              {formatMoney(quote.fee, PACKAGE_CURRENCY)}
+              {formatMoney(quote.fee, pricing?.currency ?? "PLN")}
             </span>
           </div>
           <p className="text-xs text-foreground/60">

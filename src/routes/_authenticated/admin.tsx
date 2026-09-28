@@ -29,30 +29,43 @@ function AdminLayout() {
   const t = useT();
   const { data, isPending } = useQuery(accountQueryOptions);
 
-  const LINKS = [
-    { to: "/admin", label: t("admin.nav.dashboard"), exact: true },
-    { to: "/admin/approvals", label: t("admin.nav.approvals") },
-    { to: "/admin/restaurants", label: t("admin.nav.restaurants") },
-    { to: "/admin/drivers", label: t("admin.nav.drivers") },
-    { to: "/admin/reviews", label: t("admin.nav.reviews") },
+  const isSuper = data?.role === "admin";
+  const isStaff = isSuper || data?.role === "support_agent";
+  const ALL = [
+    { to: "/admin", label: t("admin.nav.dashboard"), exact: true, superOnly: true },
     { to: "/admin/orders", label: t("admin.nav.orders") },
+    { to: "/admin/disputes", label: "Disputes" },
     { to: "/admin/support", label: t("chat.inboxTitle") },
+    { to: "/admin/feedback", label: "Customer reviews" },
+    { to: "/admin/approvals", label: t("admin.nav.approvals"), superOnly: true },
+    { to: "/admin/users", label: "Users", superOnly: true },
+    { to: "/admin/restaurants", label: t("admin.nav.restaurants"), superOnly: true },
+    { to: "/admin/drivers", label: t("admin.nav.drivers"), superOnly: true },
+    { to: "/admin/reviews", label: t("admin.nav.reviews"), superOnly: true },
+    { to: "/admin/pricing", label: "Pricing & cities", superOnly: true },
+    { to: "/admin/promos", label: "Promo codes", superOnly: true },
+    { to: "/admin/platform", label: "Platform", superOnly: true },
+    { to: "/admin/analytics", label: "Analytics", superOnly: true },
+    { to: "/admin/audit", label: "Audit log", superOnly: true },
   ];
+  const LINKS = ALL.filter((l) => isSuper || !l.superOnly);
 
   useEffect(() => {
-    if (data && data.role !== "admin") navigate({ to: "/home", replace: true });
-  }, [data, navigate]);
+    if (data && !isStaff) navigate({ to: "/home", replace: true });
+    if (data && data.role === "support_agent" && window.location.pathname === "/admin")
+      navigate({ to: "/admin/orders", replace: true });
+  }, [data, isStaff, navigate]);
 
   if (isPending || !data) {
     return <div className="p-10 text-center text-foreground/60">{t("admin.loading")}</div>;
   }
-  if (data.role !== "admin") {
+  if (!isStaff) {
     return <div className="p-10 text-center text-foreground/60">{t("admin.redirecting")}</div>;
   }
 
   return (
     <div className="min-h-screen bg-background pb-16">
-      <AppHeader subtitle={t("admin.subtitle")} />
+      <AppHeader subtitle={isSuper ? "Super Admin" : "Support Agent"} />
       <nav aria-label={t("admin.nav.label")} className="border-b border-ink/10 bg-card/60">
         <ul className="mx-auto flex max-w-7xl flex-wrap gap-1 px-4 py-2">
           {LINKS.map((l) => (

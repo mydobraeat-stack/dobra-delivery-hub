@@ -114,6 +114,11 @@ function AdminDrivers() {
                     <p className="text-xs text-foreground/60">
                       {doc.status}
                       {doc.expires_on ? ` · ${t("admin.drivers.expires", { date: doc.expires_on })}` : ""}
+                      {doc.expires_on && new Date(doc.expires_on).getTime() - Date.now() < 30 * 86400000 ? (
+                        <span className="ml-2 rounded-full bg-destructive/15 px-2 py-0.5 text-xs font-semibold text-destructive">
+                          {new Date(doc.expires_on).getTime() < Date.now() ? "Expired" : "Expires within 30 days"}
+                        </span>
+                      ) : null}
                     </p>
                   </div>
                   <div className="flex gap-2">
