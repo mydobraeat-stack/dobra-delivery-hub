@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useRealtimeSync } from "@/lib/realtime";
 import { useNotificationStream } from "@/lib/notifications";
 import { usePushRegistration } from "@/lib/push";
+import { AccountGate } from "@/components/dobra/PlatformGates";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
@@ -18,5 +19,9 @@ function AuthenticatedLayout() {
   useRealtimeSync();
   useNotificationStream();
   usePushRegistration();
-  return <Outlet />;
+  return (
+    <AccountGate>
+      <Outlet />
+    </AccountGate>
+  );
 }

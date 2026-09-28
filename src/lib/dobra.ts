@@ -133,6 +133,7 @@ export const restaurantsQuery = queryOptions({
       .from("restaurants")
       .select(RESTAURANT_COLS)
       .eq("status", "approved")
+      .order("featured", { ascending: false })
       .order("rating", { ascending: false });
     if (error) throw error;
     return (data ?? []) as Restaurant[];
