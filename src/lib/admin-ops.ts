@@ -145,7 +145,7 @@ export async function reportProblem(orderId: string, description: string) {
     kind: "complaint",
     status: "open",
     description,
-    created_by: u.user?.id,
+    created_by: u.user?.id ?? null,
   });
   if (error) throw error;
 }

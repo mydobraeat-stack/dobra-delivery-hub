@@ -467,7 +467,7 @@ export async function previewPromo(code: string, subtotal: number, country?: str
   const { data, error } = await supabase.rpc("preview_promo", {
     _code: code,
     _subtotal: subtotal,
-    _country: country ?? undefined,
+    ...(country ? { _country: country } : {}),
   });
   if (error) throw new Error(error.message);
   return Number(data ?? 0);

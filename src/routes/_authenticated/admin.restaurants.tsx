@@ -150,7 +150,10 @@ function RestaurantExtras({ id }: { id: string }) {
   });
   const save = async (patch: { featured?: boolean; commission_rate?: number | null }) => {
     const { error } = await supabase.from("restaurants").update(patch).eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     toast.success("Restaurant updated");
     qc.invalidateQueries({ queryKey: ["admin", "restaurant-extras", id] });
     qc.invalidateQueries({ queryKey: ["restaurants"] });
