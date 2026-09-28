@@ -14,6 +14,69 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_audit_log: {
+        Row: {
+          action: string
+          actor_id: string | null
+          created_at: string
+          details: Json
+          id: string
+          target_id: string | null
+          target_type: string | null
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          created_at?: string
+          details?: Json
+          id?: string
+          target_id?: string | null
+          target_type?: string | null
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          created_at?: string
+          details?: Json
+          id?: string
+          target_id?: string | null
+          target_type?: string | null
+        }
+        Relationships: []
+      }
+      announcements: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          recipients: number
+          sent_by: string | null
+          target_country: string | null
+          target_role: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          recipients?: number
+          sent_by?: string | null
+          target_country?: string | null
+          target_role?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          recipients?: number
+          sent_by?: string | null
+          target_country?: string | null
+          target_role?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
       chat_messages: {
         Row: {
           attachment_name: string | null
@@ -119,6 +182,84 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      cities: {
+        Row: {
+          country: string
+          created_at: string
+          delivery_fee_override: number | null
+          enabled: boolean
+          id: string
+          lat: number
+          lng: number
+          name: string
+          sort: number
+        }
+        Insert: {
+          country: string
+          created_at?: string
+          delivery_fee_override?: number | null
+          enabled?: boolean
+          id?: string
+          lat?: number
+          lng?: number
+          name: string
+          sort?: number
+        }
+        Update: {
+          country?: string
+          created_at?: string
+          delivery_fee_override?: number | null
+          enabled?: boolean
+          id?: string
+          lat?: number
+          lng?: number
+          name?: string
+          sort?: number
+        }
+        Relationships: []
+      }
+      country_pricing: {
+        Row: {
+          commission_pct: number
+          country: string
+          currency: string
+          delivery_fee: number
+          enabled: boolean
+          min_order: number
+          package_base_fee: number
+          package_min_fee: number
+          package_per_km: number
+          service_fee: number
+          updated_at: string
+        }
+        Insert: {
+          commission_pct?: number
+          country: string
+          currency: string
+          delivery_fee?: number
+          enabled?: boolean
+          min_order?: number
+          package_base_fee?: number
+          package_min_fee?: number
+          package_per_km?: number
+          service_fee?: number
+          updated_at?: string
+        }
+        Update: {
+          commission_pct?: number
+          country?: string
+          currency?: string
+          delivery_fee?: number
+          enabled?: boolean
+          min_order?: number
+          package_base_fee?: number
+          package_min_fee?: number
+          package_per_km?: number
+          service_fee?: number
+          updated_at?: string
+        }
+        Relationships: []
       }
       driver_documents: {
         Row: {
@@ -338,6 +479,85 @@ export type Database = {
           },
         ]
       }
+      order_admin_notes: {
+        Row: {
+          author_id: string
+          body: string
+          created_at: string
+          id: string
+          order_id: string
+        }
+        Insert: {
+          author_id: string
+          body: string
+          created_at?: string
+          id?: string
+          order_id: string
+        }
+        Update: {
+          author_id?: string
+          body?: string
+          created_at?: string
+          id?: string
+          order_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_admin_notes_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      order_disputes: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          kind: string
+          order_id: string
+          resolution_note: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          kind?: string
+          order_id: string
+          resolution_note?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          kind?: string
+          order_id?: string
+          resolution_note?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_disputes_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       order_items: {
         Row: {
           created_at: string
@@ -383,13 +603,16 @@ export type Database = {
       orders: {
         Row: {
           address: string | null
+          cancel_reason: string | null
           country: string | null
           created_at: string
           currency: string
           customer_id: string
+          delivered_at: string | null
           delivery_fee: number
           dest_lat: number | null
           dest_lng: number | null
+          discount: number
           driver_id: string | null
           eta_minutes: number
           id: string
@@ -402,20 +625,27 @@ export type Database = {
           pickup_address: string | null
           pickup_lat: number | null
           pickup_lng: number | null
+          promo_code: string | null
+          refund_amount: number
+          refund_status: string | null
           restaurant_id: string | null
+          service_fee: number
           status: string
           subtotal: number
           total: number
         }
         Insert: {
           address?: string | null
+          cancel_reason?: string | null
           country?: string | null
           created_at?: string
           currency?: string
           customer_id: string
+          delivered_at?: string | null
           delivery_fee?: number
           dest_lat?: number | null
           dest_lng?: number | null
+          discount?: number
           driver_id?: string | null
           eta_minutes?: number
           id?: string
@@ -428,20 +658,27 @@ export type Database = {
           pickup_address?: string | null
           pickup_lat?: number | null
           pickup_lng?: number | null
+          promo_code?: string | null
+          refund_amount?: number
+          refund_status?: string | null
           restaurant_id?: string | null
+          service_fee?: number
           status?: string
           subtotal?: number
           total?: number
         }
         Update: {
           address?: string | null
+          cancel_reason?: string | null
           country?: string | null
           created_at?: string
           currency?: string
           customer_id?: string
+          delivered_at?: string | null
           delivery_fee?: number
           dest_lat?: number | null
           dest_lng?: number | null
+          discount?: number
           driver_id?: string | null
           eta_minutes?: number
           id?: string
@@ -454,7 +691,11 @@ export type Database = {
           pickup_address?: string | null
           pickup_lat?: number | null
           pickup_lng?: number | null
+          promo_code?: string | null
+          refund_amount?: number
+          refund_status?: string | null
           restaurant_id?: string | null
+          service_fee?: number
           status?: string
           subtotal?: number
           total?: number
@@ -482,6 +723,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      platform_settings: {
+        Row: {
+          id: number
+          late_threshold_minutes: number
+          maintenance_message: string
+          maintenance_mode: boolean
+          updated_at: string
+        }
+        Insert: {
+          id?: number
+          late_threshold_minutes?: number
+          maintenance_message?: string
+          maintenance_mode?: boolean
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          late_threshold_minutes?: number
+          maintenance_message?: string
+          maintenance_mode?: boolean
+          updated_at?: string
+        }
+        Relationships: []
       }
       prime_memberships: {
         Row: {
@@ -524,6 +789,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          account_status: string
           approval_status: string
           avatar_url: string | null
           country: string | null
@@ -534,8 +800,10 @@ export type Database = {
           id: string
           language: string | null
           phone: string | null
+          suspension_reason: string | null
         }
         Insert: {
+          account_status?: string
           approval_status?: string
           avatar_url?: string | null
           country?: string | null
@@ -546,8 +814,10 @@ export type Database = {
           id: string
           language?: string | null
           phone?: string | null
+          suspension_reason?: string | null
         }
         Update: {
+          account_status?: string
           approval_status?: string
           avatar_url?: string | null
           country?: string | null
@@ -558,8 +828,96 @@ export type Database = {
           id?: string
           language?: string | null
           phone?: string | null
+          suspension_reason?: string | null
         }
         Relationships: []
+      }
+      promo_codes: {
+        Row: {
+          active: boolean
+          amount: number
+          code: string
+          country: string | null
+          created_at: string
+          discount_type: string
+          expires_at: string | null
+          id: string
+          min_order: number
+          per_user_limit: number | null
+          usage_limit: number | null
+          uses: number
+        }
+        Insert: {
+          active?: boolean
+          amount: number
+          code: string
+          country?: string | null
+          created_at?: string
+          discount_type?: string
+          expires_at?: string | null
+          id?: string
+          min_order?: number
+          per_user_limit?: number | null
+          usage_limit?: number | null
+          uses?: number
+        }
+        Update: {
+          active?: boolean
+          amount?: number
+          code?: string
+          country?: string | null
+          created_at?: string
+          discount_type?: string
+          expires_at?: string | null
+          id?: string
+          min_order?: number
+          per_user_limit?: number | null
+          usage_limit?: number | null
+          uses?: number
+        }
+        Relationships: []
+      }
+      promo_redemptions: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          order_id: string | null
+          promo_id: string
+          user_id: string
+        }
+        Insert: {
+          amount?: number
+          created_at?: string
+          id?: string
+          order_id?: string | null
+          promo_id: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          order_id?: string | null
+          promo_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "promo_redemptions_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "promo_redemptions_promo_id_fkey"
+            columns: ["promo_id"]
+            isOneToOne: false
+            referencedRelation: "promo_codes"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       push_subscriptions: {
         Row: {
@@ -598,11 +956,13 @@ export type Database = {
         Row: {
           address_line: string | null
           city: string | null
+          commission_rate: number | null
           country: string | null
           created_at: string
           cuisine: string | null
           delivery_fee: number
           eta_minutes: number
+          featured: boolean
           id: string
           is_open: boolean
           logo_url: string | null
@@ -617,11 +977,13 @@ export type Database = {
         Insert: {
           address_line?: string | null
           city?: string | null
+          commission_rate?: number | null
           country?: string | null
           created_at?: string
           cuisine?: string | null
           delivery_fee?: number
           eta_minutes?: number
+          featured?: boolean
           id?: string
           is_open?: boolean
           logo_url?: string | null
@@ -636,11 +998,13 @@ export type Database = {
         Update: {
           address_line?: string | null
           city?: string | null
+          commission_rate?: number | null
           country?: string | null
           created_at?: string
           cuisine?: string | null
           delivery_fee?: number
           eta_minutes?: number
+          featured?: boolean
           id?: string
           is_open?: boolean
           logo_url?: string | null
@@ -756,6 +1120,59 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_add_note: {
+        Args: { _body: string; _order: string }
+        Returns: undefined
+      }
+      admin_broadcast: {
+        Args: {
+          _country?: string
+          _message: string
+          _role?: string
+          _title: string
+        }
+        Returns: number
+      }
+      admin_cancel_order: {
+        Args: { _order: string; _reason: string }
+        Returns: undefined
+      }
+      admin_flag_order: {
+        Args: { _note: string; _order: string }
+        Returns: undefined
+      }
+      admin_force_status: {
+        Args: { _order: string; _reason: string; _status: string }
+        Returns: undefined
+      }
+      admin_reassign_driver: {
+        Args: { _driver: string; _order: string }
+        Returns: undefined
+      }
+      admin_refund_order: {
+        Args: { _amount: number; _order: string; _reason: string }
+        Returns: string
+      }
+      admin_remove_review: {
+        Args: { _id: string; _reason: string }
+        Returns: undefined
+      }
+      admin_resolve_dispute: {
+        Args: { _id: string; _note: string }
+        Returns: undefined
+      }
+      admin_set_account_status: {
+        Args: { _reason: string; _status: string; _user: string }
+        Returns: undefined
+      }
+      admin_set_prime: {
+        Args: { _active: boolean; _months?: number; _user: string }
+        Returns: undefined
+      }
+      admin_set_role: {
+        Args: { _role: Database["public"]["Enums"]["app_role"]; _user: string }
+        Returns: undefined
+      }
       anonymize_account: { Args: { _user_id: string }; Returns: undefined }
       can_access_chat_thread: { Args: { _thread_id: string }; Returns: boolean }
       can_view_chat_file: { Args: { _object_name: string }; Returns: boolean }
@@ -769,6 +1186,10 @@ export type Database = {
       open_chat_thread: {
         Args: { _kind: string; _order_id?: string }
         Returns: string
+      }
+      preview_promo: {
+        Args: { _code: string; _country?: string; _subtotal: number }
+        Returns: number
       }
     }
     Enums: {
