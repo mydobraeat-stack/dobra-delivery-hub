@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { StoredImage } from "@/components/dobra/StoredImage";
 import { useT } from "@/lib/i18n";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/admin/restaurants")({
   component: AdminRestaurants,
