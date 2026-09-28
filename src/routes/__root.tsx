@@ -130,7 +130,6 @@ function RootShell({ children }: { children: ReactNode }) {
       <body>
         {children}
         <Toaster />
-        <OfflineBanner />
         <Scripts />
       </body>
 
@@ -157,6 +156,7 @@ function RootComponent() {
         <I18nProvider>
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <Outlet />
+          <OfflineBanner />
         </I18nProvider>
       </ThemeProvider>
     </QueryClientProvider>
