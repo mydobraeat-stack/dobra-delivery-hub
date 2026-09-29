@@ -95,6 +95,9 @@ function AdminDrivers() {
             </div>
           </div>
 
+          <DriverStatsRow driverId={d.id} docs={d.documents} />
+
+
           <Button variant="ghost" size="sm" onClick={() => setOpen(open === d.id ? null : d.id)}>
             {open === d.id ? t("admin.drivers.hideDocuments") : t("admin.drivers.documentsCount", { n: d.documents.length })}
           </Button>
