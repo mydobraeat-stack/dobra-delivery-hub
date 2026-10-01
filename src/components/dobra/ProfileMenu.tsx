@@ -1,7 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useImageUrl } from "@/lib/storage";
 
 /** Initials avatar used when the member has not uploaded a photo. */
 export function InitialsAvatar({
@@ -15,6 +17,8 @@ export function InitialsAvatar({
   src?: string | null | undefined;
   className?: string | undefined;
 }) {
+  const url = useImageUrl(src ?? null);
+  const [failedUrl, setFailedUrl] = useState<string | null>(null);
   const source = (name ?? "").trim() || (email ?? "").trim();
   const initials =
     source
@@ -32,7 +36,16 @@ export function InitialsAvatar({
       )}
       aria-hidden
     >
-      {src ? <img src={src} alt="" className="size-full object-cover object-center" /> : initials}
+      {url && failedUrl !== url ? (
+        <img
+          src={url}
+          alt=""
+          onError={() => setFailedUrl(url)}
+          className="size-full object-cover object-center"
+        />
+      ) : (
+        initials
+      )}
     </div>
   );
 }
