@@ -22,7 +22,7 @@ export function LandingSections() {
         <h2 className="text-3xl font-extrabold text-foreground">{c.howTitle}</h2>
         <div className="mt-8 grid gap-5 md:grid-cols-3">
           {c.how.map(([title, body], i) => {
-            const Icon = HOW_ICONS[i];
+            const Icon = HOW_ICONS[i] ?? UtensilsCrossed;
             return (
               <div
                 key={title}
@@ -47,7 +47,7 @@ export function LandingSections() {
           <h2 className="text-3xl font-extrabold text-foreground">{c.joinTitle}</h2>
           <div className="mt-8 grid gap-5 md:grid-cols-3">
             {c.join.map((item, i) => {
-              const { to, Icon } = joinLinks[i];
+              const { to, Icon } = joinLinks[i] ?? joinLinks[0]!;
               return (
                 <Link
                   key={item.title}
@@ -70,7 +70,7 @@ export function LandingSections() {
         <h2 className="text-3xl font-extrabold text-foreground">{c.trustTitle}</h2>
         <div className="mt-8 grid gap-5 md:grid-cols-3">
           {c.trust.map(([title, body], i) => {
-            const Icon = TRUST_ICONS[i];
+            const Icon = TRUST_ICONS[i] ?? ShieldCheck;
             return (
               <div key={title} className="flex gap-4 rounded-2xl border border-ink/10 p-5">
                 <Icon className="size-7 shrink-0 text-primary" aria-hidden />
