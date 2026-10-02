@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/marketing/SiteHeader";
 import { Hero } from "@/components/marketing/Hero";
 import { CityMaps } from "@/components/marketing/CityMaps";
+import { LandingSections } from "@/components/marketing/LandingSections";
 import { SiteFooter } from "@/components/marketing/SiteFooter";
 
 export const Route = createFileRoute("/")({
@@ -32,6 +33,7 @@ function MarketingHome() {
       <SiteHeader />
       <main className="flex-1">
         <Hero />
+        <LandingSections />
         <CityMaps />
       </main>
       <SiteFooter />

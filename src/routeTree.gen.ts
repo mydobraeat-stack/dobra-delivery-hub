@@ -15,6 +15,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BusinessRouteImport } from './routes/business'
 import { Route as CitiesRouteImport } from './routes/cities'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DeliverRouteImport } from './routes/deliver'
 import { Route as GetStartedRouteImport } from './routes/get-started'
 import { Route as HelpRouteImport } from './routes/help'
@@ -100,6 +101,11 @@ const BusinessRoute = BusinessRouteImport.update({
 const CitiesRoute = CitiesRouteImport.update({
   id: '/cities',
   path: '/cities',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DeliverRoute = DeliverRouteImport.update({
@@ -428,6 +434,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/business': typeof BusinessRoute
   '/cities': typeof CitiesRoute
+  '/contact': typeof ContactRoute
   '/deliver': typeof DeliverRoute
   '/get-started': typeof GetStartedRoute
   '/help': typeof HelpRoute
@@ -492,6 +499,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/business': typeof BusinessRoute
   '/cities': typeof CitiesRoute
+  '/contact': typeof ContactRoute
   '/deliver': typeof DeliverRoute
   '/get-started': typeof GetStartedRoute
   '/help': typeof HelpRoute
@@ -553,6 +561,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/business': typeof BusinessRoute
   '/cities': typeof CitiesRoute
+  '/contact': typeof ContactRoute
   '/deliver': typeof DeliverRoute
   '/get-started': typeof GetStartedRoute
   '/help': typeof HelpRoute
@@ -619,6 +628,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/business'
     | '/cities'
+    | '/contact'
     | '/deliver'
     | '/get-started'
     | '/help'
@@ -683,6 +693,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/business'
     | '/cities'
+    | '/contact'
     | '/deliver'
     | '/get-started'
     | '/help'
@@ -743,6 +754,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/business'
     | '/cities'
+    | '/contact'
     | '/deliver'
     | '/get-started'
     | '/help'
@@ -809,6 +821,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   BusinessRoute: typeof BusinessRoute
   CitiesRoute: typeof CitiesRoute
+  ContactRoute: typeof ContactRoute
   DeliverRoute: typeof DeliverRoute
   GetStartedRoute: typeof GetStartedRoute
   HelpRoute: typeof HelpRoute
@@ -863,6 +876,13 @@ declare module '@tanstack/react-router' {
       path: '/cities'
       fullPath: '/cities'
       preLoaderRoute: typeof CitiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/deliver': {
@@ -1428,6 +1448,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   BusinessRoute: BusinessRoute,
   CitiesRoute: CitiesRoute,
+  ContactRoute: ContactRoute,
   DeliverRoute: DeliverRoute,
   GetStartedRoute: GetStartedRoute,
   HelpRoute: HelpRoute,

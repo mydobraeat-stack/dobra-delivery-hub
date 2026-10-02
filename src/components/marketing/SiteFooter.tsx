@@ -1,8 +1,10 @@
 import { Link } from "@tanstack/react-router";
-import { Facebook, Instagram, Twitter } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 import { DobraLogo } from "@/components/dobra/Logo";
 import { LanguageSwitcher } from "@/components/dobra/LanguageSwitcher";
-import { useT } from "@/lib/i18n";
+import { useI18n, useT } from "@/lib/i18n";
+import { StoreSoonDialog } from "./StoreSoonDialog";
+import { COMPANY, SITE_COPY } from "./site-copy";
 
 function AppleIcon() {
   return (
@@ -30,6 +32,8 @@ const STORE_BADGES = [
 
 export function SiteFooter() {
   const t = useT();
+  const { locale } = useI18n();
+  const c = SITE_COPY[locale];
   const year = new Date().getFullYear();
 
   return (
@@ -88,31 +92,53 @@ export function SiteFooter() {
 
           <div className="min-w-0 space-y-4">
             {STORE_BADGES.map((badge) => (
-              <a
-                key={badge.key}
-                href="#"
-                aria-label={t(`marketing.footer.${badge.key}`)}
-                className="flex w-full max-w-[200px] items-center gap-3 rounded-xl bg-ink px-4 py-2.5 text-card transition-opacity hover:opacity-90"
-              >
-                <badge.Icon />
-                <span className="min-w-0">
-                  <span className="block text-[10px] uppercase tracking-wide opacity-80">
-                    {badge.small}
-                  </span>
-                  <span className="block truncate text-sm font-bold">{badge.big}</span>
-                </span>
-              </a>
-            ))}
-
-            <div className="flex items-center gap-3 pt-1" aria-label={t("marketing.footer.social")}>
-              {[Instagram, Facebook, Twitter].map((Icon, i) => (
-                <a
-                  key={i}
-                  href="#"
-                  className="grid size-9 place-items-center rounded-full border border-ink/15 text-foreground/70 hover:border-primary hover:text-primary"
+              <StoreSoonDialog key={badge.key}>
+                <button
+                  type="button"
+                  aria-label={t(`marketing.footer.${badge.key}`)}
+                  className="flex w-full max-w-[200px] items-center gap-3 rounded-xl bg-ink px-4 py-2.5 text-left text-card transition-opacity hover:opacity-90"
                 >
-                  <Icon className="size-4" aria-hidden />
-                </a>
+                  <badge.Icon />
+                  <span className="min-w-0">
+                    <span className="block text-[10px] uppercase tracking-wide opacity-80">
+                      {badge.small}
+                    </span>
+                    <span className="block truncate text-sm font-bold">{badge.big}</span>
+                  </span>
+                </button>
+              </StoreSoonDialog>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-10 grid gap-8 border-t border-ink/10 pt-8 md:grid-cols-3">
+          <div className="text-sm">
+            <h3 className="font-bold text-foreground">{c.contact}</h3>
+            <a href={`mailto:${COMPANY.email}`} className="mt-3 flex items-center gap-2 text-foreground/80 hover:text-primary">
+              <Mail className="size-4" aria-hidden /> {COMPANY.email}
+            </a>
+            <a href={COMPANY.phoneHref} className="mt-2 flex items-center gap-2 text-foreground/80 hover:text-primary">
+              <Phone className="size-4" aria-hidden /> {COMPANY.phone}
+            </a>
+            <p className="mt-2 text-foreground/60">{c.hours}</p>
+            <Link to="/contact" className="mt-2 inline-block font-semibold text-accent hover:underline">
+              {c.contact} →
+            </Link>
+          </div>
+          <div className="text-sm text-foreground/70">
+            <h3 className="font-bold text-foreground">{c.company}</h3>
+            <p className="mt-3 font-semibold text-foreground/80">{COMPANY.legalName}</p>
+            <p className="flex items-start gap-2"><MapPin className="mt-0.5 size-4 shrink-0" aria-hidden />{COMPANY.street}, {COMPANY.city}</p>
+            <p className="mt-1">KRS {COMPANY.krs} · NIP {COMPANY.nip}</p>
+            <p>REGON {COMPANY.regon}</p>
+          </div>
+          <div className="text-sm">
+            <h3 className="font-bold text-foreground">{c.payments}</h3>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {["BLIK", "Przelewy24", "Visa", "Mastercard", "Apple Pay", "Google Pay", "Cash"].map((p) => (
+                <span key={p} className="rounded-md border border-ink/15 bg-background px-2.5 py-1 text-xs font-bold text-foreground/80">
+                  {p}
+                </span>
               ))}
             </div>
           </div>
@@ -130,6 +156,12 @@ export function SiteFooter() {
             </Link>
             <Link to="/terms" className="hover:text-primary">
               {t("marketing.footer.terms")}
+            </Link>
+            <Link to="/contact" hash="complaints" className="hover:text-primary">
+              {c.complaints}
+            </Link>
+            <Link to="/contact" className="hover:text-primary">
+              {c.contact}
             </Link>
           </div>
         </div>
