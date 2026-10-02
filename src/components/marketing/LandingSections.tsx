@@ -52,7 +52,7 @@ export function LandingSections() {
                 <Link
                   key={item.title}
                   to={to}
-                  search={to === "/get-started" ? { mode: "signup" } : undefined}
+                  search={to === "/get-started" ? { mode: "signup" } : {}}
                   className="group flex flex-col rounded-2xl bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
                 >
                   <Icon className="size-8 text-accent" aria-hidden />
