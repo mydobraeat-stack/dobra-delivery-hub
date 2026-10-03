@@ -27,10 +27,36 @@ function toPoints(cities: City[]): MapPoint[] {
   return cities.map((c) => ({ lat: c.lat, lng: c.lng, label: c.name, kind: "pickup" as const }));
 }
 
+/** Key-free OpenStreetMap view, used when Google Maps can't load on this domain. */
+function OsmFallback({ cities, title }: { cities: City[]; title: string }) {
+  const lats = cities.map((c) => c.lat);
+  const lngs = cities.map((c) => c.lng);
+  const pad = 0.6;
+  const bbox = [
+    Math.min(...lngs) - pad,
+    Math.min(...lats) - pad,
+    Math.max(...lngs) + pad,
+    Math.max(...lats) + pad,
+  ].join(",");
+  return (
+    <iframe
+      title={title}
+      loading="lazy"
+      className="h-64 w-full border-0 sm:h-72"
+      src={`https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik`}
+    />
+  );
+}
+
 function CountryCard({ title, cities }: { title: string; cities: City[] }) {
   return (
     <article className="overflow-hidden rounded-3xl border border-ink/10 bg-background/40 shadow-soft">
-      <MapView points={toPoints(cities)} className="h-64 w-full sm:h-72" zoom={6} />
+      <MapView
+        points={toPoints(cities)}
+        className="h-64 w-full sm:h-72"
+        zoom={6}
+        fallback={cities.length ? <OsmFallback cities={cities} title={title} /> : undefined}
+      />
       <div className="p-5">
         <h3 className="text-lg font-bold text-foreground">{title}</h3>
         <ul className="mt-3 flex flex-wrap gap-2">

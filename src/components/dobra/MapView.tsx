@@ -54,10 +54,12 @@ type Props = {
   path?: string | null;
   className?: string;
   zoom?: number;
+  /** Shown instead of the "map unavailable" note when Google Maps cannot load. */
+  fallback?: React.ReactNode;
 };
 
 /** Renders a real Google map with branded markers and an optional route. Client-side only. */
-export function MapView({ points, path, className, zoom = 14 }: Props) {
+export function MapView({ points, path, className, zoom = 14, fallback }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const mapRef = useRef<any>(null);
   const markersRef = useRef<any[]>([]);
@@ -137,6 +139,7 @@ export function MapView({ points, path, className, zoom = 14 }: Props) {
     };
   }, [points, path, zoom]);
 
+  if ((error || !mapsBrowserKey) && fallback) return <>{fallback}</>;
   if (error || !mapsBrowserKey) {
     return (
       <div
