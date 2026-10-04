@@ -37,6 +37,15 @@ export const Route = createFileRoute("/_authenticated/checkout")({
   component: CheckoutPage,
 });
 
+type PayChoice = "blik" | "apple_pay" | "google_pay" | "card" | "cash";
+const PAY_OPTIONS: { id: PayChoice; title: string; copy: string }[] = [
+  { id: "blik", title: "BLIK", copy: "Pay instantly with a 6-digit code from your bank app." },
+  { id: "apple_pay", title: "Apple Pay", copy: "Pay with Face ID or Touch ID on Apple devices." },
+  { id: "google_pay", title: "Google Pay", copy: "Pay with a card saved in your Google account." },
+  { id: "card", title: "Card", copy: "" },
+  { id: "cash", title: "Cash", copy: "" },
+];
+
 function CheckoutPage() {
   const { t, formatMoney } = useI18n();
   const cart = useCart();
@@ -59,7 +68,11 @@ function CheckoutPage() {
   }, [defaultAddress, prefilled]);
   const [note, setNote] = useState("");
   const [placed, setPlaced] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cash");
+  const isPoland = (restaurant?.country ?? "PL").toUpperCase().startsWith("P");
+  const [pickedChoice, setChoice] = useState<PayChoice | null>(null);
+  // Poland defaults to BLIK; Cameroon (no Mobile Money yet) defaults to cash.
+  const choice: PayChoice = pickedChoice && (pickedChoice !== "blik" || isPoland) ? pickedChoice : isPoland ? "blik" : "cash";
+  const paymentMethod: PaymentMethod = choice === "cash" ? "cash" : "card";
   const startCardPayment = useServerFn(createCardCheckoutSession);
 
   const subtotal = cartSubtotal(cart);
@@ -107,6 +120,7 @@ function CheckoutPage() {
             successPath: `/orders/${orderId}`,
             cancelPath: "/checkout",
             origin: window.location.origin,
+            method: choice === "cash" ? "card" : choice,
           },
         });
         if (session.url) {
@@ -221,32 +235,30 @@ function CheckoutPage() {
             <Card className="border-ink/10">
               <CardContent className="space-y-3 py-4">
                 <p className="font-semibold text-foreground">{t("customer.checkout.paymentTitle")}</p>
-                {(
-                  [
-                    { id: "cash", titleKey: "customer.checkout.cashTitle", copyKey: "customer.checkout.cashCopy" },
-                    { id: "card", titleKey: "customer.checkout.cardTitle", copyKey: "customer.checkout.cardCopy" },
-                  ] as const
-                ).map((option) => (
+                {PAY_OPTIONS.filter((o) => o.id !== "blik" || isPoland).map((option) => (
                   <button
                     key={option.id}
                     type="button"
-                    onClick={() => setPaymentMethod(option.id)}
+                    onClick={() => setChoice(option.id)}
                     className={`w-full rounded-2xl border-2 px-4 py-3 text-left transition-colors ${
-                      paymentMethod === option.id
+                      choice === option.id
                         ? "border-primary bg-sun/25"
                         : "border-ink/10 hover:border-ink/25"
                     }`}
                   >
                     <span className="block text-sm font-semibold text-foreground">
-                      {t(option.titleKey)}
+                      {option.id === "cash" ? t("customer.checkout.cashTitle") : option.id === "card" ? t("customer.checkout.cardTitle") : option.title}
                     </span>
-                    <span className="block text-xs text-foreground/60">{t(option.copyKey)}</span>
+                    <span className="block text-xs text-foreground/60">
+                      {option.id === "cash" ? t("customer.checkout.cashCopy") : option.id === "card" ? t("customer.checkout.cardCopy") : option.copy}
+                    </span>
                   </button>
                 ))}
                 {/* TODO: Mobile Money (Flutterwave / Notch Pay) for Cameroon — not built yet. */}
                 <p className="text-xs text-foreground/50">
                   {t("customer.checkout.mobileMoneySoon")}
                 </p>
+
               </CardContent>
             </Card>
 
