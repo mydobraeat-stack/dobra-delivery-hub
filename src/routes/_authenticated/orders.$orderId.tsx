@@ -93,7 +93,7 @@ function OrderTracking() {
     paymentChecked.current = true;
     confirmPayment({ data: { orderId } })
       .then((r) => {
-        if (r.paid) {
+        if (r.paid && "justPaid" in r && r.justPaid) {
           toast.success("Card payment received");
           invalidate();
         }

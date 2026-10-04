@@ -83,7 +83,7 @@ export const confirmCardPayment = createServerFn({ method: "POST" })
       .eq("customer_id", context.userId)
       .maybeSingle();
     if (!order || order.payment_method !== "card") return { paid: false };
-    if (order.payment_status === "paid") return { paid: true };
+    if (order.payment_status === "paid") return { paid: true, justPaid: false };
     const ref = order.payment_reference ?? "";
     if (!secret || !ref.startsWith("cs_")) return { paid: false };
 
@@ -95,7 +95,7 @@ export const confirmCardPayment = createServerFn({ method: "POST" })
       .from("orders")
       .update({ payment_status: "paid", payment_reference: String(session.payment_intent ?? ref) })
       .eq("id", order.id);
-    return { paid: true };
+    return { paid: true, justPaid: true };
   });
 
 /** Staff refund: records the refund, then sends card refunds back through Stripe. */
