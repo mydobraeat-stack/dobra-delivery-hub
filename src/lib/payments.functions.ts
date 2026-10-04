@@ -29,6 +29,9 @@ const input = z.object({
   successPath: z.string().startsWith("/"),
   cancelPath: z.string().startsWith("/"),
   origin: z.string().url(),
+  // Customer's chosen online method. Apple Pay / Google Pay run on the "card"
+  // rail and are offered automatically by Stripe Checkout on supported devices.
+  method: z.enum(["blik", "apple_pay", "google_pay", "card"]).default("card"),
 });
 
 export const createCardCheckoutSession = createServerFn({ method: "POST" })
@@ -47,22 +50,29 @@ export const createCardCheckoutSession = createServerFn({ method: "POST" })
     if (order.payment_status === "paid") return { url: null, alreadyPaid: true as const };
     if (!secret) return { url: null, alreadyPaid: false as const, missingKey: true as const };
 
-    const session = await stripe(
-      "checkout/sessions",
-      secret,
-      new URLSearchParams({
-        mode: "payment",
-        success_url: `${data.origin}${data.successPath}`,
-        cancel_url: `${data.origin}${data.cancelPath}`,
-        client_reference_id: order.id,
-        "metadata[order_id]": order.id,
-        "payment_intent_data[metadata][order_id]": order.id,
-        "line_items[0][quantity]": "1",
-        "line_items[0][price_data][currency]": String(order.currency).toLowerCase(),
-        "line_items[0][price_data][unit_amount]": String(toMinor(Number(order.total), String(order.currency))),
-        "line_items[0][price_data][product_data][name]": `Dobra order ${order.id.slice(0, 8)}`,
-      }),
-    );
+    const currency = String(order.currency).toLowerCase();
+    const params = new URLSearchParams({
+      mode: "payment",
+      success_url: `${data.origin}${data.successPath}`,
+      cancel_url: `${data.origin}${data.cancelPath}`,
+      client_reference_id: order.id,
+      "metadata[order_id]": order.id,
+      "metadata[method]": data.method,
+      "payment_intent_data[metadata][order_id]": order.id,
+      "line_items[0][quantity]": "1",
+      "line_items[0][price_data][currency]": currency,
+      "line_items[0][price_data][unit_amount]": String(toMinor(Number(order.total), currency)),
+      "line_items[0][price_data][product_data][name]": `Dobra order ${order.id.slice(0, 8)}`,
+    });
+    if (data.method === "blik") {
+      if (currency !== "pln") throw new Error("BLIK is only available for orders in PLN.");
+      params.append("payment_method_types[]", "blik");
+    } else {
+      // Card rail; Checkout shows Apple Pay / Google Pay buttons when the device supports them.
+      params.append("payment_method_types[]", "card");
+    }
+    const session = await stripe("checkout/sessions", secret, params);
+
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     await supabaseAdmin.from("orders").update({ payment_reference: String(session.id) }).eq("id", order.id);
