@@ -90,7 +90,6 @@ function OrderTracking() {
   const paymentChecked = useRef(false);
   useEffect(() => {
     if (!order || paymentChecked.current) return;
-    if (order.payment_method !== "card" || order.payment_status !== "pending") return;
     paymentChecked.current = true;
     confirmPayment({ data: { orderId } })
       .then((r) => {
