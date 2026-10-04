@@ -1,4 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import { refundOrderWithStripe } from "@/lib/payments.functions";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -18,7 +20,6 @@ import {
   forceStatus,
   orderExtrasQuery,
   reassignDriver,
-  refundOrder,
 } from "@/lib/admin-ops";
 import { ActionDialog } from "@/components/admin/ActionDialog";
 import { StatusBadge } from "@/components/dobra/StatusBadge";
@@ -152,6 +153,7 @@ function OrderRow({ order: o }: { order: AdminOrder }) {
   const closed = o.status === "delivered" || o.status === "cancelled";
   const refundable = Number(o.total) - Number(o.refund_amount ?? 0);
   const isCardPaid = o.payment_method === "card" && o.payment_status === "paid";
+  const stripeRefund = useServerFn(refundOrderWithStripe);
 
   const saveNote = async () => {
     setSavingNote(true);
@@ -228,7 +230,7 @@ function OrderRow({ order: o }: { order: AdminOrder }) {
             title={`Refund ${orderRef(o.id)}`}
             description={
               isCardPaid
-                ? "Card payment: the refund is recorded as 'card refund pending' and must be sent from Stripe until automatic Stripe refunds are connected."
+                ? "Card payment: the money is sent back to the customer's card through Stripe automatically."
                 : "Cash / unpaid order: the order is marked refunded (delivered) or voided (not delivered). No money moves automatically."
             }
             amount={{ max: refundable, currency: o.currency, label: "Refund amount" }}
@@ -241,8 +243,11 @@ function OrderRow({ order: o }: { order: AdminOrder }) {
             }
             successMessage="Refund recorded"
             onConfirm={async (reason, amount) => {
-              await refundOrder(o.id, amount, reason);
-              refresh();
+              try {
+                await stripeRefund({ data: { orderId: o.id, amount, reason } });
+              } finally {
+                refresh();
+              }
             }}
           />
         ) : null}
