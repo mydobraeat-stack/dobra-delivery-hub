@@ -2,16 +2,27 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-// ---------------------------------------------------------------------------
-// Stripe Checkout (TEST / SANDBOX SCAFFOLD)
-//
-// TODO(real keys): add STRIPE_SECRET_KEY (sk_test_... then sk_live_...) in
-// Project Settings -> Secrets. Nothing else needs to change here.
-//
-// TODO(mobile money): Cameroon market — Flutterwave / Notch Pay integration is
-// intentionally NOT implemented yet. Add a separate server function here once
-// those accounts exist.
-// ---------------------------------------------------------------------------
+// Stripe card payments. Requires the STRIPE_SECRET_KEY secret (sk_test_ or sk_live_).
+// TODO(mobile money): Cameroon (Flutterwave / Notch Pay) not implemented yet.
+
+async function stripe(path: string, secret: string, body?: URLSearchParams) {
+  const res = await fetch(`https://api.stripe.com/v1/${path}`, {
+    method: body ? "POST" : "GET",
+    headers: {
+      Authorization: `Bearer ${secret}`,
+      ...(body ? { "content-type": "application/x-www-form-urlencoded" } : {}),
+    },
+    body,
+  });
+  const json = (await res.json()) as Record<string, unknown> & { error?: { message?: string } };
+  if (!res.ok) throw new Error(json.error?.message ?? "Stripe request failed.");
+  return json;
+}
+
+// Currencies Stripe treats as zero-decimal (amount is not multiplied by 100).
+const ZERO_DECIMAL = new Set(["xaf", "xof", "jpy", "krw"]);
+const toMinor = (amount: number, currency: string) =>
+  ZERO_DECIMAL.has(currency.toLowerCase()) ? Math.round(amount) : Math.round(amount * 100);
 
 const input = z.object({
   orderId: z.string().uuid(),
@@ -34,40 +45,106 @@ export const createCardCheckoutSession = createServerFn({ method: "POST" })
       .single();
     if (error || !order) throw new Error("Order not found.");
     if (order.payment_status === "paid") return { url: null, alreadyPaid: true as const };
+    if (!secret) return { url: null, alreadyPaid: false as const, missingKey: true as const };
 
-    if (!secret) {
-      // Sandbox placeholder: no key configured yet.
-      return { url: null, alreadyPaid: false as const, missingKey: true as const };
-    }
+    const session = await stripe(
+      "checkout/sessions",
+      secret,
+      new URLSearchParams({
+        mode: "payment",
+        success_url: `${data.origin}${data.successPath}`,
+        cancel_url: `${data.origin}${data.cancelPath}`,
+        client_reference_id: order.id,
+        "metadata[order_id]": order.id,
+        "payment_intent_data[metadata][order_id]": order.id,
+        "line_items[0][quantity]": "1",
+        "line_items[0][price_data][currency]": String(order.currency).toLowerCase(),
+        "line_items[0][price_data][unit_amount]": String(toMinor(Number(order.total), String(order.currency))),
+        "line_items[0][price_data][product_data][name]": `Dobra order ${order.id.slice(0, 8)}`,
+      }),
+    );
 
-    const body = new URLSearchParams({
-      mode: "payment",
-      success_url: `${data.origin}${data.successPath}`,
-      cancel_url: `${data.origin}${data.cancelPath}`,
-      client_reference_id: order.id,
-      "line_items[0][quantity]": "1",
-      "line_items[0][price_data][currency]": String(order.currency).toLowerCase(),
-      "line_items[0][price_data][unit_amount]": String(Math.round(Number(order.total) * 100)),
-      "line_items[0][price_data][product_data][name]": `Dobra order ${order.id.slice(0, 8)}`,
-    });
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    await supabaseAdmin.from("orders").update({ payment_reference: String(session.id) }).eq("id", order.id);
 
-    const response = await fetch("https://api.stripe.com/v1/checkout/sessions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${secret}`,
-        "content-type": "application/x-www-form-urlencoded",
-      },
-      body,
-    });
-    const session = (await response.json()) as { url?: string; error?: { message?: string } };
-    if (!response.ok || !session.url) {
-      throw new Error(session.error?.message ?? "Could not start the card payment.");
-    }
+    return { url: String(session.url), alreadyPaid: false as const, missingKey: false as const };
+  });
 
-    await context.supabase
+/** Called when the customer returns from Stripe: checks with Stripe and marks the order paid. */
+export const confirmCardPayment = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: unknown) => z.object({ orderId: z.string().uuid() }).parse(data))
+  .handler(async ({ data, context }) => {
+    const secret = process.env["STRIPE_SECRET_KEY"];
+    const { data: order } = await context.supabase
       .from("orders")
-      .update({ payment_reference: session.url ? data.orderId : null })
-      .eq("id", order.id);
+      .select("id,payment_method,payment_status,payment_reference")
+      .eq("id", data.orderId)
+      .eq("customer_id", context.userId)
+      .maybeSingle();
+    if (!order || order.payment_method !== "card") return { paid: false };
+    if (order.payment_status === "paid") return { paid: true };
+    const ref = order.payment_reference ?? "";
+    if (!secret || !ref.startsWith("cs_")) return { paid: false };
 
-    return { url: session.url, alreadyPaid: false as const, missingKey: false as const };
+    const session = await stripe(`checkout/sessions/${ref}`, secret);
+    if (session.payment_status !== "paid") return { paid: false };
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    await supabaseAdmin
+      .from("orders")
+      .update({ payment_status: "paid", payment_reference: String(session.payment_intent ?? ref) })
+      .eq("id", order.id);
+    return { paid: true };
+  });
+
+/** Staff refund: records the refund, then sends card refunds back through Stripe. */
+export const refundOrderWithStripe = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: unknown) =>
+    z.object({ orderId: z.string().uuid(), amount: z.number().positive(), reason: z.string().min(1).max(500) }).parse(data),
+  )
+  .handler(async ({ data, context }) => {
+    // admin_refund_order checks staff role, validates the amount and writes the audit log.
+    const { data: status, error } = await context.supabase.rpc("admin_refund_order", {
+      _order: data.orderId,
+      _amount: data.amount,
+      _reason: data.reason,
+    });
+    if (error) throw new Error(error.message);
+    if (status !== "pending_card") return { status: String(status) };
+
+    const secret = process.env["STRIPE_SECRET_KEY"];
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: order } = await supabaseAdmin
+      .from("orders")
+      .select("id,total,currency,refund_amount,payment_reference")
+      .eq("id", data.orderId)
+      .single();
+    if (!secret || !order) throw new Error("Refund recorded, but Stripe is not connected — send it from Stripe.");
+
+    let intent = order.payment_reference ?? "";
+    if (intent.startsWith("cs_")) {
+      const session = await stripe(`checkout/sessions/${intent}`, secret);
+      intent = String(session.payment_intent ?? "");
+    }
+    if (!intent.startsWith("pi_")) throw new Error("Refund recorded, but no Stripe payment was found for this order.");
+
+    const refund = await stripe(
+      "refunds",
+      secret,
+      new URLSearchParams({
+        payment_intent: intent,
+        amount: String(toMinor(data.amount, String(order.currency))),
+        "metadata[order_id]": order.id,
+        "metadata[reason]": data.reason.slice(0, 450),
+      }),
+    );
+
+    const full = Number(order.refund_amount) >= Number(order.total);
+    await supabaseAdmin
+      .from("orders")
+      .update({ refund_status: "refunded", payment_status: full ? "refunded" : "partially_refunded" })
+      .eq("id", order.id);
+    return { status: "refunded", refundId: String(refund.id) };
   });
