@@ -3,6 +3,8 @@ import { ConfirmAction } from "@/components/dobra/ConfirmButton";
 import { ListSkeleton } from "@/components/dobra/QueryStates";
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { confirmCardPayment } from "@/lib/payments.functions";
 import { ArrowLeft, Check, MapPin, Star } from "lucide-react";
 import { toast } from "sonner";
 import { AppHeader } from "@/components/dobra/AppHeader";
@@ -82,6 +84,24 @@ function OrderTracking() {
     queryClient.invalidateQueries({ queryKey: ["order", orderId] });
     queryClient.invalidateQueries({ queryKey: ["orders"] });
   };
+
+  // Returning from Stripe: confirm the card payment and mark the order paid.
+  const confirmPayment = useServerFn(confirmCardPayment);
+  const paymentChecked = useRef(false);
+  useEffect(() => {
+    if (!order || paymentChecked.current) return;
+    if (order.payment_method !== "card" || order.payment_status !== "pending") return;
+    paymentChecked.current = true;
+    confirmPayment({ data: { orderId } })
+      .then((r) => {
+        if (r.paid) {
+          toast.success("Card payment received");
+          invalidate();
+        }
+      })
+      .catch(() => undefined);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [order, orderId]);
 
   const cancel = useMutation({
     mutationFn: () => cancelOrder(orderId),

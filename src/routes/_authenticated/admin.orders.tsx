@@ -228,7 +228,7 @@ function OrderRow({ order: o }: { order: AdminOrder }) {
             title={`Refund ${orderRef(o.id)}`}
             description={
               isCardPaid
-                ? "Card payment: the refund is recorded as 'card refund pending' and must be sent from Stripe until automatic Stripe refunds are connected."
+                ? "Card payment: the money is sent back to the customer's card through Stripe automatically."
                 : "Cash / unpaid order: the order is marked refunded (delivered) or voided (not delivered). No money moves automatically."
             }
             amount={{ max: refundable, currency: o.currency, label: "Refund amount" }}
@@ -241,8 +241,11 @@ function OrderRow({ order: o }: { order: AdminOrder }) {
             }
             successMessage="Refund recorded"
             onConfirm={async (reason, amount) => {
-              await refundOrder(o.id, amount, reason);
-              refresh();
+              try {
+                await stripeRefund({ data: { orderId: o.id, amount, reason } });
+              } finally {
+                refresh();
+              }
             }}
           />
         ) : null}
