@@ -1,4 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import { refundOrderWithStripe } from "@/lib/payments.functions";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -152,6 +154,7 @@ function OrderRow({ order: o }: { order: AdminOrder }) {
   const closed = o.status === "delivered" || o.status === "cancelled";
   const refundable = Number(o.total) - Number(o.refund_amount ?? 0);
   const isCardPaid = o.payment_method === "card" && o.payment_status === "paid";
+  const stripeRefund = useServerFn(refundOrderWithStripe);
 
   const saveNote = async () => {
     setSavingNote(true);
