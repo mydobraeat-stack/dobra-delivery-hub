@@ -12,9 +12,9 @@ async function stripe(path: string, secret: string, body?: URLSearchParams) {
       Authorization: `Bearer ${secret}`,
       ...(body ? { "content-type": "application/x-www-form-urlencoded" } : {}),
     },
-    body,
+    body: body ?? null,
   });
-  const json = (await res.json()) as Record<string, unknown> & { error?: { message?: string } };
+  const json = (await res.json()) as { id?: string; url?: string; payment_status?: string; payment_intent?: string; error?: { message?: string } };
   if (!res.ok) throw new Error(json.error?.message ?? "Stripe request failed.");
   return json;
 }
