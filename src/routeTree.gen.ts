@@ -68,6 +68,7 @@ import { Route as AuthenticatedRestaurantRestaurantIdRouteImport } from './route
 import { Route as AuthenticatedVendorIndexRouteImport } from './routes/_authenticated/vendor.index'
 import { Route as AuthenticatedVendorMenuRouteImport } from './routes/_authenticated/vendor.menu'
 import { Route as AuthenticatedVendorStoreRouteImport } from './routes/_authenticated/vendor.store'
+import { Route as ApiPublicStripeWebhookRouteImport } from './routes/api/public/stripe-webhook'
 import { Route as AuthenticatedCustomerSoonCategoryRouteImport } from './routes/_authenticated/customer.soon.$category'
 import { Route as AuthenticatedDriverDeliveryOrderIdRouteImport } from './routes/_authenticated/driver.delivery.$orderId'
 import { Route as ApiPublicPushDispatchRouteImport } from './routes/api/public/push.dispatch'
@@ -400,6 +401,11 @@ const AuthenticatedVendorStoreRoute =
     path: '/store',
     getParentRoute: () => AuthenticatedVendorRoute,
   } as any)
+const ApiPublicStripeWebhookRoute = ApiPublicStripeWebhookRouteImport.update({
+  id: '/api/public/stripe-webhook',
+  path: '/api/public/stripe-webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedCustomerSoonCategoryRoute =
   AuthenticatedCustomerSoonCategoryRouteImport.update({
     id: '/soon/$category',
@@ -482,6 +488,7 @@ export interface FileRoutesByFullPath {
   '/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
   '/vendor/menu': typeof AuthenticatedVendorMenuRoute
   '/vendor/store': typeof AuthenticatedVendorStoreRoute
+  '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/customer/': typeof AuthenticatedCustomerIndexRoute
   '/driver/': typeof AuthenticatedDriverIndexRoute
@@ -542,6 +549,7 @@ export interface FileRoutesByTo {
   '/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
   '/vendor/menu': typeof AuthenticatedVendorMenuRoute
   '/vendor/store': typeof AuthenticatedVendorStoreRoute
+  '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/customer': typeof AuthenticatedCustomerIndexRoute
   '/driver': typeof AuthenticatedDriverIndexRoute
@@ -609,6 +617,7 @@ export interface FileRoutesById {
   '/_authenticated/restaurant/$restaurantId': typeof AuthenticatedRestaurantRestaurantIdRoute
   '/_authenticated/vendor/menu': typeof AuthenticatedVendorMenuRoute
   '/_authenticated/vendor/store': typeof AuthenticatedVendorStoreRoute
+  '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/customer/': typeof AuthenticatedCustomerIndexRoute
   '/_authenticated/driver/': typeof AuthenticatedDriverIndexRoute
@@ -676,6 +685,7 @@ export interface FileRouteTypes {
     | '/restaurant/$restaurantId'
     | '/vendor/menu'
     | '/vendor/store'
+    | '/api/public/stripe-webhook'
     | '/admin/'
     | '/customer/'
     | '/driver/'
@@ -736,6 +746,7 @@ export interface FileRouteTypes {
     | '/restaurant/$restaurantId'
     | '/vendor/menu'
     | '/vendor/store'
+    | '/api/public/stripe-webhook'
     | '/admin'
     | '/customer'
     | '/driver'
@@ -802,6 +813,7 @@ export interface FileRouteTypes {
     | '/_authenticated/restaurant/$restaurantId'
     | '/_authenticated/vendor/menu'
     | '/_authenticated/vendor/store'
+    | '/api/public/stripe-webhook'
     | '/_authenticated/admin/'
     | '/_authenticated/customer/'
     | '/_authenticated/driver/'
@@ -829,6 +841,7 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   RestaurantsRoute: typeof RestaurantsRoute
   TermsRoute: typeof TermsRoute
+  ApiPublicStripeWebhookRoute: typeof ApiPublicStripeWebhookRoute
   ApiPublicPushDispatchRoute: typeof ApiPublicPushDispatchRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
@@ -1249,6 +1262,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedVendorStoreRouteImport
       parentRoute: typeof AuthenticatedVendorRoute
     }
+    '/api/public/stripe-webhook': {
+      id: '/api/public/stripe-webhook'
+      path: '/api/public/stripe-webhook'
+      fullPath: '/api/public/stripe-webhook'
+      preLoaderRoute: typeof ApiPublicStripeWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/customer/soon/$category': {
       id: '/_authenticated/customer/soon/$category'
       path: '/soon/$category'
@@ -1456,6 +1476,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   RestaurantsRoute: RestaurantsRoute,
   TermsRoute: TermsRoute,
+  ApiPublicStripeWebhookRoute: ApiPublicStripeWebhookRoute,
   ApiPublicPushDispatchRoute: ApiPublicPushDispatchRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
