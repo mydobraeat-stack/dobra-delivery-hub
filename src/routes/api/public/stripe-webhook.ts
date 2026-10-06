@@ -85,7 +85,7 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
         } else if (event.type === "checkout.session.async_payment_failed") {
           await supabaseAdmin
             .from("orders")
-            .update({ payment_status: "failed" })
+            .update({ payment_status: "failed", status: "cancelled", cancel_reason: "Online payment failed" })
             .eq("id", orderId)
             .eq("payment_method", "card")
             .neq("payment_status", "paid");

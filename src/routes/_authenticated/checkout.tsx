@@ -10,7 +10,7 @@ import { PhoneFrame } from "@/components/dobra/PhoneFrame";
 import { StoredImage } from "@/components/dobra/StoredImage";
 import { cartSubtotal, clearCart, setQuantity, useCart } from "@/lib/cart";
 import { createCardCheckoutSession } from "@/lib/payments.functions";
-import { placeOrder, previewPromo, pricingQuery, restaurantQuery, type PaymentMethod } from "@/lib/dobra";
+import { computeOrderFees, placeOrder, previewPromo, pricingQuery, restaurantQuery, type PaymentMethod } from "@/lib/dobra";
 import { useQuery as usePricingQuery } from "@tanstack/react-query";
 import { useI18n } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
@@ -76,7 +76,13 @@ function CheckoutPage() {
   const startCardPayment = useServerFn(createCardCheckoutSession);
 
   const subtotal = cartSubtotal(cart);
-  const fee = Number(restaurant?.delivery_fee ?? 0);
+  // Same fee logic as placeOrder (city override, Prime) so the shown total = the charged total.
+  const { data: fees } = useQuery({
+    queryKey: ["order-fees", restaurant?.id],
+    queryFn: () => computeOrderFees(restaurant!),
+    enabled: Boolean(restaurant),
+  });
+  const fee = Number(fees?.deliveryFee ?? restaurant?.delivery_fee ?? 0);
   const { data: pricing } = usePricingQuery({ ...pricingQuery(restaurant?.country), enabled: Boolean(restaurant) });
   const serviceFee = Number(pricing?.service_fee ?? 0);
   const [promoInput, setPromoInput] = useState("");
@@ -124,7 +130,8 @@ function CheckoutPage() {
           },
         });
         if (session.url) {
-          clearCart();
+          // Keep the basket until payment is confirmed on the order page, so a
+          // cancelled Stripe payment returns to a full checkout.
           window.location.href = session.url;
           return null;
         }

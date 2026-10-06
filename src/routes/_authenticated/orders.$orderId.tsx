@@ -5,6 +5,7 @@ import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { confirmCardPayment } from "@/lib/payments.functions";
+import { clearCart } from "@/lib/cart";
 import { ArrowLeft, Check, MapPin, Star } from "lucide-react";
 import { toast } from "sonner";
 import { AppHeader } from "@/components/dobra/AppHeader";
@@ -93,6 +94,7 @@ function OrderTracking() {
     paymentChecked.current = true;
     confirmPayment({ data: { orderId } })
       .then((r) => {
+        if (r.paid) clearCart();
         if (r.paid && "justPaid" in r && r.justPaid) {
           toast.success("Card payment received");
           invalidate();
