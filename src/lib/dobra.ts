@@ -218,7 +218,10 @@ export function vendorOrdersQuery(restaurantId: string | undefined) {
         .eq("restaurant_id", restaurantId!)
         .order("created_at", { ascending: false });
       if (error) throw error;
-      return (data ?? []) as OrderRow[];
+      // Online (card/BLIK) orders reach the restaurant only once Stripe confirms payment.
+      return ((data ?? []) as OrderRow[]).filter(
+        (o) => o.payment_method !== "card" || ["paid", "refunded", "partially_refunded"].includes(String(o.payment_status)),
+      );
     },
   });
 }
@@ -463,6 +466,28 @@ export async function cityDeliveryOverride(city: string | null | undefined) {
   return data?.delivery_fee_override != null ? Number(data.delivery_fee_override) : null;
 }
 
+/** Single source of truth for food-order fees: used by checkout display AND placeOrder. */
+export async function computeOrderFees(restaurant: Pick<Restaurant, "country" | "delivery_fee"> & { city?: string | null }) {
+  const userId = await currentUserId();
+  // Dobra Prime members pay no delivery fee on food orders.
+  const { data: prime } = await supabase
+    .from("prime_memberships")
+    .select("status,current_period_end")
+    .eq("user_id", userId)
+    .maybeSingle();
+  const primeActive =
+    prime?.status === "active" &&
+    (!prime.current_period_end || new Date(prime.current_period_end).getTime() > Date.now());
+  const pricing = await fetchPricing(restaurant.country);
+  const override = await cityDeliveryOverride(restaurant.city);
+  const baseFee = override ?? Number(restaurant.delivery_fee ?? pricing.delivery_fee);
+  return {
+    deliveryFee: primeActive ? 0 : baseFee,
+    serviceFee: Number(pricing.service_fee ?? 0),
+    primeActive,
+  };
+}
+
 export async function previewPromo(code: string, subtotal: number, country?: string | null) {
   const { data, error } = await supabase.rpc("preview_promo", {
     _code: code,
@@ -486,20 +511,8 @@ export async function placeOrder({
   if (lines.length === 0) throw new Error("Your basket is empty.");
   const userId = await currentUserId();
   const subtotal = lines.reduce((sum, l) => sum + l.price * l.quantity, 0);
-  // Dobra Prime members pay no delivery fee on food orders.
-  const { data: prime } = await supabase
-    .from("prime_memberships")
-    .select("status,current_period_end")
-    .eq("user_id", userId)
-    .maybeSingle();
-  const primeActive =
-    prime?.status === "active" &&
-    (!prime.current_period_end || new Date(prime.current_period_end).getTime() > Date.now());
   const pricing = await fetchPricing(restaurant.country);
-  const override = await cityDeliveryOverride((restaurant as { city?: string | null }).city);
-  const baseFee = override ?? Number(restaurant.delivery_fee ?? pricing.delivery_fee);
-  const deliveryFee = primeActive ? 0 : baseFee;
-  const serviceFee = Number(pricing.service_fee ?? 0);
+  const { deliveryFee, serviceFee } = await computeOrderFees(restaurant);
   const minOrder = Math.max(Number(restaurant.min_order ?? 0), Number(pricing.min_order ?? 0));
   if (subtotal < minOrder) throw new Error(`Minimum order is ${minOrder} ${lines[0]!.currency}.`);
   const currency = lines[0]!.currency;
