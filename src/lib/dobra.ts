@@ -62,7 +62,7 @@ export type OrderRow = {
 };
 
 const ORDER_COLS =
-  "id,status,total,subtotal,delivery_fee,currency,created_at,restaurant_id,driver_id,customer_id,address,note,eta_minutes,dest_lat,dest_lng,kind,pickup_address,pickup_lat,pickup_lng,package_note";
+  "id,status,total,subtotal,delivery_fee,currency,created_at,restaurant_id,driver_id,customer_id,address,note,eta_minutes,dest_lat,dest_lng,kind,pickup_address,pickup_lat,pickup_lng,package_note,payment_method,payment_status";
 
 export type Review = {
   id: string;
