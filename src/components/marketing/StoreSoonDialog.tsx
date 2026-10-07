@@ -4,6 +4,7 @@ import { Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -28,12 +29,15 @@ export function StoreSoonDialog({ children }: { children: ReactNode }) {
           <DialogTitle className="text-center">{c.soonTitle}</DialogTitle>
           <DialogDescription className="text-center">{c.soonBody}</DialogDescription>
         </DialogHeader>
-        <DialogFooter>
+        <DialogFooter className="flex-col gap-2 sm:flex-col">
           <Button asChild className="w-full">
             <Link to="/get-started" search={{ mode: "signup" }}>
               {c.soonWeb}
             </Link>
           </Button>
+          <DialogClose asChild>
+            <Button variant="outline" className="w-full">{c.close}</Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>

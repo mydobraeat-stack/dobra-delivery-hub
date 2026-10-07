@@ -4,7 +4,8 @@ import { DobraLogo } from "@/components/dobra/Logo";
 import { LanguageSwitcher } from "@/components/dobra/LanguageSwitcher";
 import { useI18n, useT } from "@/lib/i18n";
 import { StoreSoonDialog } from "./StoreSoonDialog";
-import { COMPANY, SITE_COPY } from "./site-copy";
+import { SITE_COPY } from "./site-copy";
+import { COMPANY, companyAddress, phoneHref, registryParts } from "@/lib/company";
 
 function AppleIcon() {
   return (
@@ -35,62 +36,17 @@ export function SiteFooter() {
   const { locale } = useI18n();
   const c = SITE_COPY[locale];
   const year = new Date().getFullYear();
+  const hours = COMPANY.hours[locale];
+  const reg = registryParts();
+  const link = "hover:text-primary";
 
   return (
     <footer className="border-t border-ink/10 bg-card">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
-          <div className="min-w-0">
-            <DobraLogo className="text-4xl" />
-            <p className="mt-3 text-sm text-foreground/70">{t("marketing.footer.tagline")}</p>
-          </div>
-
-          <nav className="min-w-0">
-            <ul className="space-y-3 text-sm font-semibold text-foreground/80">
-              <li>
-                <Link to="/help" className="hover:text-primary">
-                  {t("marketing.footer.getHelp")}
-                </Link>
-              </li>
-              <li>
-                <Link to="/partner" className="hover:text-primary">
-                  {t("marketing.footer.addRestaurant")}
-                </Link>
-              </li>
-              <li>
-                <Link to="/deliver" className="hover:text-primary">
-                  {t("marketing.footer.signUpToDeliver")}
-                </Link>
-              </li>
-              <li>
-                <Link to="/business" className="hover:text-primary">
-                  {t("marketing.footer.businessAccount")}
-                </Link>
-              </li>
-            </ul>
-          </nav>
-
-          <nav className="min-w-0">
-            <ul className="space-y-3 text-sm font-semibold text-foreground/80">
-              <li>
-                <Link to="/restaurants" className="hover:text-primary">
-                  {t("marketing.footer.restaurantsNearMe")}
-                </Link>
-              </li>
-              <li>
-                <Link to="/cities" className="hover:text-primary">
-                  {t("marketing.footer.viewAllCities")}
-                </Link>
-              </li>
-              <li>
-                <Link to="/about" className="hover:text-primary">
-                  {t("marketing.footer.about")}
-                </Link>
-              </li>
-            </ul>
-          </nav>
-
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="min-w-0 space-y-4">
+            <DobraLogo className="text-4xl" />
+            <p className="text-sm text-foreground/70">{t("marketing.footer.tagline")}</p>
             {STORE_BADGES.map((badge) => (
               <StoreSoonDialog key={badge.key}>
                 <button
@@ -100,47 +56,59 @@ export function SiteFooter() {
                 >
                   <badge.Icon />
                   <span className="min-w-0">
-                    <span className="block text-[10px] uppercase tracking-wide opacity-80">
-                      {badge.small}
-                    </span>
+                    <span className="block text-[10px] uppercase tracking-wide opacity-80">{badge.small}</span>
                     <span className="block truncate text-sm font-bold">{badge.big}</span>
                   </span>
                 </button>
               </StoreSoonDialog>
             ))}
           </div>
-        </div>
 
-        <div className="mt-10 grid gap-8 border-t border-ink/10 pt-8 md:grid-cols-3">
-          <div className="text-sm">
+          <nav className="min-w-0" aria-label="Dobra">
+            <h3 className="font-bold text-foreground">Dobra</h3>
+            <ul className="mt-3 space-y-2.5 text-sm font-semibold text-foreground/80">
+              <li><Link to="/about" className={link}>{t("marketing.footer.about")}</Link></li>
+              <li><Link to="/restaurants" className={link}>{c.featuredTitle}</Link></li>
+              <li><Link to="/cities" className={link}>{t("marketing.footer.viewAllCities")}</Link></li>
+              <li><Link to="/partner" className={link}>{t("marketing.footer.addRestaurant")}</Link></li>
+              <li><Link to="/deliver" className={link}>{t("marketing.footer.signUpToDeliver")}</Link></li>
+              <li><Link to="/help" className={link}>{t("marketing.footer.getHelp")}</Link></li>
+            </ul>
+          </nav>
+
+          <nav className="min-w-0" aria-label={c.policies}>
+            <h3 className="font-bold text-foreground">{c.policies}</h3>
+            <ul className="mt-3 space-y-2.5 text-sm font-semibold text-foreground/80">
+              <li><Link to="/terms" className={link}>{t("marketing.footer.terms")}</Link></li>
+              <li><Link to="/privacy" className={link}>{t("marketing.footer.privacy")}</Link></li>
+              <li><Link to="/delivery" className={link}>{c.delivery}</Link></li>
+              <li><Link to="/refunds" className={link}>{c.refunds}</Link></li>
+              <li><Link to="/complaints" className={link}>{c.complaints}</Link></li>
+              <li><Link to="/contact" className={link}>{c.contact}</Link></li>
+            </ul>
+          </nav>
+
+          <div className="min-w-0 text-sm">
             <h3 className="font-bold text-foreground">{c.contact}</h3>
-            <a href={`mailto:${COMPANY.email}`} className="mt-3 flex items-center gap-2 text-foreground/80 hover:text-primary">
-              <Mail className="size-4" aria-hidden /> {COMPANY.email}
-            </a>
-            <a href={COMPANY.phoneHref} className="mt-2 flex items-center gap-2 text-foreground/80 hover:text-primary">
-              <Phone className="size-4" aria-hidden /> {COMPANY.phone}
-            </a>
-            <p className="mt-2 text-foreground/60">{c.hours}</p>
-            <Link to="/contact" className="mt-2 inline-block font-semibold text-accent hover:underline">
+            {COMPANY.email ? (
+              <a href={`mailto:${COMPANY.email}`} className="mt-3 flex items-center gap-2 text-foreground/80 hover:text-primary">
+                <Mail className="size-4" aria-hidden /> {COMPANY.email}
+              </a>
+            ) : null}
+            {COMPANY.phone ? (
+              <a href={phoneHref()} className="mt-2 flex items-center gap-2 text-foreground/80 hover:text-primary">
+                <Phone className="size-4" aria-hidden /> {COMPANY.phone}
+              </a>
+            ) : null}
+            {hours ? <p className="mt-2 text-foreground/60">{hours}</p> : null}
+            <div className="mt-4 text-foreground/70">
+              <p className="font-semibold text-foreground/80">{COMPANY.legalName}</p>
+              <p className="flex items-start gap-2"><MapPin className="mt-0.5 size-4 shrink-0" aria-hidden />{companyAddress()}</p>
+              {reg.length ? <p className="mt-1">{reg.join(" · ")}</p> : null}
+            </div>
+            <Link to="/contact" className="mt-3 inline-block font-semibold text-accent hover:underline">
               {c.contact} →
             </Link>
-          </div>
-          <div className="text-sm text-foreground/70">
-            <h3 className="font-bold text-foreground">{c.company}</h3>
-            <p className="mt-3 font-semibold text-foreground/80">{COMPANY.legalName}</p>
-            <p className="flex items-start gap-2"><MapPin className="mt-0.5 size-4 shrink-0" aria-hidden />{COMPANY.street}, {COMPANY.city}</p>
-            <p className="mt-1">KRS {COMPANY.krs} · NIP {COMPANY.nip}</p>
-            <p>REGON {COMPANY.regon}</p>
-          </div>
-          <div className="text-sm">
-            <h3 className="font-bold text-foreground">{c.payments}</h3>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {["BLIK", "Przelewy24", "Visa", "Mastercard", "Apple Pay", "Google Pay", "Cash"].map((p) => (
-                <span key={p} className="rounded-md border border-ink/15 bg-background px-2.5 py-1 text-xs font-bold text-foreground/80">
-                  {p}
-                </span>
-              ))}
-            </div>
           </div>
         </div>
 
@@ -148,22 +116,8 @@ export function SiteFooter() {
           <LanguageSwitcher />
         </div>
 
-        <div className="mt-8 flex flex-col gap-3 border-t border-ink/10 pt-6 text-sm text-foreground/60 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-8 border-t border-ink/10 pt-6 text-sm text-foreground/60">
           <p>{t("marketing.footer.copyright", { year })}</p>
-          <div className="flex flex-wrap gap-4">
-            <Link to="/privacy" className="hover:text-primary">
-              {t("marketing.footer.privacy")}
-            </Link>
-            <Link to="/terms" className="hover:text-primary">
-              {t("marketing.footer.terms")}
-            </Link>
-            <Link to="/contact" hash="complaints" className="hover:text-primary">
-              {c.complaints}
-            </Link>
-            <Link to="/contact" className="hover:text-primary">
-              {c.contact}
-            </Link>
-          </div>
         </div>
       </div>
     </footer>

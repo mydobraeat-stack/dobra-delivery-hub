@@ -51,7 +51,6 @@ function ContactPage() {
         <div className={`mt-6 grid gap-8 ${COMPANY.email ? "md:grid-cols-2" : ""}`}>
           <div>
             <CompanyCard />
-            <p className="mt-4 text-sm text-foreground/70">{c.chatHint}</p>
           </div>
           {/* The form only appears once a support email exists to send it to. */}
           {COMPANY.email ? (
