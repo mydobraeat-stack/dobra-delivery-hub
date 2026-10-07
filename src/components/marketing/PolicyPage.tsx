@@ -74,6 +74,11 @@ export function CompanyCard() {
           <Mail className="size-4 text-accent" aria-hidden /> <span className="font-semibold">{COMPANY.email}</span>
         </a>
       ) : null}
+      {COMPANY.legalEmail ? (
+        <a href={`mailto:${COMPANY.legalEmail}`} className="flex items-center gap-3 hover:text-primary">
+          <Mail className="size-4 text-accent" aria-hidden /> <span>{COMPANY.legalEmail}</span>
+        </a>
+      ) : null}
       {COMPANY.phone ? (
         <a href={phoneHref()} className="flex items-center gap-3 hover:text-primary">
           <Phone className="size-4 text-accent" aria-hidden /> <span className="font-semibold">{COMPANY.phone}</span>
@@ -85,9 +90,11 @@ export function CompanyCard() {
       <div className="flex gap-3">
         <Building2 className="size-4 shrink-0 text-accent" aria-hidden />
         <div>
-          <p className="font-bold">{COMPANY.legalName}</p>
+          <p className="font-bold">{COMPANY.fullLegalName}</p>
+          <p className="text-foreground/70">{COMPANY.legalName} · {COMPANY.brand}</p>
           <p className="flex items-center gap-1 text-foreground/80"><MapPin className="size-3" aria-hidden /> {companyAddress()}</p>
           {reg.length ? <p className="text-foreground/70">{reg.join(" · ")}</p> : null}
+          {COMPANY.shareCapital ? <p className="text-foreground/70">{SITE_COPY[locale].capital}: {COMPANY.shareCapital}</p> : null}
         </div>
       </div>
       {!COMPANY.email && !COMPANY.phone ? <p className="text-foreground/70">{c.chatHint}</p> : null}
