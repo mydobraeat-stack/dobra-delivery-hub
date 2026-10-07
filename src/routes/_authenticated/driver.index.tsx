@@ -398,7 +398,7 @@ function DriverHome() {
           {!online ? (
             <p className="text-sm text-foreground/60">{t("driver.home.goOnlineToSeeJobs")}</p>
           ) : available.length === 0 ? (
-            <p className="text-sm text-foreground/60">{t("driver.home.noneWaiting")}</p>
+            <SearchingPulse label={t("driver.home.noneWaiting")} />
           ) : (
             available.map((o) => (
               <Card key={o.id} className="border-ink/10">
@@ -429,6 +429,28 @@ function DriverHome() {
           )}
         </section>
       </div>
+    </div>
+  );
+}
+
+/** Radar-style "searching for orders" animation shown while online with no jobs. */
+function SearchingPulse({ label }: { label: string }) {
+  return (
+    <div role="status" aria-live="polite" className="flex flex-col items-center gap-4 rounded-2xl bg-background py-8 ring-1 ring-ink/10">
+      <div className="relative flex size-28 items-center justify-center">
+        <span className="absolute inset-0 rounded-full bg-primary/25 animate-ping [animation-duration:2s]" />
+        <span className="absolute inset-3 rounded-full bg-primary/20 animate-ping [animation-duration:2s] [animation-delay:0.6s]" />
+        <span className="absolute inset-6 rounded-full bg-sun/40 animate-ping [animation-duration:2s] [animation-delay:1.2s]" />
+        <span className="relative flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg">
+          <Navigation className="size-6 animate-pulse" aria-hidden />
+        </span>
+      </div>
+      <div className="flex items-center gap-1" aria-hidden>
+        {[0, 1, 2].map((i) => (
+          <span key={i} className="size-1.5 rounded-full bg-primary animate-bounce" style={{ animationDelay: `${i * 0.15}s` }} />
+        ))}
+      </div>
+      <p className="px-4 text-center text-sm text-foreground/70">{label}</p>
     </div>
   );
 }
