@@ -9,7 +9,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "heading": "1. Data Controller",
      "paragraphs": [
       "The Data Controller is NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Poland, {KRS}, {NIP}, {REGON} (“Dobra”, “Controller”).",
-      "Contact for privacy and data protection matters: {EMAIL}. Customer Service: {EMAIL}, {PHONE}.",
+      "Contact for privacy and data protection matters: {LEGAL_EMAIL}. Customer Service: {EMAIL}, {PHONE}.",
       "If Dobra appoints a Data Protection Officer, their contact details will be published on the Platform and in this Policy."
      ]
     },
@@ -140,7 +140,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "paragraphs": [
       "Dobra prefers to process data within the European Economic Area; however, some technological service providers may process data outside the EEA.",
       "If data is transferred to a country without an adequacy decision, Dobra will apply appropriate mechanisms provided for in the GDPR, such as standard contractual clauses, and additional safeguards where required.",
-      "Information regarding the applied safeguards can be obtained by contacting {EMAIL}."
+      "Information regarding the applied safeguards can be obtained by contacting {LEGAL_EMAIL}."
      ]
     },
     {
@@ -175,7 +175,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     {
      "heading": "20. How to exercise your rights",
      "paragraphs": [
-      "Requests can be sent to {EMAIL}. Dobra may request information necessary to confirm identity and protect data from unauthorized disclosure.",
+      "Requests can be sent to {LEGAL_EMAIL}. Dobra may request information necessary to confirm identity and protect data from unauthorized disclosure.",
       "Dobra responds to requests within the timeframes stipulated by the GDPR. In cases defined by law, the exercise of a right may be restricted, for example, when further storage is required by a legal obligation or is necessary for the establishment, exercise, or defense of legal claims."
      ]
     },
@@ -211,7 +211,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "paragraphs": [
       "NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska.",
       "{KRS} | {NIP} | {REGON}",
-      "Privacy and GDPR matters: {EMAIL}. Customer Service: {EMAIL}, {PHONE}."
+      "Privacy and GDPR matters: {LEGAL_EMAIL}. Customer Service: {EMAIL}, {PHONE}."
      ]
     },
     {
@@ -456,7 +456,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "heading": "26. Personal Data",
      "paragraphs": [
       "Personal data is processed in accordance with Dobra's Privacy Policy. Depending on how the Platform is used, Dobra may process, among others, account data, name and surname, phone number, email address, delivery addresses, order history, correspondence with customer service, payment information, device information, IP address and location, and data used for fraud prevention.",
-      "Contact for privacy matters: {EMAIL}."
+      "Contact for privacy matters: {LEGAL_EMAIL}."
      ]
     },
     {
@@ -484,7 +484,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "heading": "30. Contact",
      "paragraphs": [
       "Customer Service: {EMAIL}, {PHONE} — matters concerning orders, deliveries, returns, accounts, and complaints.",
-      "Legal and Privacy matters: {EMAIL}.",
+      "Legal and Privacy matters: {LEGAL_EMAIL}.",
       "Platform Operator: NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. {KRS} | {NIP} | {REGON} | Share capital: 5,000 PLN."
      ]
     }
@@ -497,7 +497,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
    "intro": [
     "These Regulations define the rules for accessing and using the Dobra mobile application, website, and related services (the \"Dobra Platform\").",
     "The Dobra Platform is operated by NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. {KRS}, {NIP}, {REGON}, share capital: 5,000 PLN.",
-    "Customer Support: {EMAIL}, {PHONE}. Legal and Privacy Contact: {EMAIL}."
+    "Customer Support: {EMAIL}, {PHONE}. Legal and Privacy Contact: {LEGAL_EMAIL}."
    ]
   }
  },
@@ -508,7 +508,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "heading": "1. Адміністратор даних",
      "paragraphs": [
       "Адміністратором персональних даних є NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska, {KRS}, {NIP}, {REGON} («Dobra», «Адміністратор»).",
-      "Контакт з питань конфіденційності та захисту даних: {EMAIL}. Служба підтримки клієнтів: {EMAIL}, {PHONE}.",
+      "Контакт з питань конфіденційності та захисту даних: {LEGAL_EMAIL}. Служба підтримки клієнтів: {EMAIL}, {PHONE}.",
       "Якщо Dobra призначить Інспектора із захисту даних, його контактні дані будуть опубліковані на Платформі та в цій Політиці."
      ]
     },
@@ -639,7 +639,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "paragraphs": [
       "Dobra віддає перевагу обробці даних у Європейській економічній зоні, але деякі постачальники технологій можуть обробляти дані за межами ЄЕЗ.",
       "Якщо дані передаються до країни без рішення про адекватний рівень захисту, Dobra застосує відповідний механізм, передбачений GDPR, наприклад, стандартні договірні положення, та додаткові заходи захисту, якщо це вимагається.",
-      "Інформацію про застосовані заходи безпеки можна отримати за адресою {EMAIL}."
+      "Інформацію про застосовані заходи безпеки можна отримати за адресою {LEGAL_EMAIL}."
      ]
     },
     {
@@ -674,7 +674,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     {
      "heading": "20. Як реалізувати права",
      "paragraphs": [
-      "Запит можна надіслати на {EMAIL}. Dobra може попросити інформацію, необхідну для підтвердження особи та захисту даних від несанкціонованого розголошення.",
+      "Запит можна надіслати на {LEGAL_EMAIL}. Dobra може попросити інформацію, необхідну для підтвердження особи та захисту даних від несанкціонованого розголошення.",
       "Dobra відповідає на запити у терміни, передбачені GDPR. У випадках, визначених законодавством, реалізація права може бути обмежена, наприклад, коли подальше зберігання вимагається юридичним обов'язком або потрібне для встановлення, здійснення чи захисту претензій."
      ]
     },
@@ -710,7 +710,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "paragraphs": [
       "NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska.",
       "{KRS} | {NIP} | {REGON}",
-      "Питання конфіденційності та GDPR: {EMAIL}. Служба підтримки клієнтів: {EMAIL}, {PHONE}."
+      "Питання конфіденційності та GDPR: {LEGAL_EMAIL}. Служба підтримки клієнтів: {EMAIL}, {PHONE}."
      ]
     },
     {
@@ -955,7 +955,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "heading": "26. Персональні дані",
      "paragraphs": [
       "Персональні дані обробляються відповідно до Політики конфіденційності Dobra. Залежно від способу використання Платформи, Dobra може обробляти, зокрема, дані облікового запису, ім'я та прізвище, номер телефону, адресу електронної пошти, адреси доставки, історію замовлень, кореспонденцію зі службою підтримки клієнтів, інформацію про платежі, пристрій, IP-адресу та місцезнаходження, а також дані, що використовуються для запобігання шахрайству.",
-      "Контакт з питань конфіденційності: {EMAIL}."
+      "Контакт з питань конфіденційності: {LEGAL_EMAIL}."
      ]
     },
     {
@@ -983,7 +983,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "heading": "30. Контакти",
      "paragraphs": [
       "Служба підтримки клієнтів: {EMAIL}, {PHONE} — питання, що стосуються замовлень, доставок, повернень, облікових записів та скарг.",
-      "Юридичні питання та конфіденційність: {EMAIL}.",
+      "Юридичні питання та конфіденційність: {LEGAL_EMAIL}.",
       "Оператор Платформи: NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. {KRS} | {NIP} | {REGON} | Статутний капітал: 5 000 PLN."
      ]
     }
@@ -996,7 +996,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
    "intro": [
     "Цей Регламент визначає правила доступу до та користування мобільним додатком Dobra, вебсайтом та пов'язаними послугами («Платформа Dobra»).",
     "Платформа Dobra керується NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. {KRS}, {NIP}, {REGON}, статутний капітал: 5 000 PLN.",
-    "Служба підтримки клієнтів: {EMAIL}, {PHONE}. Контакт з юридичних питань та питань приватності: {EMAIL}."
+    "Служба підтримки клієнтів: {EMAIL}, {PHONE}. Контакт з юридичних питань та питань приватності: {LEGAL_EMAIL}."
    ]
   }
  },
@@ -1007,7 +1007,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "heading": "1. Responsable du traitement des données",
      "paragraphs": [
       "Le responsable du traitement des données personnelles est NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska, {KRS}, {NIP}, {REGON} (« Dobra », « le Responsable du traitement »).",
-      "Contact pour les questions de confidentialité et de protection des données : {EMAIL}. Service Client : {EMAIL}, {PHONE}.",
+      "Contact pour les questions de confidentialité et de protection des données : {LEGAL_EMAIL}. Service Client : {EMAIL}, {PHONE}.",
       "Si Dobra nomme un Délégué à la Protection des Données, ses coordonnées seront publiées sur la Plateforme et dans la présente Politique."
      ]
     },
@@ -1138,7 +1138,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "paragraphs": [
       "Dobra privilégie le traitement des données au sein de l'Espace Économique Européen, mais certains fournisseurs technologiques peuvent traiter des données en dehors de l'EEE.",
       "Si des données sont transférées vers un pays ne faisant pas l'objet d'une décision d'adéquation, Dobra appliquera le mécanisme approprié prévu par le RGPD, tel que les clauses contractuelles types, ainsi que des mesures de protection supplémentaires, si elles sont requises.",
-      "Des informations sur les garanties appliquées peuvent être obtenues à l'adresse {EMAIL}."
+      "Des informations sur les garanties appliquées peuvent être obtenues à l'adresse {LEGAL_EMAIL}."
      ]
     },
     {
@@ -1173,7 +1173,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     {
      "heading": "20. Comment exercer vos droits",
      "paragraphs": [
-      "La demande peut être envoyée à {EMAIL}. Dobra peut demander les informations nécessaires pour confirmer votre identité et protéger les données contre toute divulgation non autorisée.",
+      "La demande peut être envoyée à {LEGAL_EMAIL}. Dobra peut demander les informations nécessaires pour confirmer votre identité et protéger les données contre toute divulgation non autorisée.",
       "Dobra répond aux demandes dans les délais prévus par le RGPD. Dans les cas définis par la loi, l'exercice du droit peut être limité, par exemple lorsque la conservation ultérieure est requise par une obligation légale ou nécessaire pour la constatation, l'exercice ou la défense de droits."
      ]
     },
@@ -1209,7 +1209,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "paragraphs": [
       "NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska.",
       "{KRS} | {NIP} | {REGON}",
-      "Questions de confidentialité et RGPD : {EMAIL}. Service Client : {EMAIL}, {PHONE}."
+      "Questions de confidentialité et RGPD : {LEGAL_EMAIL}. Service Client : {EMAIL}, {PHONE}."
      ]
     },
     {
@@ -1454,7 +1454,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "heading": "26. Données personnelles",
      "paragraphs": [
       "Les données personnelles sont traitées conformément à la Politique de Confidentialité de Dobra. Selon la manière dont la Plateforme est utilisée, Dobra peut traiter, entre autres : les données de compte, le nom et le prénom, le numéro de téléphone, l'adresse e-mail, les adresses de livraison, l'historique des commandes, la correspondance avec le service client, les informations de paiement, les informations sur l'appareil, l'adresse IP et la localisation, ainsi que les données utilisées pour la prévention de la fraude.",
-      "Contact pour les questions de confidentialité : {EMAIL}."
+      "Contact pour les questions de confidentialité : {LEGAL_EMAIL}."
      ]
     },
     {
@@ -1482,7 +1482,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "heading": "30. Contact",
      "paragraphs": [
       "Service Client : {EMAIL}, {PHONE} — questions relatives aux commandes, livraisons, retours, comptes et réclamations.",
-      "Affaires juridiques et confidentialité : {EMAIL}.",
+      "Affaires juridiques et confidentialité : {LEGAL_EMAIL}.",
       "Opérateur de la Plateforme : NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. {KRS} | {NIP} | {REGON} | Capital social : 5 000 PLN."
      ]
     }
@@ -1495,7 +1495,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
    "intro": [
     "Le présent Règlement définit les principes d'accès et d'utilisation de l'application mobile Dobra, du site internet et des services associés (« Plateforme Dobra »).",
     "La Plateforme Dobra est exploitée par NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. {KRS}, {NIP}, {REGON}, kapitał zakładowy: 5 000 PLN.",
-    "Service Client : {EMAIL}, {PHONE}. Contact juridique et de confidentialité : {EMAIL}."
+    "Service Client : {EMAIL}, {PHONE}. Contact juridique et de confidentialité : {LEGAL_EMAIL}."
    ]
   }
  }
