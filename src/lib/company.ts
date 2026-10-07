@@ -39,7 +39,7 @@ const TOKENS: Record<string, () => string> = {
   REGON: () => (COMPANY.regon ? `REGON ${COMPANY.regon}` : ""),
   // No email yet: point to the real contact page instead of leaving a gap.
   EMAIL: () => COMPANY.email || "mydobra.pl/contact",
-  PHONE: () => (COMPANY.phone ? `tel. ${COMPANY.phone}` : ""),
+  PHONE: () => COMPANY.phone,
   LEGAL_EMAIL: () => COMPANY.legalEmail || COMPANY.email || "mydobra.pl/contact",
   LEGAL_NAME: () => COMPANY.fullLegalName,
   SHORT_NAME: () => COMPANY.legalName,
