@@ -49,14 +49,14 @@ export function ConsentDialog({
 }) {
   const t = useT();
   const [tab, setTab] = useState<"categories" | "services">("categories");
-  const [marketing, setMarketing] = useState(true);
-  const [functional, setFunctional] = useState(true);
+  const [marketing, setMarketing] = useState(false);
+  const [functional, setFunctional] = useState(false);
   const [expanded, setExpanded] = useState<Cat | null>(null);
 
   useEffect(() => {
     if (!open) return;
-    setMarketing(initial ? initial.marketing : true);
-    setFunctional(initial ? initial.functional : true);
+    setMarketing(initial ? initial.marketing : false);
+    setFunctional(initial ? initial.functional : false);
   }, [open, initial]);
 
   function finish(m: boolean, f: boolean) {

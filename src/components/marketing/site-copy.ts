@@ -23,6 +23,7 @@ type Copy = {
   refunds: string;
   delivery: string;
   policies: string;
+  capital: string;
   howTitle: string;
   how: [string, string][];
   joinTitle: string;
@@ -66,6 +67,7 @@ type Copy = {
 };
 
 const en: Copy = {
+  capital: "Share capital",
   soonTitle: "Coming soon to the stores",
   soonBody:
     "The Dobra app is coming soon to the App Store and Google Play. For now, order directly at mydobra.pl — it works in any browser on your phone or computer.",
@@ -217,6 +219,7 @@ const en: Copy = {
 };
 
 const pl: Copy = {
+  capital: "Kapitał zakładowy",
   soonTitle: "Wkrótce w sklepach z aplikacjami",
   soonBody:
     "Aplikacja Dobra już wkrótce trafi do App Store i Google Play. Na razie zamawiaj bezpośrednio na mydobra.pl — strona działa w każdej przeglądarce, na telefonie i komputerze.",
@@ -368,6 +371,7 @@ const pl: Copy = {
 };
 
 const uk: Copy = {
+  capital: "Статутний капітал",
   soonTitle: "Незабаром у магазинах застосунків",
   soonBody:
     "Застосунок Dobra незабаром з’явиться в App Store і Google Play. А поки що замовляйте прямо на mydobra.pl — сайт працює в будь-якому браузері на телефоні чи комп’ютері.",
@@ -519,6 +523,7 @@ const uk: Copy = {
 };
 
 const fr: Copy = {
+  capital: "Capital social",
   soonTitle: "Bientôt dans les stores",
   soonBody:
     "L’application Dobra arrive bientôt sur l’App Store et Google Play. En attendant, commandez directement sur mydobra.pl — le site fonctionne dans tout navigateur, sur téléphone comme sur ordinateur.",

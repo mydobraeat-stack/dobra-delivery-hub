@@ -4,21 +4,24 @@
  * Leave a field "" until the real value is known — empty fields are never rendered.
  */
 export const COMPANY = {
+  fullLegalName: "NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ",
   legalName: "NICKOVWAY Sp. z o.o.",
   brand: "Dobra",
-  street: "Ul. Jana III Sobieskiego 38",
+  street: "ul. Jana III Sobieskiego 38",
   postalCity: "55-330 Lutynia",
   country: "Polska",
-  nip: "", // 10 digits
-  krs: "",
-  regon: "",
-  email: "", // public support email
-  phone: "", // support phone, e.g. "+48 ..."
+  nip: "8982251132", // 10 digits, no dashes
+  krs: "0000791473",
+  regon: "383675818",
+  shareCapital: "5 000 PLN",
+  email: "support@mydobra.pl", // customer support
+  legalEmail: "legal@mydobra.pl", // legal / privacy
+  phone: "+48 505 645 999",
   /** Support hours per language; leave "" to hide. */
   hours: { en: "", pl: "", uk: "", fr: "" } as Record<"en" | "pl" | "uk" | "fr", string>,
 };
 
-export const companyAddress = () => `${COMPANY.street}, ${COMPANY.postalCity}`;
+export const companyAddress = () => `${COMPANY.street}, ${COMPANY.postalCity}, ${COMPANY.country}`;
 export const phoneHref = () => `tel:${COMPANY.phone.replace(/[^+\d]/g, "")}`;
 
 /** Registration numbers that have values, e.g. ["NIP 123…", "KRS …"]. */
@@ -37,6 +40,11 @@ const TOKENS: Record<string, () => string> = {
   // No email yet: point to the real contact page instead of leaving a gap.
   EMAIL: () => COMPANY.email || "mydobra.pl/contact",
   PHONE: () => COMPANY.phone,
+  LEGAL_EMAIL: () => COMPANY.legalEmail || COMPANY.email || "mydobra.pl/contact",
+  LEGAL_NAME: () => COMPANY.fullLegalName,
+  SHORT_NAME: () => COMPANY.legalName,
+  ADDRESS: () => `${COMPANY.street}, ${COMPANY.postalCity}`,
+  CAPITAL: () => COMPANY.shareCapital,
 };
 
 /**
