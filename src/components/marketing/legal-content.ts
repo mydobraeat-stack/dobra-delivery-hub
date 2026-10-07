@@ -22,7 +22,7 @@ export const PRIVACY_DOC: LegalDocument = {
       heading: "1. Administrator danych",
       paragraphs: [
         "Administratorem danych osobowych jest NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska, {KRS}, {NIP}, {REGON} („Dobra”, „Administrator”).",
-        "Kontakt w sprawach prywatności i ochrony danych: {EMAIL}. Obsługa Klienta: {EMAIL}, {PHONE}.",
+        "Kontakt w sprawach prywatności i ochrony danych: {LEGAL_EMAIL}. Obsługa Klienta: {EMAIL}, {PHONE}.",
         "Jeżeli Dobra wyznaczy Inspektora Ochrony Danych, jego dane kontaktowe zostaną opublikowane w Platformie i w niniejszej Polityce.",
       ],
     },
@@ -153,7 +153,7 @@ export const PRIVACY_DOC: LegalDocument = {
       paragraphs: [
         "Dobra preferuje przetwarzanie danych w Europejskim Obszarze Gospodarczym, ale niektórzy dostawcy technologiczni mogą przetwarzać dane poza EOG.",
         "Jeżeli dane są przekazywane do państwa bez decyzji stwierdzającej odpowiedni stopień ochrony, Dobra zastosuje odpowiedni mechanizm przewidziany w RODO, np. standardowe klauzule umowne, oraz dodatkowe środki ochronne, gdy są wymagane.",
-        "Informacje o stosowanych zabezpieczeniach można uzyskać pod adresem {EMAIL}.",
+        "Informacje o stosowanych zabezpieczeniach można uzyskać pod adresem {LEGAL_EMAIL}.",
       ],
     },
     {
@@ -188,7 +188,7 @@ export const PRIVACY_DOC: LegalDocument = {
     {
       heading: "20. Jak wykonać prawa",
       paragraphs: [
-        "Wniosek można przesłać na {EMAIL}. Dobra może poprosić o informacje konieczne do potwierdzenia tożsamości i ochrony danych przed nieuprawnionym ujawnieniem.",
+        "Wniosek można przesłać na {LEGAL_EMAIL}. Dobra może poprosić o informacje konieczne do potwierdzenia tożsamości i ochrony danych przed nieuprawnionym ujawnieniem.",
         "Dobra odpowiada na wnioski w terminach przewidzianych RODO. W przypadkach określonych prawem realizacja prawa może zostać ograniczona, np. gdy dalsze przechowywanie jest wymagane obowiązkiem prawnym lub potrzebne do ustalenia, dochodzenia lub obrony roszczeń.",
       ],
     },
@@ -224,7 +224,7 @@ export const PRIVACY_DOC: LegalDocument = {
       paragraphs: [
         "NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska.",
         "{KRS} | {NIP} | {REGON}",
-        "Sprawy prywatności i RODO: {EMAIL}. Obsługa Klienta: {EMAIL}, {PHONE}.",
+        "Sprawy prywatności i RODO: {LEGAL_EMAIL}. Obsługa Klienta: {EMAIL}, {PHONE}.",
       ],
     },
     {
@@ -244,7 +244,7 @@ export const TERMS_DOC: LegalDocument = {
   intro: [
     "Niniejszy Regulamin określa zasady dostępu do i korzystania z aplikacji mobilnej Dobra, strony internetowej oraz powiązanych usług („Platforma Dobra”).",
     "Platforma Dobra jest prowadzona przez NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. {KRS}, {NIP}, {REGON}, kapitał zakładowy: 5 000 PLN.",
-    "Obsługa Klienta: {EMAIL}, {PHONE}. Kontakt prawny i dotyczący prywatności: {EMAIL}.",
+    "Obsługa Klienta: {EMAIL}, {PHONE}. Kontakt prawny i dotyczący prywatności: {LEGAL_EMAIL}.",
   ],
   sections: [
     {
@@ -466,7 +466,7 @@ export const TERMS_DOC: LegalDocument = {
       heading: "26. Dane osobowe",
       paragraphs: [
         "Dane osobowe są przetwarzane zgodnie z Polityką Prywatności Dobra. W zależności od sposobu korzystania z Platformy Dobra może przetwarzać m.in. dane konta, imię i nazwisko, numer telefonu, adres e-mail, adresy dostawy, historię zamówień, korespondencję z obsługą klienta, informacje o płatnościach, urządzeniu, adresie IP i lokalizacji oraz dane wykorzystywane do zapobiegania oszustwom.",
-        "Kontakt w sprawach prywatności: {EMAIL}.",
+        "Kontakt w sprawach prywatności: {LEGAL_EMAIL}.",
       ],
     },
     {
@@ -494,7 +494,7 @@ export const TERMS_DOC: LegalDocument = {
       heading: "30. Kontakt",
       paragraphs: [
         "Obsługa Klienta: {EMAIL}, {PHONE} — sprawy dotyczące zamówień, dostaw, zwrotów, kont i reklamacji.",
-        "Sprawy prawne i prywatność: {EMAIL}.",
+        "Sprawy prawne i prywatność: {LEGAL_EMAIL}.",
         "Operator Platformy: NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. {KRS} | {NIP} | {REGON} | Kapitał zakładowy: 5 000 PLN.",
       ],
     },
