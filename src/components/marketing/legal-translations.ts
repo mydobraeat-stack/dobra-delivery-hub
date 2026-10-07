@@ -8,7 +8,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     {
      "heading": "1. Data Controller",
      "paragraphs": [
-      "The Data Controller is NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Poland, {KRS}, {NIP}, {REGON} (“Dobra”, “Controller”).",
+      "The Data Controller is {LEGAL_NAME}, {ADDRESS}, Poland, {KRS}, {NIP}, {REGON} (“Dobra”, “Controller”).",
       "Contact for privacy and data protection matters: {LEGAL_EMAIL}. Customer Service: {EMAIL}, {PHONE}.",
       "If Dobra appoints a Data Protection Officer, their contact details will be published on the Platform and in this Policy."
      ]
@@ -209,7 +209,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     {
      "heading": "25. Contact",
      "paragraphs": [
-      "NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska.",
+      "{LEGAL_NAME}, {ADDRESS}, Polska.",
       "{KRS} | {NIP} | {REGON}",
       "Privacy and GDPR matters: {LEGAL_EMAIL}. Customer Service: {EMAIL}, {PHONE}."
      ]
@@ -230,7 +230,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     "Territory: Republic of Poland"
    ],
    "intro": [
-    "This Privacy Policy explains how NICKOVWAY SP. Z O.O., operating under the brand Dobra, processes the personal data of Dobra Platform users, Customers, contact persons of Restaurant Partners, and other individuals using Dobra's services."
+    "This Privacy Policy explains how {SHORT_NAME}, operating under the brand Dobra, processes the personal data of Dobra Platform users, Customers, contact persons of Restaurant Partners, and other individuals using Dobra's services."
    ]
   },
   "terms": {
@@ -374,7 +374,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     {
      "heading": "16. Complaints",
      "paragraphs": [
-      "Complaints regarding the Dobra Platform or delivery services may be submitted to the following address: NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska, e-mail: {EMAIL}, {PHONE}.",
+      "Complaints regarding the Dobra Platform or delivery services may be submitted to the following address: {SHORT_NAME}, {ADDRESS}, Polska, e-mail: {EMAIL}, {PHONE}.",
       "A complaint should, if possible, include the Customer's name and surname, order number, a description of the problem, and the expected resolution. Dobra shall process complaints within the period required by law."
      ]
     },
@@ -485,7 +485,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "paragraphs": [
       "Customer Service: {EMAIL}, {PHONE} — matters concerning orders, deliveries, returns, accounts, and complaints.",
       "Legal and Privacy matters: {LEGAL_EMAIL}.",
-      "Platform Operator: NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. {KRS} | {NIP} | {REGON} | Share capital: 5,000 PLN."
+      "Platform Operator: {SHORT_NAME}, {ADDRESS}, Polska. {KRS} | {NIP} | {REGON} | Share capital: {CAPITAL}."
      ]
     }
    ],
@@ -496,7 +496,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
    ],
    "intro": [
     "These Regulations define the rules for accessing and using the Dobra mobile application, website, and related services (the \"Dobra Platform\").",
-    "The Dobra Platform is operated by NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. {KRS}, {NIP}, {REGON}, share capital: 5,000 PLN.",
+    "The Dobra Platform is operated by {LEGAL_NAME}, {ADDRESS}, Polska. {KRS}, {NIP}, {REGON}, share capital: {CAPITAL}.",
     "Customer Support: {EMAIL}, {PHONE}. Legal and Privacy Contact: {LEGAL_EMAIL}."
    ]
   }
@@ -507,7 +507,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     {
      "heading": "1. Адміністратор даних",
      "paragraphs": [
-      "Адміністратором персональних даних є NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska, {KRS}, {NIP}, {REGON} («Dobra», «Адміністратор»).",
+      "Адміністратором персональних даних є {LEGAL_NAME}, {ADDRESS}, Polska, {KRS}, {NIP}, {REGON} («Dobra», «Адміністратор»).",
       "Контакт з питань конфіденційності та захисту даних: {LEGAL_EMAIL}. Служба підтримки клієнтів: {EMAIL}, {PHONE}.",
       "Якщо Dobra призначить Інспектора із захисту даних, його контактні дані будуть опубліковані на Платформі та в цій Політиці."
      ]
@@ -708,7 +708,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     {
      "heading": "25. Контакти",
      "paragraphs": [
-      "NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska.",
+      "{LEGAL_NAME}, {ADDRESS}, Polska.",
       "{KRS} | {NIP} | {REGON}",
       "Питання конфіденційності та GDPR: {LEGAL_EMAIL}. Служба підтримки клієнтів: {EMAIL}, {PHONE}."
      ]
@@ -729,7 +729,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     "Територія: Республіка Польща"
    ],
    "intro": [
-    "Ця Політика конфіденційності пояснює, як NICKOVWAY SP. Z O.O., що діє під брендом Dobra, обробляє персональні дані користувачів Платформи Dobra, Клієнтів, контактних осіб Партнерів-рестораторів та інших осіб, які користуються послугами Dobra."
+    "Ця Політика конфіденційності пояснює, як {SHORT_NAME}, що діє під брендом Dobra, обробляє персональні дані користувачів Платформи Dobra, Клієнтів, контактних осіб Партнерів-рестораторів та інших осіб, які користуються послугами Dobra."
    ]
   },
   "terms": {
@@ -873,7 +873,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     {
      "heading": "16. Рекламації",
      "paragraphs": [
-      "Рекламації щодо Платформи Dobra або послуг доставки можна подавати за адресою: NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska, e-mail: {EMAIL}, {PHONE}.",
+      "Рекламації щодо Платформи Dobra або послуг доставки можна подавати за адресою: {SHORT_NAME}, {ADDRESS}, Polska, e-mail: {EMAIL}, {PHONE}.",
       "Рекламація повинна, якщо це можливо, містити ім'я та прізвище Клієнта, номер замовлення, опис проблеми та очікуваний спосіб вирішення справи. Dobra розглядає рекламації у термін, передбачений нормами права."
      ]
     },
@@ -984,7 +984,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "paragraphs": [
       "Служба підтримки клієнтів: {EMAIL}, {PHONE} — питання, що стосуються замовлень, доставок, повернень, облікових записів та скарг.",
       "Юридичні питання та конфіденційність: {LEGAL_EMAIL}.",
-      "Оператор Платформи: NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. {KRS} | {NIP} | {REGON} | Статутний капітал: 5 000 PLN."
+      "Оператор Платформи: {SHORT_NAME}, {ADDRESS}, Polska. {KRS} | {NIP} | {REGON} | Статутний капітал: {CAPITAL}."
      ]
     }
    ],
@@ -995,7 +995,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
    ],
    "intro": [
     "Цей Регламент визначає правила доступу до та користування мобільним додатком Dobra, вебсайтом та пов'язаними послугами («Платформа Dobra»).",
-    "Платформа Dobra керується NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. {KRS}, {NIP}, {REGON}, статутний капітал: 5 000 PLN.",
+    "Платформа Dobra керується {LEGAL_NAME}, {ADDRESS}, Polska. {KRS}, {NIP}, {REGON}, статутний капітал: {CAPITAL}.",
     "Служба підтримки клієнтів: {EMAIL}, {PHONE}. Контакт з юридичних питань та питань приватності: {LEGAL_EMAIL}."
    ]
   }
@@ -1006,7 +1006,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     {
      "heading": "1. Responsable du traitement des données",
      "paragraphs": [
-      "Le responsable du traitement des données personnelles est NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska, {KRS}, {NIP}, {REGON} (« Dobra », « le Responsable du traitement »).",
+      "Le responsable du traitement des données personnelles est {LEGAL_NAME}, {ADDRESS}, Polska, {KRS}, {NIP}, {REGON} (« Dobra », « le Responsable du traitement »).",
       "Contact pour les questions de confidentialité et de protection des données : {LEGAL_EMAIL}. Service Client : {EMAIL}, {PHONE}.",
       "Si Dobra nomme un Délégué à la Protection des Données, ses coordonnées seront publiées sur la Plateforme et dans la présente Politique."
      ]
@@ -1207,7 +1207,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     {
      "heading": "25. Contact",
      "paragraphs": [
-      "NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska.",
+      "{LEGAL_NAME}, {ADDRESS}, Polska.",
       "{KRS} | {NIP} | {REGON}",
       "Questions de confidentialité et RGPD : {LEGAL_EMAIL}. Service Client : {EMAIL}, {PHONE}."
      ]
@@ -1228,7 +1228,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     "Territoire: République de Pologne"
    ],
    "intro": [
-    "La présente Politique de Confidentialité explique comment NICKOVWAY SP. Z O.O., opérant sous la marque Dobra, traite les données personnelles des utilisateurs de la Plateforme Dobra, des Clients, des personnes de contact des Partenaires Restaurateurs et d'autres personnes utilisant les services de Dobra."
+    "La présente Politique de Confidentialité explique comment {SHORT_NAME}, opérant sous la marque Dobra, traite les données personnelles des utilisateurs de la Plateforme Dobra, des Clients, des personnes de contact des Partenaires Restaurateurs et d'autres personnes utilisant les services de Dobra."
    ]
   },
   "terms": {
@@ -1372,7 +1372,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     {
      "heading": "16. Réclamations",
      "paragraphs": [
-      "Les réclamations concernant la Plateforme Dobra ou les services de livraison peuvent être adressées à : NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska, e-mail : {EMAIL}, tél. : {PHONE}.",
+      "Les réclamations concernant la Plateforme Dobra ou les services de livraison peuvent être adressées à : {SHORT_NAME}, {ADDRESS}, Polska, e-mail : {EMAIL}, tél. : {PHONE}.",
       "La réclamation devrait, si possible, contenir le nom et le prénom du Client, le numéro de commande, la description du problème et la solution attendue. Dobra traite les réclamations dans le délai requis par les dispositions légales."
      ]
     },
@@ -1483,7 +1483,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "paragraphs": [
       "Service Client : {EMAIL}, {PHONE} — questions relatives aux commandes, livraisons, retours, comptes et réclamations.",
       "Affaires juridiques et confidentialité : {LEGAL_EMAIL}.",
-      "Opérateur de la Plateforme : NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. {KRS} | {NIP} | {REGON} | Capital social : 5 000 PLN."
+      "Opérateur de la Plateforme : {SHORT_NAME}, {ADDRESS}, Polska. {KRS} | {NIP} | {REGON} | Capital social : {CAPITAL}."
      ]
     }
    ],
@@ -1494,7 +1494,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
    ],
    "intro": [
     "Le présent Règlement définit les principes d'accès et d'utilisation de l'application mobile Dobra, du site internet et des services associés (« Plateforme Dobra »).",
-    "La Plateforme Dobra est exploitée par NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. {KRS}, {NIP}, {REGON}, kapitał zakładowy: 5 000 PLN.",
+    "La Plateforme Dobra est exploitée par {LEGAL_NAME}, {ADDRESS}, Polska. {KRS}, {NIP}, {REGON}, kapitał zakładowy: {CAPITAL}.",
     "Service Client : {EMAIL}, {PHONE}. Contact juridique et de confidentialité : {LEGAL_EMAIL}."
    ]
   }
