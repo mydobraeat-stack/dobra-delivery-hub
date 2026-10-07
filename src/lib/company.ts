@@ -18,7 +18,12 @@ export const COMPANY = {
   legalEmail: "legal@mydobra.pl", // legal / privacy
   phone: "+48 505 645 999",
   /** Support hours per language; leave "" to hide. */
-  hours: { en: "", pl: "", uk: "", fr: "" } as Record<"en" | "pl" | "uk" | "fr", string>,
+  hours: {
+    en: "Monday–Sunday, 10:00–22:00 (Central European Time)",
+    pl: "Poniedziałek–niedziela, 10:00–22:00 (czasu środkowoeuropejskiego)",
+    uk: "Понеділок–неділя, 10:00–22:00 (за центральноєвропейським часом)",
+    fr: "Du lundi au dimanche, 10h00–22h00 (heure d’Europe centrale)",
+  } as Record<"en" | "pl" | "uk" | "fr", string>,
 };
 
 export const companyAddress = () => `${COMPANY.street}, ${COMPANY.postalCity}, ${COMPANY.country}`;
