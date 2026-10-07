@@ -1,18 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { InfoPage } from "@/components/marketing/InfoPage";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
+// Business accounts are not offered; keep the old URL working by sending visitors to Contact.
 export const Route = createFileRoute("/business")({
-  head: () => ({
-    meta: [
-      { title: "Dobra for business" },
-      { name: "description", content: "Feed your team with one shared Dobra business account." },
-      { property: "og:title", content: "Dobra for business" },
-      { property: "og:description", content: "Feed your team with one shared Dobra business account." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: () => (
-    <InfoPage titleKey="marketing.pages.business.title" bodyKey="marketing.pages.business.body" />
-  ),
+  beforeLoad: () => {
+    throw redirect({ to: "/contact", statusCode: 301 });
+  },
 });
