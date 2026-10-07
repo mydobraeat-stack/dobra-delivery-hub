@@ -8,8 +8,8 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     {
      "heading": "1. Data Controller",
      "paragraphs": [
-      "The Data Controller is NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Poland, KRS 0000791473, NIP 8982251132, REGON 383675818 (“Dobra”, “Controller”).",
-      "Contact for privacy and data protection matters: legal@mydobra.pl. Customer Service: support@mydobra.pl, tel. +48 505 645 999.",
+      "The Data Controller is NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Poland, {KRS}, {NIP}, {REGON} (“Dobra”, “Controller”).",
+      "Contact for privacy and data protection matters: {EMAIL}. Customer Service: {EMAIL}, {PHONE}.",
       "If Dobra appoints a Data Protection Officer, their contact details will be published on the Platform and in this Policy."
      ]
     },
@@ -140,7 +140,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "paragraphs": [
       "Dobra prefers to process data within the European Economic Area; however, some technological service providers may process data outside the EEA.",
       "If data is transferred to a country without an adequacy decision, Dobra will apply appropriate mechanisms provided for in the GDPR, such as standard contractual clauses, and additional safeguards where required.",
-      "Information regarding the applied safeguards can be obtained by contacting legal@mydobra.pl."
+      "Information regarding the applied safeguards can be obtained by contacting {EMAIL}."
      ]
     },
     {
@@ -175,7 +175,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     {
      "heading": "20. How to exercise your rights",
      "paragraphs": [
-      "Requests can be sent to legal@mydobra.pl. Dobra may request information necessary to confirm identity and protect data from unauthorized disclosure.",
+      "Requests can be sent to {EMAIL}. Dobra may request information necessary to confirm identity and protect data from unauthorized disclosure.",
       "Dobra responds to requests within the timeframes stipulated by the GDPR. In cases defined by law, the exercise of a right may be restricted, for example, when further storage is required by a legal obligation or is necessary for the establishment, exercise, or defense of legal claims."
      ]
     },
@@ -210,8 +210,8 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "heading": "25. Contact",
      "paragraphs": [
       "NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska.",
-      "KRS: 0000791473 | NIP: 8982251132 | REGON: 383675818",
-      "Privacy and GDPR matters: legal@mydobra.pl. Customer Service: support@mydobra.pl, tel. +48 505 645 999."
+      "{KRS} | {NIP} | {REGON}",
+      "Privacy and GDPR matters: {EMAIL}. Customer Service: {EMAIL}, {PHONE}."
      ]
     },
     {
@@ -266,7 +266,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
       "3.1. The use of certain functionalities of the Platform may require the creation of a Dobra account.",
       "3.2. The Client is obliged to provide true, current, and complete data.",
       "3.3. The Client may not create an account using another person's data without their consent, provide false data, create accounts for the purpose of fraud, share the account with unauthorized persons, or use the Platform unlawfully.",
-      "3.4. The Client is responsible for maintaining the confidentiality of login data. Suspicion of unauthorized access should be reported immediately to support@mydobra.pl."
+      "3.4. The Client is responsible for maintaining the confidentiality of login data. Suspicion of unauthorized access should be reported immediately to {EMAIL}."
      ]
     },
     {
@@ -320,7 +320,8 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
       "9.1. Dobra enables payments for Restaurant orders and Dobra services using the methods available on the Platform. This does not imply that Dobra becomes the seller of the Restaurant's products.",
       "9.2. Payments may be technically processed, settled, or handled by authorized external payment service providers.",
       "9.3. Available payment methods may include payment cards, mobile and electronic payments, bank transfers, and other methods available on the Platform.",
-      "9.4. Dobra does not store full payment card data if payment processing is carried out by an external provider."
+      "9.4. Dobra does not store full payment card data if payment processing is carried out by an external provider.",
+      "9.5. The Client chooses the payment method before placing the order. With cash on delivery, the amount is paid to the courier at delivery. With online payment (e.g. card or BLIK, where available), the amount is charged when the order is placed, and the order is sent to the Restaurant only after the payment is confirmed.",
      ]
     },
     {
@@ -344,6 +345,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "paragraphs": [
       "12.1. The Customer may request an order cancellation via the Platform, if such functionality is available.",
       "12.2. The possibility of free cancellation may depend on whether the Restaurant has accepted the order, started or completed its preparation, and whether delivery has already commenced.",
+      "12.4. The Client can cancel an order in the app while it has the status “Pending”, i.e. before the Restaurant accepts it. After that, cancellation is possible by contacting Customer Service. For a cancelled order paid online, Dobra refunds the money to the original payment method.",
       "12.3. This point does not limit the Customer's mandatory rights arising from Polish law."
      ]
     },
@@ -357,7 +359,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     {
      "heading": "14. Incorrect, Incomplete, or Damaged Orders",
      "paragraphs": [
-      "Order-related issues should be reported via the Dobra application or to support@mydobra.pl — these may include missing or incorrect products, significant damage to the order, non-delivery, delivery to the wrong address, or substantial quality problems.",
+      "Order-related issues should be reported via the Dobra application or to {EMAIL} — these may include missing or incorrect products, significant damage to the order, non-delivery, delivery to the wrong address, or substantial quality problems.",
       "The Customer should provide the order number, a description of the issue, and, if helpful, photographs. Depending on the nature of the problem, responsibility lies with the Restaurant or Dobra, in accordance with applicable law."
      ]
     },
@@ -372,7 +374,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     {
      "heading": "16. Complaints",
      "paragraphs": [
-      "Complaints regarding the Dobra Platform or delivery services may be submitted to the following address: NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska, e-mail: support@mydobra.pl, tel. +48 505 645 999.",
+      "Complaints regarding the Dobra Platform or delivery services may be submitted to the following address: NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska, e-mail: {EMAIL}, {PHONE}.",
       "A complaint should, if possible, include the Customer's name and surname, order number, a description of the problem, and the expected resolution. Dobra shall process complaints within the period required by law."
      ]
     },
@@ -454,7 +456,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "heading": "26. Personal Data",
      "paragraphs": [
       "Personal data is processed in accordance with Dobra's Privacy Policy. Depending on how the Platform is used, Dobra may process, among others, account data, name and surname, phone number, email address, delivery addresses, order history, correspondence with customer service, payment information, device information, IP address and location, and data used for fraud prevention.",
-      "Contact for privacy matters: legal@mydobra.pl."
+      "Contact for privacy matters: {EMAIL}."
      ]
     },
     {
@@ -481,9 +483,9 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     {
      "heading": "30. Contact",
      "paragraphs": [
-      "Customer Service: support@mydobra.pl, tel. +48 505 645 999 — matters concerning orders, deliveries, returns, accounts, and complaints.",
-      "Legal and Privacy matters: legal@mydobra.pl.",
-      "Platform Operator: NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. KRS: 0000791473 | NIP: 8982251132 | REGON: 383675818 | Share capital: 5,000 PLN."
+      "Customer Service: {EMAIL}, {PHONE} — matters concerning orders, deliveries, returns, accounts, and complaints.",
+      "Legal and Privacy matters: {EMAIL}.",
+      "Platform Operator: NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. {KRS} | {NIP} | {REGON} | Share capital: 5,000 PLN."
      ]
     }
    ],
@@ -494,8 +496,8 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
    ],
    "intro": [
     "These Regulations define the rules for accessing and using the Dobra mobile application, website, and related services (the \"Dobra Platform\").",
-    "The Dobra Platform is operated by NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. KRS: 0000791473, NIP: 8982251132, REGON: 383675818, share capital: 5,000 PLN.",
-    "Customer Support: support@mydobra.pl, tel. +48 505 645 999. Legal and Privacy Contact: legal@mydobra.pl."
+    "The Dobra Platform is operated by NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. {KRS}, {NIP}, {REGON}, share capital: 5,000 PLN.",
+    "Customer Support: {EMAIL}, {PHONE}. Legal and Privacy Contact: {EMAIL}."
    ]
   }
  },
@@ -505,8 +507,8 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     {
      "heading": "1. Адміністратор даних",
      "paragraphs": [
-      "Адміністратором персональних даних є NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska, KRS 0000791473, NIP 8982251132, REGON 383675818 («Dobra», «Адміністратор»).",
-      "Контакт з питань конфіденційності та захисту даних: legal@mydobra.pl. Служба підтримки клієнтів: support@mydobra.pl, тел. +48 505 645 999.",
+      "Адміністратором персональних даних є NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska, {KRS}, {NIP}, {REGON} («Dobra», «Адміністратор»).",
+      "Контакт з питань конфіденційності та захисту даних: {EMAIL}. Служба підтримки клієнтів: {EMAIL}, {PHONE}.",
       "Якщо Dobra призначить Інспектора із захисту даних, його контактні дані будуть опубліковані на Платформі та в цій Політиці."
      ]
     },
@@ -637,7 +639,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "paragraphs": [
       "Dobra віддає перевагу обробці даних у Європейській економічній зоні, але деякі постачальники технологій можуть обробляти дані за межами ЄЕЗ.",
       "Якщо дані передаються до країни без рішення про адекватний рівень захисту, Dobra застосує відповідний механізм, передбачений GDPR, наприклад, стандартні договірні положення, та додаткові заходи захисту, якщо це вимагається.",
-      "Інформацію про застосовані заходи безпеки можна отримати за адресою legal@mydobra.pl."
+      "Інформацію про застосовані заходи безпеки можна отримати за адресою {EMAIL}."
      ]
     },
     {
@@ -672,7 +674,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     {
      "heading": "20. Як реалізувати права",
      "paragraphs": [
-      "Запит можна надіслати на legal@mydobra.pl. Dobra може попросити інформацію, необхідну для підтвердження особи та захисту даних від несанкціонованого розголошення.",
+      "Запит можна надіслати на {EMAIL}. Dobra може попросити інформацію, необхідну для підтвердження особи та захисту даних від несанкціонованого розголошення.",
       "Dobra відповідає на запити у терміни, передбачені GDPR. У випадках, визначених законодавством, реалізація права може бути обмежена, наприклад, коли подальше зберігання вимагається юридичним обов'язком або потрібне для встановлення, здійснення чи захисту претензій."
      ]
     },
@@ -707,8 +709,8 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "heading": "25. Контакти",
      "paragraphs": [
       "NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska.",
-      "KRS: 0000791473 | NIP: 8982251132 | REGON: 383675818",
-      "Питання конфіденційності та GDPR: legal@mydobra.pl. Служба підтримки клієнтів: support@mydobra.pl, тел. +48 505 645 999."
+      "{KRS} | {NIP} | {REGON}",
+      "Питання конфіденційності та GDPR: {EMAIL}. Служба підтримки клієнтів: {EMAIL}, {PHONE}."
      ]
     },
     {
@@ -763,7 +765,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
       "3.1. Користування деякими функціональними можливостями Платформи може вимагати створення облікового запису Dobra.",
       "3.2. Клієнт зобов'язаний надавати правдиві, актуальні та повні дані.",
       "3.3. Клієнт не може створювати обліковий запис, використовуючи дані іншої особи без її згоди, надавати фальшиві дані, створювати облікові записи з метою шахрайства, надавати доступ до облікового запису неавторизованим особам або використовувати Платформу всупереч закону.",
-      "3.4. Клієнт відповідає за збереження конфіденційності даних для входу. Про підозру на несанкціонований доступ слід негайно повідомити на support@mydobra.pl."
+      "3.4. Клієнт відповідає за збереження конфіденційності даних для входу. Про підозру на несанкціонований доступ слід негайно повідомити на {EMAIL}."
      ]
     },
     {
@@ -817,7 +819,8 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
       "9.1. Dobra уможливлює платежі за замовлення Ресторану та послуги Dobra за допомогою методів, доступних на Платформі. Це не означає, що Dobra стає продавцем продукції Ресторану.",
       "9.2. Платежі можуть технічно оброблятися, розраховуватися або обслуговуватися уповноваженими зовнішніми постачальниками платіжних послуг.",
       "9.3. Доступні методи оплати можуть включати платіжні картки, мобільні та електронні платежі, перекази та інші методи, доступні на Платформі.",
-      "9.4. Dobra не зберігає повні дані платіжних карток, якщо обслуговування платежів здійснюється зовнішнім постачальником."
+      "9.4. Dobra не зберігає повні дані платіжних карток, якщо обслуговування платежів здійснюється зовнішнім постачальником.",
+      "9.5. Клієнт обирає спосіб оплати до оформлення замовлення. У разі оплати готівкою при отриманні сума сплачується кур’єру під час доставки. У разі онлайн-оплати (наприклад, карткою або BLIK, якщо доступно) сума списується під час оформлення замовлення, а замовлення надходить до Ресторану лише після підтвердження оплати.",
      ]
     },
     {
@@ -841,6 +844,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "paragraphs": [
       "12.1. Клієнт може подати запит на скасування замовлення через Платформу, якщо така функціональність доступна.",
       "12.2. Можливість безоплатного скасування може залежати від того, чи Ресторан прийняв замовлення, розпочав чи завершив його приготування, а також чи розпочалася вже доставка.",
+      "12.4. Клієнт може самостійно скасувати замовлення в застосунку, поки воно має статус «Очікує», тобто до того, як Ресторан його прийме. Після цього скасування можливе через звернення до Служби підтримки. За скасоване замовлення, оплачене онлайн, Dobra повертає кошти на початковий спосіб оплати.",
       "12.3. Цей пункт не обмежує імперативних прав Клієнта, що випливають з польського законодавства."
      ]
     },
@@ -854,7 +858,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     {
      "heading": "14. Неправильні, неповні або пошкоджені замовлення",
      "paragraphs": [
-      "Проблеми, що стосуються замовлення, слід повідомляти в застосунку Dobra або на support@mydobra.pl — вони можуть включати відсутні або неправильні продукти, серйозне пошкодження замовлення, відсутність доставки, доставку за неправильною адресою або суттєві проблеми з якістю.",
+      "Проблеми, що стосуються замовлення, слід повідомляти в застосунку Dobra або на {EMAIL} — вони можуть включати відсутні або неправильні продукти, серйозне пошкодження замовлення, відсутність доставки, доставку за неправильною адресою або суттєві проблеми з якістю.",
       "Клієнт повинен вказати номер замовлення, опис проблеми та, якщо це доцільно, фотографії. Залежно від характеру проблеми відповідальність несе Ресторан або Dobra, згідно з чинним законодавством."
      ]
     },
@@ -869,7 +873,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     {
      "heading": "16. Рекламації",
      "paragraphs": [
-      "Рекламації щодо Платформи Dobra або послуг доставки можна подавати за адресою: NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska, e-mail: support@mydobra.pl, тел. +48 505 645 999.",
+      "Рекламації щодо Платформи Dobra або послуг доставки можна подавати за адресою: NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska, e-mail: {EMAIL}, {PHONE}.",
       "Рекламація повинна, якщо це можливо, містити ім'я та прізвище Клієнта, номер замовлення, опис проблеми та очікуваний спосіб вирішення справи. Dobra розглядає рекламації у термін, передбачений нормами права."
      ]
     },
@@ -951,7 +955,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "heading": "26. Персональні дані",
      "paragraphs": [
       "Персональні дані обробляються відповідно до Політики конфіденційності Dobra. Залежно від способу використання Платформи, Dobra може обробляти, зокрема, дані облікового запису, ім'я та прізвище, номер телефону, адресу електронної пошти, адреси доставки, історію замовлень, кореспонденцію зі службою підтримки клієнтів, інформацію про платежі, пристрій, IP-адресу та місцезнаходження, а також дані, що використовуються для запобігання шахрайству.",
-      "Контакт з питань конфіденційності: legal@mydobra.pl."
+      "Контакт з питань конфіденційності: {EMAIL}."
      ]
     },
     {
@@ -978,9 +982,9 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     {
      "heading": "30. Контакти",
      "paragraphs": [
-      "Служба підтримки клієнтів: support@mydobra.pl, тел. +48 505 645 999 — питання, що стосуються замовлень, доставок, повернень, облікових записів та скарг.",
-      "Юридичні питання та конфіденційність: legal@mydobra.pl.",
-      "Оператор Платформи: NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. KRS: 0000791473 | NIP: 8982251132 | REGON: 383675818 | Статутний капітал: 5 000 PLN."
+      "Служба підтримки клієнтів: {EMAIL}, {PHONE} — питання, що стосуються замовлень, доставок, повернень, облікових записів та скарг.",
+      "Юридичні питання та конфіденційність: {EMAIL}.",
+      "Оператор Платформи: NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. {KRS} | {NIP} | {REGON} | Статутний капітал: 5 000 PLN."
      ]
     }
    ],
@@ -991,8 +995,8 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
    ],
    "intro": [
     "Цей Регламент визначає правила доступу до та користування мобільним додатком Dobra, вебсайтом та пов'язаними послугами («Платформа Dobra»).",
-    "Платформа Dobra керується NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. KRS: 0000791473, NIP: 8982251132, REGON: 383675818, статутний капітал: 5 000 PLN.",
-    "Служба підтримки клієнтів: support@mydobra.pl, тел. +48 505 645 999. Контакт з юридичних питань та питань приватності: legal@mydobra.pl."
+    "Платформа Dobra керується NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. {KRS}, {NIP}, {REGON}, статутний капітал: 5 000 PLN.",
+    "Служба підтримки клієнтів: {EMAIL}, {PHONE}. Контакт з юридичних питань та питань приватності: {EMAIL}."
    ]
   }
  },
@@ -1002,8 +1006,8 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     {
      "heading": "1. Responsable du traitement des données",
      "paragraphs": [
-      "Le responsable du traitement des données personnelles est NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska, KRS 0000791473, NIP 8982251132, REGON 383675818 (« Dobra », « le Responsable du traitement »).",
-      "Contact pour les questions de confidentialité et de protection des données : legal@mydobra.pl. Service Client : support@mydobra.pl, tél. +48 505 645 999.",
+      "Le responsable du traitement des données personnelles est NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska, {KRS}, {NIP}, {REGON} (« Dobra », « le Responsable du traitement »).",
+      "Contact pour les questions de confidentialité et de protection des données : {EMAIL}. Service Client : {EMAIL}, {PHONE}.",
       "Si Dobra nomme un Délégué à la Protection des Données, ses coordonnées seront publiées sur la Plateforme et dans la présente Politique."
      ]
     },
@@ -1134,7 +1138,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "paragraphs": [
       "Dobra privilégie le traitement des données au sein de l'Espace Économique Européen, mais certains fournisseurs technologiques peuvent traiter des données en dehors de l'EEE.",
       "Si des données sont transférées vers un pays ne faisant pas l'objet d'une décision d'adéquation, Dobra appliquera le mécanisme approprié prévu par le RGPD, tel que les clauses contractuelles types, ainsi que des mesures de protection supplémentaires, si elles sont requises.",
-      "Des informations sur les garanties appliquées peuvent être obtenues à l'adresse legal@mydobra.pl."
+      "Des informations sur les garanties appliquées peuvent être obtenues à l'adresse {EMAIL}."
      ]
     },
     {
@@ -1169,7 +1173,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     {
      "heading": "20. Comment exercer vos droits",
      "paragraphs": [
-      "La demande peut être envoyée à legal@mydobra.pl. Dobra peut demander les informations nécessaires pour confirmer votre identité et protéger les données contre toute divulgation non autorisée.",
+      "La demande peut être envoyée à {EMAIL}. Dobra peut demander les informations nécessaires pour confirmer votre identité et protéger les données contre toute divulgation non autorisée.",
       "Dobra répond aux demandes dans les délais prévus par le RGPD. Dans les cas définis par la loi, l'exercice du droit peut être limité, par exemple lorsque la conservation ultérieure est requise par une obligation légale ou nécessaire pour la constatation, l'exercice ou la défense de droits."
      ]
     },
@@ -1204,8 +1208,8 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "heading": "25. Contact",
      "paragraphs": [
       "NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska.",
-      "KRS: 0000791473 | NIP: 8982251132 | REGON: 383675818",
-      "Questions de confidentialité et RGPD : legal@mydobra.pl. Service Client : support@mydobra.pl, tél. +48 505 645 999."
+      "{KRS} | {NIP} | {REGON}",
+      "Questions de confidentialité et RGPD : {EMAIL}. Service Client : {EMAIL}, {PHONE}."
      ]
     },
     {
@@ -1260,7 +1264,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
       "3.1. L'utilisation de certaines fonctionnalités de la Plateforme peut nécessiter la création d'un compte Dobra.",
       "3.2. Le Client est tenu de fournir des données véridiques, actuelles et complètes.",
       "3.3. Le Client ne peut pas créer de compte en utilisant les données d'une autre personne sans son consentement, fournir de fausses données, créer des comptes dans le but de frauder, partager son compte avec des personnes non autorisées, ni utiliser la Plateforme de manière illégale.",
-      "3.4. Le Client est responsable du maintien de la confidentialité de ses données de connexion. Tout soupçon d'accès non autorisé doit être immédiatement signalé à support@mydobra.pl."
+      "3.4. Le Client est responsable du maintien de la confidentialité de ses données de connexion. Tout soupçon d'accès non autorisé doit être immédiatement signalé à {EMAIL}."
      ]
     },
     {
@@ -1314,7 +1318,8 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
       "9.1. Dobra permet les paiements pour les commandes des Restaurants et les services de Dobra en utilisant les méthodes disponibles sur la Plateforme. Cela ne signifie pas que Dobra devient le vendeur des produits du Restaurant.",
       "9.2. Les paiements peuvent être techniquement traités, réglés ou gérés par des prestataires de services de paiement externes autorisés.",
       "9.3. Les méthodes de paiement disponibles peuvent inclure les cartes de crédit, les paiements mobiles et électroniques, les virements et d'autres méthodes disponibles sur la Plateforme.",
-      "9.4. Dobra ne stocke pas les données complètes des cartes de crédit si le traitement des paiements est effectué par un prestataire externe."
+      "9.4. Dobra ne stocke pas les données complètes des cartes de crédit si le traitement des paiements est effectué par un prestataire externe.",
+      "9.5. Le Client choisit le mode de paiement avant de passer commande. En cas de paiement en espèces à la livraison, le montant est réglé au livreur lors de la livraison. En cas de paiement en ligne (par ex. carte ou BLIK, lorsque disponible), le montant est débité au moment de la commande, et la commande n’est transmise au Restaurant qu’après confirmation du paiement.",
      ]
     },
     {
@@ -1338,6 +1343,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "paragraphs": [
       "12.1. Le Client peut demander l'annulation d'une commande via la Plateforme, si cette fonctionnalité est disponible.",
       "12.2. La possibilité d'une annulation gratuite peut dépendre du fait que le Restaurant ait accepté la commande, ait commencé ou terminé sa préparation, et que la livraison ait déjà débuté.",
+      "12.4. Le Client peut annuler une commande dans l’application tant qu’elle a le statut « En attente », c’est-à-dire avant que le Restaurant ne l’accepte. Ensuite, l’annulation est possible en contactant le Service client. Pour une commande annulée payée en ligne, Dobra rembourse le montant sur le moyen de paiement initial.",
       "12.3. Ce point ne limite pas les droits impératifs du Client découlant du droit polonais."
      ]
     },
@@ -1351,7 +1357,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     {
      "heading": "14. Commandes incorrectes, incomplètes ou endommagées",
      "paragraphs": [
-      "Les problèmes relatifs à la commande doivent être signalés via l'application Dobra ou à support@mydobra.pl — ceux-ci peuvent inclure des produits manquants ou incorrects, des dommages importants à la commande, une absence de livraison, une livraison à une adresse incorrecte ou des problèmes de qualité significatifs.",
+      "Les problèmes relatifs à la commande doivent être signalés via l'application Dobra ou à {EMAIL} — ceux-ci peuvent inclure des produits manquants ou incorrects, des dommages importants à la commande, une absence de livraison, une livraison à une adresse incorrecte ou des problèmes de qualité significatifs.",
       "Le Client doit fournir le numéro de commande, une description du problème et, si cela est utile, des photographies. En fonction de la nature du problème, la responsabilité incombe au Restaurant ou à Dobra, conformément à la législation en vigueur."
      ]
     },
@@ -1366,7 +1372,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     {
      "heading": "16. Réclamations",
      "paragraphs": [
-      "Les réclamations concernant la Plateforme Dobra ou les services de livraison peuvent être adressées à : NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska, e-mail : support@mydobra.pl, tél. : +48 505 645 999.",
+      "Les réclamations concernant la Plateforme Dobra ou les services de livraison peuvent être adressées à : NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska, e-mail : {EMAIL}, tél. : {PHONE}.",
       "La réclamation devrait, si possible, contenir le nom et le prénom du Client, le numéro de commande, la description du problème et la solution attendue. Dobra traite les réclamations dans le délai requis par les dispositions légales."
      ]
     },
@@ -1448,7 +1454,7 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "heading": "26. Données personnelles",
      "paragraphs": [
       "Les données personnelles sont traitées conformément à la Politique de Confidentialité de Dobra. Selon la manière dont la Plateforme est utilisée, Dobra peut traiter, entre autres : les données de compte, le nom et le prénom, le numéro de téléphone, l'adresse e-mail, les adresses de livraison, l'historique des commandes, la correspondance avec le service client, les informations de paiement, les informations sur l'appareil, l'adresse IP et la localisation, ainsi que les données utilisées pour la prévention de la fraude.",
-      "Contact pour les questions de confidentialité : legal@mydobra.pl."
+      "Contact pour les questions de confidentialité : {EMAIL}."
      ]
     },
     {
@@ -1475,9 +1481,9 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
     {
      "heading": "30. Contact",
      "paragraphs": [
-      "Service Client : support@mydobra.pl, tél. +48 505 645 999 — questions relatives aux commandes, livraisons, retours, comptes et réclamations.",
-      "Affaires juridiques et confidentialité : legal@mydobra.pl.",
-      "Opérateur de la Plateforme : NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. KRS: 0000791473 | NIP: 8982251132 | REGON: 383675818 | Capital social : 5 000 PLN."
+      "Service Client : {EMAIL}, {PHONE} — questions relatives aux commandes, livraisons, retours, comptes et réclamations.",
+      "Affaires juridiques et confidentialité : {EMAIL}.",
+      "Opérateur de la Plateforme : NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. {KRS} | {NIP} | {REGON} | Capital social : 5 000 PLN."
      ]
     }
    ],
@@ -1488,8 +1494,8 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
    ],
    "intro": [
     "Le présent Règlement définit les principes d'accès et d'utilisation de l'application mobile Dobra, du site internet et des services associés (« Plateforme Dobra »).",
-    "La Plateforme Dobra est exploitée par NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. KRS: 0000791473, NIP: 8982251132, REGON: 383675818, kapitał zakładowy: 5 000 PLN.",
-    "Service Client : support@mydobra.pl, tél. +48 505 645 999. Contact juridique et de confidentialité : legal@mydobra.pl."
+    "La Plateforme Dobra est exploitée par NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. {KRS}, {NIP}, {REGON}, kapitał zakładowy: 5 000 PLN.",
+    "Service Client : {EMAIL}, {PHONE}. Contact juridique et de confidentialité : {EMAIL}."
    ]
   }
  }
