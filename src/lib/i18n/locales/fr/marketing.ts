@@ -1,5 +1,6 @@
 export default {
   nav: {
+    contact: "Contact",
     deliver: "Devenir livreur",
     logIn: "Se connecter",
     signUp: "Créer un compte",

@@ -26,6 +26,12 @@ export function SiteHeader() {
           >
             {t("marketing.nav.deliver")}
           </Link>
+          <Link
+            to="/contact"
+            className="text-sm font-semibold text-foreground/80 underline-offset-4 hover:underline"
+          >
+            {t("marketing.nav.contact")}
+          </Link>
           <Button asChild variant="outline">
             <Link to="/get-started" search={{ mode: "login" }}>
               {t("marketing.nav.logIn")}
@@ -86,6 +92,13 @@ export function SiteHeader() {
                 className="text-sm font-semibold text-foreground/80"
               >
                 {t("marketing.footer.about")}
+              </Link>
+              <Link
+                to="/contact"
+                onClick={() => setOpen(false)}
+                className="text-sm font-semibold text-foreground/80"
+              >
+                {t("marketing.nav.contact")}
               </Link>
             </nav>
           </SheetContent>
