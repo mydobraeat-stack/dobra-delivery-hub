@@ -15,12 +15,15 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BusinessRouteImport } from './routes/business'
 import { Route as CitiesRouteImport } from './routes/cities'
+import { Route as ComplaintsRouteImport } from './routes/complaints'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DeliverRouteImport } from './routes/deliver'
+import { Route as DeliveryRouteImport } from './routes/delivery'
 import { Route as GetStartedRouteImport } from './routes/get-started'
 import { Route as HelpRouteImport } from './routes/help'
 import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as RefundsRouteImport } from './routes/refunds'
 import { Route as RestaurantsRouteImport } from './routes/restaurants'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
@@ -104,6 +107,11 @@ const CitiesRoute = CitiesRouteImport.update({
   path: '/cities',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ComplaintsRoute = ComplaintsRouteImport.update({
+  id: '/complaints',
+  path: '/complaints',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -112,6 +120,11 @@ const ContactRoute = ContactRouteImport.update({
 const DeliverRoute = DeliverRouteImport.update({
   id: '/deliver',
   path: '/deliver',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DeliveryRoute = DeliveryRouteImport.update({
+  id: '/delivery',
+  path: '/delivery',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GetStartedRoute = GetStartedRouteImport.update({
@@ -132,6 +145,11 @@ const PartnerRoute = PartnerRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RefundsRoute = RefundsRouteImport.update({
+  id: '/refunds',
+  path: '/refunds',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RestaurantsRoute = RestaurantsRouteImport.update({
@@ -440,12 +458,15 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/business': typeof BusinessRoute
   '/cities': typeof CitiesRoute
+  '/complaints': typeof ComplaintsRoute
   '/contact': typeof ContactRoute
   '/deliver': typeof DeliverRoute
+  '/delivery': typeof DeliveryRoute
   '/get-started': typeof GetStartedRoute
   '/help': typeof HelpRoute
   '/partner': typeof PartnerRoute
   '/privacy': typeof PrivacyRoute
+  '/refunds': typeof RefundsRoute
   '/restaurants': typeof RestaurantsRoute
   '/terms': typeof TermsRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
@@ -506,12 +527,15 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/business': typeof BusinessRoute
   '/cities': typeof CitiesRoute
+  '/complaints': typeof ComplaintsRoute
   '/contact': typeof ContactRoute
   '/deliver': typeof DeliverRoute
+  '/delivery': typeof DeliveryRoute
   '/get-started': typeof GetStartedRoute
   '/help': typeof HelpRoute
   '/partner': typeof PartnerRoute
   '/privacy': typeof PrivacyRoute
+  '/refunds': typeof RefundsRoute
   '/restaurants': typeof RestaurantsRoute
   '/terms': typeof TermsRoute
   '/checkout': typeof AuthenticatedCheckoutRoute
@@ -569,12 +593,15 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/business': typeof BusinessRoute
   '/cities': typeof CitiesRoute
+  '/complaints': typeof ComplaintsRoute
   '/contact': typeof ContactRoute
   '/deliver': typeof DeliverRoute
+  '/delivery': typeof DeliveryRoute
   '/get-started': typeof GetStartedRoute
   '/help': typeof HelpRoute
   '/partner': typeof PartnerRoute
   '/privacy': typeof PrivacyRoute
+  '/refunds': typeof RefundsRoute
   '/restaurants': typeof RestaurantsRoute
   '/terms': typeof TermsRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
@@ -637,12 +664,15 @@ export interface FileRouteTypes {
     | '/auth'
     | '/business'
     | '/cities'
+    | '/complaints'
     | '/contact'
     | '/deliver'
+    | '/delivery'
     | '/get-started'
     | '/help'
     | '/partner'
     | '/privacy'
+    | '/refunds'
     | '/restaurants'
     | '/terms'
     | '/admin'
@@ -703,12 +733,15 @@ export interface FileRouteTypes {
     | '/auth'
     | '/business'
     | '/cities'
+    | '/complaints'
     | '/contact'
     | '/deliver'
+    | '/delivery'
     | '/get-started'
     | '/help'
     | '/partner'
     | '/privacy'
+    | '/refunds'
     | '/restaurants'
     | '/terms'
     | '/checkout'
@@ -765,12 +798,15 @@ export interface FileRouteTypes {
     | '/auth'
     | '/business'
     | '/cities'
+    | '/complaints'
     | '/contact'
     | '/deliver'
+    | '/delivery'
     | '/get-started'
     | '/help'
     | '/partner'
     | '/privacy'
+    | '/refunds'
     | '/restaurants'
     | '/terms'
     | '/_authenticated/admin'
@@ -833,12 +869,15 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   BusinessRoute: typeof BusinessRoute
   CitiesRoute: typeof CitiesRoute
+  ComplaintsRoute: typeof ComplaintsRoute
   ContactRoute: typeof ContactRoute
   DeliverRoute: typeof DeliverRoute
+  DeliveryRoute: typeof DeliveryRoute
   GetStartedRoute: typeof GetStartedRoute
   HelpRoute: typeof HelpRoute
   PartnerRoute: typeof PartnerRoute
   PrivacyRoute: typeof PrivacyRoute
+  RefundsRoute: typeof RefundsRoute
   RestaurantsRoute: typeof RestaurantsRoute
   TermsRoute: typeof TermsRoute
   ApiPublicStripeWebhookRoute: typeof ApiPublicStripeWebhookRoute
@@ -891,6 +930,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CitiesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/complaints': {
+      id: '/complaints'
+      path: '/complaints'
+      fullPath: '/complaints'
+      preLoaderRoute: typeof ComplaintsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -903,6 +949,13 @@ declare module '@tanstack/react-router' {
       path: '/deliver'
       fullPath: '/deliver'
       preLoaderRoute: typeof DeliverRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/delivery': {
+      id: '/delivery'
+      path: '/delivery'
+      fullPath: '/delivery'
+      preLoaderRoute: typeof DeliveryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/get-started': {
@@ -931,6 +984,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/refunds': {
+      id: '/refunds'
+      path: '/refunds'
+      fullPath: '/refunds'
+      preLoaderRoute: typeof RefundsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/restaurants': {
@@ -1468,12 +1528,15 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   BusinessRoute: BusinessRoute,
   CitiesRoute: CitiesRoute,
+  ComplaintsRoute: ComplaintsRoute,
   ContactRoute: ContactRoute,
   DeliverRoute: DeliverRoute,
+  DeliveryRoute: DeliveryRoute,
   GetStartedRoute: GetStartedRoute,
   HelpRoute: HelpRoute,
   PartnerRoute: PartnerRoute,
   PrivacyRoute: PrivacyRoute,
+  RefundsRoute: RefundsRoute,
   RestaurantsRoute: RestaurantsRoute,
   TermsRoute: TermsRoute,
   ApiPublicStripeWebhookRoute: ApiPublicStripeWebhookRoute,

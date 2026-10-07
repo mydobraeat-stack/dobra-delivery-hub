@@ -9,6 +9,9 @@ import { SiteFooter } from "./SiteFooter";
 import { PRIVACY_DOC, TERMS_DOC } from "./legal-content";
 import { LEGAL_TRANSLATIONS } from "./legal-translations";
 import { useI18n } from "@/lib/i18n";
+import { COMPANY, companyAddress, fillCompany } from "@/lib/company";
+
+const fillAll = (xs?: string[]) => (xs ?? []).map(fillCompany).filter(Boolean);
 
 const slug = (i: number) => `section-${i + 1}`;
 
@@ -123,7 +126,7 @@ export function LegalPage({ kind }: { kind: "privacy" | "terms" }) {
             </div>
           </div>
           <div className="mt-6 max-w-3xl space-y-3">
-            {doc.intro.map((p) => (
+            {fillAll(doc.intro).map((p) => (
               <p key={p} className="text-base leading-relaxed text-foreground/80">
                 {p}
               </p>
@@ -154,28 +157,28 @@ export function LegalPage({ kind }: { kind: "privacy" | "terms" }) {
                   {section.heading}
                 </h2>
                 <div className="mt-2 h-px bg-gradient-to-r from-secondary via-border to-transparent" />
-                {section.paragraphs?.map((p) => (
+                {fillAll(section.paragraphs).map((p) => (
                   <p key={p} className="mt-4 max-w-prose text-[15px] leading-7 text-foreground/80 sm:text-base">
                     {p}
                   </p>
                 ))}
-                {section.bullets && (
+                {section.bullets?.length ? (
                   <ul className="mt-4 max-w-prose space-y-2.5">
-                    {section.bullets.map((b) => (
+                    {fillAll(section.bullets).map((b) => (
                       <li key={b} className="flex gap-3 text-[15px] leading-7 text-foreground/80 sm:text-base">
                         <span aria-hidden className="mt-2.5 size-1.5 shrink-0 rounded-full bg-primary" />
                         <span>{b}</span>
                       </li>
                     ))}
                   </ul>
-                )}
+                ) : null}
               </Reveal>
             ))}
           </div>
 
           <div className="mt-14 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-border bg-secondary/30 p-6">
             <p className="text-sm text-foreground/75">
-              support@mydobra.pl · ul. Jana III Sobieskiego 38, 55-330 Lutynia
+              {[COMPANY.legalName, companyAddress(), COMPANY.email].filter(Boolean).join(" · ")}
             </p>
             <Button asChild variant="outline">
               <Link to="/">{t("marketing.pages.backHome")}</Link>

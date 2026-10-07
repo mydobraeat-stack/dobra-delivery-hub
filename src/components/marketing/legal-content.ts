@@ -21,8 +21,8 @@ export const PRIVACY_DOC: LegalDocument = {
     {
       heading: "1. Administrator danych",
       paragraphs: [
-        "Administratorem danych osobowych jest NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska, KRS 0000791473, NIP 8982251132, REGON 383675818 („Dobra”, „Administrator”).",
-        "Kontakt w sprawach prywatności i ochrony danych: legal@mydobra.pl. Obsługa Klienta: support@mydobra.pl, tel. +48 505 645 999.",
+        "Administratorem danych osobowych jest NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska, {KRS}, {NIP}, {REGON} („Dobra”, „Administrator”).",
+        "Kontakt w sprawach prywatności i ochrony danych: {EMAIL}. Obsługa Klienta: {EMAIL}, {PHONE}.",
         "Jeżeli Dobra wyznaczy Inspektora Ochrony Danych, jego dane kontaktowe zostaną opublikowane w Platformie i w niniejszej Polityce.",
       ],
     },
@@ -153,7 +153,7 @@ export const PRIVACY_DOC: LegalDocument = {
       paragraphs: [
         "Dobra preferuje przetwarzanie danych w Europejskim Obszarze Gospodarczym, ale niektórzy dostawcy technologiczni mogą przetwarzać dane poza EOG.",
         "Jeżeli dane są przekazywane do państwa bez decyzji stwierdzającej odpowiedni stopień ochrony, Dobra zastosuje odpowiedni mechanizm przewidziany w RODO, np. standardowe klauzule umowne, oraz dodatkowe środki ochronne, gdy są wymagane.",
-        "Informacje o stosowanych zabezpieczeniach można uzyskać pod adresem legal@mydobra.pl.",
+        "Informacje o stosowanych zabezpieczeniach można uzyskać pod adresem {EMAIL}.",
       ],
     },
     {
@@ -188,7 +188,7 @@ export const PRIVACY_DOC: LegalDocument = {
     {
       heading: "20. Jak wykonać prawa",
       paragraphs: [
-        "Wniosek można przesłać na legal@mydobra.pl. Dobra może poprosić o informacje konieczne do potwierdzenia tożsamości i ochrony danych przed nieuprawnionym ujawnieniem.",
+        "Wniosek można przesłać na {EMAIL}. Dobra może poprosić o informacje konieczne do potwierdzenia tożsamości i ochrony danych przed nieuprawnionym ujawnieniem.",
         "Dobra odpowiada na wnioski w terminach przewidzianych RODO. W przypadkach określonych prawem realizacja prawa może zostać ograniczona, np. gdy dalsze przechowywanie jest wymagane obowiązkiem prawnym lub potrzebne do ustalenia, dochodzenia lub obrony roszczeń.",
       ],
     },
@@ -223,8 +223,8 @@ export const PRIVACY_DOC: LegalDocument = {
       heading: "25. Kontakt",
       paragraphs: [
         "NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska.",
-        "KRS: 0000791473 | NIP: 8982251132 | REGON: 383675818",
-        "Sprawy prywatności i RODO: legal@mydobra.pl. Obsługa Klienta: support@mydobra.pl, tel. +48 505 645 999.",
+        "{KRS} | {NIP} | {REGON}",
+        "Sprawy prywatności i RODO: {EMAIL}. Obsługa Klienta: {EMAIL}, {PHONE}.",
       ],
     },
     {
@@ -243,8 +243,8 @@ export const TERMS_DOC: LegalDocument = {
   meta: ["Wersja 1.0", "Terytorium: Rzeczpospolita Polska"],
   intro: [
     "Niniejszy Regulamin określa zasady dostępu do i korzystania z aplikacji mobilnej Dobra, strony internetowej oraz powiązanych usług („Platforma Dobra”).",
-    "Platforma Dobra jest prowadzona przez NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. KRS: 0000791473, NIP: 8982251132, REGON: 383675818, kapitał zakładowy: 5 000 PLN.",
-    "Obsługa Klienta: support@mydobra.pl, tel. +48 505 645 999. Kontakt prawny i dotyczący prywatności: legal@mydobra.pl.",
+    "Platforma Dobra jest prowadzona przez NICKOVWAY SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. {KRS}, {NIP}, {REGON}, kapitał zakładowy: 5 000 PLN.",
+    "Obsługa Klienta: {EMAIL}, {PHONE}. Kontakt prawny i dotyczący prywatności: {EMAIL}.",
   ],
   sections: [
     {
@@ -278,7 +278,7 @@ export const TERMS_DOC: LegalDocument = {
         "3.1. Korzystanie z niektórych funkcjonalności Platformy może wymagać utworzenia konta Dobra.",
         "3.2. Klient zobowiązany jest podawać prawdziwe, aktualne i kompletne dane.",
         "3.3. Klient nie może tworzyć konta przy użyciu danych innej osoby bez jej zgody, podawać fałszywych danych, tworzyć kont w celu oszustwa, udostępniać konta osobom nieuprawnionym ani korzystać z Platformy niezgodnie z prawem.",
-        "3.4. Klient odpowiada za zachowanie poufności danych logowania. Podejrzenie nieautoryzowanego dostępu należy niezwłocznie zgłosić na support@mydobra.pl.",
+        "3.4. Klient odpowiada za zachowanie poufności danych logowania. Podejrzenie nieautoryzowanego dostępu należy niezwłocznie zgłosić na {EMAIL}.",
       ],
     },
     {
@@ -333,6 +333,7 @@ export const TERMS_DOC: LegalDocument = {
         "9.2. Płatności mogą być technicznie przetwarzane, rozliczane lub obsługiwane przez uprawnionych zewnętrznych dostawców usług płatniczych.",
         "9.3. Dostępne metody płatności mogą obejmować karty płatnicze, płatności mobilne i elektroniczne, przelewy oraz inne metody dostępne na Platformie.",
         "9.4. Dobra nie przechowuje pełnych danych kart płatniczych, jeżeli obsługa płatności realizowana jest przez zewnętrznego dostawcę.",
+        "9.5. Klient wybiera metodę płatności przed złożeniem zamówienia. Przy płatności gotówką przy odbiorze należność uiszcza się kurierowi w chwili dostawy. Przy płatności online (np. kartą lub BLIK, jeżeli są dostępne) kwota pobierana jest w chwili składania zamówienia, a zamówienie trafia do Restauracji dopiero po potwierdzeniu płatności.",
       ],
     },
     {
@@ -356,6 +357,7 @@ export const TERMS_DOC: LegalDocument = {
       paragraphs: [
         "12.1. Klient może wystąpić o anulowanie zamówienia za pośrednictwem Platformy, jeżeli taka funkcjonalność jest dostępna.",
         "12.2. Możliwość bezpłatnego anulowania może zależeć od tego, czy Restauracja przyjęła zamówienie, rozpoczęła lub zakończyła jego przygotowywanie oraz czy dostawa już się rozpoczęła.",
+        "12.4. Klient może samodzielnie anulować zamówienie w aplikacji, dopóki ma ono status „Oczekujące”, czyli zanim Restauracja je przyjmie. Później anulowanie jest możliwe przez kontakt z Obsługą Klienta. Za anulowane zamówienie opłacone online Dobra zwraca środki na pierwotną metodę płatności.",
         "12.3. Punkt ten nie ogranicza bezwzględnie obowiązujących praw Klienta wynikających z prawa polskiego.",
       ],
     },
@@ -369,7 +371,7 @@ export const TERMS_DOC: LegalDocument = {
     {
       heading: "14. Nieprawidłowe, niekompletne lub uszkodzone zamówienia",
       paragraphs: [
-        "Problemy dotyczące zamówienia należy zgłaszać w aplikacji Dobra lub na support@mydobra.pl — mogą one obejmować brakujące lub niewłaściwe produkty, poważne uszkodzenie zamówienia, brak dostawy, dostawę pod niewłaściwy adres lub istotne problemy jakościowe.",
+        "Problemy dotyczące zamówienia należy zgłaszać w aplikacji Dobra lub na {EMAIL} — mogą one obejmować brakujące lub niewłaściwe produkty, poważne uszkodzenie zamówienia, brak dostawy, dostawę pod niewłaściwy adres lub istotne problemy jakościowe.",
         "Klient powinien podać numer zamówienia, opis problemu oraz, jeżeli to pomocne, zdjęcia. W zależności od charakteru problemu odpowiedzialność ponosi Restauracja lub Dobra, zgodnie z obowiązującym prawem.",
       ],
     },
@@ -384,7 +386,7 @@ export const TERMS_DOC: LegalDocument = {
     {
       heading: "16. Reklamacje",
       paragraphs: [
-        "Reklamacje dotyczące Platformy Dobra lub usług dostawy można składać na adres: NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska, e-mail: support@mydobra.pl, tel. +48 505 645 999.",
+        "Reklamacje dotyczące Platformy Dobra lub usług dostawy można składać na adres: NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska, e-mail: {EMAIL}, {PHONE}.",
         "Reklamacja powinna, jeżeli to możliwe, zawierać imię i nazwisko Klienta, numer zamówienia, opis problemu oraz oczekiwany sposób rozwiązania sprawy. Dobra rozpatruje reklamacje w terminie wymaganym przepisami prawa.",
       ],
     },
@@ -464,7 +466,7 @@ export const TERMS_DOC: LegalDocument = {
       heading: "26. Dane osobowe",
       paragraphs: [
         "Dane osobowe są przetwarzane zgodnie z Polityką Prywatności Dobra. W zależności od sposobu korzystania z Platformy Dobra może przetwarzać m.in. dane konta, imię i nazwisko, numer telefonu, adres e-mail, adresy dostawy, historię zamówień, korespondencję z obsługą klienta, informacje o płatnościach, urządzeniu, adresie IP i lokalizacji oraz dane wykorzystywane do zapobiegania oszustwom.",
-        "Kontakt w sprawach prywatności: legal@mydobra.pl.",
+        "Kontakt w sprawach prywatności: {EMAIL}.",
       ],
     },
     {
@@ -491,9 +493,9 @@ export const TERMS_DOC: LegalDocument = {
     {
       heading: "30. Kontakt",
       paragraphs: [
-        "Obsługa Klienta: support@mydobra.pl, tel. +48 505 645 999 — sprawy dotyczące zamówień, dostaw, zwrotów, kont i reklamacji.",
-        "Sprawy prawne i prywatność: legal@mydobra.pl.",
-        "Operator Platformy: NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. KRS: 0000791473 | NIP: 8982251132 | REGON: 383675818 | Kapitał zakładowy: 5 000 PLN.",
+        "Obsługa Klienta: {EMAIL}, {PHONE} — sprawy dotyczące zamówień, dostaw, zwrotów, kont i reklamacji.",
+        "Sprawy prawne i prywatność: {EMAIL}.",
+        "Operator Platformy: NICKOVWAY SP. Z O.O., ul. Jana III Sobieskiego 38, 55-330 Lutynia, Polska. {KRS} | {NIP} | {REGON} | Kapitał zakładowy: 5 000 PLN.",
       ],
     },
   ],

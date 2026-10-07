@@ -1,18 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { InfoPage } from "@/components/marketing/InfoPage";
+import { PolicyPage, LiveFees } from "@/components/marketing/PolicyPage";
 
 export const Route = createFileRoute("/partner")({
   head: () => ({
     meta: [
       { title: "Add your restaurant to Dobra" },
-      { name: "description", content: "Bring your kitchen to Dobra and take orders from nearby customers." },
+      { name: "description", content: "How restaurants join Dobra, handle orders and what it costs." },
       { property: "og:title", content: "Add your restaurant to Dobra" },
-      { property: "og:description", content: "Bring your kitchen to Dobra and take orders from nearby customers." },
+      { property: "og:description", content: "How restaurants join Dobra, handle orders and what it costs." },
+      { property: "og:url", content: "https://mydobra.pl/partner" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://mydobra.pl/partner" }],
   }),
-  component: () => (
-    <InfoPage titleKey="marketing.pages.partner.title" bodyKey="marketing.pages.partner.body" />
-  ),
+  component: () => <PolicyPage page="partner"><LiveFees show={["commission"]} /></PolicyPage>,
 });

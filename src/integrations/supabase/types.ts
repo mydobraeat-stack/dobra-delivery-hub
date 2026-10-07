@@ -1191,6 +1191,21 @@ export type Database = {
         Args: { _code: string; _country?: string; _subtotal: number }
         Returns: number
       }
+      public_restaurants: {
+        Args: never
+        Returns: {
+          city: string
+          cuisine: string
+          delivery_fee: number
+          eta_minutes: number
+          featured: boolean
+          id: string
+          is_open: boolean
+          logo_url: string
+          name: string
+          rating: number
+        }[]
+      }
     }
     Enums: {
       app_role: "customer" | "vendor" | "driver" | "admin" | "support_agent"

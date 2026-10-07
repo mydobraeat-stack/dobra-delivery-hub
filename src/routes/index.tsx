@@ -3,6 +3,7 @@ import { SiteHeader } from "@/components/marketing/SiteHeader";
 import { Hero } from "@/components/marketing/Hero";
 import { CityMaps } from "@/components/marketing/CityMaps";
 import { LandingSections } from "@/components/marketing/LandingSections";
+import { FeaturedRestaurants } from "@/components/marketing/FeaturedRestaurants";
 import { SiteFooter } from "@/components/marketing/SiteFooter";
 
 export const Route = createFileRoute("/")({
@@ -34,6 +35,7 @@ function MarketingHome() {
       <main className="flex-1">
         <Hero />
         <LandingSections />
+        <FeaturedRestaurants limit={6} />
         <CityMaps />
       </main>
       <SiteFooter />

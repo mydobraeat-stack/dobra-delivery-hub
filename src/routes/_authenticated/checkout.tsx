@@ -13,6 +13,7 @@ import { createCardCheckoutSession } from "@/lib/payments.functions";
 import { computeOrderFees, placeOrder, previewPromo, pricingQuery, restaurantQuery, type PaymentMethod } from "@/lib/dobra";
 import { useQuery as usePricingQuery } from "@tanstack/react-query";
 import { useI18n } from "@/lib/i18n";
+import { SITE_COPY } from "@/components/marketing/site-copy";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -47,7 +48,8 @@ const PAY_OPTIONS: { id: PayChoice; title: string; copy: string }[] = [
 ];
 
 function CheckoutPage() {
-  const { t, formatMoney } = useI18n();
+  const { t, formatMoney, locale } = useI18n();
+  const legal = SITE_COPY[locale].checkoutLegal;
   const cart = useCart();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -320,6 +322,13 @@ function CheckoutPage() {
                 {t("customer.checkout.minOrderWarning", { price: formatMoney(Number(restaurant?.min_order ?? 0)) })}
               </p>
             ) : null}
+
+            <p className="text-center text-xs text-foreground/60">
+              {legal[0]}
+              <Link to="/terms" target="_blank" className="font-semibold text-accent underline">{legal[1]}</Link>
+              {legal[2]}
+              <Link to="/privacy" target="_blank" className="font-semibold text-accent underline">{legal[3]}</Link>.
+            </p>
 
             <Button
               className="w-full"

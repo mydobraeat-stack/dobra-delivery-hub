@@ -1,18 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { InfoPage } from "@/components/marketing/InfoPage";
+import { PolicyPage } from "@/components/marketing/PolicyPage";
 
 export const Route = createFileRoute("/deliver")({
   head: () => ({
     meta: [
-      { title: "Sign up to deliver with Dobra" },
-      { name: "description", content: "Deliver with Dobra on your own schedule and get paid per order." },
-      { property: "og:title", content: "Sign up to deliver with Dobra" },
-      { property: "og:description", content: "Deliver with Dobra on your own schedule and get paid per order." },
+      { title: "Become a Dobra courier" },
+      { name: "description", content: "How to sign up as a Dobra courier, the documents you need and how deliveries work." },
+      { property: "og:title", content: "Become a Dobra courier" },
+      { property: "og:description", content: "How to sign up as a Dobra courier, the documents you need and how deliveries work." },
+      { property: "og:url", content: "https://mydobra.pl/deliver" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://mydobra.pl/deliver" }],
   }),
-  component: () => (
-    <InfoPage titleKey="marketing.pages.deliver.title" bodyKey="marketing.pages.deliver.body" />
-  ),
+  component: () => <PolicyPage page="deliver" />,
 });

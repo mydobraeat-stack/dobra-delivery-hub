@@ -1,9 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Building2, Clock, Mail, MapPin, Phone } from "lucide-react";
 import { SiteHeader } from "@/components/marketing/SiteHeader";
 import { SiteFooter } from "@/components/marketing/SiteFooter";
-import { COMPANY, SITE_COPY } from "@/components/marketing/site-copy";
+import { CompanyCard } from "@/components/marketing/PolicyPage";
+import { SITE_COPY } from "@/components/marketing/site-copy";
+import { COMPANY } from "@/lib/company";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,13 +13,15 @@ import { useI18n } from "@/lib/i18n";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact Dobra — Customer service and company details" },
-      { name: "description", content: "Contact Dobra customer service by email or phone. Company details of NICKOVWAY SP. Z O.O." },
+      { title: "Contact Dobra — customer service and company details" },
+      { name: "description", content: "How to contact Dobra customer service, and company details of NICKOVWAY Sp. z o.o." },
       { property: "og:title", content: "Contact Dobra" },
       { property: "og:description", content: "Customer service, complaints and company details for Dobra food delivery." },
+      { property: "og:url", content: "https://mydobra.pl/contact" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://mydobra.pl/contact" }],
   }),
   component: ContactPage,
 });
@@ -45,46 +48,28 @@ function ContactPage() {
         <h1 className="text-3xl font-extrabold text-foreground sm:text-4xl">{c.contactTitle}</h1>
         <p className="mt-3 text-foreground/70">{c.contactIntro}</p>
 
-        <div className="mt-10 grid gap-8 md:grid-cols-2">
-          <div className="space-y-4">
-            <a href={`mailto:${COMPANY.email}`} className="flex items-center gap-3 rounded-xl border border-ink/10 p-4 hover:border-primary">
-              <Mail className="size-5 text-accent" aria-hidden /> <span className="font-semibold">{COMPANY.email}</span>
-            </a>
-            <a href={COMPANY.phoneHref} className="flex items-center gap-3 rounded-xl border border-ink/10 p-4 hover:border-primary">
-              <Phone className="size-5 text-accent" aria-hidden /> <span className="font-semibold">{COMPANY.phone}</span>
-            </a>
-            <div className="flex items-center gap-3 rounded-xl border border-ink/10 p-4">
-              <Clock className="size-5 text-accent" aria-hidden /> <span>{c.hours}</span>
-            </div>
-            <div className="flex gap-3 rounded-xl border border-ink/10 p-4">
-              <Building2 className="size-5 shrink-0 text-accent" aria-hidden />
-              <div className="text-sm">
-                <p className="font-bold">{COMPANY.legalName}</p>
-                <p className="flex items-center gap-1"><MapPin className="size-3" aria-hidden />{COMPANY.street}, {COMPANY.city}</p>
-                <p className="text-foreground/70">KRS {COMPANY.krs} · NIP {COMPANY.nip} · REGON {COMPANY.regon}</p>
-                <p className="mt-1 text-foreground/70">{COMPANY.partnerEmail} · {COMPANY.legalEmail}</p>
-              </div>
-            </div>
+        <div className={`mt-6 grid gap-8 ${COMPANY.email ? "md:grid-cols-2" : ""}`}>
+          <div>
+            <CompanyCard />
           </div>
-
-          <form onSubmit={submit} className="space-y-3 rounded-2xl bg-card p-6 shadow-sm">
-            <Input required placeholder={c.formName} value={name} onChange={(e) => setName(e.target.value)} />
-            <Input required type="email" placeholder={c.formEmail} value={email} onChange={(e) => setEmail(e.target.value)} />
-            <Textarea required rows={5} placeholder={c.formMessage} value={message} onChange={(e) => setMessage(e.target.value)} />
-            <Button type="submit" className="w-full">{c.formSend}</Button>
-            {sent && <p className="text-sm text-foreground/70">{c.formSent}</p>}
-          </form>
+          {/* The form only appears once a support email exists to send it to. */}
+          {COMPANY.email ? (
+            <form onSubmit={submit} className="mt-10 space-y-3 rounded-2xl bg-card p-6 shadow-sm">
+              <Input required aria-label={c.formName} placeholder={c.formName} value={name} onChange={(e) => setName(e.target.value)} />
+              <Input required type="email" aria-label={c.formEmail} placeholder={c.formEmail} value={email} onChange={(e) => setEmail(e.target.value)} />
+              <Textarea required rows={5} aria-label={c.formMessage} placeholder={c.formMessage} value={message} onChange={(e) => setMessage(e.target.value)} />
+              <Button type="submit" className="w-full">{c.formSend}</Button>
+              {sent && <p className="text-sm text-foreground/70">{c.formSent}</p>}
+            </form>
+          ) : null}
         </div>
 
-        <section id="complaints" className="mt-14 rounded-2xl border border-ink/10 p-6">
-          <h2 className="text-2xl font-extrabold">{c.complaintsTitle}</h2>
-          {c.complaintsBody.map((p) => (
-            <p key={p} className="mt-3 text-sm text-foreground/75">{p}</p>
-          ))}
-          <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noreferrer" className="mt-3 inline-block text-sm font-semibold text-accent underline">
-            ec.europa.eu/consumers/odr
-          </a>
-        </section>
+        <nav className="mt-12 flex flex-wrap gap-3 text-sm font-semibold">
+          <Link to="/complaints" className="rounded-full border border-ink/15 px-4 py-2 hover:border-primary">{c.complaints}</Link>
+          <Link to="/refunds" className="rounded-full border border-ink/15 px-4 py-2 hover:border-primary">{c.refunds}</Link>
+          <Link to="/delivery" className="rounded-full border border-ink/15 px-4 py-2 hover:border-primary">{c.delivery}</Link>
+          <Link to="/help" className="rounded-full border border-ink/15 px-4 py-2 hover:border-primary">{c.pages.help.title}</Link>
+        </nav>
       </main>
       <SiteFooter />
     </div>
