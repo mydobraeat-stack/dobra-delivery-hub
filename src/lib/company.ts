@@ -34,7 +34,8 @@ const TOKENS: Record<string, () => string> = {
   KRS: () => (COMPANY.krs ? `KRS ${COMPANY.krs}` : ""),
   NIP: () => (COMPANY.nip ? `NIP ${COMPANY.nip}` : ""),
   REGON: () => (COMPANY.regon ? `REGON ${COMPANY.regon}` : ""),
-  EMAIL: () => COMPANY.email,
+  // No email yet: point to the real contact page instead of leaving a gap.
+  EMAIL: () => COMPANY.email || "mydobra.pl/contact",
   PHONE: () => COMPANY.phone,
 };
 
@@ -51,7 +52,7 @@ export function fillCompany(text: string): string {
     for (const [k, get] of Object.entries(TOKENS)) {
       const v = get();
       if (v) r = r.split(`{${k}}`).join(v);
-      else r = r.replace(new RegExp(`\\s*[,|·]?\\s*(e-mail:\\s*)?\\{${k}\\}`, "g"), "");
+      else r = r.replace(new RegExp(`\\s*[,|·]?\\s*(e-mail\\s*:\\s*|tél\\.\\s*:\\s*|tel\\.\\s*)?\\{${k}\\}`, "g"), "");
     }
     r = r
       .replace(/^\s*[|,·]\s*/, "")
@@ -61,7 +62,7 @@ export function fillCompany(text: string): string {
       .trim();
     // Dangling label like "Kontakt w sprawach prywatności:." or "Obsługa Klienta: — ..."
     if (/:\s*[.]?$/.test(r) || /:\s*—/.test(r) || /^[^:]{0,80}:\s*\.$/.test(r)) continue;
-    if (r) out.push(r);
+    if (r) out.push(r.charAt(0).toUpperCase() + r.slice(1));
   }
   return out.join(" ");
 }
