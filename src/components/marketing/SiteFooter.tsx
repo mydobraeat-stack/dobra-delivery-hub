@@ -95,6 +95,11 @@ export function SiteFooter() {
                 <Mail className="size-4" aria-hidden /> {COMPANY.email}
               </a>
             ) : null}
+            {COMPANY.legalEmail ? (
+              <a href={`mailto:${COMPANY.legalEmail}`} className="mt-2 flex items-center gap-2 text-foreground/80 hover:text-primary">
+                <Mail className="size-4" aria-hidden /> {COMPANY.legalEmail}
+              </a>
+            ) : null}
             {COMPANY.phone ? (
               <a href={phoneHref()} className="mt-2 flex items-center gap-2 text-foreground/80 hover:text-primary">
                 <Phone className="size-4" aria-hidden /> {COMPANY.phone}
