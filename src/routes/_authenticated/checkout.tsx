@@ -321,6 +321,13 @@ function CheckoutPage() {
               </p>
             ) : null}
 
+            <p className="text-center text-xs text-foreground/60">
+              {legal[0]}
+              <Link to="/terms" target="_blank" className="font-semibold text-accent underline">{legal[1]}</Link>
+              {legal[2]}
+              <Link to="/privacy" target="_blank" className="font-semibold text-accent underline">{legal[3]}</Link>.
+            </p>
+
             <Button
               className="w-full"
               size="lg"
