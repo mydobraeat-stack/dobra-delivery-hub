@@ -54,7 +54,19 @@ export function orderExtrasQuery(orderId: string) {
       ]);
       if (error) throw error;
       if (nErr) throw nErr;
-      return { money: o as unknown as OrderMoney, notes: notes ?? [] };
+      // Call taps (who called whom, when) appear in the order's notes for dispute handling.
+      const { data: calls } = await supabase
+        .from("call_logs")
+        .select("id,caller_id,caller_role,callee_role,created_at")
+        .eq("order_id", orderId);
+      const callNotes = (calls ?? []).map((c) => ({
+        id: c.id,
+        author_id: c.caller_id,
+        created_at: c.created_at,
+        body: `📞 Call: ${c.caller_role} → ${c.callee_role}`,
+      }));
+      const all = [...(notes ?? []), ...callNotes].sort((a, b) => b.created_at.localeCompare(a.created_at));
+      return { money: o as unknown as OrderMoney, notes: all };
     },
   });
 }
