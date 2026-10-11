@@ -75,8 +75,9 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "paragraphs": [
       "Address and contact details are used for delivery fulfillment. If the user enables access to the device's location, Dobra may use the location to determine the delivery area, suggest an address, estimate time, and support Order fulfillment.",
       "The basis for processing data necessary for delivery is the performance of the contract. Application access to the device's precise location depends on the user's settings and permissions.",
-      "During active delivery, Dobra may present the Customer with the courier's approximate or current location to the extent necessary for service fulfillment and safety."
-     ]
+      "During active delivery, Dobra may present the Customer with the courier's approximate or current location to the extent necessary for service fulfillment and safety.",
+        "Phone number for delivery: while an Order is active (from the moment a courier accepts it until it is delivered or cancelled), the Customer and the assigned courier can call each other using the “Call” button in the app. The phone number is not displayed in the app — it is passed to the other party's phone dialer only when they tap the button, and only for the purpose of completing that delivery. For package deliveries, the recipient's phone number provided by the sender is shared with the courier in the same way. Legal basis: performance of the contract (Art. 6(1)(b) GDPR) and, for the recipient, Dobra's legitimate interest in completing the delivery (Art. 6(1)(f) GDPR). The call is made over the caller's own mobile network, so the caller's number may be shown to the other person unless they hide it in their phone settings.",
+      ]
     },
     {
      "heading": "9. Customer Service and Complaints",
@@ -148,8 +149,9 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "paragraphs": [
       "Dobra retains data for no longer than is necessary for the purposes for which it was collected, taking into account legal, tax, accounting, security, and claims limitation period requirements.",
       "The account and operational data may be stored for the period of account use, and after its closure, for the period necessary for settlements, complaints, protection against claims, and legal obligations.",
-      "Tax and accounting documentation is stored for the period required by law. Security data and logs are stored for a period proportional to the risk and investigative needs."
-     ]
+      "Tax and accounting documentation is stored for the period required by law. Security data and logs are stored for a period proportional to the risk and investigative needs.",
+        "Call logs (who tapped “Call”, for which Order and when — without the content or length of the call) are kept for 12 months from the call for handling complaints and disputes, and are then deleted automatically.",
+      ]
     },
     {
      "heading": "18. Data Security",
@@ -329,8 +331,9 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "paragraphs": [
       "10.1. If Dobra provides delivery, it will arrange for the transportation of the accepted order from the Restaurant to the address specified by the Customer.",
       "10.2. The Customer is obliged to provide a correct delivery address and information necessary for its execution (building and apartment number, entry code or instructions, other access information) and to remain available at the provided phone number.",
-      "10.3. The estimated delivery time is indicative and does not constitute a guaranteed deadline. Delivery time may be affected by, among other factors, order preparation time, road and weather conditions, distance, courier availability, and other circumstances beyond Dobra's reasonable control."
-     ]
+      "10.3. The estimated delivery time is indicative and does not constitute a guaranteed deadline. Delivery time may be affected by, among other factors, order preparation time, road and weather conditions, distance, courier availability, and other circumstances beyond Dobra's reasonable control.",
+        "10.4. While an Order is active, the Customer and the courier may call each other using the “Call” button in the app. Dobra shares the phone number only for the duration of the active Order and for the purpose of delivery, and records each use of the button (without the content of the call) for 12 months for complaints handling. Calls are made over the user's own mobile network and are charged according to their operator's tariff.",
+      ]
     },
     {
      "heading": "11. Client Absence at Delivery",
@@ -574,8 +577,9 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "paragraphs": [
       "Адресні та контактні дані використовуються для здійснення доставки. Якщо користувач увімкне доступ до місцезнаходження пристрою, Dobra може використовувати місцезнаходження для визначення зони доставки, пропонування адреси, оцінки часу та підтримки виконання Замовлення.",
       "Підставою для обробки даних, необхідних для доставки, є виконання договору. Доступ програми до точного місцезнаходження пристрою залежить від налаштувань та дозволів користувача.",
-      "Під час активної доставки Dobra може надавати Клієнту приблизне або поточне місцезнаходження кур'єра в обсязі, необхідному для виконання послуги та безпеки."
-     ]
+      "Під час активної доставки Dobra може надавати Клієнту приблизне або поточне місцезнаходження кур'єра в обсязі, необхідному для виконання послуги та безпеки.",
+        "Номер телефону для доставки: поки Замовлення активне (з моменту, коли кур'єр його прийняв, до доставки або скасування), Клієнт і призначений кур'єр можуть зателефонувати одне одному кнопкою «Зателефонувати» в застосунку. Номер телефону не відображається в застосунку — він передається в телефонну програму іншої сторони лише після натискання кнопки і тільки для виконання цієї доставки. Для посилок номер телефону отримувача, наданий відправником, передається кур'єру так само. Правова підстава: виконання договору (ст. 6(1)(b) GDPR), а щодо отримувача — законний інтерес Dobra у виконанні доставки (ст. 6(1)(f) GDPR). Дзвінок здійснюється через мережу оператора того, хто телефонує, тому його номер може бути показаний співрозмовнику, якщо він не приховав його в налаштуваннях телефону.",
+      ]
     },
     {
      "heading": "9. Обслуговування клієнтів та скарги",
@@ -647,8 +651,9 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "paragraphs": [
       "Dobra зберігає дані не довше, ніж це необхідно для цілей, для яких вони були зібрані, з урахуванням правових, податкових, бухгалтерських вимог, вимог безпеки та строків позовної давності.",
       "Обліковий запис та операційні дані можуть зберігатися протягом періоду користування обліковим записом, а після його закриття – протягом періоду, необхідного для розрахунків, розгляду скарг, захисту від претензій та виконання законодавчих обов'язків.",
-      "Податкова та бухгалтерська документація зберігається протягом терміну, встановленого законом. Дані безпеки та логи зберігаються протягом періоду, пропорційного ризику та потребам розслідування."
-     ]
+      "Податкова та бухгалтерська документація зберігається протягом терміну, встановленого законом. Дані безпеки та логи зберігаються протягом періоду, пропорційного ризику та потребам розслідування.",
+        "Журнал дзвінків (хто натиснув «Зателефонувати», у якому Замовленні та коли — без змісту і тривалості розмови) зберігається 12 місяців від дзвінка для розгляду скарг і спорів, після чого автоматично видаляється.",
+      ]
     },
     {
      "heading": "18. Безпека даних",
@@ -828,8 +833,9 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "paragraphs": [
       "10.1. Якщо Компанія забезпечує доставку, вона організовує транспортування прийнятого замовлення з Ресторану за адресою, вказаною Клієнтом.",
       "10.2. Клієнт зобов'язаний надати правильну адресу доставки та інформацію, необхідну для її здійснення (номер будинку та квартири, код або інструкції доступу, іншу інформацію щодо доступу) та залишатися доступним за вказаним номером телефону.",
-      "10.3. Орієнтовний час доставки має інформаційний характер і не є гарантованим терміном. На час доставки можуть впливати, зокрема, час приготування замовлення, дорожні та погодні умови, відстань, доступність кур'єрів та інші обставини, що знаходяться поза розумним контролем Компанії."
-     ]
+      "10.3. Орієнтовний час доставки має інформаційний характер і не є гарантованим терміном. На час доставки можуть впливати, зокрема, час приготування замовлення, дорожні та погодні умови, відстань, доступність кур'єрів та інші обставини, що знаходяться поза розумним контролем Компанії.",
+        "10.4. Поки Замовлення активне, Клієнт і кур'єр можуть зателефонувати одне одному кнопкою «Зателефонувати» в застосунку. Dobra надає номер телефону лише на час активного Замовлення і для виконання доставки та фіксує кожне використання кнопки (без змісту розмови) протягом 12 місяців для розгляду скарг. Дзвінки здійснюються через мережу оператора користувача й оплачуються за його тарифом.",
+      ]
     },
     {
      "heading": "11. Відсутність Клієнта під час доставки",
@@ -1073,8 +1079,9 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "paragraphs": [
       "Les données d'adresse et de contact sont utilisées pour effectuer la livraison. Si l'utilisateur active l'accès à la localisation de l'appareil, Dobra peut utiliser la localisation pour déterminer la zone de livraison, suggérer une adresse, estimer le temps et faciliter l'exécution de la Commande.",
       "La base du traitement des données nécessaires à la livraison est l'exécution du contrat. L'accès de l'application à la localisation précise de l'appareil dépend des paramètres et des autorisations de l'utilisateur.",
-      "Pendant une livraison active, Dobra peut présenter au Client la localisation approximative ou actuelle du coursier dans la mesure nécessaire à l'exécution du service et à la sécurité."
-     ]
+      "Pendant une livraison active, Dobra peut présenter au Client la localisation approximative ou actuelle du coursier dans la mesure nécessaire à l'exécution du service et à la sécurité.",
+        "Numéro de téléphone pour la livraison : pendant qu'une Commande est active (de son acceptation par un livreur jusqu'à sa livraison ou son annulation), le Client et le livreur attribué peuvent s'appeler grâce au bouton « Appeler » de l'application. Le numéro n'est pas affiché dans l'application — il est transmis à l'application téléphone de l'autre partie uniquement lorsqu'elle appuie sur le bouton, et seulement pour effectuer cette livraison. Pour les colis, le numéro du destinataire fourni par l'expéditeur est communiqué au livreur de la même manière. Base légale : exécution du contrat (art. 6, par. 1, point b du RGPD) et, pour le destinataire, l'intérêt légitime de Dobra à effectuer la livraison (art. 6, par. 1, point f du RGPD). L'appel passe par le réseau mobile de l'appelant ; son numéro peut donc s'afficher chez son interlocuteur, sauf s'il le masque dans les réglages de son téléphone.",
+      ]
     },
     {
      "heading": "9. Service client et réclamations",
@@ -1146,8 +1153,9 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "paragraphs": [
       "Dobra conserve les données pas plus longtemps que nécessaire aux fins pour lesquelles elles ont été collectées, en tenant compte des exigences légales, fiscales, comptables, de sécurité et de prescription des créances.",
       "Le compte et les données opérationnelles peuvent être conservés pendant la période d'utilisation du compte, et après sa clôture, pendant la période nécessaire aux règlements, réclamations, à la protection contre les créances et aux obligations légales.",
-      "La documentation fiscale et comptable est conservée pendant la période requise par la loi. Les données de sécurité et les journaux sont conservés pendant une période proportionnelle au risque et aux besoins d'enquête."
-     ]
+      "La documentation fiscale et comptable est conservée pendant la période requise par la loi. Les données de sécurité et les journaux sont conservés pendant une période proportionnelle au risque et aux besoins d'enquête.",
+        "Le journal des appels (qui a appuyé sur « Appeler », pour quelle Commande et quand — sans le contenu ni la durée de l'appel) est conservé 12 mois à compter de l'appel pour le traitement des réclamations et litiges, puis supprimé automatiquement.",
+      ]
     },
     {
      "heading": "18. Sécurité des données",
@@ -1327,8 +1335,9 @@ export const LEGAL_TRANSLATIONS: Record<"en" | "uk" | "fr", { privacy: LegalDocu
      "paragraphs": [
       "10.1. Si Dobra assure la livraison, elle organise le transport de la commande acceptée du Restaurant à l'adresse indiquée par le Client.",
       "10.2. Le Client est tenu de fournir une adresse de livraison correcte ainsi que les informations nécessaires à son exécution (numéro de bâtiment et d'appartement, code ou instructions d'accès, autres informations relatives à l'accès) et de rester joignable au numéro de téléphone indiqué.",
-      "10.3. Le délai de livraison estimé est indicatif et ne constitue pas une date garantie. Le délai de livraison peut être influencé, entre autres, par le temps de préparation de la commande, les conditions routières et météorologiques, la distance, la disponibilité des coursiers et d'autres circonstances indépendantes de la volonté raisonnable de Dobra."
-     ]
+      "10.3. Le délai de livraison estimé est indicatif et ne constitue pas une date garantie. Le délai de livraison peut être influencé, entre autres, par le temps de préparation de la commande, les conditions routières et météorologiques, la distance, la disponibilité des coursiers et d'autres circonstances indépendantes de la volonté raisonnable de Dobra.",
+        "10.4. Pendant qu'une Commande est active, le Client et le livreur peuvent s'appeler grâce au bouton « Appeler » de l'application. Dobra communique le numéro de téléphone uniquement pendant la durée de la Commande active et aux fins de la livraison, et enregistre chaque utilisation du bouton (sans le contenu de l'appel) pendant 12 mois pour le traitement des réclamations. Les appels passent par le réseau mobile de l'utilisateur et sont facturés selon le forfait de son opérateur.",
+      ]
     },
     {
      "heading": "11. Absence du Client lors de la livraison",

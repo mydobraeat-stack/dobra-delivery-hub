@@ -89,6 +89,7 @@ export const PRIVACY_DOC: LegalDocument = {
         "Dane adresowe i kontaktowe są wykorzystywane do realizacji dostawy. Jeżeli użytkownik włączy dostęp do lokalizacji urządzenia, Dobra może używać lokalizacji do ustalenia obszaru dostawy, proponowania adresu, szacowania czasu i wspierania realizacji Zamówienia.",
         "Podstawą przetwarzania danych koniecznych do dostawy jest wykonanie umowy. Dostęp aplikacji do precyzyjnej lokalizacji urządzenia zależy od ustawień i uprawnień użytkownika.",
         "W czasie aktywnej dostawy Dobra może prezentować Klientowi przybliżoną lub bieżącą lokalizację kuriera w zakresie potrzebnym do realizacji usługi i bezpieczeństwa.",
+        "Numer telefonu na potrzeby dostawy: w czasie aktywnego Zamówienia (od przyjęcia go przez kuriera do jego doręczenia lub anulowania) Klient i przydzielony kurier mogą do siebie zadzwonić za pomocą przycisku „Zadzwoń” w aplikacji. Numer telefonu nie jest wyświetlany w aplikacji — jest przekazywany do aplikacji telefonu drugiej strony dopiero po naciśnięciu przycisku i wyłącznie w celu realizacji tej dostawy. W przypadku przesyłek numer telefonu odbiorcy podany przez nadawcę jest udostępniany kurierowi w ten sam sposób. Podstawa prawna: wykonanie umowy (art. 6 ust. 1 lit. b RODO), a w odniesieniu do odbiorcy — prawnie uzasadniony interes Dobra polegający na doręczeniu przesyłki (art. 6 ust. 1 lit. f RODO). Rozmowa odbywa się przez sieć operatora osoby dzwoniącej, dlatego jej numer może zostać wyświetlony rozmówcy, chyba że ukryje go w ustawieniach telefonu.",
       ],
     },
     {
@@ -162,6 +163,7 @@ export const PRIVACY_DOC: LegalDocument = {
         "Dobra przechowuje dane nie dłużej, niż jest to konieczne do celów, dla których zostały zebrane, z uwzględnieniem wymagań prawnych, podatkowych, rachunkowych, bezpieczeństwa i przedawnienia roszczeń.",
         "Konto i dane operacyjne mogą być przechowywane przez okres korzystania z konta, a po jego zamknięciu przez okres potrzebny do rozliczeń, reklamacji, ochrony przed roszczeniami i obowiązków prawnych.",
         "Dokumentacja podatkowa i księgowa jest przechowywana przez okres wymagany prawem. Dane bezpieczeństwa i logi są przechowywane przez okres proporcjonalny do ryzyka i potrzeb dochodzeniowych.",
+        "Rejestr połączeń (kto użył przycisku „Zadzwoń”, w jakim Zamówieniu i kiedy — bez treści ani długości rozmowy) przechowujemy przez 12 miesięcy od połączenia na potrzeby rozpatrywania reklamacji i sporów, a następnie automatycznie go usuwamy.",
       ],
     },
     {
@@ -342,6 +344,7 @@ export const TERMS_DOC: LegalDocument = {
         "10.1. Jeżeli Dobra zapewnia dostawę, organizuje transport przyjętego zamówienia z Restauracji na adres wskazany przez Klienta.",
         "10.2. Klient zobowiązany jest podać prawidłowy adres dostawy oraz informacje niezbędne do jej wykonania (numer budynku i mieszkania, kod lub instrukcje wejścia, inne informacje dotyczące dostępu) i pozostawać dostępny pod podanym numerem telefonu.",
         "10.3. Przewidywany czas dostawy ma charakter orientacyjny i nie stanowi gwarantowanego terminu. Na czas dostawy mogą wpływać m.in. czas przygotowania zamówienia, warunki drogowe i pogodowe, odległość, dostępność kurierów oraz inne okoliczności poza rozsądną kontrolą Dobra.",
+        "10.4. W czasie aktywnego Zamówienia Klient i kurier mogą do siebie zadzwonić za pomocą przycisku „Zadzwoń” w aplikacji. Dobra udostępnia numer telefonu wyłącznie na czas aktywnego Zamówienia i w celu realizacji dostawy oraz odnotowuje każde użycie przycisku (bez treści rozmowy) na okres 12 miesięcy na potrzeby reklamacji. Połączenia są wykonywane przez sieć operatora użytkownika i rozliczane zgodnie z jego taryfą.",
       ],
     },
     {
