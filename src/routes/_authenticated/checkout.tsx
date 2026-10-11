@@ -20,6 +20,9 @@ import { Label } from "@/components/ui/label";
 import { AddressPicker, type PickedAddress } from "@/components/dobra/AddressPicker";
 import { SuccessOverlay } from "@/components/dobra/SuccessOverlay";
 import { Textarea } from "@/components/ui/textarea";
+import { PhoneInput } from "@/components/dobra/PhoneInput";
+import { myProfileQuery, saveMyPhone } from "@/lib/my-profile";
+import { normalizePhone, validatePhone } from "@/lib/phone";
 
 export const Route = createFileRoute("/_authenticated/checkout")({
   head: () => ({
@@ -69,6 +72,14 @@ function CheckoutPage() {
     }
   }, [defaultAddress, prefilled]);
   const [note, setNote] = useState("");
+  const { data: myProfile } = useQuery(myProfileQuery);
+  const [phone, setPhone] = useState("");
+  const [phoneTried, setPhoneTried] = useState(false);
+  useEffect(() => {
+    if (myProfile?.phone && !phone) setPhone(myProfile.phone);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [myProfile?.phone]);
+  const phoneOk = validatePhone(phone) === null;
   const [placed, setPlaced] = useState(false);
   const isPoland = (restaurant?.country ?? "PL").toUpperCase().startsWith("P");
   const [pickedChoice, setChoice] = useState<PayChoice | null>(null);
@@ -111,6 +122,10 @@ function CheckoutPage() {
 
   const submit = useMutation({
     mutationFn: async () => {
+      if (normalizePhone(phone) !== (myProfile?.phone ?? "")) {
+        await saveMyPhone(phone);
+        void queryClient.invalidateQueries({ queryKey: ["my-profile"] });
+      }
       const orderId = await placeOrder({
         restaurant: restaurant!,
         lines: cart.lines,
@@ -229,6 +244,13 @@ function CheckoutPage() {
             <Card className="border-ink/10">
               <CardContent className="space-y-4 py-4">
                 <AddressPicker value={address} onChange={setAddress} />
+                <PhoneInput
+                  id="checkout-phone"
+                  value={phone}
+                  onChange={setPhone}
+                  country={restaurant?.country}
+                  showError={phoneTried}
+                />
                 <div className="space-y-2">
                   <Label htmlFor="note">{t("customer.checkout.noteLabel")}</Label>
                   <Textarea
@@ -336,7 +358,14 @@ function CheckoutPage() {
               disabled={
                 submit.isPending || !restaurant || belowMinimum || address.address.trim().length < 5
               }
-              onClick={() => submit.mutate()}
+              onClick={() => {
+                if (!phoneOk) {
+                  setPhoneTried(true);
+                  document.getElementById("checkout-phone")?.focus();
+                  return;
+                }
+                submit.mutate();
+              }}
             >
               {submit.isPending ? t("customer.checkout.placingOrder") : t("customer.checkout.placeOrder", { price: formatMoney(total) })}
             </Button>
