@@ -1,4 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { PhoneInput } from "@/components/dobra/PhoneInput";
+import { myProfileQuery, saveMyPhone } from "@/lib/my-profile";
+import { normalizePhone, validatePhone } from "@/lib/phone";
+import { supabase } from "@/integrations/supabase/client";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Package } from "lucide-react";
@@ -47,6 +51,15 @@ function PackageRequest() {
   const [drop, setDrop] = useState<PickedAddress>(empty);
   const [description, setDescription] = useState("");
   const [payment, setPayment] = useState<PaymentMethod>("cash");
+  const { data: myProfile } = useQuery(myProfileQuery);
+  const [phone, setPhone] = useState("");
+  const [recipientPhone, setRecipientPhone] = useState("");
+  const [phoneTried, setPhoneTried] = useState(false);
+  useEffect(() => {
+    if (myProfile?.phone && !phone) setPhone(myProfile.phone);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [myProfile?.phone]);
+  const phonesOk = validatePhone(phone) === null && validatePhone(recipientPhone, false) === null;
 
   const country = /cameroon|cameroun/i.test(pickup.address) ? "Cameroon" : "Poland";
   const { data: pricing } = useQuery(pricingQuery(country));
@@ -59,8 +72,9 @@ function PackageRequest() {
   const ready = Boolean(pickup.address.trim() && drop.address.trim() && description.trim());
 
   const submit = useMutation({
-    mutationFn: () =>
-      placePackageDelivery({
+    mutationFn: async () => {
+      if (normalizePhone(phone) !== (myProfile?.phone ?? "")) await saveMyPhone(phone);
+      const orderId = await placePackageDelivery({
         pickupAddress: pickup.address,
         pickupLat: pickup.lat,
         pickupLng: pickup.lng,
@@ -70,7 +84,13 @@ function PackageRequest() {
         description,
         paymentMethod: payment,
         country,
-      }),
+      });
+      const rp = normalizePhone(recipientPhone);
+      if (validatePhone(recipientPhone) === null) {
+        await supabase.from("order_contacts").insert({ order_id: orderId, recipient_phone: rp });
+      }
+      return orderId;
+    },
     onSuccess: (orderId) => {
       toast.success(t("package.request.created"));
       queryClient.invalidateQueries({ queryKey: ["orders"] });
@@ -120,6 +140,17 @@ function PackageRequest() {
               rows={3}
             />
           </div>
+          <PhoneInput id="package-phone" value={phone} onChange={setPhone} country={country} showError={phoneTried} />
+          <PhoneInput
+            id="recipient-phone"
+            value={recipientPhone}
+            onChange={setRecipientPhone}
+            country={country}
+            required={false}
+            label={t("calls.phone.recipientLabel")}
+            hint={t("calls.phone.recipientHint")}
+            showError={phoneTried}
+          />
         </CardContent>
       </Card>
 
@@ -158,7 +189,15 @@ function PackageRequest() {
         className="w-full"
         size="lg"
         disabled={!ready || submit.isPending}
-        onClick={() => (ready ? submit.mutate() : toast.error(t("package.request.missing")))}
+        onClick={() => {
+          if (!ready) {
+            toast.error(t("package.request.missing"));
+          } else if (!phonesOk) {
+            setPhoneTried(true);
+          } else {
+            submit.mutate();
+          }
+        }}
       >
         {t("package.request.submit")}
       </Button>

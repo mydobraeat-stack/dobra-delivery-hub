@@ -1,3 +1,5 @@
+import { PhoneInput } from "@/components/dobra/PhoneInput";
+import { isOnlyDialCode, normalizePhone, validatePhone } from "@/lib/phone";
 import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 
@@ -78,6 +80,10 @@ function AccountPage() {
   }, [profile]);
 
   async function save() {
+    if (validatePhone(phone, false)) {
+      toast.error(t(`calls.phone.error.${validatePhone(phone, false)}`));
+      return;
+    }
     setSaving(true);
     try {
       const { error } = await supabase
@@ -85,7 +91,7 @@ function AccountPage() {
         .update({
           full_name: fullName.trim() || null,
           country: country.trim() || null,
-          phone: phone.trim() || null,
+          phone: isOnlyDialCode(phone) ? null : normalizePhone(phone),
           avatar_url: avatar,
         })
         .eq("id", profile!.id);
@@ -194,15 +200,14 @@ function AccountPage() {
           onSave={save}
           saving={saving}
         >
-          <div className="space-y-2">
-            <Label htmlFor="phone">{t("common.profile.phone")}</Label>
-            <Input
-              id="phone"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              placeholder="+48 600 000 000"
-            />
-          </div>
+          <PhoneInput
+            id="phone"
+            value={phone}
+            onChange={setPhone}
+            country={country || profile?.country}
+            required={false}
+            showError
+          />
         </EditRow>
 
         <ActionRow

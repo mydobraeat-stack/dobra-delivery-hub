@@ -12,6 +12,8 @@ import { AppHeader } from "@/components/dobra/AppHeader";
 import { PhoneFrame } from "@/components/dobra/PhoneFrame";
 import { StoredImage } from "@/components/dobra/StoredImage";
 import { ChatButton } from "@/components/dobra/ChatButton";
+import { CallButton } from "@/components/dobra/CallButton";
+import { isActiveForCalls } from "@/lib/calls";
 import { ActionDialog } from "@/components/admin/ActionDialog";
 import { reportProblem } from "@/lib/admin-ops";
 import { Button as ReportBtn } from "@/components/ui/button";
@@ -171,6 +173,12 @@ function OrderTracking() {
                   kind="order_vendor"
                   orderId={order.id}
                   label={t("chat.messageRestaurant")}
+                />
+                <CallButton
+                  orderId={order.id}
+                  target="driver"
+                  label={t("calls.callDriver")}
+                  active={isActiveForCalls(order)}
                 />
                 {order.driver_id ? (
                   <ChatButton

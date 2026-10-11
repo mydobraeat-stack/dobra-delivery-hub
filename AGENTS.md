@@ -13,3 +13,4 @@
 - Admin levels: role 'admin' = Super Admin, 'support_agent' = orders/disputes/support/reviews only; why: least privilege.
 - Company legal/contact details live only in src/lib/company.ts; public pages and legal texts read them (legal texts via {NIP}/{KRS}/{REGON}/{EMAIL}/{PHONE} tokens filled by fillCompany). Empty fields are never rendered; why: enter details once, no placeholders on the live site.
 - Public-site copy (policy pages, landing, contact) lives in src/components/marketing/site-copy.ts in all 4 languages; why: one place to translate and review.
+- Other users' phone numbers are only returned by the get_call_number RPC (order customer/driver while active, or staff), which logs each call to call_logs; never expose profiles.phone or order_contacts through other policies; why: GDPR data minimisation.

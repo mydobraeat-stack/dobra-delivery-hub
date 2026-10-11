@@ -17,6 +17,8 @@ import {
 import { toast } from "sonner";
 import { useI18n } from "@/lib/i18n";
 import { accountQueryOptions } from "@/lib/profile";
+import { myProfileQuery } from "@/lib/my-profile";
+import { DriverPhoneCard } from "@/components/dobra/DriverPhoneCard";
 import { driverApproval } from "@/components/dobra/DriverGate";
 import { driverDocsQuery, requiredDocsFor } from "@/lib/driver-docs";
 import {
@@ -79,7 +81,9 @@ function DriverHome() {
   const [online, setOnline] = useState(false);
   const [me, setMe] = useState<{ lat: number; lng: number } | null>(null);
   const { data: docs = [] } = useQuery(driverDocsQuery);
-  const [gate, setGate] = useState<null | "start" | "finish" | "rejected">(null);
+  const [gate, setGate] = useState<null | "start" | "finish" | "rejected" | "phone">(null);
+  const { data: myProfile } = useQuery(myProfileQuery);
+  const hasPhone = Boolean(myProfile?.phone);
 
   const missingDocs = requiredDocsFor(driver?.vehicle_type).filter(
     (d) => !docs.some((x) => x.doc_type === d.id),
@@ -87,6 +91,10 @@ function DriverHome() {
 
   function handleToggle() {
     if (approved) {
+      if (!online && !hasPhone) {
+        setGate("phone");
+        return;
+      }
       toggle.mutate(!online);
       return;
     }
@@ -185,7 +193,7 @@ function DriverHome() {
         <DialogContent className="max-w-sm">
           <DialogHeader>
             <DialogTitle>
-              {t(
+              {gate === "phone" ? t("calls.driverPhone.title") : t(
                 gate === "rejected"
                   ? "driver.verifyGate.rejectedTitle"
                   : gate === "finish"
@@ -194,7 +202,7 @@ function DriverHome() {
               )}
             </DialogTitle>
             <DialogDescription>
-              {t(
+              {gate === "phone" ? t("calls.driverPhone.missing") : t(
                 gate === "rejected"
                   ? "driver.verifyGate.rejectedBody"
                   : gate === "finish"
@@ -203,13 +211,25 @@ function DriverHome() {
               )}
             </DialogDescription>
           </DialogHeader>
-          {gate === "finish" && missingDocs.length > 0 ? (
+          {(gate === "finish" || gate === "start") && (missingDocs.length > 0 || !hasPhone) ? (
             <p className="text-sm text-foreground/70">
               {t("driver.documents.missingNote", {
-                items: missingDocs.map((d) => t(d.labelKey)).join(", "),
+                items: [
+                  ...(hasPhone ? [] : [t("calls.driverPhone.missingItem")]),
+                  ...missingDocs.map((d) => t(d.labelKey)),
+                ].join(", "),
               })}
             </p>
           ) : null}
+          {gate === "phone" ? (
+            <DriverPhoneCard
+              compact
+              onSaved={() => {
+                setGate(null);
+                toggle.mutate(true);
+              }}
+            />
+          ) : (
           <DialogFooter>
             <Button asChild className="w-full">
               <Link to="/driver/documents" onClick={() => setGate(null)}>
@@ -217,6 +237,7 @@ function DriverHome() {
               </Link>
             </Button>
           </DialogFooter>
+          )}
         </DialogContent>
       </Dialog>
       {/* Map with floating controls */}
