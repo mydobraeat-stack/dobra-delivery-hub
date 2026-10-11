@@ -6,6 +6,8 @@ import { toast } from "sonner";
 import { StatusBadge } from "@/components/dobra/StatusBadge";
 import { MapView, type MapPoint } from "@/components/dobra/MapView";
 import { ChatButton } from "@/components/dobra/ChatButton";
+import { CallButton } from "@/components/dobra/CallButton";
+import { isActiveForCalls } from "@/lib/calls";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useI18n } from "@/lib/i18n";
@@ -237,11 +239,15 @@ function DeliveryDetail() {
                 </a>
               </Button>
             ) : null}
-            {onCustomerLeg ? (
-              <Button size="sm" variant="outline" onClick={() => toast(t("driver.delivery.contactToast"))}>
-                <Phone className="size-4" aria-hidden /> {t("driver.delivery.contactCustomer")}
-              </Button>
+            {isPackage && onCustomerLeg ? (
+              <CallButton orderId={orderId} target="recipient" label={t("calls.callRecipient")} active={isActiveForCalls(order)} />
             ) : null}
+            <CallButton
+              orderId={orderId}
+              target="customer"
+              label={isPackage ? t("calls.callSender") : t("calls.callCustomer")}
+              active={isActiveForCalls(order)}
+            />
             <ChatButton kind="order_driver" orderId={orderId} label={t("chat.messageCustomer")} />
           </div>
         </CardContent>
