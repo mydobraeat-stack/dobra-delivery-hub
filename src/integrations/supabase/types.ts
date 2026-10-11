@@ -77,6 +77,41 @@ export type Database = {
         }
         Relationships: []
       }
+      call_logs: {
+        Row: {
+          callee_role: string
+          caller_id: string
+          caller_role: string
+          created_at: string
+          id: string
+          order_id: string
+        }
+        Insert: {
+          callee_role: string
+          caller_id: string
+          caller_role: string
+          created_at?: string
+          id?: string
+          order_id: string
+        }
+        Update: {
+          callee_role?: string
+          caller_id?: string
+          caller_role?: string
+          created_at?: string
+          id?: string
+          order_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "call_logs_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       chat_messages: {
         Row: {
           attachment_name: string | null
@@ -506,6 +541,32 @@ export type Database = {
             foreignKeyName: "order_admin_notes_order_id_fkey"
             columns: ["order_id"]
             isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      order_contacts: {
+        Row: {
+          created_at: string
+          order_id: string
+          recipient_phone: string | null
+        }
+        Insert: {
+          created_at?: string
+          order_id: string
+          recipient_phone?: string | null
+        }
+        Update: {
+          created_at?: string
+          order_id?: string
+          recipient_phone?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_contacts_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: true
             referencedRelation: "orders"
             referencedColumns: ["id"]
           },
@@ -1174,8 +1235,13 @@ export type Database = {
         Returns: undefined
       }
       anonymize_account: { Args: { _user_id: string }; Returns: undefined }
+      call_availability: { Args: { _order: string }; Returns: Json }
       can_access_chat_thread: { Args: { _thread_id: string }; Returns: boolean }
       can_view_chat_file: { Args: { _object_name: string }; Returns: boolean }
+      get_call_number: {
+        Args: { _order: string; _target: string }
+        Returns: string
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -1206,6 +1272,7 @@ export type Database = {
           rating: number
         }[]
       }
+      purge_old_call_logs: { Args: never; Returns: undefined }
     }
     Enums: {
       app_role: "customer" | "vendor" | "driver" | "admin" | "support_agent"
