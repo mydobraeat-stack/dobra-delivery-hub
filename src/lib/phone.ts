@@ -20,7 +20,7 @@ export type PhoneError = "required" | "format" | "length";
  */
 export function validatePhone(input: string, required = true): PhoneError | null {
   const v = normalizePhone(input);
-  if (!v || /^\+\d{0,4}$/.test(v) && !/^\+\d{5,}$/.test(v)) return required ? "required" : null;
+  if (!v || /^\+\d{0,4}$/.test(v)) return required ? "required" : null;
   if (!/^\+[1-9]\d+$/.test(v)) return "format";
   if (v.startsWith("+48")) return v.length === 12 ? null : "length";
   if (v.startsWith("+237")) return v.length === 13 ? null : "length";
