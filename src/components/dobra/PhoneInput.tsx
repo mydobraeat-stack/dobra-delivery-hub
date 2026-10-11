@@ -8,10 +8,10 @@ type Props = {
   id: string;
   value: string;
   onChange: (v: string) => void;
-  country?: string | null;
+  country?: string | null | undefined;
   label?: string;
   required?: boolean;
-  hint?: string;
+  hint?: string | undefined;
   /** Show the error even before the field is touched (e.g. after a submit attempt). */
   showError?: boolean;
 };

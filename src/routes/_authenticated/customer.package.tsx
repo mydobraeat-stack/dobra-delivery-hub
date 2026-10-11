@@ -190,12 +190,13 @@ function PackageRequest() {
         size="lg"
         disabled={!ready || submit.isPending}
         onClick={() => {
-          if (!ready) return toast.error(t("package.request.missing"));
-          if (!phonesOk) {
+          if (!ready) {
+            toast.error(t("package.request.missing"));
+          } else if (!phonesOk) {
             setPhoneTried(true);
-            return;
+          } else {
+            submit.mutate();
           }
-          submit.mutate();
         }}
       >
         {t("package.request.submit")}
