@@ -1,3 +1,4 @@
+import { DriverPhoneCard } from "@/components/dobra/DriverPhoneCard";
 import { ProfileBackLink } from "@/components/dobra/ProfileMenu";
 import { ListSkeleton } from "@/components/dobra/QueryStates";
 import { useEffect, useState } from "react";
@@ -127,6 +128,8 @@ function DriverDocuments() {
           {DOCS_STATUS_LABEL_KEY[docsStatus] ? t(DOCS_STATUS_LABEL_KEY[docsStatus]!) : docsStatus}
         </Badge>
       </div>
+
+      <DriverPhoneCard />
 
       <Card className="border-ink/10">
         <CardContent className="space-y-4 py-4">
