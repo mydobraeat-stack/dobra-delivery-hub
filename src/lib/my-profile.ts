@@ -17,3 +17,13 @@ export const myProfileQuery = queryOptions({
     return { ...data, id, email: data?.email ?? auth.user?.email ?? null };
   },
 });
+
+/** Saves the signed-in member's phone in normalized international form. */
+export async function saveMyPhone(phone: string) {
+  const { normalizePhone } = await import("@/lib/phone");
+  const { data: auth } = await supabase.auth.getUser();
+  const id = auth.user?.id;
+  if (!id) throw new Error("Not signed in");
+  const { error } = await supabase.from("profiles").update({ phone: normalizePhone(phone) }).eq("id", id);
+  if (error) throw error;
+}
