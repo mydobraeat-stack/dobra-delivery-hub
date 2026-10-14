@@ -167,13 +167,13 @@ function DriverHome() {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  const legUrl = (o: (typeof active)[number], leg: "pickup" | "dropoff") =>
+  const legUrl = (o: OrderRow, leg: "pickup" | "dropoff") =>
     directionsUrl(
       leg === "dropoff" ? dropoffDestination(o) : pickupDestination(o, restaurants.find((r) => r.id === o.restaurant_id)),
       travelModeFor(driver?.vehicle_type),
     );
   /** Synchronous auto-open inside a tap; remembers a block so the delivery screen offers a button. */
-  const autoOpen = (o: (typeof active)[number], leg: "pickup" | "dropoff") => {
+  const autoOpen = (o: OrderRow, leg: "pickup" | "dropoff") => {
     if (!autoNavigationEnabled()) return;
     const url = legUrl(o, leg);
     if (url && !openNavigation(url)) {
