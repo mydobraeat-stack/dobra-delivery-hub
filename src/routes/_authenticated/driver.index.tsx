@@ -48,6 +48,7 @@ import {
   saveDriverLocation,
   setDriverStatus,
   updateOrderStatus,
+  type OrderRow,
 } from "@/lib/dobra";
 import {
   autoNavigationEnabled,
