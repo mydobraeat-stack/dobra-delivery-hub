@@ -115,5 +115,6 @@ export default {
     deliveryAddress: "Adres dostawy",
     yourDriver: "Twój kierowca",
     updated: "Zaktualizowano {time}",
+    staleLocation: "Lokalizacja kierowcy zaktualizowana {time}",
   },
 };

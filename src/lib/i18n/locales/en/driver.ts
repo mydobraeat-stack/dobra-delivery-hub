@@ -210,4 +210,11 @@ export default {
     rejectedBody: "Your documents were not approved. Update them and submit again.",
     action: "Go to documents",
   },
+  nav: {
+    blocked: "Your browser blocked Google Maps from opening. Tap below to start navigation.",
+    open: "Open navigation",
+    toPickup: "Navigate to pick-up",
+    autoTitle: "Open navigation automatically",
+    autoBody: "Opens Google Maps when you accept a delivery and when you pick it up.",
+  },
 };

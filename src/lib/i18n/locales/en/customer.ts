@@ -115,5 +115,6 @@ export default {
     deliveryAddress: "Delivery address",
     yourDriver: "Your driver",
     updated: "Updated {time}",
+    staleLocation: "Driver location last updated {time}",
   },
 };
