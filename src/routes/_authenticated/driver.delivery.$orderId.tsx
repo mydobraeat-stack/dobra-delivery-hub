@@ -15,12 +15,23 @@ import { addressPointQuery, routeQuery } from "@/lib/maps";
 import {
   claimOrder,
   driverOrdersQuery,
+  myDriverQuery,
   orderItemsQuery,
   orderRef,
   payout,
   restaurantsQuery,
   updateOrderStatus,
 } from "@/lib/dobra";
+import {
+  autoNavigationEnabled,
+  directionsUrl,
+  dropoffDestination,
+  openNavigation,
+  pickupDestination,
+  takeNavigationBlocked,
+  travelModeFor,
+} from "@/lib/navigation";
+import { usePublishDriverLocation } from "@/lib/driver-location";
 
 export const Route = createFileRoute("/_authenticated/driver/delivery/$orderId")({
   head: () => ({
@@ -59,6 +70,9 @@ function DeliveryDetail() {
 
   const restaurantForOrder = restaurants.find((r) => r.id === order?.restaurant_id) ?? null;
 
+  const { data: driver } = useQuery(myDriverQuery);
+  const mode = travelModeFor(driver?.vehicle_type);
+
   // Driver's own position, for the route start.
   const [me, setMe] = useState<{ lat: number; lng: number } | null>(null);
   useEffect(() => {
@@ -70,6 +84,18 @@ function DeliveryDetail() {
     );
     return () => navigator.geolocation.clearWatch(id);
   }, []);
+
+  // While this delivery is mine and in progress, keep sending my location to the customer.
+  usePublishDriverLocation(
+    Boolean(order?.driver_id) && order?.status !== "delivered" && order?.status !== "cancelled",
+    setMe,
+  );
+
+  // The browser blocked an automatic open (popup blocker): show a big button.
+  const [blockedLeg, setBlockedLeg] = useState<"pickup" | "dropoff" | null>(null);
+  useEffect(() => {
+    setBlockedLeg(takeNavigationBlocked(orderId));
+  }, [orderId]);
 
   const savedDrop =
     order && order.dest_lat != null && order.dest_lng != null
@@ -120,6 +146,18 @@ function DeliveryDetail() {
   }, [me, pickup, dropOff, onCustomerLeg, order?.address, restaurantForOrder?.name]);
 
   const invalidate = () => queryClient.invalidateQueries({ queryKey: ["orders"] });
+
+  const pickupUrl = order ? directionsUrl(pickupDestination(order, restaurantForOrder), mode) : null;
+  const dropoffUrl = order ? directionsUrl(dropoffDestination(order), mode) : null;
+  const currentUrl = onCustomerLeg ? dropoffUrl : pickupUrl;
+
+  /** Opens Maps synchronously inside the tap; shows the big button if the browser blocks it. */
+  const autoOpen = (leg: "pickup" | "dropoff") => {
+    if (!autoNavigationEnabled()) return;
+    const url = leg === "dropoff" ? dropoffUrl : pickupUrl;
+    if (url && !openNavigation(url)) setBlockedLeg(leg);
+    else setBlockedLeg(null);
+  };
 
   const accept = useMutation({
     mutationFn: () => claimOrder(orderId),
@@ -188,6 +226,35 @@ function DeliveryDetail() {
         </p>
       ) : null}
 
+      {mine && blockedLeg && currentUrl ? (
+        <div role="alert" className="space-y-2 rounded-2xl border-2 border-primary bg-primary/10 p-4">
+          <p className="text-sm font-semibold text-foreground">{t("driver.nav.blocked")}</p>
+          <Button asChild size="lg" className="h-12 w-full rounded-full text-base font-bold">
+            <a href={currentUrl} target="_blank" rel="noreferrer" onClick={() => setBlockedLeg(null)}>
+              <Navigation className="size-5" aria-hidden /> {t("driver.nav.open")}
+            </a>
+          </Button>
+        </div>
+      ) : null}
+
+      {mine && currentUrl && order.status !== "delivered" ? (
+        <Button
+          asChild
+          size="lg"
+          variant="secondary"
+          className="h-12 w-full rounded-full text-base font-bold"
+        >
+          <a href={currentUrl} target="_blank" rel="noreferrer" data-testid="navigate-leg">
+            <Navigation className="size-5" aria-hidden />{" "}
+            {onCustomerLeg
+              ? t("driver.delivery.navigateToCustomer")
+              : isPackage
+                ? t("driver.nav.toPickup")
+                : t("driver.delivery.navigateToRestaurant")}
+          </a>
+        </Button>
+      ) : null}
+
       {/* Current stop */}
       <Card className="border-2 border-primary/40">
         <CardContent className="space-y-3 py-4">
@@ -223,22 +290,6 @@ function DeliveryDetail() {
             </div>
           )}
           <div className="flex flex-wrap gap-2 pt-1">
-            {(onCustomerLeg ? order.address : pickupSearch) ? (
-              <Button size="sm" variant="outline" asChild>
-                <a
-                  href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-                    (onCustomerLeg ? order.address : pickupSearch) ?? "",
-                  )}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <Navigation className="size-4" aria-hidden />{" "}
-                  {onCustomerLeg
-                    ? t("driver.delivery.navigateToCustomer")
-                    : t("driver.delivery.navigateToRestaurant")}
-                </a>
-              </Button>
-            ) : null}
             {isPackage && onCustomerLeg ? (
               <CallButton orderId={orderId} target="recipient" label={t("calls.callRecipient")} active={isActiveForCalls(order)} />
             ) : null}
@@ -333,7 +384,10 @@ function DeliveryDetail() {
               size="lg"
               className="h-12 w-full rounded-full text-base font-bold"
               disabled={accept.isPending}
-              onClick={() => accept.mutate()}
+              onClick={() => {
+                autoOpen("pickup");
+                accept.mutate();
+              }}
             >
               {t("driver.delivery.acceptDelivery", { amount: formatMoney(payout(Number(order.total)), order.currency) })}
             </Button>
@@ -342,7 +396,11 @@ function DeliveryDetail() {
               size="lg"
               className="h-12 w-full rounded-full text-base font-bold"
               disabled={advance.isPending}
-              onClick={() => advance.mutate("picked_up")}
+              data-testid="mark-picked-up"
+              onClick={() => {
+                autoOpen("dropoff");
+                advance.mutate("picked_up");
+              }}
             >
               {t("driver.delivery.markPickedUp")}
             </Button>

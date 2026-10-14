@@ -115,5 +115,6 @@ export default {
     deliveryAddress: "Адреса доставки",
     yourDriver: "Ваш водій",
     updated: "Оновлено {time}",
+    staleLocation: "Місцезнаходження кур’єра оновлено {time}",
   },
 };

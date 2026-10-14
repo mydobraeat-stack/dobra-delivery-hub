@@ -215,4 +215,11 @@ export default {
     rejectedBody: "Twoje dokumenty nie zostały zatwierdzone. Zaktualizuj je i wyślij ponownie.",
     action: "Przejdź do dokumentów",
   },
+  nav: {
+    blocked: "Przeglądarka zablokowała otwarcie Map Google. Stuknij poniżej, aby rozpocząć nawigację.",
+    open: "Otwórz nawigację",
+    toPickup: "Nawiguj do miejsca odbioru",
+    autoTitle: "Automatycznie otwieraj nawigację",
+    autoBody: "Otwiera Mapy Google po przyjęciu dostawy i po odbiorze zamówienia.",
+  },
 };

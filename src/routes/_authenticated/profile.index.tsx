@@ -38,6 +38,9 @@ import {
 import { useT } from "@/lib/i18n";
 import { ConsentDialog, readConsent, CONSENT_KEY, type Consent } from "@/components/dobra/ConsentDialog";
 import { useState } from "react";
+import { Navigation as NavigationIcon } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { useAutoNavigation } from "@/lib/navigation";
 import { toast } from "sonner";
 import { accountQueryOptions } from "@/lib/profile";
 import { myProfileQuery } from "@/lib/my-profile";
@@ -180,6 +183,7 @@ function ProfileHub() {
           icon={Bell}
           label={t("common.profileMenu.notifications")}
         />
+        {role === "driver" ? <AutoNavigationRow /> : null}
         {role === "driver" ? (
           <ProfileMenuItem
             to="/driver/documents"
@@ -262,5 +266,26 @@ function ProfileHub() {
       <HelpCircle className="hidden" aria-hidden />
 
     </main>
+  );
+}
+
+/** Driver setting: open Google Maps automatically on accept and pick-up (default ON, per device). */
+function AutoNavigationRow() {
+  const t = useT();
+  const [on, setOn] = useAutoNavigation();
+  return (
+    <label className="flex cursor-pointer items-center gap-3 px-4 py-3">
+      <span
+        className="flex size-10 shrink-0 items-center justify-center rounded-full bg-sun/40 ring-1 ring-brand/25"
+        aria-hidden
+      >
+        <NavigationIcon className="size-5 text-brand" aria-hidden />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-base font-medium text-foreground">{t("driver.nav.autoTitle")}</span>
+        <span className="block text-xs text-foreground/60">{t("driver.nav.autoBody")}</span>
+      </span>
+      <Switch checked={on} onCheckedChange={setOn} aria-label={t("driver.nav.autoTitle")} />
+    </label>
   );
 }

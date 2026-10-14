@@ -377,22 +377,38 @@ function DeliveryMap({
   address: string | null;
   saved: { lat: number; lng: number } | null;
 }) {
-  const { t, formatDate } = useI18n();
+  const { t, formatDate, locale } = useI18n();
   const { data: geocoded } = useQuery({
     ...addressPointQuery(address),
     enabled: !saved && Boolean(address && address.trim().length > 3),
   });
   const dropOff = saved ?? geocoded ?? null;
 
+  // Re-check freshness every 5 s: a location older than ~45 s is shown as stale, not as a live pin.
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const id = window.setInterval(() => setNow(Date.now()), 5000);
+    return () => window.clearInterval(id);
+  }, []);
+  const ageSec = updatedAt ? Math.max(0, Math.round((now - new Date(updatedAt).getTime()) / 1000)) : null;
+  const stale = ageSec != null && ageSec > 45;
+  const ago = (() => {
+    if (ageSec == null) return "";
+    const rtf = new Intl.RelativeTimeFormat(locale, { numeric: "auto" });
+    if (ageSec < 60) return rtf.format(-ageSec, "second");
+    if (ageSec < 3600) return rtf.format(-Math.round(ageSec / 60), "minute");
+    return rtf.format(-Math.round(ageSec / 3600), "hour");
+  })();
+
   const points = useMemo(() => {
     const list: MapPoint[] = [];
-    if (driver) list.push({ ...driver, label: t("customer.tracking.yourDriver"), kind: "driver" });
+    if (driver && !stale) list.push({ ...driver, label: t("customer.tracking.yourDriver"), kind: "driver" });
     if (dropOff)
       list.push({ ...dropOff, label: address ?? t("customer.tracking.deliveryAddress"), kind: "dropoff" });
     return list;
-  }, [driver, dropOff, address]);
+  }, [driver, dropOff, address, stale]);
 
-  if (points.length === 0) return null;
+  if (points.length === 0 && !stale) return null;
 
   return (
     <Card className="border-ink/10">
@@ -400,11 +416,17 @@ function DeliveryMap({
         <p className="inline-flex items-center gap-2 text-sm font-semibold text-foreground">
           <MapPin className="size-4" aria-hidden /> {driver ? t("customer.tracking.driverLocation") : t("customer.tracking.deliveryAddress")}
         </p>
-        <MapView points={points} className="h-56 w-full" />
+        {points.length > 0 ? <MapView points={points} className="h-56 w-full" /> : null}
         {driver && updatedAt ? (
-          <p className="text-xs text-foreground/60">
-            {t("customer.tracking.updated", { time: formatDate(updatedAt, { timeStyle: "short" }) })}
-          </p>
+          stale ? (
+            <p data-testid="driver-location-stale" className="rounded-lg bg-sun/30 px-3 py-2 text-xs font-semibold text-foreground">
+              {t("customer.tracking.staleLocation", { time: ago })}
+            </p>
+          ) : (
+            <p className="text-xs text-foreground/60">
+              {t("customer.tracking.updated", { time: formatDate(updatedAt, { timeStyle: "short" }) })}
+            </p>
+          )
         ) : null}
       </CardContent>
     </Card>

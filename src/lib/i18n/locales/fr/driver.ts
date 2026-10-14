@@ -215,4 +215,11 @@ export default {
     rejectedBody: "Vos documents n'ont pas été approuvés. Mettez-les à jour et renvoyez-les.",
     action: "Voir mes documents",
   },
+  nav: {
+    blocked: "Votre navigateur a empêché l’ouverture de Google Maps. Touchez ci-dessous pour lancer la navigation.",
+    open: "Ouvrir la navigation",
+    toPickup: "Itinéraire vers le retrait",
+    autoTitle: "Ouvrir la navigation automatiquement",
+    autoBody: "Ouvre Google Maps quand vous acceptez une livraison et quand vous la récupérez.",
+  },
 };

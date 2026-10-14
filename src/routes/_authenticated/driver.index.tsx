@@ -48,7 +48,17 @@ import {
   saveDriverLocation,
   setDriverStatus,
   updateOrderStatus,
+  type OrderRow,
 } from "@/lib/dobra";
+import {
+  autoNavigationEnabled,
+  directionsUrl,
+  dropoffDestination,
+  markNavigationBlocked,
+  openNavigation,
+  pickupDestination,
+  travelModeFor,
+} from "@/lib/navigation";
 
 export const Route = createFileRoute("/_authenticated/driver/")({
   head: () => ({
@@ -158,6 +168,21 @@ function DriverHome() {
     onError: (e: Error) => toast.error(e.message),
   });
 
+  const legUrl = (o: OrderRow, leg: "pickup" | "dropoff") =>
+    directionsUrl(
+      leg === "dropoff" ? dropoffDestination(o) : pickupDestination(o, restaurants.find((r) => r.id === o.restaurant_id)),
+      travelModeFor(driver?.vehicle_type),
+    );
+  /** Synchronous auto-open inside a tap; remembers a block so the delivery screen offers a button. */
+  const autoOpen = (o: OrderRow, leg: "pickup" | "dropoff") => {
+    if (!autoNavigationEnabled()) return;
+    const url = legUrl(o, leg);
+    if (url && !openNavigation(url)) {
+      markNavigationBlocked(o.id, leg);
+      toast(t("driver.nav.blocked"));
+    }
+  };
+
   const advance = useMutation({
     mutationFn: ({ id, status }: { id: string; status: string }) => updateOrderStatus(id, status),
     onSuccess: invalidate,
@@ -187,7 +212,7 @@ function DriverHome() {
 
   return (
     <div className="pb-4">
-      <NewDeliveryAlert online={online} available={available} restaurantName={restaurantName} />
+      <NewDeliveryAlert online={online} available={available} restaurantName={restaurantName} restaurants={restaurants} />
 
       <Dialog open={gate !== null} onOpenChange={(o) => !o && setGate(null)}>
         <DialogContent className="max-w-sm">
@@ -377,23 +402,24 @@ function DriverHome() {
                         {t("driver.home.open")}
                       </Link>
                     </Button>
-                    {o.address ? (
-                      <Button size="sm" variant="outline" asChild>
-
-                        <a
-                          href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(o.address)}`}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <Navigation className="size-4" aria-hidden /> {t("driver.home.navigate")}
-                        </a>
-                      </Button>
-                    ) : null}
+                    {(() => {
+                      const url = legUrl(o, o.status === "picked_up" ? "dropoff" : "pickup");
+                      return url ? (
+                        <Button size="sm" variant="outline" asChild>
+                          <a href={url} target="_blank" rel="noreferrer">
+                            <Navigation className="size-4" aria-hidden /> {t("driver.home.navigate")}
+                          </a>
+                        </Button>
+                      ) : null;
+                    })()}
                     {o.status === "ready" ? (
                       <Button
                         size="sm"
                         disabled={advance.isPending}
-                        onClick={() => advance.mutate({ id: o.id, status: "picked_up" })}
+                        onClick={() => {
+                          autoOpen(o, "dropoff");
+                          advance.mutate({ id: o.id, status: "picked_up" });
+                        }}
                       >
                         {t("driver.home.pickedUp")}
                       </Button>
@@ -439,7 +465,10 @@ function DriverHome() {
                         {t("driver.home.view")}
                       </Link>
                     </Button>
-                    <Button size="sm" disabled={claim.isPending} onClick={() => claim.mutate(o.id)}>
+                    <Button size="sm" disabled={claim.isPending} onClick={() => {
+                      autoOpen(o, "pickup");
+                      claim.mutate(o.id);
+                    }}>
                       {t("driver.home.accept")}
                     </Button>
                   </div>
