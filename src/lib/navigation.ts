@@ -70,11 +70,15 @@ export function dropoffDestination(order: Leg): Destination {
 export function openNavigation(url: string | null): boolean {
   if (!url || typeof window === "undefined") return false;
   try {
-    const w = window.open(url, "_blank", "noopener");
-    // With "noopener" some browsers return null even on success; detect a real
-    // block by checking whether the page kept focus.
-    if (w) return true;
-    return !document.hasFocus() ? true : false;
+    // No "noopener" feature: with it, browsers return null even on success.
+    const w = window.open(url, "_blank");
+    if (!w) return false;
+    try {
+      w.opener = null;
+    } catch {
+      /* cross-origin already */
+    }
+    return true;
   } catch {
     return false;
   }
