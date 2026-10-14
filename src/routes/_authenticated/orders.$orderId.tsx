@@ -408,7 +408,7 @@ function DeliveryMap({
     return list;
   }, [driver, dropOff, address, stale]);
 
-  if (points.length === 0) return null;
+  if (points.length === 0 && !stale) return null;
 
   return (
     <Card className="border-ink/10">
@@ -416,7 +416,7 @@ function DeliveryMap({
         <p className="inline-flex items-center gap-2 text-sm font-semibold text-foreground">
           <MapPin className="size-4" aria-hidden /> {driver ? t("customer.tracking.driverLocation") : t("customer.tracking.deliveryAddress")}
         </p>
-        <MapView points={points} className="h-56 w-full" />
+        {points.length > 0 ? <MapView points={points} className="h-56 w-full" /> : null}
         {driver && updatedAt ? (
           stale ? (
             <p data-testid="driver-location-stale" className="rounded-lg bg-sun/30 px-3 py-2 text-xs font-semibold text-foreground">
