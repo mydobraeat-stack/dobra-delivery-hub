@@ -1,12 +1,20 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { MapPin, Store, Timer } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n";
 import { startRingtone } from "@/lib/sound";
-import { claimOrder, orderRef, payout, type OrderRow } from "@/lib/dobra";
+import { claimOrder, myDriverQuery, orderRef, payout, type OrderRow, type Restaurant } from "@/lib/dobra";
+import {
+  autoNavigationEnabled,
+  directionsUrl,
+  markNavigationBlocked,
+  openNavigation,
+  pickupDestination,
+  travelModeFor,
+} from "@/lib/navigation";
 
 const OFFER_SECONDS = 30;
 const DECLINED_KEY = "dobra.declinedOffers";
@@ -29,11 +37,14 @@ export function NewDeliveryAlert({
   online,
   available,
   restaurantName,
+  restaurants = [],
 }: {
   online: boolean;
   available: OrderRow[];
   restaurantName: (id: string | null) => string;
+  restaurants?: Restaurant[];
 }) {
+  const { data: driver } = useQuery(myDriverQuery);
   const { t, formatMoney } = useI18n();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -170,7 +181,18 @@ export function NewDeliveryAlert({
               className="flex-1"
               size="lg"
               disabled={accept.isPending}
-              onClick={() => accept.mutate(offer.id)}
+              data-testid="offer-accept"
+              onClick={() => {
+                // Open Maps synchronously inside the tap, before the network call.
+                if (autoNavigationEnabled()) {
+                  const url = directionsUrl(
+                    pickupDestination(offer, restaurants.find((r) => r.id === offer.restaurant_id)),
+                    travelModeFor(driver?.vehicle_type),
+                  );
+                  if (url && !openNavigation(url)) markNavigationBlocked(offer.id, "pickup");
+                }
+                accept.mutate(offer.id);
+              }}
             >
               {t("driver.offer.accept")}
             </Button>

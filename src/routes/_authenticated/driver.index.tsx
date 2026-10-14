@@ -187,7 +187,7 @@ function DriverHome() {
 
   return (
     <div className="pb-4">
-      <NewDeliveryAlert online={online} available={available} restaurantName={restaurantName} />
+      <NewDeliveryAlert online={online} available={available} restaurantName={restaurantName} restaurants={restaurants} />
 
       <Dialog open={gate !== null} onOpenChange={(o) => !o && setGate(null)}>
         <DialogContent className="max-w-sm">
