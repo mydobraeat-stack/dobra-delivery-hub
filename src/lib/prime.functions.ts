@@ -15,7 +15,7 @@ export const startPrimeCheckout = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data: unknown) => startInput.parse(data))
   .handler(async ({ data, context }) => {
-    const secret = process.env["STRIPE_SECRET_KEY"];
+    const secret = (process.env["STRIPE_RESTRICTED_API_KEY"] ?? process.env["STRIPE_SECRET_KEY"]);
     if (!secret) return { url: null, missingKey: true as const };
 
     const body = new URLSearchParams({
@@ -51,7 +51,7 @@ export const syncPrimeFromSession = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data: unknown) => z.object({ sessionId: z.string().min(1) }).parse(data))
   .handler(async ({ data, context }) => {
-    const secret = process.env["STRIPE_SECRET_KEY"];
+    const secret = (process.env["STRIPE_RESTRICTED_API_KEY"] ?? process.env["STRIPE_SECRET_KEY"]);
     if (!secret) throw new Error("Payments are not configured yet.");
 
     const sessionRes = await fetch(
@@ -109,7 +109,7 @@ export const cancelPrime = createServerFn({ method: "POST" })
       .eq("user_id", context.userId)
       .maybeSingle();
 
-    const secret = process.env["STRIPE_SECRET_KEY"];
+    const secret = (process.env["STRIPE_RESTRICTED_API_KEY"] ?? process.env["STRIPE_SECRET_KEY"]);
     const subId = (row as { stripe_subscription_id?: string | null } | null)
       ?.stripe_subscription_id;
     if (secret && subId) {
