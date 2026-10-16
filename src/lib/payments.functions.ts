@@ -38,7 +38,7 @@ export const createCardCheckoutSession = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data: unknown) => input.parse(data))
   .handler(async ({ data, context }) => {
-    const secret = process.env["STRIPE_SECRET_KEY"];
+    const secret = (process.env["STRIPE_RESTRICTED_API_KEY"] ?? process.env["STRIPE_SECRET_KEY"]);
 
     const { data: order, error } = await context.supabase
       .from("orders")
@@ -85,7 +85,7 @@ export const confirmCardPayment = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data: unknown) => z.object({ orderId: z.string().uuid() }).parse(data))
   .handler(async ({ data, context }) => {
-    const secret = process.env["STRIPE_SECRET_KEY"];
+    const secret = (process.env["STRIPE_RESTRICTED_API_KEY"] ?? process.env["STRIPE_SECRET_KEY"]);
     const { data: order } = await context.supabase
       .from("orders")
       .select("id,payment_method,payment_status,payment_reference")
@@ -124,7 +124,7 @@ export const refundOrderWithStripe = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     if (status !== "pending_card") return { status: String(status) };
 
-    const secret = process.env["STRIPE_SECRET_KEY"];
+    const secret = (process.env["STRIPE_RESTRICTED_API_KEY"] ?? process.env["STRIPE_SECRET_KEY"]);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: order } = await supabaseAdmin
       .from("orders")
