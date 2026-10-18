@@ -1,4 +1,11 @@
 export default {
+  safeguards: {
+    changeStatus: "Change status",
+    reason: "Reason",
+    newStatus: "New status",
+    confirmStatus: "Move order {ref} to {status}? This change is recorded in the audit log.",
+    statusChanged: "Status changed",
+  },
   nav: {
     label: "Admin sections",
     dashboard: "Dashboard",

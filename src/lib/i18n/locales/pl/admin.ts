@@ -1,4 +1,11 @@
 export default {
+  safeguards: {
+    changeStatus: "Zmień status",
+    reason: "Powód",
+    newStatus: "Nowy status",
+    confirmStatus: "Zmienić status zamówienia {ref} na {status}? Zmiana zostanie zapisana w dzienniku działań.",
+    statusChanged: "Status zmieniony",
+  },
   nav: {
     label: "Sekcje administratora",
     dashboard: "Panel",

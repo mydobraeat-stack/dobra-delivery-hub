@@ -1,4 +1,11 @@
 export default {
+  safeguards: {
+    changeStatus: "Змінити статус",
+    reason: "Причина",
+    newStatus: "Новий статус",
+    confirmStatus: "Змінити статус замовлення {ref} на {status}? Зміну буде записано в журнал дій.",
+    statusChanged: "Статус змінено",
+  },
   nav: {
     label: "Розділи адміністратора",
     dashboard: "Панель",
