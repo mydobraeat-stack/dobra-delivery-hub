@@ -1,4 +1,11 @@
 export default {
+  safeguards: {
+    changeStatus: "Modifier le statut",
+    reason: "Motif",
+    newStatus: "Nouveau statut",
+    confirmStatus: "Passer la commande {ref} au statut {status} ? Ce changement sera enregistré dans le journal d’audit.",
+    statusChanged: "Statut modifié",
+  },
   nav: {
     label: "Sections d'administration",
     dashboard: "Tableau de bord",

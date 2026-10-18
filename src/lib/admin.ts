@@ -1,5 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { cancelOrder, reassignDriver } from "@/lib/admin-ops";
 
 export type AdminProfile = {
   id: string;
@@ -236,14 +237,12 @@ export function adminOrderItemsQuery(orderId: string) {
   });
 }
 
-export async function adminCancelOrder(orderId: string) {
-  const { error } = await supabase.from("orders").update({ status: "cancelled" }).eq("id", orderId);
-  if (error) throw error;
+export async function adminCancelOrder(orderId: string, reason: string) {
+  await cancelOrder(orderId, reason);
 }
 
 export async function adminUnassignDriver(orderId: string) {
-  const { error } = await supabase.from("orders").update({ driver_id: null }).eq("id", orderId);
-  if (error) throw error;
+  await reassignDriver(orderId, null);
 }
 
 export async function setDriverDocsStatus(

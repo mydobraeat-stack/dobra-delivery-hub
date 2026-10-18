@@ -25,13 +25,22 @@ import { ActionDialog } from "@/components/admin/ActionDialog";
 import { StatusBadge } from "@/components/dobra/StatusBadge";
 import { orderRef, ORDER_FLOW } from "@/lib/dobra";
 import { useI18n, useT } from "@/lib/i18n";
+import { accountQueryOptions } from "@/lib/profile";
+import { canReassignOrder, isClosedOrder, nextAdminStatuses } from "@/lib/admin-rules";
 
 export const Route = createFileRoute("/_authenticated/admin/orders")({
   component: AdminOrders,
+  head: () => ({ meta: [
+    { title: "Dobra Admin — Order controls" },
+    { name: "description", content: "Manage Dobra food and package orders with audited staff controls." },
+    { property: "og:title", content: "Dobra Admin — Order controls" },
+    { property: "og:description", content: "Manage Dobra food and package orders with audited staff controls." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+  ] }),
 });
 
 const FILTERS = ["all", ...ORDER_FLOW, "cancelled"] as const;
-const STATUSES = ["pending", "accepted", "preparing", "ready", "picked_up", "delivered", "cancelled"];
 
 function AdminOrders() {
   const t = useT();
@@ -148,9 +157,11 @@ function OrderRow({ order: o }: { order: AdminOrder }) {
   const [statusPick, setStatusPick] = useState<string>(o.status);
   const [note, setNote] = useState("");
   const [savingNote, setSavingNote] = useState(false);
+  const account = useQuery(accountQueryOptions);
+  const statuses = nextAdminStatuses(o, account.data?.role);
 
   const refresh = () => queryClient.invalidateQueries({ queryKey: ["admin"] });
-  const closed = o.status === "delivered" || o.status === "cancelled";
+  const closed = isClosedOrder(o);
   const refundable = Number(o.total) - Number(o.refund_amount ?? 0);
   const isCardPaid = o.payment_method === "card" && o.payment_status === "paid";
   const stripeRefund = useServerFn(refundOrderWithStripe);
@@ -252,7 +263,7 @@ function OrderRow({ order: o }: { order: AdminOrder }) {
           />
         ) : null}
 
-        {!closed ? (
+        {canReassignOrder(o) ? (
           <ActionDialog
             trigger={<Button size="sm" variant="outline">Reassign driver</Button>}
             title="Reassign driver"
@@ -288,36 +299,37 @@ function OrderRow({ order: o }: { order: AdminOrder }) {
           </ActionDialog>
         ) : null}
 
-        <ActionDialog
-          trigger={<Button size="sm" variant="outline">Force status</Button>}
-          title="Force status change"
-          description="Use only when an order is stuck. Everyone involved is notified as usual."
-          reasonLabel="Reason"
+        {statuses.length > 0 ? <ActionDialog
+          trigger={<Button size="sm" variant="outline">{t("admin.safeguards.changeStatus")}</Button>}
+          title={t("admin.safeguards.changeStatus")}
+          reasonLabel={t("admin.safeguards.reason")}
           reasonRequired
-          confirmLabel="Change status"
-          canSubmit={statusPick !== o.status}
-          successMessage="Status changed"
+          confirmLabel={t("admin.safeguards.changeStatus")}
+          canSubmit={statuses.includes(statusPick)}
+          confirmSummary={() => t("admin.safeguards.confirmStatus", { ref: orderRef(o.id), status: statusPick.replace(/_/g, " ") })}
+          successMessage={t("admin.safeguards.statusChanged")}
           onConfirm={async (reason) => {
             await forceStatus(o.id, statusPick, reason);
             refresh();
           }}
         >
           <div className="space-y-1.5">
-            <Label htmlFor={`st-${o.id}`}>New status</Label>
+            <Label htmlFor={`st-${o.id}`}>{t("admin.safeguards.newStatus")}</Label>
             <select
               id={`st-${o.id}`}
               value={statusPick}
               onChange={(e) => setStatusPick(e.target.value)}
               className="h-10 w-full rounded-md border border-input bg-background px-2 text-sm"
             >
-              {STATUSES.map((s) => (
+              <option value={o.status}>{o.status.replace(/_/g, " ")}</option>
+              {statuses.map((s) => (
                 <option key={s} value={s}>
                   {s.replace(/_/g, " ")}
                 </option>
               ))}
             </select>
           </div>
-        </ActionDialog>
+        </ActionDialog> : null}
 
         <ActionDialog
           trigger={<Button size="sm" variant="ghost">Flag issue</Button>}

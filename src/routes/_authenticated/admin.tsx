@@ -1,10 +1,11 @@
-import { createFileRoute, Outlet, useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useNavigate, Link, useLocation } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { accountQueryOptions } from "@/lib/profile";
 import { AppHeader } from "@/components/dobra/AppHeader";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
+import { canAccessAdminPath } from "@/lib/admin-rules";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminLayout,
@@ -27,10 +28,12 @@ export const Route = createFileRoute("/_authenticated/admin")({
 function AdminLayout() {
   const navigate = useNavigate();
   const t = useT();
+  const pathname = useLocation({ select: (location) => location.pathname });
   const { data, isPending } = useQuery(accountQueryOptions);
 
   const isSuper = data?.role === "admin";
   const isStaff = isSuper || data?.role === "support_agent";
+  const allowed = canAccessAdminPath(data?.role, pathname);
   const ALL = [
     { to: "/admin", label: t("admin.nav.dashboard"), exact: true, superOnly: true },
     { to: "/admin/orders", label: t("admin.nav.orders") },
@@ -52,14 +55,14 @@ function AdminLayout() {
 
   useEffect(() => {
     if (data && !isStaff) navigate({ to: "/home", replace: true });
-    if (data && data.role === "support_agent" && window.location.pathname === "/admin")
+    if (data && data.role === "support_agent" && !allowed)
       navigate({ to: "/admin/orders", replace: true });
-  }, [data, isStaff, navigate]);
+  }, [data, isStaff, allowed, navigate]);
 
   if (isPending || !data) {
     return <div className="p-10 text-center text-foreground/60">{t("admin.loading")}</div>;
   }
-  if (!isStaff) {
+  if (!isStaff || !allowed) {
     return <div className="p-10 text-center text-foreground/60">{t("admin.redirecting")}</div>;
   }
 
