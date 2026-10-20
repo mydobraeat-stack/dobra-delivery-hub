@@ -23,6 +23,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { PhoneInput } from "@/components/dobra/PhoneInput";
 import { myProfileQuery, saveMyPhone } from "@/lib/my-profile";
 import { normalizePhone, validatePhone } from "@/lib/phone";
+import { Input } from "@/components/ui/input";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import { CHECKOUT_COPY, formatManualAddress, manualAddressComplete, type ManualAddress } from "@/lib/checkout-address";
 
 export const Route = createFileRoute("/_authenticated/checkout")({
   head: () => ({
@@ -53,6 +56,9 @@ const PAY_OPTIONS: { id: PayChoice; title: string; copy: string }[] = [
 function CheckoutPage() {
   const { t, formatMoney, locale } = useI18n();
   const legal = SITE_COPY[locale].checkoutLegal;
+  const copy = CHECKOUT_COPY[locale];
+  const [manual, setManual] = useState(false);
+  const [manualAddress, setManualAddress] = useState<ManualAddress>({ street: "", building: "", apartment: "", city: "" });
   const cart = useCart();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -72,6 +78,8 @@ function CheckoutPage() {
     }
   }, [defaultAddress, prefilled]);
   const [note, setNote] = useState("");
+  const deliveryAddress = manual ? formatManualAddress(manualAddress) : address.address.trim();
+  const addressComplete = manual ? manualAddressComplete(manualAddress) : address.address.trim().length >= 5;
   const { data: myProfile } = useQuery(myProfileQuery);
   const [phone, setPhone] = useState("");
   const [phoneTried, setPhoneTried] = useState(false);
@@ -122,18 +130,19 @@ function CheckoutPage() {
 
   const submit = useMutation({
     mutationFn: async () => {
+      if (!restaurant || !addressComplete) throw new Error(t("customer.checkout.addressLabel"));
       if (normalizePhone(phone) !== (myProfile?.phone ?? "")) {
         await saveMyPhone(phone);
         void queryClient.invalidateQueries({ queryKey: ["my-profile"] });
       }
       const orderId = await placeOrder({
-        restaurant: restaurant!,
+        restaurant,
         lines: cart.lines,
-        address: address.address.trim(),
+        address: deliveryAddress,
         note,
         paymentMethod,
-        destLat: address.lat,
-        destLng: address.lng,
+        destLat: manual ? null : address.lat,
+        destLng: manual ? null : address.lng,
         promoCode: promo?.code ?? null,
       });
       if (paymentMethod === "card") {
@@ -240,7 +249,17 @@ function CheckoutPage() {
             </section>
 
             <section className="space-y-3 border-b border-ink/10 pb-4">
-                <AddressPicker value={address} onChange={setAddress} compact />
+                {manual ? (
+                  <div className="grid grid-cols-2 gap-3">
+                    {(["street", "building", "apartment", "city"] as const).map((field) => (
+                      <div key={field} className={field === "street" || field === "city" ? "col-span-2 space-y-1" : "space-y-1"}>
+                        <Label htmlFor={`manual-${field}`}>{copy[field]}</Label>
+                        <Input id={`manual-${field}`} required={field !== "apartment"} value={manualAddress[field]} onChange={(e) => setManualAddress((previous) => ({ ...previous, [field]: e.target.value }))} />
+                      </div>
+                    ))}
+                  </div>
+                ) : <AddressPicker value={address} onChange={setAddress} compact />}
+                <Button variant="link" size="sm" className="h-auto px-0" onClick={() => setManual(!manual)}>{manual ? copy.search : copy.manual}</Button>
                 <PhoneInput
                   id="checkout-phone"
                   value={phone}
@@ -263,27 +282,20 @@ function CheckoutPage() {
 
             <section className="space-y-2 border-b border-ink/10 pb-4">
                 <p className="font-semibold text-foreground">{t("customer.checkout.paymentTitle")}</p>
-                <RadioGroup value={choice} onValueChange={(value) => {
+                {isPoland ? <RadioGroup value={choice === "blik" ? "blik" : ""} onValueChange={() => setChoice("blik")} aria-label="BLIK">
+                  <Label htmlFor="pay-blik" className={`flex min-h-10 cursor-pointer items-center gap-3 rounded-md px-3 py-2 ${choice === "blik" ? "bg-sun/25" : ""}`}>
+                    <RadioGroupItem id="pay-blik" value="blik" /> BLIK
+                  </Label>
+                </RadioGroup> : null}
+                <Select value={choice === "blik" ? "" : choice} onValueChange={(value) => {
                   const option = PAY_OPTIONS.find((o) => o.id === value);
                   if (option) setChoice(option.id);
-                }} aria-label={t("customer.checkout.paymentTitle")} className="gap-0">
-                {PAY_OPTIONS.filter((o) => o.id !== "blik" || isPoland).map((option) => (
-                  <Label
-                    key={option.id}
-                    htmlFor={`pay-${option.id}`}
-                    className={`flex min-h-10 cursor-pointer items-center gap-3 rounded-md px-3 py-2 transition-colors ${
-                      choice === option.id
-                        ? "bg-sun/25"
-                        : "hover:bg-muted"
-                    }`}
-                  >
-                    <RadioGroupItem id={`pay-${option.id}`} value={option.id} />
-                    <span className="block text-sm font-semibold text-foreground">
-                      {option.id === "cash" ? t("customer.checkout.cashTitle") : option.id === "card" ? t("customer.checkout.cardTitle") : option.title}
-                    </span>
-                  </Label>
-                ))}
-                </RadioGroup>
+                }}>
+                  <SelectTrigger aria-label={copy.other}><SelectValue placeholder={copy.other} /></SelectTrigger>
+                  <SelectContent>
+                    {PAY_OPTIONS.filter((o) => o.id !== "blik").map((option) => <SelectItem key={option.id} value={option.id}>{option.id === "cash" ? t("customer.checkout.cashTitle") : option.id === "card" ? t("customer.checkout.cardTitle") : option.title}</SelectItem>)}
+                  </SelectContent>
+                </Select>
                 {/* TODO: Mobile Money (Flutterwave / Notch Pay) for Cameroon — not built yet. */}
                 <p className="text-xs text-foreground/50">
                   {t("customer.checkout.mobileMoneySoon")}
@@ -355,7 +367,7 @@ function CheckoutPage() {
               className="w-full"
               size="lg"
               disabled={
-                submit.isPending || !restaurant || belowMinimum || address.address.trim().length < 5
+                submit.isPending || !restaurant || belowMinimum || !addressComplete
               }
               onClick={() => {
                 if (!phoneOk) {

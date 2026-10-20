@@ -16,3 +16,4 @@
 - Public-site copy (policy pages, landing, contact) lives in src/components/marketing/site-copy.ts in all 4 languages; why: one place to translate and review.
 - Other users' phone numbers are only returned by the get_call_number RPC (order customer/driver while active, or staff), which logs each call to call_logs; never expose profiles.phone or order_contacts through other policies; why: GDPR data minimisation.
 - Google Maps navigation links and the auto-open setting live only in src/lib/navigation.ts, opened synchronously inside tap handlers; why: browsers block popups opened after an await.
+- Checkout manual address formatting and completeness checks share a browser-safe helper; why: displayed address fields and submitted delivery addresses must stay consistent.
