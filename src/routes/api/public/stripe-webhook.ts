@@ -83,9 +83,23 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
             return new Response("Update failed", { status: 500 });
           }
         } else if (event.type === "checkout.session.async_payment_failed") {
+          // Fetch the bank's decline message (e.g. BLIK code expired) to show the customer.
+          let reason = "Online payment failed";
+          const key = process.env["STRIPE_RESTRICTED_API_KEY"] ?? process.env["STRIPE_SECRET_KEY"];
+          if (key && session.payment_intent) {
+            try {
+              const r = await fetch(`https://api.stripe.com/v1/payment_intents/${session.payment_intent}`, {
+                headers: { Authorization: `Bearer ${key}` },
+              });
+              const pi = (await r.json()) as { last_payment_error?: { message?: string } };
+              if (pi.last_payment_error?.message) reason = `Payment failed: ${pi.last_payment_error.message}`;
+            } catch {
+              /* keep generic reason */
+            }
+          }
           await supabaseAdmin
             .from("orders")
-            .update({ payment_status: "failed", status: "cancelled", cancel_reason: "Online payment failed" })
+            .update({ payment_status: "failed", status: "cancelled", cancel_reason: reason.slice(0, 300) })
             .eq("id", orderId)
             .eq("payment_method", "card")
             .neq("payment_status", "paid");

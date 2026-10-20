@@ -56,7 +56,7 @@ export const Route = createFileRoute("/_authenticated/orders/$orderId")({
 });
 
 function OrderTracking() {
-  const { t, formatMoney, formatDate } = useI18n();
+  const { t, formatMoney, formatDate, locale } = useI18n();
   const { orderId } = useParams({ from: "/_authenticated/orders/$orderId" });
   const queryClient = useQueryClient();
   const { data: order, isLoading } = useQuery(orderQuery(orderId));
@@ -168,6 +168,14 @@ function OrderTracking() {
                 {t("customer.tracking.arrivesIn", { n: order.eta_minutes })}
               </p>
               <StatusBadge status={order.status} />
+              {order.payment_status === "failed" ? (
+                <div role="alert" className="mt-2 rounded-md border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
+                  <p className="font-semibold">
+                    {{ pl: "Płatność nie powiodła się", uk: "Оплата не вдалася", fr: "Le paiement a échoué", en: "Payment failed" }[locale] ?? "Payment failed"}
+                  </p>
+                  {order.cancel_reason ? <p>{order.cancel_reason}</p> : null}
+                </div>
+              ) : null}
               <div className="flex flex-wrap gap-2 pt-2">
                 <ChatButton
                   kind="order_vendor"
