@@ -61,10 +61,11 @@ export type OrderRow = {
   pickup_lat: number | null;
   pickup_lng: number | null;
   package_note: string | null;
+  cancel_reason?: string | null;
 };
 
 const ORDER_COLS =
-  "id,status,total,subtotal,delivery_fee,currency,created_at,restaurant_id,driver_id,customer_id,address,note,eta_minutes,dest_lat,dest_lng,kind,pickup_address,pickup_lat,pickup_lng,package_note,payment_method,payment_status";
+  "id,status,total,subtotal,delivery_fee,currency,created_at,restaurant_id,driver_id,customer_id,address,note,eta_minutes,dest_lat,dest_lng,kind,pickup_address,pickup_lat,pickup_lng,package_note,payment_method,payment_status,cancel_reason";
 
 export type Review = {
   id: string;
