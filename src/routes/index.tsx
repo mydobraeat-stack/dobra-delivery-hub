@@ -22,7 +22,21 @@ export const Route = createFileRoute("/")({
           "Order delivery from local restaurants near you with Dobra. Add your restaurant or sign up to deliver.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://mydobra.pl/" },
       { name: "twitter:card", content: "summary_large_image" },
+    ],
+    links: [{ rel: "canonical", href: "https://mydobra.pl/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Dobra",
+          url: "https://mydobra.pl/",
+          logo: "https://mydobra.pl/android-chrome-512x512.png",
+        }),
+      },
     ],
   }),
   component: MarketingHome,
