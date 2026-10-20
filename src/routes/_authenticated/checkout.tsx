@@ -253,7 +253,7 @@ function CheckoutPage() {
                   <div className="grid grid-cols-2 gap-3">
                     {(["street", "building", "apartment", "city"] as const).map((field) => (
                       <div key={field} className={field === "street" || field === "city" ? "col-span-2 space-y-1" : "space-y-1"}>
-                        <Label htmlFor={`manual-${field}`}>{copy[field]}</Label>
+                        <Label className={field === "building" || field === "apartment" ? "flex min-h-10 items-end" : ""} htmlFor={`manual-${field}`}>{copy[field]}</Label>
                         <Input id={`manual-${field}`} required={field !== "apartment"} value={manualAddress[field]} onChange={(e) => setManualAddress((previous) => ({ ...previous, [field]: e.target.value }))} />
                       </div>
                     ))}
