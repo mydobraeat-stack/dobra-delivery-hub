@@ -56,7 +56,7 @@ export const Route = createFileRoute("/_authenticated/orders/$orderId")({
 });
 
 function OrderTracking() {
-  const { t, formatMoney, formatDate } = useI18n();
+  const { t, formatMoney, formatDate, locale } = useI18n();
   const { orderId } = useParams({ from: "/_authenticated/orders/$orderId" });
   const queryClient = useQueryClient();
   const { data: order, isLoading } = useQuery(orderQuery(orderId));
