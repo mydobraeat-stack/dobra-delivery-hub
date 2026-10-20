@@ -88,12 +88,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "Dobra — Food delivery" },
       { name: "description", content: "Order, cook or deliver with Dobra." },
 
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { name: "author", content: "Dobra" },
+      { property: "og:site_name", content: "Dobra" },
+      { property: "og:title", content: "Dobra — Food delivery" },
+      { property: "og:description", content: "Order, cook or deliver with Dobra." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
