@@ -18,10 +18,11 @@ type Props = {
   id?: string;
   label?: string;
   placeholder?: string;
+  compact?: boolean;
 };
 
 /** Address field with live suggestions and a confirmation map pin. */
-export function AddressPicker({ value, onChange, id = "address", label, placeholder }: Props) {
+export function AddressPicker({ value, onChange, id = "address", label, placeholder, compact = false }: Props) {
   const t = useT();
   const [query, setQuery] = useState(value.address);
   const [debounced, setDebounced] = useState(value.address);
@@ -120,8 +121,13 @@ export function AddressPicker({ value, onChange, id = "address", label, placehol
       ) : null}
       {points.length > 0 ? (
         <>
-          <MapView points={points} className="h-40 w-full" zoom={16} />
-          <p className="text-xs text-foreground/60">{t("customer.checkout.addressConfirmed")}</p>
+          {compact ? (
+            <details>
+              <summary className="cursor-pointer text-xs font-medium text-accent">{t("customer.checkout.addressConfirmed")}</summary>
+              <MapView points={points} className="mt-2 h-40 w-full" zoom={16} />
+            </details>
+          ) : <MapView points={points} className="h-40 w-full" zoom={16} />}
+          {!compact ? <p className="text-xs text-foreground/60">{t("customer.checkout.addressConfirmed")}</p> : null}
         </>
       ) : null}
     </div>

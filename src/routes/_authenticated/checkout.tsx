@@ -15,7 +15,7 @@ import { useQuery as usePricingQuery } from "@tanstack/react-query";
 import { useI18n } from "@/lib/i18n";
 import { SITE_COPY } from "@/components/marketing/site-copy";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { AddressPicker, type PickedAddress } from "@/components/dobra/AddressPicker";
 import { SuccessOverlay } from "@/components/dobra/SuccessOverlay";
@@ -183,7 +183,7 @@ function CheckoutPage() {
         />
       ) : null}
       <AppHeader subtitle={t("common.roles.customer")} />
-      <main className="mx-auto max-w-2xl space-y-6 px-5 py-6">
+      <main className="mx-auto max-w-2xl space-y-4 px-4 py-4">
         <Link
           to="/customer"
           className="inline-flex items-center gap-2 text-sm font-medium text-foreground/70 hover:text-foreground"
@@ -196,8 +196,7 @@ function CheckoutPage() {
           <p className="text-sm text-foreground/60">{t("customer.checkout.basketEmpty")}</p>
         ) : (
           <>
-            <Card className="border-ink/10">
-              <CardContent className="space-y-4 py-4">
+            <section className="space-y-3 border-b border-ink/10 pb-4">
                 <p className="font-semibold text-foreground">{cart.restaurantName}</p>
                 {cart.lines.map((line) => (
                   <div key={line.itemId} className="flex items-center gap-3">
@@ -206,7 +205,7 @@ function CheckoutPage() {
                       alt={line.name}
                       width={160}
                       height={160}
-                      className="size-14 rounded-lg object-cover"
+                      className="size-10 rounded-md object-cover"
                     />
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-sm font-medium text-foreground">{line.name}</p>
@@ -238,12 +237,10 @@ function CheckoutPage() {
                     </div>
                   </div>
                 ))}
-              </CardContent>
-            </Card>
+            </section>
 
-            <Card className="border-ink/10">
-              <CardContent className="space-y-4 py-4">
-                <AddressPicker value={address} onChange={setAddress} />
+            <section className="space-y-3 border-b border-ink/10 pb-4">
+                <AddressPicker value={address} onChange={setAddress} compact />
                 <PhoneInput
                   id="checkout-phone"
                   value={phone}
@@ -251,50 +248,50 @@ function CheckoutPage() {
                   country={restaurant?.country}
                   showError={phoneTried}
                 />
-                <div className="space-y-2">
-                  <Label htmlFor="note">{t("customer.checkout.noteLabel")}</Label>
+                <details className="text-sm">
+                  <summary className="cursor-pointer font-medium text-foreground/70">{t("customer.checkout.noteLabel")}</summary>
                   <Textarea
                     id="note"
+                    aria-label={t("customer.checkout.noteLabel")}
+                    className="mt-2 min-h-16"
                     value={note}
                     onChange={(e) => setNote(e.target.value)}
                     placeholder={t("customer.checkout.notePlaceholder")}
                   />
-                </div>
-              </CardContent>
-            </Card>
+                </details>
+            </section>
 
-            <Card className="border-ink/10">
-              <CardContent className="space-y-3 py-4">
+            <section className="space-y-2 border-b border-ink/10 pb-4">
                 <p className="font-semibold text-foreground">{t("customer.checkout.paymentTitle")}</p>
+                <RadioGroup value={choice} onValueChange={(value) => {
+                  const option = PAY_OPTIONS.find((o) => o.id === value);
+                  if (option) setChoice(option.id);
+                }} aria-label={t("customer.checkout.paymentTitle")} className="gap-0">
                 {PAY_OPTIONS.filter((o) => o.id !== "blik" || isPoland).map((option) => (
-                  <button
+                  <Label
                     key={option.id}
-                    type="button"
-                    onClick={() => setChoice(option.id)}
-                    className={`w-full rounded-2xl border-2 px-4 py-3 text-left transition-colors ${
+                    htmlFor={`pay-${option.id}`}
+                    className={`flex min-h-10 cursor-pointer items-center gap-3 rounded-md px-3 py-2 transition-colors ${
                       choice === option.id
-                        ? "border-primary bg-sun/25"
-                        : "border-ink/10 hover:border-ink/25"
+                        ? "bg-sun/25"
+                        : "hover:bg-muted"
                     }`}
                   >
+                    <RadioGroupItem id={`pay-${option.id}`} value={option.id} />
                     <span className="block text-sm font-semibold text-foreground">
                       {option.id === "cash" ? t("customer.checkout.cashTitle") : option.id === "card" ? t("customer.checkout.cardTitle") : option.title}
                     </span>
-                    <span className="block text-xs text-foreground/60">
-                      {option.id === "cash" ? t("customer.checkout.cashCopy") : option.id === "card" ? t("customer.checkout.cardCopy") : option.copy}
-                    </span>
-                  </button>
+                  </Label>
                 ))}
+                </RadioGroup>
                 {/* TODO: Mobile Money (Flutterwave / Notch Pay) for Cameroon — not built yet. */}
                 <p className="text-xs text-foreground/50">
                   {t("customer.checkout.mobileMoneySoon")}
                 </p>
 
-              </CardContent>
-            </Card>
+            </section>
 
-            <Card className="border-ink/10">
-              <CardContent className="space-y-2 py-4 text-sm">
+            <section className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span className="text-foreground/70">{t("customer.checkout.subtotal")}</span>
                   <span>{formatMoney(subtotal)}</span>
@@ -315,7 +312,9 @@ function CheckoutPage() {
                     <span>-{formatMoney(discount)}</span>
                   </div>
                 ) : null}
-                <div className="flex gap-2 pt-1">
+                <details>
+                <summary className="cursor-pointer text-sm font-medium text-foreground/70">Promo code</summary>
+                <div className="flex gap-2 pt-2">
                   <input
                     aria-label="Promo code"
                     value={promoInput}
@@ -323,21 +322,21 @@ function CheckoutPage() {
                     placeholder="Promo code"
                     className="h-9 min-w-0 flex-1 rounded-md border border-input bg-background px-3 text-sm uppercase"
                   />
-                  <button
+                  <Button
                     type="button"
                     onClick={applyPromo}
                     disabled={promoBusy || !promoInput.trim()}
-                    className="h-9 shrink-0 rounded-md bg-sun px-3 text-sm font-semibold text-foreground disabled:opacity-50"
+                    size="sm"
                   >
                     Apply
-                  </button>
+                  </Button>
                 </div>
+                </details>
                 <div className="flex justify-between border-t border-ink/10 pt-2 text-base font-bold">
                   <span>{t("customer.checkout.total")}</span>
                   <span>{formatMoney(total)}</span>
                 </div>
-              </CardContent>
-            </Card>
+            </section>
 
             {belowMinimum ? (
               <p className="text-sm text-destructive">
