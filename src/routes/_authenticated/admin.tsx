@@ -90,6 +90,16 @@ function AdminLayout() {
       <main className="mx-auto max-w-7xl px-4 py-6">
         <Outlet />
       </main>
+      {isSuper && (
+        <footer className="mx-auto max-w-7xl px-4 pb-6 text-right">
+          <Link
+            to="/admin/store-assets"
+            className="text-xs text-foreground/30 underline-offset-2 hover:text-foreground/60 hover:underline"
+          >
+            Store assets
+          </Link>
+        </footer>
+      )}
     </div>
   );
 }

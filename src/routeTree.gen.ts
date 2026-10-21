@@ -46,6 +46,7 @@ import { Route as AuthenticatedAdminPricingRouteImport } from './routes/_authent
 import { Route as AuthenticatedAdminPromosRouteImport } from './routes/_authenticated/admin.promos'
 import { Route as AuthenticatedAdminRestaurantsRouteImport } from './routes/_authenticated/admin.restaurants'
 import { Route as AuthenticatedAdminReviewsRouteImport } from './routes/_authenticated/admin.reviews'
+import { Route as AuthenticatedAdminStoreAssetsRouteImport } from './routes/_authenticated/admin.store-assets'
 import { Route as AuthenticatedAdminSupportRouteImport } from './routes/_authenticated/admin.support'
 import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin.users'
 import { Route as AuthenticatedChatThreadIdRouteImport } from './routes/_authenticated/chat.$threadId'
@@ -273,6 +274,12 @@ const AuthenticatedAdminReviewsRoute =
     path: '/reviews',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminStoreAssetsRoute =
+  AuthenticatedAdminStoreAssetsRouteImport.update({
+    id: '/store-assets',
+    path: '/store-assets',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminSupportRoute =
   AuthenticatedAdminSupportRouteImport.update({
     id: '/support',
@@ -488,6 +495,7 @@ export interface FileRoutesByFullPath {
   '/admin/promos': typeof AuthenticatedAdminPromosRoute
   '/admin/restaurants': typeof AuthenticatedAdminRestaurantsRoute
   '/admin/reviews': typeof AuthenticatedAdminReviewsRoute
+  '/admin/store-assets': typeof AuthenticatedAdminStoreAssetsRoute
   '/admin/support': typeof AuthenticatedAdminSupportRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/chat/$threadId': typeof AuthenticatedChatThreadIdRoute
@@ -552,6 +560,7 @@ export interface FileRoutesByTo {
   '/admin/promos': typeof AuthenticatedAdminPromosRoute
   '/admin/restaurants': typeof AuthenticatedAdminRestaurantsRoute
   '/admin/reviews': typeof AuthenticatedAdminReviewsRoute
+  '/admin/store-assets': typeof AuthenticatedAdminStoreAssetsRoute
   '/admin/support': typeof AuthenticatedAdminSupportRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/chat/$threadId': typeof AuthenticatedChatThreadIdRoute
@@ -623,6 +632,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/promos': typeof AuthenticatedAdminPromosRoute
   '/_authenticated/admin/restaurants': typeof AuthenticatedAdminRestaurantsRoute
   '/_authenticated/admin/reviews': typeof AuthenticatedAdminReviewsRoute
+  '/_authenticated/admin/store-assets': typeof AuthenticatedAdminStoreAssetsRoute
   '/_authenticated/admin/support': typeof AuthenticatedAdminSupportRoute
   '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
   '/_authenticated/chat/$threadId': typeof AuthenticatedChatThreadIdRoute
@@ -694,6 +704,7 @@ export interface FileRouteTypes {
     | '/admin/promos'
     | '/admin/restaurants'
     | '/admin/reviews'
+    | '/admin/store-assets'
     | '/admin/support'
     | '/admin/users'
     | '/chat/$threadId'
@@ -758,6 +769,7 @@ export interface FileRouteTypes {
     | '/admin/promos'
     | '/admin/restaurants'
     | '/admin/reviews'
+    | '/admin/store-assets'
     | '/admin/support'
     | '/admin/users'
     | '/chat/$threadId'
@@ -828,6 +840,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/promos'
     | '/_authenticated/admin/restaurants'
     | '/_authenticated/admin/reviews'
+    | '/_authenticated/admin/store-assets'
     | '/_authenticated/admin/support'
     | '/_authenticated/admin/users'
     | '/_authenticated/chat/$threadId'
@@ -1147,6 +1160,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminReviewsRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/store-assets': {
+      id: '/_authenticated/admin/store-assets'
+      path: '/store-assets'
+      fullPath: '/admin/store-assets'
+      preLoaderRoute: typeof AuthenticatedAdminStoreAssetsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/support': {
       id: '/_authenticated/admin/support'
       path: '/support'
@@ -1380,6 +1400,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminPromosRoute: typeof AuthenticatedAdminPromosRoute
   AuthenticatedAdminRestaurantsRoute: typeof AuthenticatedAdminRestaurantsRoute
   AuthenticatedAdminReviewsRoute: typeof AuthenticatedAdminReviewsRoute
+  AuthenticatedAdminStoreAssetsRoute: typeof AuthenticatedAdminStoreAssetsRoute
   AuthenticatedAdminSupportRoute: typeof AuthenticatedAdminSupportRoute
   AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
@@ -1398,6 +1419,7 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminPromosRoute: AuthenticatedAdminPromosRoute,
   AuthenticatedAdminRestaurantsRoute: AuthenticatedAdminRestaurantsRoute,
   AuthenticatedAdminReviewsRoute: AuthenticatedAdminReviewsRoute,
+  AuthenticatedAdminStoreAssetsRoute: AuthenticatedAdminStoreAssetsRoute,
   AuthenticatedAdminSupportRoute: AuthenticatedAdminSupportRoute,
   AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
