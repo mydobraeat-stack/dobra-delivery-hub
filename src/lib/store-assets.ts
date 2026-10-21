@@ -331,7 +331,7 @@ function drawScreenContent(
       drawLogoCentered(ctx, logo, cx, cy + 95, 220);
       ctx.fillStyle = BRAND.ink;
       ctx.font = `700 40px ${FONT_SANS}`;
-      ctx.fillText(["Pierogi Bar", "Pizza Napoli", "Green Bowl"][i], sx + 100, cy + 260);
+      ctx.fillText(["Pierogi Bar", "Pizza Napoli", "Green Bowl"][i]!, sx + 100, cy + 260);
       ctx.fillStyle = BRAND.muted;
       ctx.font = `500 30px ${FONT_SANS}`;
       ctx.fillText(`★ 4.${7 - i}  ·  ${20 + i * 5}–${30 + i * 5} min  ·  6.90 zł`, sx + 100, cy + 315);
@@ -356,10 +356,10 @@ function drawScreenContent(
       ctx.fillStyle = BRAND.ink;
       ctx.font = `600 34px ${FONT_SANS}`;
       ctx.textAlign = "left";
-      ctx.fillText(name, sx + 100, cy + 48);
+      ctx.fillText(name!, sx + 100, cy + 48);
       ctx.fillStyle = BRAND.muted;
       ctx.font = `500 30px ${FONT_SANS}`;
-      ctx.fillText(price, sx + 100, cy + 92);
+      ctx.fillText(price!, sx + 100, cy + 92);
       ctx.fillStyle = BRAND.red;
       ctx.beginPath();
       ctx.arc(sx + sw - 130, cy + 60, 34, 0, Math.PI * 2);
@@ -388,13 +388,13 @@ function drawScreenContent(
       drawCard(ctx, sx + 60, cy, sw - 120, 130);
       ctx.font = `400 44px ${FONT_SANS}`;
       ctx.textAlign = "left";
-      ctx.fillText(icon, sx + 95, cy + 82);
+      ctx.fillText(icon!, sx + 95, cy + 82);
       ctx.fillStyle = BRAND.ink;
       ctx.font = `700 34px ${FONT_SANS}`;
-      ctx.fillText(title, sx + 175, cy + 55);
+      ctx.fillText(title!, sx + 175, cy + 55);
       ctx.fillStyle = BRAND.muted;
       ctx.font = `500 28px ${FONT_SANS}`;
-      ctx.fillText(sub, sx + 175, cy + 98);
+      ctx.fillText(sub!, sx + 175, cy + 98);
     });
     drawRedButton(ctx, sx + 60, sy + sh - 200, sw - 120, 96, "Place order · 45.00 zł");
   }
@@ -451,10 +451,10 @@ function drawScreenContent(
       drawCard(ctx, cx0, cy0, cw, 220);
       ctx.fillStyle = BRAND.red;
       ctx.font = `800 56px ${FONT_SANS}`;
-      ctx.fillText(value, cx0 + 36, cy0 + 100);
+      ctx.fillText(value!, cx0 + 36, cy0 + 100);
       ctx.fillStyle = BRAND.muted;
       ctx.font = `500 30px ${FONT_SANS}`;
-      ctx.fillText(label, cx0 + 36, cy0 + 160);
+      ctx.fillText(label!, cx0 + 36, cy0 + 160);
     });
     drawRedButton(ctx, sx + 60, sy + sh - 200, sw - 120, 96, "Open for orders");
   }
@@ -517,7 +517,7 @@ export async function generateAllAssets(
   SCREEN_ORDER.forEach((key, i) => {
     assets.push({
       path: `app-store/screenshot-${i + 1}-${key}-1290x2796.png`,
-      canvas: renderScreenshot(logo, key, headlines[key], bgCycle[i]),
+      canvas: renderScreenshot(logo, key, headlines[key], bgCycle[i]!),
     });
   });
 
@@ -540,7 +540,7 @@ export async function downloadAllAsZip(assets: GeneratedAsset[]) {
   const { default: JSZip } = await import("jszip");
   const zip = new JSZip();
   for (const asset of assets) {
-    zip.file(asset.path, await canvasToBlob(asset));
+    zip.file(asset.path, await canvasToBlob(asset.canvas));
   }
   const blob = await zip.generateAsync({ type: "blob", compression: "STORE" });
   const { deliverFile } = await import("@/lib/download");
