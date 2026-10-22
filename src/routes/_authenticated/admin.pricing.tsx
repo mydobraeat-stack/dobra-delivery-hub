@@ -257,7 +257,10 @@ function RestaurantFeesSection() {
   });
   const save = async (r: RestaurantFee, patch: Partial<RestaurantFee>) => {
     const { error } = await supabase.from("restaurants").update(patch).eq("id", r.id);
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     toast.success(`${r.name} updated`);
     qc.invalidateQueries({ queryKey: ["admin", "restaurant-fees"] });
     qc.invalidateQueries({ queryKey: ["restaurant"] });
