@@ -133,6 +133,17 @@ export function DashboardCharts({
         ))}
       </div>
 
+      <ChartCard
+        title="Balances"
+        hint="Delivered orders minus refunds: online (card / BLIK) confirmed by Stripe, and cash collected by drivers that still needs settling."
+      >
+        {balanceItems.length === 0 ? (
+          <p className="text-sm text-foreground/60">No delivered orders yet.</p>
+        ) : (
+          <Legend items={balanceItems} />
+        )}
+      </ChartCard>
+
       <ChartCard title="Restaurant earnings (PLN)" hint="Top restaurants by what they receive from delivered orders.">
         <div className="h-56">
           <ResponsiveContainer width="100%" height="100%">
