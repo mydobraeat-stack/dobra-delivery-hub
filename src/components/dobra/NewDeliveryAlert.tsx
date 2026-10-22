@@ -119,7 +119,7 @@ export function NewDeliveryAlert({
   const progress = Math.max(0, Math.min(100, (seconds / OFFER_SECONDS) * 100));
 
   return (
-    <div className="fixed inset-0 z-[70] flex items-end justify-center bg-ink/70 p-4 backdrop-blur-sm animate-in fade-in duration-200 sm:items-center">
+    <div className="fixed inset-0 z-[70] flex items-end justify-center bg-ink-solid/70 p-4 backdrop-blur-sm animate-in fade-in duration-200 sm:items-center">
       <div className="w-full max-w-md overflow-hidden rounded-3xl bg-card shadow-2xl animate-in slide-in-from-bottom-8 duration-300">
         <div className="bg-primary px-6 py-4 text-primary-foreground">
           <p className="text-xs font-semibold uppercase tracking-wide opacity-90">

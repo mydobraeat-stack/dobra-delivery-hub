@@ -32,6 +32,8 @@
   --color-sun: var(--sun);
   --color-sun-foreground: var(--sun-foreground);
   --color-ink: var(--ink);
+  --color-ink-solid: var(--ink-solid);
+  --color-ink-solid-foreground: var(--ink-solid-foreground);
   --shadow-soft: 0 8px 24px -12px color-mix(in oklab, var(--ink) 45%, transparent);
   --color-background: var(--background);
 
@@ -76,6 +78,9 @@
 :root {
   --radius: 0.875rem;
   --ink: oklch(0.22 0.01 90);
+  /* Always-dark surface (inverted cards, overlays) — must not flip in dark mode. */
+  --ink-solid: oklch(0.22 0.01 90);
+  --ink-solid-foreground: oklch(0.99 0.01 96);
   --brand: oklch(0.53 0.22 27);
   --background: oklch(0.9 0.16 96);
   --foreground: oklch(0.22 0.01 90);
@@ -120,6 +125,8 @@
 
 .dark {
   --ink: oklch(0.97 0.01 96);
+  --ink-solid: oklch(0.22 0.01 90);
+  --ink-solid-foreground: oklch(0.99 0.01 96);
   --brand: oklch(0.68 0.19 30);
   --sun: oklch(0.82 0.16 96);
   /* Yellow stays bright in dark mode, so text on it must stay dark. */

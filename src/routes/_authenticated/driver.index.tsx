@@ -303,11 +303,11 @@ function DriverHome() {
             </SheetContent>
           </Sheet>
 
-          <div className="pointer-events-auto rounded-full bg-ink px-5 py-2 text-center shadow-md">
-            <p className="text-base font-bold text-background">
+          <div className="pointer-events-auto rounded-full bg-ink-solid px-5 py-2 text-center shadow-md">
+            <p className="text-base font-bold text-ink-solid-foreground">
               {formatMoney(todayEarnings, currency)}
             </p>
-            <p className="text-[10px] uppercase tracking-wide text-background/70">{t("driver.home.today")}</p>
+            <p className="text-[10px] uppercase tracking-wide text-ink-solid-foreground/70">{t("driver.home.today")}</p>
           </div>
 
           <Button
@@ -536,11 +536,11 @@ function StatCard({
   value: string;
 }) {
   return (
-    <Card className="border-ink/10 bg-ink text-background">
+    <Card className="border-ink/10 bg-ink-solid text-ink-solid-foreground">
       <CardContent className="space-y-1 py-4">
-        <Icon className="size-4 text-background" aria-hidden />
+        <Icon className="size-4 text-ink-solid-foreground" aria-hidden />
         <p className="text-xl font-bold">{value}</p>
-        <p className="text-xs text-background/70">{label}</p>
+        <p className="text-xs text-ink-solid-foreground/70">{label}</p>
       </CardContent>
     </Card>
   );

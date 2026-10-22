@@ -37,7 +37,7 @@ export function ImageLightbox({ value, alt, onClose }: Props) {
       aria-modal="true"
       aria-label={alt}
       onClick={onClose}
-      className="fixed inset-0 z-[60] flex animate-in fade-in items-center justify-center bg-ink/90 p-4 duration-200"
+      className="fixed inset-0 z-[60] flex animate-in fade-in items-center justify-center bg-ink-solid/90 p-4 duration-200"
     >
       <button
         type="button"
