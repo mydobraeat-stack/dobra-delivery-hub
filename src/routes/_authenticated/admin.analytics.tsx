@@ -7,6 +7,15 @@ import { analyticsQuery } from "@/lib/admin-ops";
 import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/_authenticated/admin/analytics")({
+  head: () => ({ meta: [
+    { title: "Analytics — Dobra Admin" },
+    { name: "description", content: "Review Dobra order activity and delivery performance." },
+    { property: "og:title", content: "Analytics — Dobra Admin" },
+    { property: "og:description", content: "Review Dobra order activity and delivery performance." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+    { name: "robots", content: "noindex, nofollow" },
+  ] }),
   component: Analytics,
 });
 

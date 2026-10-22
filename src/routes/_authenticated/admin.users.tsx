@@ -21,6 +21,15 @@ import { orderRef } from "@/lib/dobra";
 import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/_authenticated/admin/users")({
+  head: () => ({ meta: [
+    { title: "Users — Dobra Admin" },
+    { name: "description", content: "Manage Dobra customer, partner and staff accounts." },
+    { property: "og:title", content: "Users — Dobra Admin" },
+    { property: "og:description", content: "Manage Dobra customer, partner and staff accounts." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+    { name: "robots", content: "noindex, nofollow" },
+  ] }),
   component: UsersPage,
 });
 

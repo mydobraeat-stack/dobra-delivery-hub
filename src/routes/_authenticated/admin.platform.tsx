@@ -17,6 +17,15 @@ import {
 import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/_authenticated/admin/platform")({
+  head: () => ({ meta: [
+    { title: "Platform controls — Dobra Admin" },
+    { name: "description", content: "Manage Dobra platform settings and announcements." },
+    { property: "og:title", content: "Platform controls — Dobra Admin" },
+    { property: "og:description", content: "Manage Dobra platform settings and announcements." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+    { name: "robots", content: "noindex, nofollow" },
+  ] }),
   component: PlatformPage,
 });
 

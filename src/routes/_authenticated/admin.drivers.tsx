@@ -72,8 +72,8 @@ function AdminDrivers() {
 
       {(data ?? []).map((d) => (
         <Card key={d.id} className="space-y-3 p-5">
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <div>
+          <div className="admin-record-header flex items-start justify-between gap-3">
+            <div className="min-w-0 flex-1">
               <p className="text-lg font-semibold">
                 {d.profile?.full_name || d.profile?.email || t("admin.drivers.unnamedDriver")}
               </p>
@@ -125,7 +125,7 @@ function AdminDrivers() {
                       ) : null}
                     </p>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="admin-actions flex flex-wrap gap-2">
                     <Button size="sm" variant="ghost" onClick={() => openDoc(doc.file_path)}>
                       {t("admin.drivers.view")}
                     </Button>
@@ -148,7 +148,7 @@ function AdminDrivers() {
             </ul>
           ) : null}
 
-          <div className="flex gap-2">
+          <div className="admin-actions flex flex-wrap gap-2">
             <Button
               onClick={() => decideDriver.mutate({ id: d.id, approve: true })}
               disabled={decideDriver.isPending}

@@ -126,7 +126,7 @@ function PromosPage() {
       {isPending ? <p className="text-foreground/60">Loading…</p> : null}
       <div className="space-y-2">
         {(data ?? []).map((p) => (
-          <Card key={p.id} className="flex flex-wrap items-center justify-between gap-3 p-4">
+          <Card key={p.id} className="admin-record-header flex items-center justify-between gap-3 p-4">
             <div className="min-w-0">
               <p className="font-mono font-bold">
                 {p.code}{" "}
@@ -141,7 +141,7 @@ function PromosPage() {
                 {p.expires_at ? ` · expires ${p.expires_at.slice(0, 10)}` : ""}
               </p>
             </div>
-            <div className="flex gap-2">
+            <div className="admin-actions flex flex-wrap gap-2">
               <Button size="sm" variant="outline" onClick={() => setForm({ ...p })}>
                 Edit
               </Button>

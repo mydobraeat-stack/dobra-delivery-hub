@@ -24,6 +24,15 @@ import { useT } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/admin/restaurants")({
+  head: () => ({ meta: [
+    { title: "Restaurants — Dobra Admin" },
+    { name: "description", content: "Review and manage Dobra restaurant partners." },
+    { property: "og:title", content: "Restaurants — Dobra Admin" },
+    { property: "og:description", content: "Review and manage Dobra restaurant partners." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+    { name: "robots", content: "noindex, nofollow" },
+  ] }),
   component: AdminRestaurants,
 });
 

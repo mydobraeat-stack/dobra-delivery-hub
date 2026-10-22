@@ -20,6 +20,15 @@ import type { CountryPricing } from "@/lib/dobra";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/admin/pricing")({
+  head: () => ({ meta: [
+    { title: "Fees and pricing — Dobra Admin" },
+    { name: "description", content: "Manage Dobra market pricing, restaurant fees and service cities." },
+    { property: "og:title", content: "Fees and pricing — Dobra Admin" },
+    { property: "og:description", content: "Manage Dobra market pricing, restaurant fees and service cities." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+    { name: "robots", content: "noindex, nofollow" },
+  ] }),
   component: PricingPage,
 });
 

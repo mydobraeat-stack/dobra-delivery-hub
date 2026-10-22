@@ -34,16 +34,17 @@ function Disputes() {
           Late orders appear automatically. Complaints, driver-side cancellations and admin flags stay here until resolved.
         </p>
       </div>
-      <div className="flex gap-1">
+      <div className="flex flex-wrap gap-2">
         {(["open", "resolved"] as const).map((k) => (
-          <button
+          <Button
             key={k}
             type="button"
+            variant="ghost"
             onClick={() => setTab(k)}
             className={`rounded-full px-4 py-1.5 text-sm font-semibold ${tab === k ? "bg-sun text-sun-foreground" : "bg-muted text-foreground/70"}`}
           >
             {k === "open" ? `Open (${(data ?? []).filter((d) => d.status === "open").length})` : "Resolved"}
-          </button>
+          </Button>
         ))}
       </div>
       {isPending ? <p className="text-foreground/60">Loading…</p> : null}
@@ -52,7 +53,7 @@ function Disputes() {
       ) : null}
       <div className="space-y-3">
         {rows.map((d) => (
-          <Card key={d.id} className="flex flex-wrap items-start justify-between gap-3 p-4">
+          <Card key={d.id} className="admin-record-header flex items-start justify-between gap-3 p-4">
             <div className="min-w-0 space-y-1">
               <p className="font-semibold">
                 {KIND_LABEL[d.kind] ?? d.kind} · {orderRef(d.order_id)}
@@ -63,7 +64,7 @@ function Disputes() {
                 <p className="text-xs text-foreground/60">Resolution: {d.resolution_note}</p>
               ) : null}
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="admin-actions flex flex-wrap gap-2">
               <Button asChild size="sm" variant="outline">
                 <Link to="/admin/orders">Open orders</Link>
               </Button>

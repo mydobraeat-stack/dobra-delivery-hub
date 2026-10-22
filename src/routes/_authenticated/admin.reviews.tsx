@@ -84,7 +84,7 @@ function AdminDriverReviews() {
         ).length;
         return (
           <Card key={d.id} className="space-y-4 p-5">
-            <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="admin-record-header flex items-start justify-between gap-3">
               <div className="min-w-0">
                 <p className="text-lg font-semibold break-words">
                   {d.profile?.full_name || d.profile?.email || t("admin.reviews.unnamedDriver")}
@@ -161,7 +161,7 @@ function AdminDriverReviews() {
                                 setNotes((n) => ({ ...n, [doc.id]: e.target.value }))
                               }
                             />
-                            <div className="flex flex-wrap gap-2">
+                            <div className="admin-actions flex flex-wrap gap-2">
                               <Button
                                 size="sm"
                                 variant="ghost"
@@ -220,7 +220,7 @@ function AdminDriverReviews() {
               })}
             </ul>
 
-            <div className="flex flex-wrap gap-2">
+            <div className="admin-actions flex flex-wrap gap-2">
               <Button
                 disabled={decideDriver.isPending}
                 onClick={() => decideDriver.mutate({ id: d.id, approve: true })}

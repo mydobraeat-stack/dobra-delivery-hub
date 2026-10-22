@@ -24,7 +24,7 @@ function Feedback() {
       {!isPending && !(data ?? []).length ? <Card className="p-8 text-center text-foreground/60">No reviews yet.</Card> : null}
       <div className="space-y-2">
         {(data ?? []).map((r) => (
-          <Card key={r.id} className="flex flex-wrap items-start justify-between gap-3 p-4">
+          <Card key={r.id} className="admin-record-header flex items-start justify-between gap-3 p-4">
             <div className="min-w-0">
               <p className="font-semibold">
                 {r.restaurantName} · {"★".repeat(r.restaurant_rating)}

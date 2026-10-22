@@ -7,6 +7,15 @@ import { auditQuery } from "@/lib/admin-ops";
 import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/_authenticated/admin/audit")({
+  head: () => ({ meta: [
+    { title: "Audit log — Dobra Admin" },
+    { name: "description", content: "Review recorded Dobra staff actions." },
+    { property: "og:title", content: "Audit log — Dobra Admin" },
+    { property: "og:description", content: "Review recorded Dobra staff actions." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+    { name: "robots", content: "noindex, nofollow" },
+  ] }),
   component: Audit,
 });
 
