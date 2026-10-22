@@ -92,8 +92,8 @@ function AdminOrders() {
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-3 sm:flex sm:justify-between">
+        <div className="min-w-0">
           <h1 className="text-2xl font-bold">{t("admin.orders.title")}</h1>
           <p className="text-sm text-foreground/60">{t("admin.orders.subtitle")}</p>
         </div>
@@ -102,12 +102,12 @@ function AdminOrders() {
         </Button>
       </div>
 
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
         <Input
           value={term}
           onChange={(e) => setTerm(e.target.value)}
           placeholder={t("admin.orders.searchPlaceholder")}
-          className="max-w-xs"
+          className="min-w-0 sm:max-w-md"
         />
         <select
           aria-label="Order type"
@@ -119,18 +119,20 @@ function AdminOrders() {
           <option value="food">Food</option>
           <option value="package">Packages</option>
         </select>
-        <div className="flex flex-wrap gap-1">
+        <div className="col-span-2 flex gap-2 overflow-x-auto pb-2">
           {FILTERS.map((f) => (
-            <button
+            <Button
               key={f}
               type="button"
               onClick={() => setFilter(f)}
-              className={`rounded-full px-3 py-1.5 text-xs font-semibold ${
+              variant="ghost"
+              size="sm"
+              className={`shrink-0 rounded-lg px-3 py-1.5 text-xs font-semibold ${
                 filter === f ? "bg-sun text-sun-foreground" : "bg-muted text-foreground/70"
               }`}
             >
               {f === "all" ? t("admin.orders.all") : f.replace(/_/g, " ")}
-            </button>
+            </Button>
           ))}
         </div>
       </div>
@@ -186,8 +188,8 @@ function OrderRow({ order: o }: { order: AdminOrder }) {
 
   return (
     <Card className="p-4" data-testid={`order-${o.id}`}>
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="min-w-48">
+      <div className="admin-record-header flex items-center justify-between gap-3">
+        <div className="min-w-0 flex-1">
           <p className="font-semibold">
             {orderRef(o.id)} · {o.restaurantName}
             {o.kind === "package" ? (
@@ -205,7 +207,7 @@ function OrderRow({ order: o }: { order: AdminOrder }) {
             <p className="text-xs text-destructive">Cancel reason: {o.cancel_reason}</p>
           ) : null}
         </div>
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex shrink-0 flex-wrap items-center gap-3">
           <span className="font-semibold">{formatMoney(Number(o.total), o.currency)}</span>
           {o.refund_status ? (
             <span className="rounded-full bg-destructive/10 px-2 py-0.5 text-xs font-semibold text-destructive">
@@ -217,7 +219,7 @@ function OrderRow({ order: o }: { order: AdminOrder }) {
         </div>
       </div>
 
-      <div className="mt-3 flex flex-wrap gap-2">
+      <div className="admin-actions mt-3 flex flex-wrap gap-2 border-t border-border pt-3">
         <Button size="sm" variant="outline" onClick={() => setOpen((v) => !v)}>
           {open ? t("admin.orders.hideDetails") : t("admin.orders.viewDetails")}
         </Button>

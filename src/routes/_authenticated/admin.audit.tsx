@@ -7,6 +7,15 @@ import { auditQuery } from "@/lib/admin-ops";
 import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/_authenticated/admin/audit")({
+  head: () => ({ meta: [
+    { title: "Audit log — Dobra Admin" },
+    { name: "description", content: "Review recorded Dobra staff actions." },
+    { property: "og:title", content: "Audit log — Dobra Admin" },
+    { property: "og:description", content: "Review recorded Dobra staff actions." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+    { name: "robots", content: "noindex, nofollow" },
+  ] }),
   component: Audit,
 });
 
@@ -27,7 +36,7 @@ function Audit() {
       <Input className="max-w-xs" placeholder="Filter by action, admin, details" value={term} onChange={(e) => setTerm(e.target.value)} />
       {isPending ? <p className="text-foreground/60">Loading…</p> : null}
       <Card className="overflow-x-auto p-0">
-        <table className="w-full min-w-[640px] text-sm">
+        <table className="admin-mobile-table w-full min-w-[640px] text-sm">
           <thead className="bg-muted/50 text-left text-foreground/60">
             <tr>
               <th className="p-3">When</th>
@@ -46,13 +55,13 @@ function Audit() {
                 .join(" · ");
               return (
                 <tr key={r.id} className="border-t border-ink/10 align-top">
-                  <td className="whitespace-nowrap p-3">{formatDate(r.created_at)}</td>
-                  <td>{r.actor}</td>
-                  <td className="font-medium">{r.action.replace(/_/g, " ")}</td>
-                  <td className="text-xs">
+                  <td data-label="When" className="whitespace-nowrap p-3">{formatDate(r.created_at)}</td>
+                  <td data-label="Admin">{r.actor}</td>
+                  <td data-label="Action" className="font-medium">{r.action.replace(/_/g, " ")}</td>
+                  <td data-label="Target" className="text-xs">
                     {r.target_type} {r.target_id ? String(r.target_id).slice(0, 8) : ""}
                   </td>
-                  <td className="max-w-md break-words py-3 pr-3 text-xs text-foreground/70">{summary || "—"}</td>
+                  <td data-label="Details" className="max-w-md break-words py-3 pr-3 text-xs text-foreground/70">{summary || "—"}</td>
                 </tr>
               );
             })}

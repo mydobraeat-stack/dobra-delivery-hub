@@ -11,6 +11,15 @@ import { useI18n, useT } from "@/lib/i18n";
 import { DashboardCharts } from "@/components/admin/DashboardCharts";
 
 export const Route = createFileRoute("/_authenticated/admin/")({
+  head: () => ({ meta: [
+    { title: "Dashboard — Dobra Admin" },
+    { name: "description", content: "Overview of Dobra orders, partner approvals and earnings." },
+    { property: "og:title", content: "Dashboard — Dobra Admin" },
+    { property: "og:description", content: "Overview of Dobra orders, partner approvals and earnings." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+    { name: "robots", content: "noindex, nofollow" },
+  ] }),
   component: AdminDashboard,
 });
 

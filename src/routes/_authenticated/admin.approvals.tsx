@@ -76,8 +76,8 @@ function PendingApprovals() {
         const stores = (restaurants.data ?? []).filter((r) => r.owner_id === p.id);
         return (
           <Card key={p.id} className="space-y-3 p-5">
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <div>
+            <div className="admin-record-header flex items-start justify-between gap-3">
+              <div className="min-w-0 flex-1">
                 <p className="text-lg font-semibold">{p.full_name || p.email || t("admin.approvals.unnamed")}</p>
                 <p className="text-sm text-foreground/60">
                   {p.email} · {p.role} · {p.country || t("admin.approvals.noCountry")}
@@ -100,7 +100,7 @@ function PendingApprovals() {
                 {driver && driver.documents.length > 0 ? (
                   <ul className="mt-1 space-y-1">
                     {driver.documents.map((d) => (
-                      <li key={d.id} className="flex items-center justify-between gap-3">
+                      <li key={d.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
                         <span className="text-foreground/70">{d.doc_type.replace(/_/g, " ")}</span>
                         <span className="rounded-full bg-sun/25 px-2 py-0.5 text-xs font-semibold">
                           {d.status}
@@ -131,7 +131,7 @@ function PendingApprovals() {
               </div>
             ) : null}
 
-            <div className="flex gap-2">
+            <div className="admin-actions flex flex-wrap gap-2">
               <Button
                 onClick={() => decide.mutate({ id: p.id, status: "approved", role: p.role })}
                 disabled={decide.isPending}

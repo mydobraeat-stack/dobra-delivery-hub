@@ -31,6 +31,10 @@ export const Route = createFileRoute("/_authenticated/admin/store-assets")({
       { title: "Store Assets — Dobra Admin" },
       { name: "robots", content: "noindex, nofollow" },
       { name: "description", content: "Internal tool for generating Dobra app store assets." },
+      { property: "og:title", content: "Store Assets — Dobra Admin" },
+      { property: "og:description", content: "Internal Dobra store artwork tools." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
 });

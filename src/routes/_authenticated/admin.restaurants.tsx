@@ -24,6 +24,15 @@ import { useT } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/admin/restaurants")({
+  head: () => ({ meta: [
+    { title: "Restaurants — Dobra Admin" },
+    { name: "description", content: "Review and manage Dobra restaurant partners." },
+    { property: "og:title", content: "Restaurants — Dobra Admin" },
+    { property: "og:description", content: "Review and manage Dobra restaurant partners." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+    { name: "robots", content: "noindex, nofollow" },
+  ] }),
   component: AdminRestaurants,
 });
 
@@ -64,13 +73,13 @@ function AdminRestaurants() {
       {isPending ? <p className="text-foreground/60">{t("admin.loading")}</p> : null}
 
       {(data ?? []).map((r) => (
-        <Card key={r.id} className="flex flex-wrap items-center gap-4 p-4">
+        <Card key={r.id} className="grid grid-cols-[56px_minmax(0,1fr)] items-center gap-3 p-4 sm:flex sm:flex-wrap">
           <StoredImage
             value={r.logo_url}
             alt={r.name}
-            className="size-14 rounded-xl object-cover"
+            className="size-14 shrink-0 rounded-xl object-cover"
           />
-          <div className="min-w-40 flex-1">
+          <div className="min-w-0 flex-1">
             <p className="font-semibold">{r.name}</p>
             <p className="text-sm text-foreground/60">
               {r.cuisine || "—"} · {r.city || "?"}, {r.country || "?"}
@@ -85,7 +94,7 @@ function AdminRestaurants() {
             {r.status}
           </span>
           <RestaurantExtras id={r.id} />
-          <div className="flex flex-wrap gap-2">
+          <div className="admin-actions col-span-2 flex flex-wrap gap-2">
             {r.status !== "approved" ? (
               <Button
                 size="sm"
@@ -160,7 +169,7 @@ function RestaurantExtras({ id }: { id: string }) {
   };
   if (!data) return null;
   return (
-    <div className="flex flex-wrap items-center gap-3 text-sm">
+    <div className="col-span-2 flex flex-wrap items-center gap-3 text-sm">
       <label className="flex items-center gap-1.5">
         <input type="checkbox" checked={data.featured} onChange={(e) => save({ featured: e.target.checked })} />
         Featured
