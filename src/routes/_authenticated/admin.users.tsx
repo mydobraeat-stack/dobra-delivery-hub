@@ -44,8 +44,8 @@ function UsersPage() {
   const sel = "h-9 rounded-md border border-input bg-background px-2 text-sm";
   return (
     <div className="space-y-5">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-3 sm:flex sm:justify-between">
+        <div className="min-w-0">
           <h1 className="text-2xl font-bold">Users</h1>
           <p className="text-sm text-foreground/60">Customers, vendors, drivers and admin staff.</p>
         </div>
@@ -74,8 +74,8 @@ function UsersPage() {
           <Download className="size-4" /> Export CSV
         </Button>
       </div>
-      <div className="flex flex-wrap gap-2">
-        <Input className="max-w-xs" placeholder="Search name, email, phone" value={term} onChange={(e) => setTerm(e.target.value)} />
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+        <Input className="col-span-2 min-w-0 sm:col-span-1" placeholder="Search name, email, phone" value={term} onChange={(e) => setTerm(e.target.value)} />
         <select aria-label="Role" className={sel} value={role} onChange={(e) => setRoleF(e.target.value)}>
           <option value="all">All roles</option>
           <option value="customer">Customers</option>
@@ -126,7 +126,7 @@ function UserCard({ u }: { u: UserRow }) {
 
   return (
     <Card className="p-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="admin-record-header flex items-center justify-between gap-3">
         <div className="min-w-0">
           <p className="font-semibold">
             {u.full_name || "Unnamed"}{" "}
@@ -139,7 +139,7 @@ function UserCard({ u }: { u: UserRow }) {
           </p>
           {u.suspension_reason ? <p className="text-xs text-destructive">Reason: {u.suspension_reason}</p> : null}
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="admin-actions flex flex-wrap gap-2">
           <Button size="sm" variant="outline" onClick={() => setOpen((v) => !v)}>
             {open ? "Hide activity" : "Activity"}
           </Button>

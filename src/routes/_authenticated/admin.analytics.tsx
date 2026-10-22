@@ -57,10 +57,10 @@ function Analytics() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <h1 className="text-2xl font-bold">Analytics</h1>
-        <div className="flex flex-wrap gap-2">
-          <Input aria-label="From" type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="w-40" />
-          <Input aria-label="To" type="date" value={to} onChange={(e) => setTo(e.target.value)} className="w-40" />
-          <select aria-label="Country" value={country} onChange={(e) => setCountry(e.target.value)} className="h-9 rounded-md border border-input bg-background px-2 text-sm">
+        <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto">
+          <Input aria-label="From" type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="min-w-0 w-full sm:w-40" />
+          <Input aria-label="To" type="date" value={to} onChange={(e) => setTo(e.target.value)} className="min-w-0 w-full sm:w-40" />
+          <select aria-label="Country" value={country} onChange={(e) => setCountry(e.target.value)} className="col-span-2 h-9 rounded-md border border-input bg-background px-2 text-sm">
             <option value="all">All countries</option>
             <option>Poland</option>
             <option>Cameroon</option>

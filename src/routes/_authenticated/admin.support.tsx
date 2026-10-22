@@ -66,7 +66,7 @@ function AdminSupport() {
         <div className="space-y-3">
           {threads.map((th) => (
             <Card key={th.id} className="border-ink/10">
-              <CardContent className="flex flex-wrap items-center justify-between gap-3 py-4">
+              <CardContent className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-4">
                 <div className="min-w-0">
                   <p className="truncate font-semibold text-foreground">
                     {names[th.customer_id] || t("chat.supportTitle")}

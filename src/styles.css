@@ -136,3 +136,69 @@
     color: var(--color-foreground);
   }
 }
+
+/* Staff-only layout: keep record text shrinkable and data scrolling local. */
+.admin-content :where([data-slot="card"], .grid > *, .flex > div) {
+  min-width: 0;
+}
+.admin-content :where(p, h1, h2, label) {
+  overflow-wrap: anywhere;
+}
+.admin-content :where(input, select, textarea) {
+  background-color: var(--card);
+}
+.admin-content :where(.overflow-x-auto) {
+  max-width: 100%;
+}
+@media (max-width: 639px) {
+  .admin-content :where([data-slot="button"], button, select, input:not([type="checkbox"]):not([type="radio"])) {
+    min-height: 44px;
+  }
+  .admin-content :where(button, [data-slot="button"]) {
+    max-width: 100%;
+    white-space: normal;
+    height: auto;
+  }
+  .admin-content .admin-record-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .admin-content .admin-record-header > .items-end {
+    align-items: flex-start;
+  }
+  .admin-content .admin-actions {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .admin-content .admin-mobile-table {
+    min-width: 0;
+  }
+  .admin-mobile-table :where(thead) {
+    display: none;
+  }
+  .admin-mobile-table :where(tbody, tr) {
+    display: block;
+  }
+  .admin-mobile-table tr {
+    padding: 12px;
+  }
+  .admin-mobile-table td {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    align-items: center;
+    gap: 12px;
+    max-width: none;
+    padding: 6px 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-align: left;
+  }
+  .admin-mobile-table td::before {
+    content: attr(data-label);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted-foreground);
+  }
+}

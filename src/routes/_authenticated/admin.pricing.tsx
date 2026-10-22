@@ -160,7 +160,7 @@ function CitiesSection({ cities, countries }: { cities: CityRow[]; countries: st
         </p>
       </div>
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[560px] text-sm">
+        <table className="admin-mobile-table w-full min-w-[560px] text-sm">
           <thead className="text-left text-foreground/60">
             <tr>
               <th className="py-2">City</th>
@@ -173,16 +173,16 @@ function CitiesSection({ cities, countries }: { cities: CityRow[]; countries: st
           <tbody>
             {cities.map((c) => (
               <tr key={c.id} className="border-t border-ink/10">
-                <td className="py-2 font-medium">{c.name}</td>
-                <td>{c.country}</td>
-                <td>
+                <td data-label="City" className="py-2 font-medium">{c.name}</td>
+                <td data-label="Country">{c.country}</td>
+                <td data-label="Live">
                   <Switch
                     aria-label={`${c.name} live`}
                     checked={c.enabled}
                     onCheckedChange={(v) => update(c, { enabled: v })}
                   />
                 </td>
-                <td>
+                <td data-label="Delivery fee override">
                   <Input
                     aria-label={`${c.name} fee override`}
                     className="h-8 w-28"
@@ -196,7 +196,7 @@ function CitiesSection({ cities, countries }: { cities: CityRow[]; countries: st
                     }}
                   />
                 </td>
-                <td className="text-right">
+                <td data-label="Remove" className="text-right">
                   <Button
                     size="icon"
                     variant="ghost"
@@ -215,24 +215,24 @@ function CitiesSection({ cities, countries }: { cities: CityRow[]; countries: st
           </tbody>
         </table>
       </div>
-      <div className="flex flex-wrap items-end gap-2">
-        <div className="space-y-1">
+      <div className="grid grid-cols-2 items-end gap-3 sm:flex sm:flex-wrap">
+        <div className="col-span-2 min-w-0 space-y-1 sm:col-span-1">
           <Label htmlFor="new-city">New city</Label>
-          <Input id="new-city" value={name} onChange={(e) => setName(e.target.value)} className="w-40" />
+          <Input id="new-city" value={name} onChange={(e) => setName(e.target.value)} className="w-full sm:w-40" />
         </div>
         <select
           aria-label="Country"
           value={country}
           onChange={(e) => setCountry(e.target.value)}
-          className="h-9 rounded-md border border-input bg-background px-2 text-sm"
+          className="col-span-2 h-9 min-w-0 rounded-md border border-input bg-background px-2 text-sm sm:col-span-1"
         >
           {countries.map((c) => (
             <option key={c}>{c}</option>
           ))}
         </select>
-        <Input aria-label="Latitude" placeholder="Lat" value={lat} onChange={(e) => setLat(e.target.value)} className="w-24" />
-        <Input aria-label="Longitude" placeholder="Lng" value={lng} onChange={(e) => setLng(e.target.value)} className="w-24" />
-        <Button onClick={add} disabled={!name.trim()}>
+        <Input aria-label="Latitude" placeholder="Lat" value={lat} onChange={(e) => setLat(e.target.value)} className="w-full sm:w-24" />
+        <Input aria-label="Longitude" placeholder="Lng" value={lng} onChange={(e) => setLng(e.target.value)} className="w-full sm:w-24" />
+        <Button className="col-span-2" onClick={add} disabled={!name.trim()}>
           Add city
         </Button>
       </div>
@@ -275,8 +275,8 @@ function RestaurantFeesSection() {
       </div>
       <div className="divide-y divide-ink/10">
         {data.map((r) => (
-          <div key={r.id} className="flex flex-wrap items-end gap-3 py-3">
-            <div className="min-w-40 flex-1">
+          <div key={r.id} className="grid grid-cols-2 items-end gap-3 py-3 sm:flex sm:flex-wrap">
+            <div className="col-span-2 min-w-0 flex-1">
               <p className="font-semibold">{r.name}</p>
               <p className="text-xs text-foreground/60">{[r.city, r.country].filter(Boolean).join(", ") || "—"}</p>
             </div>
@@ -284,7 +284,7 @@ function RestaurantFeesSection() {
               <Label htmlFor={`df-${r.id}`} className="text-xs">Delivery fee</Label>
               <Input
                 id={`df-${r.id}`}
-                className="w-28"
+                className="w-full sm:w-28"
                 type="number"
                 step="0.01"
                 min="0"
@@ -299,7 +299,7 @@ function RestaurantFeesSection() {
               <Label htmlFor={`cm-${r.id}`} className="text-xs">Commission %</Label>
               <Input
                 id={`cm-${r.id}`}
-                className="w-28"
+                className="w-full sm:w-28"
                 type="number"
                 step="0.1"
                 min="0"
