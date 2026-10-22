@@ -62,10 +62,16 @@ export type OrderRow = {
   pickup_lng: number | null;
   package_note: string | null;
   cancel_reason?: string | null;
+  country?: string | null;
+  accepted_at?: string | null;
+  ready_at?: string | null;
+  picked_up_at?: string | null;
+  delivered_at?: string | null;
+  cancelled_at?: string | null;
 };
 
 const ORDER_COLS =
-  "id,status,total,subtotal,delivery_fee,currency,created_at,restaurant_id,driver_id,customer_id,address,note,eta_minutes,dest_lat,dest_lng,kind,pickup_address,pickup_lat,pickup_lng,package_note,payment_method,payment_status,cancel_reason";
+  "id,status,total,subtotal,delivery_fee,currency,created_at,restaurant_id,driver_id,customer_id,address,note,eta_minutes,dest_lat,dest_lng,kind,pickup_address,pickup_lat,pickup_lng,package_note,payment_method,payment_status,cancel_reason,country,accepted_at,ready_at,picked_up_at,delivered_at,cancelled_at";
 
 export type Review = {
   id: string;

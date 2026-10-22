@@ -1,3 +1,4 @@
+import { OrderTimeLabel } from "@/components/dobra/OrderTimes";
 import { createFileRoute } from "@tanstack/react-router";
 import { EmptyState, ErrorState, ListSkeleton } from "@/components/dobra/QueryStates";
 import { useQuery } from "@tanstack/react-query";
@@ -52,7 +53,8 @@ function DriverDeliveries() {
         <div className="min-w-0">
           <p className="font-semibold text-foreground">{name(o.restaurant_id)}</p>
           <p className="text-xs text-foreground/60">
-            {orderRef(o.id)} · {formatDate(o.created_at)} ·{" "}
+            {orderRef(o.id)} ·{" "}
+            {o.delivered_at ? <OrderTimeLabel step="delivered" at={o.delivered_at} country={o.country} /> : <OrderTimeLabel step="placed" at={o.created_at} country={o.country} />} ·{" "}
             {formatMoney(payout(Number(o.total)), o.currency)}
           </p>
           {o.address ? <p className="text-xs text-foreground/60">{o.address}</p> : null}
