@@ -98,6 +98,13 @@ export function DashboardCharts({
   const driverTotal = sum(driverPayout);
   const collected = sum((o) => Number(o.total) - Number(o.refund_amount ?? 0));
   const dobraNet = Math.round((collected - restTotal - driverTotal) * 100) / 100;
+
+  // Balances: what arrived online (Stripe) vs what drivers collected in cash, per currency.
+  const balances = splitBalances(orders);
+  const balanceItems = balances.flatMap((b) => [
+    { name: `${b.currency} online`, value: formatMoney(b.online, b.currency), color: INFO },
+    { name: `${b.currency} cash`, value: formatMoney(b.cash, b.currency), color: WARN },
+  ]);
   const top = (key: (o: AdminOrder) => string, val: (o: AdminOrder) => number) => {
     const m = new Map<string, number>();
     for (const o of done) { const k = key(o); if (k) m.set(k, (m.get(k) ?? 0) + val(o)); }
