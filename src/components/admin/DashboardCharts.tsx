@@ -2,6 +2,7 @@ import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer,
 import { Link } from "@tanstack/react-router";
 import { Card } from "@/components/ui/card";
 import type { AdminOrder } from "@/lib/admin";
+import { splitBalances } from "@/lib/admin-balances";
 import { driverPayout, restaurantEarnings } from "@/lib/payout";
 
 const GOOD = "var(--good)";
