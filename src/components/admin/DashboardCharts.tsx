@@ -129,8 +129,8 @@ export function DashboardCharts({
         <div className="h-56">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={byRestaurant} layout="vertical" margin={{ left: 24, right: 16 }}>
-              <XAxis type="number" tick={{ fontSize: 10 }} />
-              <YAxis type="category" dataKey="name" width={120} tick={{ fontSize: 11 }} />
+              <XAxis type="number" tick={tickStyle} />
+              <YAxis type="category" dataKey="name" width={120} tick={tickStyle} />
               <Tooltip contentStyle={tooltipStyle} formatter={(v: number) => formatMoney(v, "PLN")} />
               <Bar dataKey="value" fill={GOOD} radius={[0, 6, 6, 0]} />
             </BarChart>
@@ -142,8 +142,8 @@ export function DashboardCharts({
         <div className="h-56">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={byDriver} layout="vertical" margin={{ left: 24, right: 16 }}>
-              <XAxis type="number" tick={{ fontSize: 10 }} />
-              <YAxis type="category" dataKey="name" width={120} tick={{ fontSize: 11 }} />
+              <XAxis type="number" tick={tickStyle} />
+              <YAxis type="category" dataKey="name" width={120} tick={tickStyle} />
               <Tooltip contentStyle={tooltipStyle} formatter={(v: number) => formatMoney(v, "PLN")} />
               <Bar dataKey="value" fill={INFO} radius={[0, 6, 6, 0]} />
             </BarChart>
@@ -159,8 +159,8 @@ export function DashboardCharts({
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={revenue} margin={{ left: -16, right: 4, top: 4 }}>
               <CartesianGrid vertical={false} stroke="var(--border)" />
-              <XAxis dataKey="day" tick={{ fontSize: 10 }} interval={1} />
-              <YAxis tick={{ fontSize: 10 }} />
+              <XAxis dataKey="day" tick={tickStyle} interval={1} />
+              <YAxis tick={tickStyle} />
               <Tooltip contentStyle={tooltipStyle} formatter={(v: number) => formatMoney(v, "PLN")} />
               <Bar dataKey="value" radius={[6, 6, 0, 0]}>
                 {revenue.map((r) => (
@@ -176,8 +176,8 @@ export function DashboardCharts({
         <div className="h-56">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={attention} layout="vertical" margin={{ left: 24, right: 16 }}>
-              <XAxis type="number" allowDecimals={false} tick={{ fontSize: 10 }} />
-              <YAxis type="category" dataKey="name" width={120} tick={{ fontSize: 11 }} />
+              <XAxis type="number" allowDecimals={false} tick={tickStyle} />
+              <YAxis type="category" dataKey="name" width={120} tick={tickStyle} />
               <Tooltip contentStyle={tooltipStyle} />
               <Bar dataKey="value" radius={[0, 6, 6, 0]} minPointSize={3}>
                 {attention.map((a) => (
