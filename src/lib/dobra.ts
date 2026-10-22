@@ -351,12 +351,6 @@ export function driverCurrency(country: string | null | undefined) {
 
 /* -------------------------------- mutations ------------------------------- */
 
-/** @deprecated use usePayout() from @/lib/payout (admin-set rate). */
-export const DRIVER_PAYOUT_RATE = 0.15;
-
-export function payout(total: number) {
-  return Math.round(total * DRIVER_PAYOUT_RATE * 100) / 100;
-}
 
 export async function updateOrderStatus(orderId: string, status: string) {
   const { error } = await supabase.from("orders").update({ status }).eq("id", orderId);
