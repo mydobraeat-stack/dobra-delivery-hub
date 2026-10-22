@@ -103,7 +103,7 @@ function PrimePage() {
     <main className="mx-auto max-w-2xl space-y-4 px-5 py-6">
       <ProfileBackLink label={t("common.actions.back")} />
 
-      <Card className="overflow-hidden border-ink/10 bg-sun">
+      <Card className="overflow-hidden border-ink/10 bg-sun text-sun-foreground">
         <CardContent className="space-y-2 py-7 text-center">
           <Crown className="mx-auto size-9 text-brand" aria-hidden />
           <h1 className="text-2xl font-bold text-ink">{t("common.prime.title")}</h1>
