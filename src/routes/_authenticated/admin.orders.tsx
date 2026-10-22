@@ -31,7 +31,7 @@ import { canReassignOrder, isClosedOrder, nextAdminStatuses } from "@/lib/admin-
 
 export const Route = createFileRoute("/_authenticated/admin/orders")({
   validateSearch: (s: Record<string, unknown>): { status?: string } =>
-    typeof s.status === "string" ? { status: s.status } : {},
+    typeof s["status"] === "string" ? { status: s["status"] } : {},
   component: AdminOrders,
   head: () => ({ meta: [
     { title: "Dobra Admin — Order controls" },
