@@ -25,7 +25,7 @@ export const Route = createFileRoute("/_authenticated/admin/pricing")({
 
 const FIELDS: { key: keyof CountryPricing; label: string; hint?: string }[] = [
   { key: "commission_pct", label: "Platform commission (%)", hint: "Default for restaurants without their own rate" },
-  { key: "driver_payout_pct", label: "Driver payout (% of order total)", hint: "Shown to drivers on offers, deliveries and earnings" },
+  { key: "driver_payout_fixed", label: "Driver payout per delivery", hint: "Fixed amount paid by Dobra; locked onto each new order" },
   { key: "service_fee", label: "Customer service fee" },
   { key: "delivery_fee", label: "Default delivery fee", hint: "Used when a restaurant has no fee set" },
   { key: "min_order", label: "Minimum order value" },

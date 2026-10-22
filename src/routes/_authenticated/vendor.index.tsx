@@ -1,3 +1,4 @@
+import { restaurantEarnings } from "@/lib/payout";
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
@@ -56,7 +57,7 @@ function VendorOrdersPage() {
   const todayOrders = orders.filter((o) => new Date(o.created_at).toDateString() === today);
   const todayRevenue = todayOrders
     .filter((o) => o.status === "delivered")
-    .reduce((sum, o) => sum + Number(o.total), 0);
+    .reduce((sum, o) => sum + restaurantEarnings(o), 0);
   const activeOrders = orders.filter((o) => !["delivered", "cancelled"].includes(o.status));
   const completedOrders = orders.filter((o) => ["delivered", "cancelled"].includes(o.status));
 

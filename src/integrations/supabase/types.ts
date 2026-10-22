@@ -260,6 +260,7 @@ export type Database = {
           country: string
           currency: string
           delivery_fee: number
+          driver_payout_fixed: number
           driver_payout_pct: number
           enabled: boolean
           min_order: number
@@ -274,6 +275,7 @@ export type Database = {
           country: string
           currency: string
           delivery_fee?: number
+          driver_payout_fixed?: number
           driver_payout_pct?: number
           enabled?: boolean
           min_order?: number
@@ -288,6 +290,7 @@ export type Database = {
           country?: string
           currency?: string
           delivery_fee?: number
+          driver_payout_fixed?: number
           driver_payout_pct?: number
           enabled?: boolean
           min_order?: number
@@ -680,6 +683,7 @@ export type Database = {
           dest_lng: number | null
           discount: number
           driver_id: string | null
+          driver_payout: number
           eta_minutes: number
           id: string
           kind: string
@@ -718,6 +722,7 @@ export type Database = {
           dest_lng?: number | null
           discount?: number
           driver_id?: string | null
+          driver_payout?: number
           eta_minutes?: number
           id?: string
           kind?: string
@@ -756,6 +761,7 @@ export type Database = {
           dest_lng?: number | null
           discount?: number
           driver_id?: string | null
+          driver_payout?: number
           eta_minutes?: number
           id?: string
           kind?: string

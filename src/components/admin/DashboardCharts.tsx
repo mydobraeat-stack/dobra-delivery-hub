@@ -1,6 +1,7 @@
 import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Card } from "@/components/ui/card";
 import type { AdminOrder } from "@/lib/admin";
+import { driverPayout, restaurantEarnings } from "@/lib/payout";
 
 const GOOD = "var(--good)";
 const WARN = "var(--warn)";
@@ -85,10 +86,65 @@ export function DashboardCharts({
     { name: "Cash", value: count((o) => o.payment_method === "cash"), color: WARN },
   ];
 
+  // Payout split for delivered PLN orders.
+  const done = pln.filter((o) => o.status === "delivered");
+  const sum = (f: (o: AdminOrder) => number, list = done) => Math.round(list.reduce((s, o) => s + f(o), 0) * 100) / 100;
+  const restTotal = sum(restaurantEarnings);
+  const driverTotal = sum(driverPayout);
+  const collected = sum((o) => Number(o.total) - Number(o.refund_amount ?? 0));
+  const dobraNet = Math.round((collected - restTotal - driverTotal) * 100) / 100;
+  const top = (key: (o: AdminOrder) => string, val: (o: AdminOrder) => number) => {
+    const m = new Map<string, number>();
+    for (const o of done) { const k = key(o); if (k) m.set(k, (m.get(k) ?? 0) + val(o)); }
+    return [...m.entries()].map(([name, value]) => ({ name, value: Math.round(value * 100) / 100 })).sort((a, b) => b.value - a.value).slice(0, 8);
+  };
+  const byRestaurant = top((o) => (o.kind === "package" ? "" : o.restaurantName), restaurantEarnings);
+  const byDriver = top((o) => (o.driver_id ? o.driverName : ""), driverPayout);
+
   const attnColor = (v: number) => (v === 0 ? GOOD : v >= 5 ? BAD : WARN);
 
   return (
     <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-3 lg:col-span-2">
+        {[
+          { label: "Restaurant earnings", value: restTotal, color: GOOD, hint: "Full order totals, minus refunds" },
+          { label: "Driver payouts", value: driverTotal, color: INFO, hint: "Fixed amount per delivery" },
+          { label: "Dobra net", value: dobraNet, color: dobraNet < 0 ? BAD : GOOD, hint: "Collected − restaurants − drivers" },
+        ].map((k) => (
+          <Card key={k.label} className="border-l-4 p-5" style={{ borderLeftColor: k.color }}>
+            <p className="text-sm text-foreground/60">{k.label} (delivered, PLN)</p>
+            <p className="mt-1 text-2xl font-bold" style={{ color: k.color }}>{formatMoney(k.value, "PLN")}</p>
+            <p className="text-[11px] text-foreground/50">{k.hint}</p>
+          </Card>
+        ))}
+      </div>
+
+      <ChartCard title="Restaurant earnings (PLN)" hint="Top restaurants by what they receive from delivered orders.">
+        <div className="h-56">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={byRestaurant} layout="vertical" margin={{ left: 24, right: 16 }}>
+              <XAxis type="number" tick={{ fontSize: 10 }} />
+              <YAxis type="category" dataKey="name" width={120} tick={{ fontSize: 11 }} />
+              <Tooltip contentStyle={tooltipStyle} formatter={(v: number) => formatMoney(v, "PLN")} />
+              <Bar dataKey="value" fill={GOOD} radius={[0, 6, 6, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </ChartCard>
+
+      <ChartCard title="Driver payouts (PLN)" hint="What Dobra owes each driver for delivered orders.">
+        <div className="h-56">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={byDriver} layout="vertical" margin={{ left: 24, right: 16 }}>
+              <XAxis type="number" tick={{ fontSize: 10 }} />
+              <YAxis type="category" dataKey="name" width={120} tick={{ fontSize: 11 }} />
+              <Tooltip contentStyle={tooltipStyle} formatter={(v: number) => formatMoney(v, "PLN")} />
+              <Bar dataKey="value" fill={INFO} radius={[0, 6, 6, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </ChartCard>
+
       <ChartCard
         title="Revenue, last 14 days (PLN)"
         hint="Delivered orders minus refunds. Green: above average · Amber: below · Red: no sales."
