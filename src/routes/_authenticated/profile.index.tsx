@@ -8,7 +8,6 @@ import {
   Crown,
   HelpCircle,
   Languages,
-  Palette,
   LogOut,
   Receipt,
   ShieldCheck,
