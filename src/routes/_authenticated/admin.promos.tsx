@@ -130,7 +130,7 @@ function PromosPage() {
             <div className="min-w-0">
               <p className="font-mono font-bold">
                 {p.code}{" "}
-                <span className={`ml-2 rounded-full px-2 py-0.5 font-sans text-xs ${p.active ? "bg-sun" : "bg-muted text-foreground/60"}`}>
+                <span className={`ml-2 rounded-full px-2 py-0.5 font-sans text-xs ${p.active ? "bg-sun text-sun-foreground" : "bg-muted text-foreground/60"}`}>
                   {p.active ? "Active" : "Disabled"}
                 </span>
               </p>

@@ -52,7 +52,7 @@ export function SiteFooter() {
                 <button
                   type="button"
                   aria-label={t(`marketing.footer.${badge.key}`)}
-                  className="flex w-full max-w-[200px] items-center gap-3 rounded-xl bg-ink px-4 py-2.5 text-left text-card transition-opacity hover:opacity-90"
+                  className="flex w-full max-w-[200px] items-center gap-3 rounded-xl bg-ink-solid px-4 py-2.5 text-left text-ink-solid-foreground transition-opacity hover:opacity-90"
                 >
                   <badge.Icon />
                   <span className="min-w-0">

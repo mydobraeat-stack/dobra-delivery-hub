@@ -40,7 +40,7 @@ function Disputes() {
             key={k}
             type="button"
             onClick={() => setTab(k)}
-            className={`rounded-full px-4 py-1.5 text-sm font-semibold ${tab === k ? "bg-sun" : "bg-muted text-foreground/70"}`}
+            className={`rounded-full px-4 py-1.5 text-sm font-semibold ${tab === k ? "bg-sun text-sun-foreground" : "bg-muted text-foreground/70"}`}
           >
             {k === "open" ? `Open (${(data ?? []).filter((d) => d.status === "open").length})` : "Resolved"}
           </button>

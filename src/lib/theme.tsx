@@ -11,8 +11,8 @@ type ThemeContextValue = {
 };
 
 const ThemeContext = createContext<ThemeContextValue>({
-  theme: "light",
-  resolved: "light",
+  theme: "dark",
+  resolved: "dark",
   setTheme: () => {},
 });
 
@@ -30,13 +30,13 @@ function apply(theme: ThemeChoice) {
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<ThemeChoice>("light");
-  const [resolved, setResolved] = useState<"light" | "dark">("light");
+  const [theme, setThemeState] = useState<ThemeChoice>("dark");
+  const [resolved, setResolved] = useState<"light" | "dark">("dark");
 
   // Read the stored choice after hydration so SSR markup stays stable.
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY) as ThemeChoice | null;
-    const next: ThemeChoice = stored === "dark" || stored === "system" ? stored : "light";
+    const next: ThemeChoice = stored === "light" || stored === "system" ? stored : "dark";
     setThemeState(next);
     setResolved(apply(next));
   }, []);

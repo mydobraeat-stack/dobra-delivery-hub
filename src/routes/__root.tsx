@@ -114,7 +114,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "apple-touch-icon", sizes: "180x180", href: "/apple-touch-icon.png" },
       { rel: "manifest", href: "/site.webmanifest" },
     ],
-
+    scripts: [
+      {
+        // Apply the stored theme (dark by default) before first paint so the page never flashes light.
+        children:
+          'try{var t=localStorage.getItem("dobra.theme");var d=t==="system"?window.matchMedia("(prefers-color-scheme: dark)").matches:t!=="light";document.documentElement.classList.toggle("dark",d);document.documentElement.style.colorScheme=d?"dark":"light";}catch(e){}',
+      },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,

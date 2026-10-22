@@ -21,7 +21,7 @@ export function SuccessOverlay({
     >
       <span
         className={`flex size-24 items-center justify-center rounded-full shadow-lg animate-in zoom-in-50 duration-500 ${
-          tone === "sun" ? "bg-sun text-ink" : "bg-primary text-primary-foreground"
+          tone === "sun" ? "bg-sun text-sun-foreground" : "bg-primary text-primary-foreground"
         }`}
       >
         <Check className="size-12" strokeWidth={3} aria-hidden />
