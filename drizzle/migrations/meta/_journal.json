@@ -29,6 +29,13 @@
       "when": 1792682393639,
       "tag": "0003_driver_payout_pct",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792683010514,
+      "tag": "0004_fixed_driver_payout",
+      "breakpoints": true
     }
   ]
 }
