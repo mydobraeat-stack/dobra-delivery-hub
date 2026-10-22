@@ -14,14 +14,14 @@ export const Route = createFileRoute("/_authenticated/admin/")({
   component: AdminDashboard,
 });
 
-function Stat({ label, value, to }: { label: string; value: string | number; to?: string }) {
+function Stat({ label, value, to, search }: { label: string; value: string | number; to?: string; search?: Record<string, string> }) {
   const body = (
-    <Card className="p-5">
+    <Card className={to ? "h-full p-5 transition-shadow hover:shadow-soft" : "p-5"}>
       <p className="text-sm text-foreground/60">{label}</p>
       <p className="mt-1 text-3xl font-bold">{value}</p>
     </Card>
   );
-  return to ? <Link to={to}>{body}</Link> : body;
+  return to ? <Link to={to} search={search as never} className="block rounded-xl focus-visible:ring-2 focus-visible:ring-ring">{body}</Link> : body;
 }
 
 function AdminDashboard() {
@@ -59,11 +59,13 @@ function AdminDashboard() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <Stat label={t("admin.dashboard.people")} value={profiles.data?.length ?? 0} />
-        <Stat label={t("admin.dashboard.restaurants")} value={restaurants.data?.length ?? 0} />
+        <Stat label={t("admin.dashboard.people")} value={profiles.data?.length ?? 0} to="/admin/users" />
+        <Stat label={t("admin.dashboard.restaurants")} value={restaurants.data?.length ?? 0} to="/admin/restaurants" />
         <Stat
           label={t("admin.dashboard.completedRevenue")}
           value={formatMoney(revenue, orders.data?.[0]?.currency ?? "PLN")}
+          to="/admin/orders"
+          search={{ status: "delivered" }}
         />
       </div>
 
