@@ -349,6 +349,7 @@ export function driverCurrency(country: string | null | undefined) {
 
 /* -------------------------------- mutations ------------------------------- */
 
+/** @deprecated use usePayout() from @/lib/payout (admin-set rate). */
 export const DRIVER_PAYOUT_RATE = 0.15;
 
 export function payout(total: number) {
@@ -431,6 +432,7 @@ export type CountryPricing = {
   package_base_fee: number;
   package_per_km: number;
   package_min_fee: number;
+  driver_payout_pct?: number;
 };
 
 export const DEFAULT_PRICING: CountryPricing = {
@@ -444,6 +446,7 @@ export const DEFAULT_PRICING: CountryPricing = {
   package_base_fee: 12,
   package_per_km: 2.5,
   package_min_fee: 12,
+  driver_payout_pct: 15,
 };
 
 export async function fetchPricing(country: string | null | undefined): Promise<CountryPricing> {

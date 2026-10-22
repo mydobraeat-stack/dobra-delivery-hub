@@ -45,7 +45,7 @@ function AdminLayout() {
     { to: "/admin/restaurants", label: t("admin.nav.restaurants"), superOnly: true },
     { to: "/admin/drivers", label: t("admin.nav.drivers"), superOnly: true },
     { to: "/admin/reviews", label: t("admin.nav.reviews"), superOnly: true },
-    { to: "/admin/pricing", label: "Pricing & cities", superOnly: true },
+    { to: "/admin/pricing", label: "Fees & pricing", superOnly: true },
     { to: "/admin/promos", label: "Promo codes", superOnly: true },
     { to: "/admin/platform", label: "Platform", superOnly: true },
     { to: "/admin/analytics", label: "Analytics", superOnly: true },

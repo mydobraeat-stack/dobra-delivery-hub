@@ -1,3 +1,4 @@
+import { usePayout } from "@/lib/payout";
 import { OrderTimeLabel } from "@/components/dobra/OrderTimes";
 import { createFileRoute } from "@tanstack/react-router";
 import { EmptyState, ErrorState, ListSkeleton } from "@/components/dobra/QueryStates";
@@ -7,7 +8,7 @@ import { accountQueryOptions } from "@/lib/profile";
 import { PendingApproval } from "@/components/dobra/PendingApproval";
 import { StatusBadge } from "@/components/dobra/StatusBadge";
 import { Card, CardContent } from "@/components/ui/card";
-import { driverOrdersQuery, isFinished, orderRef, payout, restaurantsQuery } from "@/lib/dobra";
+import { driverOrdersQuery, isFinished, orderRef, restaurantsQuery } from "@/lib/dobra";
 
 export const Route = createFileRoute("/_authenticated/driver/deliveries")({
   head: () => ({
@@ -25,6 +26,7 @@ export const Route = createFileRoute("/_authenticated/driver/deliveries")({
 
 function DriverDeliveries() {
   const { t, formatMoney, formatDate } = useI18n();
+  const pay = usePayout();
   const { data: account } = useQuery(accountQueryOptions);
   const approved = account?.approvalStatus === "approved";
   const { data, isLoading, isError, refetch } = useQuery({ ...driverOrdersQuery, enabled: approved });
@@ -55,7 +57,7 @@ function DriverDeliveries() {
           <p className="text-xs text-foreground/60">
             {orderRef(o.id)} ·{" "}
             {o.delivered_at ? <OrderTimeLabel step="delivered" at={o.delivered_at} country={o.country} /> : <OrderTimeLabel step="placed" at={o.created_at} country={o.country} />} ·{" "}
-            {formatMoney(payout(Number(o.total)), o.currency)}
+            {formatMoney(pay(o), o.currency)}
           </p>
           {o.address ? <p className="text-xs text-foreground/60">{o.address}</p> : null}
         </div>

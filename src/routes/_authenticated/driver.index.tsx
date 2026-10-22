@@ -1,3 +1,4 @@
+import { usePayout } from "@/lib/payout";
 import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -43,7 +44,6 @@ import {
   isFinished,
   myDriverQuery,
   orderRef,
-  payout,
   restaurantsQuery,
   saveDriverLocation,
   setDriverStatus,
@@ -79,6 +79,7 @@ export const Route = createFileRoute("/_authenticated/driver/")({
 
 function DriverHome() {
   const { t, formatMoney } = useI18n();
+  const pay = usePayout();
   const { data: account } = useQuery(accountQueryOptions);
   const { data: driver } = useQuery(myDriverQuery);
   const approval = driverApproval(account?.approvalStatus, driver);
@@ -202,7 +203,7 @@ function DriverHome() {
   startOfDay.setHours(0, 0, 0, 0);
   const todayEarnings = done
     .filter((o) => new Date(o.created_at) >= startOfDay)
-    .reduce((sum, o) => sum + payout(Number(o.total)), 0);
+    .reduce((sum, o) => sum + pay(o), 0);
 
   const acceptance = mine.length === 0 ? 100 : Math.round((done.length / mine.length) * 100);
   const restaurantName = (id: string | null) =>
@@ -389,7 +390,7 @@ function DriverHome() {
                   <div className="min-w-0">
                     <p className="font-semibold text-foreground">{restaurantName(o.restaurant_id)}</p>
                     <p className="text-xs text-foreground/60">
-                      {orderRef(o.id)} · {formatMoney(payout(Number(o.total)), o.currency)} {t("driver.home.payoutSuffix")}
+                      {orderRef(o.id)} · {formatMoney(pay(o), o.currency)} {t("driver.home.payoutSuffix")}
                     </p>
                     {o.address ? (
                       <p className="text-xs text-foreground/60">{t("driver.home.dropOff", { address: o.address })}</p>
@@ -453,7 +454,7 @@ function DriverHome() {
                   <div>
                     <p className="font-semibold text-foreground">{restaurantName(o.restaurant_id)}</p>
                     <p className="text-xs text-foreground/60">
-                      {orderRef(o.id)} · {t("driver.home.youEarn", { amount: formatMoney(payout(Number(o.total)), o.currency) })}
+                      {orderRef(o.id)} · {t("driver.home.youEarn", { amount: formatMoney(pay(o), o.currency) })}
                     </p>
                     {o.address ? (
                       <p className="text-xs text-foreground/60">{t("driver.home.dropOff", { address: o.address })}</p>

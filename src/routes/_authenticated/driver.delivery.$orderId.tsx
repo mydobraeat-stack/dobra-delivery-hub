@@ -1,3 +1,4 @@
+import { usePayout } from "@/lib/payout";
 import { OrderTimeline } from "@/components/dobra/OrderTimes";
 import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
@@ -19,7 +20,6 @@ import {
   myDriverQuery,
   orderItemsQuery,
   orderRef,
-  payout,
   restaurantsQuery,
   updateOrderStatus,
 } from "@/lib/dobra";
@@ -56,6 +56,7 @@ export const Route = createFileRoute("/_authenticated/driver/delivery/$orderId")
 
 function DeliveryDetail() {
   const { t, formatMoney } = useI18n();
+  const pay = usePayout();
   const { orderId } = Route.useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -375,7 +376,7 @@ function DeliveryDetail() {
           <div className="flex justify-between text-sm">
             <span className="text-foreground/70">{t("driver.delivery.yourPayout")}</span>
             <span className="font-bold text-foreground">
-              {formatMoney(payout(Number(order.total)), order.currency)}
+              {formatMoney(pay(order), order.currency)}
             </span>
           </div>
         </CardContent>
@@ -394,7 +395,7 @@ function DeliveryDetail() {
                 accept.mutate();
               }}
             >
-              {t("driver.delivery.acceptDelivery", { amount: formatMoney(payout(Number(order.total)), order.currency) })}
+              {t("driver.delivery.acceptDelivery", { amount: formatMoney(pay(order), order.currency) })}
             </Button>
           ) : order.status === "ready" ? (
             <Button

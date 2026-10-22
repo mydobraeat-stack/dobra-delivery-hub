@@ -1,0 +1,1 @@
+ALTER TABLE public.country_pricing ADD COLUMN IF NOT EXISTS driver_payout_pct numeric NOT NULL DEFAULT 15;
