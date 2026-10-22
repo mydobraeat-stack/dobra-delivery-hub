@@ -1,4 +1,9 @@
-# Admin safeguards
+# Task roadmap
+
+## Dark theme
+- [x] Make dark the default theme on every screen, keep the light / match-device choice, and fix yellow-surface and inverted-card contrast.
+
+## Admin safeguards
 - [x] Enforce safe order changes and cancellation reasons in the database and admin controls.
 - [x] Tighten Support Agent permissions and reserve manual status progression for Super Admins.
 - [x] Add nine rule tests and verify signed-in admin rejection checks, confirmation, and note save/readback.
