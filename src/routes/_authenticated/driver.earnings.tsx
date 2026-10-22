@@ -1,3 +1,4 @@
+import { usePayout } from "@/lib/payout";
 import { createFileRoute } from "@tanstack/react-router";
 import { EmptyState, ErrorState, ListSkeleton } from "@/components/dobra/QueryStates";
 import { useQuery } from "@tanstack/react-query";
@@ -5,7 +6,7 @@ import { useI18n } from "@/lib/i18n";
 import { accountQueryOptions } from "@/lib/profile";
 import { PendingApproval } from "@/components/dobra/PendingApproval";
 import { Card, CardContent } from "@/components/ui/card";
-import { driverOrdersQuery, orderRef, payout, restaurantsQuery } from "@/lib/dobra";
+import { driverOrdersQuery, orderRef, restaurantsQuery } from "@/lib/dobra";
 
 export const Route = createFileRoute("/_authenticated/driver/earnings")({
   head: () => ({
@@ -26,6 +27,7 @@ export const Route = createFileRoute("/_authenticated/driver/earnings")({
 
 function DriverEarnings() {
   const { t, formatMoney, formatDate } = useI18n();
+  const pay = usePayout();
   const { data: account } = useQuery(accountQueryOptions);
   const approved = account?.approvalStatus === "approved";
   const { data, isLoading, isError, refetch } = useQuery({ ...driverOrdersQuery, enabled: approved });
@@ -45,15 +47,15 @@ function DriverEarnings() {
       ? t("package.orderLabel")
       : (restaurants.find((r) => r.id === id)?.name ?? t("driver.home.restaurantFallback"));
   const completed = (data?.mine ?? []).filter((o) => o.status === "delivered");
-  const total = completed.reduce((sum, o) => sum + payout(Number(o.total)), 0);
+  const total = completed.reduce((sum, o) => sum + pay(o), 0);
   const today = new Date().toDateString();
   const todayTotal = completed
     .filter((o) => new Date(o.created_at).toDateString() === today)
-    .reduce((sum, o) => sum + payout(Number(o.total)), 0);
+    .reduce((sum, o) => sum + pay(o), 0);
   const week = completed.filter(
     (o) => Date.now() - new Date(o.created_at).getTime() < 7 * 24 * 3600 * 1000,
   );
-  const weekTotal = week.reduce((sum, o) => sum + payout(Number(o.total)), 0);
+  const weekTotal = week.reduce((sum, o) => sum + pay(o), 0);
 
   return (
     <main className="mx-auto max-w-4xl space-y-6 px-5 py-6">
@@ -87,7 +89,7 @@ function DriverEarnings() {
                   </p>
                 </div>
                 <p className="text-sm font-semibold text-foreground">
-                  {formatMoney(payout(Number(o.total)), o.currency)}
+                  {formatMoney(pay(o), o.currency)}
                 </p>
               </CardContent>
             </Card>

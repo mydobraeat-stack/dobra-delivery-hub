@@ -1,3 +1,4 @@
+import { usePayout } from "@/lib/payout";
 import { OrderTimeLabel } from "@/components/dobra/OrderTimes";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
@@ -7,7 +8,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n";
 import { startRingtone } from "@/lib/sound";
-import { claimOrder, myDriverQuery, orderRef, payout, type OrderRow, type Restaurant } from "@/lib/dobra";
+import { claimOrder, myDriverQuery, orderRef, type OrderRow, type Restaurant } from "@/lib/dobra";
 import {
   autoNavigationEnabled,
   directionsUrl,
@@ -47,6 +48,7 @@ export function NewDeliveryAlert({
 }) {
   const { data: driver } = useQuery(myDriverQuery);
   const { t, formatMoney } = useI18n();
+  const pay = usePayout();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -124,7 +126,7 @@ export function NewDeliveryAlert({
             {t("driver.offer.badge")}
           </p>
           <p className="text-2xl font-bold">
-            {formatMoney(payout(total), offer.currency)}{" "}
+            {formatMoney(pay(offer), offer.currency)}{" "}
             <span className="text-sm font-medium opacity-90">{t("driver.home.payoutSuffix")}</span>
           </p>
         </div>

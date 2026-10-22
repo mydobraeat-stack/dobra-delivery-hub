@@ -349,6 +349,7 @@ export function driverCurrency(country: string | null | undefined) {
 
 /* -------------------------------- mutations ------------------------------- */
 
+/** @deprecated use usePayout() from @/lib/payout (admin-set rate). */
 export const DRIVER_PAYOUT_RATE = 0.15;
 
 export function payout(total: number) {
