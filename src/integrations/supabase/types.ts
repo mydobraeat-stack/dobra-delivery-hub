@@ -260,6 +260,7 @@ export type Database = {
           country: string
           currency: string
           delivery_fee: number
+          driver_payout_pct: number
           enabled: boolean
           min_order: number
           package_base_fee: number
@@ -273,6 +274,7 @@ export type Database = {
           country: string
           currency: string
           delivery_fee?: number
+          driver_payout_pct?: number
           enabled?: boolean
           min_order?: number
           package_base_fee?: number
@@ -286,6 +288,7 @@ export type Database = {
           country?: string
           currency?: string
           delivery_fee?: number
+          driver_payout_pct?: number
           enabled?: boolean
           min_order?: number
           package_base_fee?: number
