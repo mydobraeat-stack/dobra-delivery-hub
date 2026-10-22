@@ -1,28 +1,26 @@
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-
-/** Used only when a country has no payout rate configured. */
-export const FALLBACK_PAYOUT_PCT = 15;
-
-export function computePayout(total: number, pct: number = FALLBACK_PAYOUT_PCT) {
-  return Math.round(Number(total) * (Number(pct) / 100) * 100) / 100;
-}
-
-const payoutRatesQuery = {
-  queryKey: ["pricing", "payout-rates"],
-  queryFn: async () => {
-    const { data } = await supabase.from("country_pricing").select("country,driver_payout_pct");
-    return (data ?? []) as { country: string; driver_payout_pct: number }[];
-  },
-  staleTime: 60_000,
+/**
+ * Payout rule:
+ * - Restaurant earns the full order total (items + delivery fee + service fee − promo), minus refunds.
+ * - Driver earns a fixed amount per delivery, set per country by admin and locked onto each order when placed.
+ * - Dobra pays the driver out of its own share.
+ */
+export type PayoutOrder = {
+  total: number | string;
+  refund_amount?: number | string | null;
+  driver_payout?: number | string | null;
+  kind?: string | null;
 };
 
-/** Driver payout per order, using the admin-set rate for the order's country. */
+export function driverPayout(o: PayoutOrder): number {
+  return Math.round(Number(o.driver_payout ?? 0) * 100) / 100;
+}
+
+export function restaurantEarnings(o: PayoutOrder): number {
+  if (o.kind === "package") return 0;
+  return Math.round((Number(o.total) - Number(o.refund_amount ?? 0)) * 100) / 100;
+}
+
+/** Hook kept for existing call sites: payout comes from the order itself. */
 export function usePayout() {
-  const { data = [] } = useQuery(payoutRatesQuery);
-  return (o: { total: number | string; country?: string | null }) => {
-    const c = (o.country ?? "Poland").toLowerCase();
-    const row = data.find((r) => r.country.toLowerCase() === c) ?? data.find((r) => r.country === "Poland");
-    return computePayout(Number(o.total), row?.driver_payout_pct ?? FALLBACK_PAYOUT_PCT);
-  };
+  return driverPayout;
 }

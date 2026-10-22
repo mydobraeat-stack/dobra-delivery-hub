@@ -63,6 +63,8 @@ export type OrderRow = {
   package_note: string | null;
   cancel_reason?: string | null;
   country?: string | null;
+  driver_payout?: number | null;
+  refund_amount?: number | null;
   accepted_at?: string | null;
   ready_at?: string | null;
   picked_up_at?: string | null;
@@ -71,7 +73,7 @@ export type OrderRow = {
 };
 
 const ORDER_COLS =
-  "id,status,total,subtotal,delivery_fee,currency,created_at,restaurant_id,driver_id,customer_id,address,note,eta_minutes,dest_lat,dest_lng,kind,pickup_address,pickup_lat,pickup_lng,package_note,payment_method,payment_status,cancel_reason,country,accepted_at,ready_at,picked_up_at,delivered_at,cancelled_at";
+  "id,status,total,subtotal,delivery_fee,currency,created_at,restaurant_id,driver_id,customer_id,address,note,eta_minutes,dest_lat,dest_lng,kind,pickup_address,pickup_lat,pickup_lng,package_note,payment_method,payment_status,cancel_reason,country,driver_payout,refund_amount,accepted_at,ready_at,picked_up_at,delivered_at,cancelled_at";
 
 export type Review = {
   id: string;
@@ -432,7 +434,7 @@ export type CountryPricing = {
   package_base_fee: number;
   package_per_km: number;
   package_min_fee: number;
-  driver_payout_pct?: number;
+  driver_payout_fixed?: number;
 };
 
 export const DEFAULT_PRICING: CountryPricing = {
@@ -446,7 +448,7 @@ export const DEFAULT_PRICING: CountryPricing = {
   package_base_fee: 12,
   package_per_km: 2.5,
   package_min_fee: 12,
-  driver_payout_pct: 15,
+  driver_payout_fixed: 10,
 };
 
 export async function fetchPricing(country: string | null | undefined): Promise<CountryPricing> {
