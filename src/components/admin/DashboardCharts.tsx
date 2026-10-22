@@ -1,4 +1,5 @@
 import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Link } from "@tanstack/react-router";
 import { Card } from "@/components/ui/card";
 import type { AdminOrder } from "@/lib/admin";
 import { driverPayout, restaurantEarnings } from "@/lib/payout";
@@ -107,15 +108,17 @@ export function DashboardCharts({
     <div className="grid gap-4 lg:grid-cols-2">
       <div className="grid gap-4 sm:grid-cols-3 lg:col-span-2">
         {[
-          { label: "Restaurant earnings", value: restTotal, color: GOOD, hint: "Full order totals, minus refunds" },
-          { label: "Driver payouts", value: driverTotal, color: INFO, hint: "Fixed amount per delivery" },
-          { label: "Dobra net", value: dobraNet, color: dobraNet < 0 ? BAD : GOOD, hint: "Collected − restaurants − drivers" },
+          { label: "Restaurant earnings", to: "/admin/restaurants", value: restTotal, color: GOOD, hint: "Full order totals, minus refunds" },
+          { label: "Driver payouts", to: "/admin/drivers", value: driverTotal, color: INFO, hint: "Fixed amount per delivery" },
+          { label: "Dobra net", to: "/admin/analytics", value: dobraNet, color: dobraNet < 0 ? BAD : GOOD, hint: "Collected − restaurants − drivers" },
         ].map((k) => (
-          <Card key={k.label} className="border-l-4 p-5" style={{ borderLeftColor: k.color }}>
+          <Link key={k.label} to={k.to} className="block rounded-xl">
+          <Card className="h-full border-l-4 p-5 transition-shadow hover:shadow-soft" style={{ borderLeftColor: k.color }}>
             <p className="text-sm text-foreground/60">{k.label} (delivered, PLN)</p>
             <p className="mt-1 text-2xl font-bold" style={{ color: k.color }}>{formatMoney(k.value, "PLN")}</p>
             <p className="text-[11px] text-foreground/50">{k.hint}</p>
           </Card>
+          </Link>
         ))}
       </div>
 

@@ -30,6 +30,8 @@ import { accountQueryOptions } from "@/lib/profile";
 import { canReassignOrder, isClosedOrder, nextAdminStatuses } from "@/lib/admin-rules";
 
 export const Route = createFileRoute("/_authenticated/admin/orders")({
+  validateSearch: (s: Record<string, unknown>): { status?: string } =>
+    typeof s.status === "string" ? { status: s.status } : {},
   component: AdminOrders,
   head: () => ({ meta: [
     { title: "Dobra Admin — Order controls" },
@@ -46,7 +48,8 @@ const FILTERS = ["all", ...ORDER_FLOW, "cancelled"] as const;
 function AdminOrders() {
   const t = useT();
   const { data, isPending } = useQuery(adminOrdersQuery);
-  const [filter, setFilter] = useState<string>("all");
+  const search = Route.useSearch();
+  const [filter, setFilter] = useState<string>(search.status ?? "all");
   const [kind, setKind] = useState<string>("all");
   const [term, setTerm] = useState("");
 
