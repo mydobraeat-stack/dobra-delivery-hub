@@ -125,7 +125,6 @@ export default {
     editPhoto: "Zdjęcie profilowe",
     soon: "Wkrótce dostępne.",
     prime: "Dobra Prime",
-    appearance: "Wygląd",
   },
   profile: {
     "title": "Twój profil",
@@ -206,13 +205,6 @@ export default {
         a: "Wejdź w Profil, potem Konto, aby zmienić imię, telefon, zdjęcie lub hasło. Usuń moje konto i dane trwale kasuje dane osobowe.",
       },
     },
-  },
-  appearance: {
-    "title": "Wygląd",
-    "help": "Wybierz, jak Dobra ma wyglądać na tym urządzeniu.",
-    "light": "Jasny",
-    "dark": "Ciemny",
-    "system": "Jak w urządzeniu"
   },
   prime: {
     "title": "Dobra Prime",

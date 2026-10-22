@@ -8,7 +8,6 @@ import {
   Crown,
   HelpCircle,
   Languages,
-  Palette,
   LogOut,
   Receipt,
   ShieldCheck,
@@ -171,11 +170,6 @@ function ProfileHub() {
           to="/profile/language"
           icon={Languages}
           label={t("common.profileMenu.language")}
-        />
-        <ProfileMenuItem
-          to="/profile/appearance"
-          icon={Palette}
-          label={t("common.profileMenu.appearance")}
         />
         <ProfileMenuItem to="/profile/faq" icon={CircleHelp} label={t("common.profileMenu.faq")} />
         <ProfileMenuItem

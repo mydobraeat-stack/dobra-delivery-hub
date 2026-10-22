@@ -125,7 +125,6 @@ export default {
     editPhoto: "Photo de profil",
     soon: "Bientôt disponible.",
     prime: "Dobra Prime",
-    appearance: "Apparence",
   },
   profile: {
     "title": "Votre profil",
@@ -206,13 +205,6 @@ export default {
         a: "Allez dans Profil, puis Compte pour modifier votre nom, téléphone, photo ou mot de passe. Supprimer mon compte et mes données efface définitivement vos données.",
       },
     },
-  },
-  appearance: {
-    "title": "Apparence",
-    "help": "Choisissez l'apparence de Dobra sur cet appareil.",
-    "light": "Clair",
-    "dark": "Sombre",
-    "system": "Comme mon appareil"
   },
   prime: {
     "title": "Dobra Prime",
