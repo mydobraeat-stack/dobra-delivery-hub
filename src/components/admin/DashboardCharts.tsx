@@ -11,7 +11,7 @@ const INFO = "var(--info)";
 
 function ChartCard({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
   return (
-    <Card className="space-y-3 p-5">
+    <Card className="min-w-0 space-y-3 p-4 sm:p-5">
       <div>
         <h2 className="font-bold">{title}</h2>
         {hint ? <p className="text-xs text-foreground/60">{hint}</p> : null}
@@ -23,12 +23,12 @@ function ChartCard({ title, hint, children }: { title: string; hint?: string; ch
 
 function Legend({ items }: { items: { name: string; value: number | string; color: string }[] }) {
   return (
-    <ul className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+    <ul className="grid grid-cols-1 gap-x-4 gap-y-2 text-xs sm:grid-cols-2">
       {items.map((i) => (
-        <li key={i.name} className="flex items-center gap-2">
+        <li key={i.name} className="flex min-w-0 items-center gap-2">
           <span className="size-2.5 shrink-0 rounded-full" style={{ background: i.color }} />
-          <span className="text-foreground/70">{i.name}</span>
-          <span className="ml-auto font-semibold tabular-nums">{i.value}</span>
+          <span className="min-w-0 break-words text-foreground/70">{i.name}</span>
+          <span className="ml-auto shrink-0 font-semibold tabular-nums">{i.value}</span>
         </li>
       ))}
     </ul>

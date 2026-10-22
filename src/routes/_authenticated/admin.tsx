@@ -1,6 +1,9 @@
 import { createFileRoute, Outlet, useNavigate, Link, useLocation } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Menu, LayoutDashboard, ShoppingBag, MessageCircle, ShieldCheck, Users, Store, Bike, FileCheck, SlidersHorizontal, Ticket, Settings, ChartNoAxesCombined, ScrollText, Star, TriangleAlert } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { accountQueryOptions } from "@/lib/profile";
 import { AppHeader } from "@/components/dobra/AppHeader";
 import { cn } from "@/lib/utils";
@@ -29,29 +32,33 @@ function AdminLayout() {
   const navigate = useNavigate();
   const t = useT();
   const pathname = useLocation({ select: (location) => location.pathname });
+  const [menuOpen, setMenuOpen] = useState(false);
   const { data, isPending } = useQuery(accountQueryOptions);
 
   const isSuper = data?.role === "admin";
   const isStaff = isSuper || data?.role === "support_agent";
   const allowed = canAccessAdminPath(data?.role, pathname);
   const ALL = [
-    { to: "/admin", label: t("admin.nav.dashboard"), exact: true, superOnly: true },
-    { to: "/admin/orders", label: t("admin.nav.orders") },
-    { to: "/admin/disputes", label: "Disputes" },
-    { to: "/admin/support", label: t("chat.inboxTitle") },
-    { to: "/admin/feedback", label: "Customer reviews" },
-    { to: "/admin/approvals", label: t("admin.nav.approvals"), superOnly: true },
-    { to: "/admin/users", label: "Users", superOnly: true },
-    { to: "/admin/restaurants", label: t("admin.nav.restaurants"), superOnly: true },
-    { to: "/admin/drivers", label: t("admin.nav.drivers"), superOnly: true },
-    { to: "/admin/reviews", label: t("admin.nav.reviews"), superOnly: true },
-    { to: "/admin/pricing", label: "Fees & pricing", superOnly: true },
-    { to: "/admin/promos", label: "Promo codes", superOnly: true },
-    { to: "/admin/platform", label: "Platform", superOnly: true },
-    { to: "/admin/analytics", label: "Analytics", superOnly: true },
-    { to: "/admin/audit", label: "Audit log", superOnly: true },
+    { to: "/admin", label: t("admin.nav.dashboard"), icon: LayoutDashboard, exact: true, superOnly: true },
+    { to: "/admin/orders", label: t("admin.nav.orders"), icon: ShoppingBag },
+    { to: "/admin/disputes", label: "Disputes", icon: TriangleAlert },
+    { to: "/admin/support", label: t("chat.inboxTitle"), icon: MessageCircle },
+    { to: "/admin/feedback", label: "Customer reviews", icon: Star },
+    { to: "/admin/approvals", label: t("admin.nav.approvals"), icon: ShieldCheck, superOnly: true },
+    { to: "/admin/users", label: "Users", icon: Users, superOnly: true },
+    { to: "/admin/restaurants", label: t("admin.nav.restaurants"), icon: Store, superOnly: true },
+    { to: "/admin/drivers", label: t("admin.nav.drivers"), icon: Bike, superOnly: true },
+    { to: "/admin/reviews", label: t("admin.nav.reviews"), icon: FileCheck, superOnly: true },
+    { to: "/admin/pricing", label: "Fees & pricing", icon: SlidersHorizontal, superOnly: true },
+    { to: "/admin/promos", label: "Promo codes", icon: Ticket, superOnly: true },
+    { to: "/admin/platform", label: "Platform", icon: Settings, superOnly: true },
+    { to: "/admin/analytics", label: "Analytics", icon: ChartNoAxesCombined, superOnly: true },
+    { to: "/admin/audit", label: "Audit log", icon: ScrollText, superOnly: true },
   ];
   const LINKS = ALL.filter((l) => isSuper || !l.superOnly);
+  const activeLabel = LINKS.find((l) => l.to === pathname)?.label ?? "Store assets";
+
+  useEffect(() => setMenuOpen(false), [pathname]);
 
   useEffect(() => {
     if (data && !isStaff) navigate({ to: "/home", replace: true });
@@ -66,40 +73,68 @@ function AdminLayout() {
     return <div className="p-10 text-center text-foreground/60">{t("admin.redirecting")}</div>;
   }
 
-  return (
-    <div className="min-h-screen bg-background pb-16">
-      <AppHeader subtitle={isSuper ? "Super Admin" : "Support Agent"} />
-      <nav aria-label={t("admin.nav.label")} className="border-b border-ink/10 bg-card/60">
-        <ul className="mx-auto flex max-w-7xl flex-wrap gap-1 px-4 py-2">
+  const navigation = (
+    <nav aria-label={t("admin.nav.label")} className="flex min-h-0 flex-1 flex-col">
+        <ul className="space-y-1">
           {LINKS.map((l) => (
-            <li key={l.to} className="shrink-0">
+            <li key={l.to}>
               <Link
                 to={l.to}
                 activeOptions={{ exact: Boolean(l.exact) }}
                 className={cn(
-                  "block whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium text-foreground/70 hover:bg-sun/20",
+                  "flex min-h-11 items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-foreground/70 hover:bg-muted",
                 )}
-                activeProps={{ className: "bg-sun text-sun-foreground font-semibold" }}
+                activeProps={{ className: "bg-sun text-sun-foreground font-semibold", "aria-current": "page" }}
+                onClick={() => setMenuOpen(false)}
               >
-                {l.label}
+                <l.icon className="size-4 shrink-0" aria-hidden />
+                <span className="min-w-0 break-words">{l.label}</span>
               </Link>
             </li>
           ))}
         </ul>
-      </nav>
-      <main className="mx-auto max-w-7xl px-4 py-6">
-        <Outlet />
-      </main>
       {isSuper && (
-        <footer className="mx-auto max-w-7xl px-4 pb-6 text-right">
+        <div className="mt-6 border-t border-border px-3 pt-4">
           <Link
             to="/admin/store-assets"
             className="text-xs text-foreground/45 underline-offset-2 hover:text-foreground/80 hover:underline"
+            onClick={() => setMenuOpen(false)}
           >
             Store assets
           </Link>
-        </footer>
+        </div>
       )}
+    </nav>
+  );
+
+  return (
+    <div className="min-h-screen bg-background pb-10">
+      <AppHeader subtitle={isSuper ? "Super Admin" : "Support Agent"} />
+      <div className="sticky top-0 z-30 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-border bg-card px-4 py-3 lg:hidden">
+        <p className="min-w-0 truncate font-semibold">{activeLabel}</p>
+        <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
+          <SheetTrigger asChild>
+            <Button variant="outline" size="icon" className="size-11 shrink-0" aria-label={t("admin.nav.label")}>
+              <Menu className="size-5" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="flex w-[min(20rem,88vw)] flex-col overflow-y-auto bg-card p-4" aria-describedby={undefined}>
+            <SheetHeader className="mb-4 text-left">
+              <SheetTitle>{t("admin.nav.label")}</SheetTitle>
+            </SheetHeader>
+            {navigation}
+          </SheetContent>
+        </Sheet>
+      </div>
+      <div className="mx-auto grid max-w-[1440px] grid-cols-[minmax(0,1fr)] lg:grid-cols-[224px_minmax(0,1fr)]">
+        <aside className="sticky top-0 hidden max-h-dvh self-start overflow-y-auto border-r border-border bg-card p-4 lg:flex lg:flex-col">
+          <p className="mb-4 px-3 text-xs font-semibold uppercase text-muted-foreground">{isSuper ? "Super Admin" : "Support Agent"}</p>
+          {navigation}
+        </aside>
+        <main className="admin-content min-w-0 px-4 py-5 sm:px-6 sm:py-6 lg:px-8">
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 }

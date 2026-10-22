@@ -1,5 +1,9 @@
 # Task roadmap
 
+## Admin mobile layout
+- [ ] Arrange admin navigation, page controls, records, and dialogs for phone and desktop screens.
+- [ ] Verify signed-in admin navigation and populated pages on mobile and desktop.
+
 ## Dark theme
 - [x] Make dark the default theme on every screen, keep the light / match-device choice, and fix yellow-surface and inverted-card contrast.
 

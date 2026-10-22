@@ -74,7 +74,7 @@ export function ActionDialog(p: Props) {
       }}
     >
       <DialogTrigger asChild>{p.trigger}</DialogTrigger>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-h-[90dvh] max-w-md overflow-y-auto break-words bg-card p-4 sm:p-6">
         <DialogHeader>
           <DialogTitle>{p.title}</DialogTitle>
           {p.description ? <DialogDescription>{p.description}</DialogDescription> : null}
