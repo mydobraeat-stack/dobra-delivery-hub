@@ -663,8 +663,10 @@ export type Database = {
       }
       orders: {
         Row: {
+          accepted_at: string | null
           address: string | null
           cancel_reason: string | null
+          cancelled_at: string | null
           country: string | null
           created_at: string
           currency: string
@@ -683,10 +685,13 @@ export type Database = {
           payment_method: string
           payment_reference: string | null
           payment_status: string
+          picked_up_at: string | null
           pickup_address: string | null
           pickup_lat: number | null
           pickup_lng: number | null
+          preparing_at: string | null
           promo_code: string | null
+          ready_at: string | null
           refund_amount: number
           refund_status: string | null
           restaurant_id: string | null
@@ -696,8 +701,10 @@ export type Database = {
           total: number
         }
         Insert: {
+          accepted_at?: string | null
           address?: string | null
           cancel_reason?: string | null
+          cancelled_at?: string | null
           country?: string | null
           created_at?: string
           currency?: string
@@ -716,10 +723,13 @@ export type Database = {
           payment_method?: string
           payment_reference?: string | null
           payment_status?: string
+          picked_up_at?: string | null
           pickup_address?: string | null
           pickup_lat?: number | null
           pickup_lng?: number | null
+          preparing_at?: string | null
           promo_code?: string | null
+          ready_at?: string | null
           refund_amount?: number
           refund_status?: string | null
           restaurant_id?: string | null
@@ -729,8 +739,10 @@ export type Database = {
           total?: number
         }
         Update: {
+          accepted_at?: string | null
           address?: string | null
           cancel_reason?: string | null
+          cancelled_at?: string | null
           country?: string | null
           created_at?: string
           currency?: string
@@ -749,10 +761,13 @@ export type Database = {
           payment_method?: string
           payment_reference?: string | null
           payment_status?: string
+          picked_up_at?: string | null
           pickup_address?: string | null
           pickup_lat?: number | null
           pickup_lng?: number | null
+          preparing_at?: string | null
           promo_code?: string | null
+          ready_at?: string | null
           refund_amount?: number
           refund_status?: string | null
           restaurant_id?: string | null
