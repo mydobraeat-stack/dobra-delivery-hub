@@ -1,0 +1,163 @@
+import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Card } from "@/components/ui/card";
+import type { AdminOrder } from "@/lib/admin";
+
+const GOOD = "var(--good)";
+const WARN = "var(--warn)";
+const BAD = "var(--bad)";
+const INFO = "var(--info)";
+
+function ChartCard({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
+  return (
+    <Card className="space-y-3 p-5">
+      <div>
+        <h2 className="font-bold">{title}</h2>
+        {hint ? <p className="text-xs text-foreground/60">{hint}</p> : null}
+      </div>
+      {children}
+    </Card>
+  );
+}
+
+function Legend({ items }: { items: { name: string; value: number | string; color: string }[] }) {
+  return (
+    <ul className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+      {items.map((i) => (
+        <li key={i.name} className="flex items-center gap-2">
+          <span className="size-2.5 shrink-0 rounded-full" style={{ background: i.color }} />
+          <span className="text-foreground/70">{i.name}</span>
+          <span className="ml-auto font-semibold tabular-nums">{i.value}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+const tooltipStyle = {
+  background: "var(--card)",
+  border: "1px solid var(--border)",
+  borderRadius: 12,
+  fontSize: 12,
+  color: "var(--foreground)",
+};
+
+export function DashboardCharts({
+  orders,
+  attention,
+  formatMoney,
+}: {
+  orders: AdminOrder[];
+  attention: { name: string; value: number }[];
+  formatMoney: (n: number, c?: string) => string;
+}) {
+  const pln = orders.filter((o) => o.currency === "PLN");
+
+  // Revenue over the last 14 days (delivered, minus refunds). Colour by significance vs the average.
+  const days = Array.from({ length: 14 }, (_, i) => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    d.setDate(d.getDate() - (13 - i));
+    return d;
+  });
+  const revenue = days.map((d) => {
+    const key = d.toDateString();
+    const value = pln
+      .filter((o) => o.status === "delivered" && new Date(o.created_at).toDateString() === key)
+      .reduce((s, o) => s + Number(o.total) - Number(o.refund_amount ?? 0), 0);
+    return { day: d.toLocaleDateString("en-GB", { day: "numeric", month: "short" }), value: Math.round(value * 100) / 100 };
+  });
+  const active = revenue.filter((r) => r.value > 0);
+  const avg = active.length ? active.reduce((s, r) => s + r.value, 0) / active.length : 0;
+  const revColor = (v: number) => (v === 0 ? BAD : v >= avg ? GOOD : WARN);
+
+  // Order outcome split.
+  const count = (f: (o: AdminOrder) => boolean) => orders.filter(f).length;
+  const outcomes = [
+    { name: "Delivered", value: count((o) => o.status === "delivered"), color: GOOD },
+    { name: "In progress", value: count((o) => !["delivered", "cancelled"].includes(o.status) && o.payment_status !== "failed"), color: INFO },
+    { name: "Payment failed", value: count((o) => o.payment_status === "failed"), color: WARN },
+    { name: "Cancelled", value: count((o) => o.status === "cancelled" && o.payment_status !== "failed"), color: BAD },
+  ];
+
+  // Payment methods.
+  const methods = [
+    { name: "Card / BLIK", value: count((o) => o.payment_method !== "cash"), color: INFO },
+    { name: "Cash", value: count((o) => o.payment_method === "cash"), color: WARN },
+  ];
+
+  const attnColor = (v: number) => (v === 0 ? GOOD : v >= 5 ? BAD : WARN);
+
+  return (
+    <div className="grid gap-4 lg:grid-cols-2">
+      <ChartCard
+        title="Revenue, last 14 days (PLN)"
+        hint="Delivered orders minus refunds. Green: above average · Amber: below · Red: no sales."
+      >
+        <div className="h-56">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={revenue} margin={{ left: -16, right: 4, top: 4 }}>
+              <CartesianGrid vertical={false} stroke="var(--border)" />
+              <XAxis dataKey="day" tick={{ fontSize: 10 }} interval={1} />
+              <YAxis tick={{ fontSize: 10 }} />
+              <Tooltip contentStyle={tooltipStyle} formatter={(v: number) => formatMoney(v, "PLN")} />
+              <Bar dataKey="value" radius={[6, 6, 0, 0]}>
+                {revenue.map((r) => (
+                  <Cell key={r.day} fill={revColor(r.value)} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </ChartCard>
+
+      <ChartCard title="Needs your attention" hint="Green: clear · Amber: some waiting · Red: 5 or more waiting.">
+        <div className="h-56">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={attention} layout="vertical" margin={{ left: 24, right: 16 }}>
+              <XAxis type="number" allowDecimals={false} tick={{ fontSize: 10 }} />
+              <YAxis type="category" dataKey="name" width={120} tick={{ fontSize: 11 }} />
+              <Tooltip contentStyle={tooltipStyle} />
+              <Bar dataKey="value" radius={[0, 6, 6, 0]} minPointSize={3}>
+                {attention.map((a) => (
+                  <Cell key={a.name} fill={attnColor(a.value)} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </ChartCard>
+
+      <ChartCard title="Order outcomes" hint="All orders. Red and amber slices are lost or at-risk orders.">
+        <div className="h-48">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie data={outcomes} dataKey="value" nameKey="name" innerRadius="55%" outerRadius="85%" paddingAngle={2}>
+                {outcomes.map((o) => (
+                  <Cell key={o.name} fill={o.color} />
+                ))}
+              </Pie>
+              <Tooltip contentStyle={tooltipStyle} />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+        <Legend items={outcomes} />
+      </ChartCard>
+
+      <ChartCard title="Payment methods" hint="Cash orders are collected by drivers and need settling.">
+        <div className="h-48">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie data={methods} dataKey="value" nameKey="name" innerRadius="55%" outerRadius="85%" paddingAngle={2}>
+                {methods.map((o) => (
+                  <Cell key={o.name} fill={o.color} />
+                ))}
+              </Pie>
+              <Tooltip contentStyle={tooltipStyle} />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+        <Legend items={methods} />
+      </ChartCard>
+    </div>
+  );
+}

@@ -8,6 +8,7 @@ import {
   adminRestaurantsQuery,
 } from "@/lib/admin";
 import { useI18n, useT } from "@/lib/i18n";
+import { DashboardCharts } from "@/components/admin/DashboardCharts";
 
 export const Route = createFileRoute("/_authenticated/admin/")({
   component: AdminDashboard,
@@ -65,6 +66,17 @@ function AdminDashboard() {
           value={formatMoney(revenue, orders.data?.[0]?.currency ?? "PLN")}
         />
       </div>
+
+      <DashboardCharts
+        orders={orders.data ?? []}
+        formatMoney={formatMoney}
+        attention={[
+          { name: "Accounts waiting", value: pendingPeople },
+          { name: "Driver documents", value: pendingDocs },
+          { name: "Restaurants pending", value: pendingRestaurants },
+          { name: "Live orders", value: live },
+        ]}
+      />
     </div>
   );
 }
