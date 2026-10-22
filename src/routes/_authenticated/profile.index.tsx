@@ -172,11 +172,6 @@ function ProfileHub() {
           icon={Languages}
           label={t("common.profileMenu.language")}
         />
-        <ProfileMenuItem
-          to="/profile/appearance"
-          icon={Palette}
-          label={t("common.profileMenu.appearance")}
-        />
         <ProfileMenuItem to="/profile/faq" icon={CircleHelp} label={t("common.profileMenu.faq")} />
         <ProfileMenuItem
           to="/profile/notifications"
