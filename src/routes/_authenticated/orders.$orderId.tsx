@@ -1,3 +1,4 @@
+import { OrderTimeLabel, OrderTimeline } from "@/components/dobra/OrderTimes";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ConfirmAction } from "@/components/dobra/ConfirmButton";
 import { ListSkeleton } from "@/components/dobra/QueryStates";
@@ -168,6 +169,9 @@ function OrderTracking() {
                 {t("customer.tracking.arrivesIn", { n: order.eta_minutes })}
               </p>
               <StatusBadge status={order.status} />
+              <div className="mt-2 max-w-sm rounded-xl bg-card p-3 shadow-soft">
+                <OrderTimeline order={order} country={order.country} />
+              </div>
               {order.payment_status === "failed" ? (
                 <div role="alert" className="mt-2 rounded-md border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
                   <p className="font-semibold">
