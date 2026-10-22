@@ -79,7 +79,7 @@ function AdminLayout() {
                 className={cn(
                   "block whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium text-foreground/70 hover:bg-sun/20",
                 )}
-                activeProps={{ className: "bg-sun text-foreground font-semibold" }}
+                activeProps={{ className: "bg-sun text-sun-foreground font-semibold" }}
               >
                 {l.label}
               </Link>
@@ -94,7 +94,7 @@ function AdminLayout() {
         <footer className="mx-auto max-w-7xl px-4 pb-6 text-right">
           <Link
             to="/admin/store-assets"
-            className="text-xs text-foreground/30 underline-offset-2 hover:text-foreground/60 hover:underline"
+            className="text-xs text-foreground/45 underline-offset-2 hover:text-foreground/80 hover:underline"
           >
             Store assets
           </Link>

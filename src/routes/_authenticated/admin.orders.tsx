@@ -126,7 +126,7 @@ function AdminOrders() {
               type="button"
               onClick={() => setFilter(f)}
               className={`rounded-full px-3 py-1.5 text-xs font-semibold ${
-                filter === f ? "bg-sun text-foreground" : "bg-muted text-foreground/70"
+                filter === f ? "bg-sun text-sun-foreground" : "bg-muted text-foreground/70"
               }`}
             >
               {f === "all" ? t("admin.orders.all") : f.replace(/_/g, " ")}

@@ -43,6 +43,9 @@ const tooltipStyle = {
   color: "var(--foreground)",
 };
 
+// Recharts draws axis labels in a fixed grey; tie them to the theme instead.
+const tickStyle = { fontSize: 11, fill: "var(--foreground)" };
+
 export function DashboardCharts({
   orders,
   attention,

@@ -122,10 +122,10 @@ export function Hero() {
     <section className="bg-sun">
       <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-6 lg:grid-cols-2 lg:gap-14 lg:px-8 lg:py-20">
         <div className="min-w-0">
-          <h1 className="text-4xl font-extrabold leading-tight text-ink sm:text-5xl lg:text-6xl">
+          <h1 className="text-4xl font-extrabold leading-tight text-sun-foreground sm:text-5xl lg:text-6xl">
             {t("marketing.hero.title")}
           </h1>
-          <p className="mt-4 max-w-xl text-base text-ink/75 sm:text-lg">
+          <p className="mt-4 max-w-xl text-base text-sun-foreground/75 sm:text-lg">
             {t("marketing.hero.subtitle")}
           </p>
 
@@ -134,7 +134,7 @@ export function Hero() {
               {t("marketing.hero.addressLabel")}
             </label>
             <div className="relative min-w-0 flex-1">
-              <MapPin className="pointer-events-none absolute left-3 top-1/2 size-5 -translate-y-1/2 text-ink/40" />
+              <MapPin className="pointer-events-none absolute left-3 top-1/2 size-5 -translate-y-1/2 text-sun-foreground/45" />
               <Input
                 id="hero-address"
                 value={address}
@@ -153,7 +153,7 @@ export function Hero() {
                 onClick={detectLocation}
                 aria-label={t("marketing.hero.useLocation")}
                 title={t("marketing.hero.useLocation")}
-                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-2 text-ink/60 transition-colors hover:bg-ink/5 hover:text-primary"
+                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-2 text-sun-foreground/70 transition-colors hover:bg-sun-foreground/10 hover:text-primary"
               >
                 {locating ? (
                   <Loader2 className="size-5 animate-spin" />
@@ -168,14 +168,14 @@ export function Hero() {
           </form>
 
           {locationFailed && !touched && !address ? (
-            <p className="mt-2 text-sm text-ink/60">{t("marketing.hero.locationDenied")}</p>
+            <p className="mt-2 text-sm text-sun-foreground/70">{t("marketing.hero.locationDenied")}</p>
           ) : null}
 
 
           <Link
             to="/get-started"
             search={{ mode: "login" }}
-            className="mt-4 inline-block text-sm font-semibold text-ink underline underline-offset-4"
+            className="mt-4 inline-block text-sm font-semibold text-sun-foreground underline underline-offset-4"
           >
             {t("marketing.hero.orSignIn")}
           </Link>
