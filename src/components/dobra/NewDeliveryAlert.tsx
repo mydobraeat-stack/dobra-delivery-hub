@@ -1,3 +1,4 @@
+import { OrderTimeLabel } from "@/components/dobra/OrderTimes";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -163,6 +164,9 @@ export function NewDeliveryAlert({
           <p className="inline-flex items-center gap-2 text-sm font-semibold text-foreground/70">
             <Timer className="size-4" aria-hidden />
             {t("driver.offer.expiresIn", { n: Math.max(0, seconds) })}
+          </p>
+          <p className="text-xs text-foreground/60">
+            <OrderTimeLabel step="offered" at={offer.ready_at ?? offer.created_at} country={offer.country} />
           </p>
 
           <div className="flex gap-3 pt-1">

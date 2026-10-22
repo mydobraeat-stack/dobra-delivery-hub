@@ -1,3 +1,4 @@
+import { OrderTimeLabel } from "@/components/dobra/OrderTimes";
 import { useMemo } from "react";
 import { EmptyState, ErrorState, ListSkeleton } from "@/components/dobra/QueryStates";
 import { createFileRoute, Link } from "@tanstack/react-router";
@@ -49,7 +50,7 @@ function CustomerOrders() {
                 : t("package.orderLabel")}
             </p>
             <p className="text-xs text-foreground/60">
-              {orderRef(o.id)} · {formatDate(o.created_at)} ·{" "}
+              {orderRef(o.id)} · <OrderTimeLabel step="placed" at={o.created_at} country={o.country} /> ·{" "}
               {formatMoney(o.total, o.currency)}
             </p>
           </div>

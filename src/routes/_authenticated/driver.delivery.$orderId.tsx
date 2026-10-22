@@ -1,3 +1,4 @@
+import { OrderTimeline } from "@/components/dobra/OrderTimes";
 import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -211,6 +212,10 @@ function DeliveryDetail() {
         </Button>
         <h1 className="text-xl font-bold text-foreground">{orderRef(order.id)}</h1>
         <StatusBadge status={order.status} className="ml-auto" />
+      </div>
+
+      <div className="rounded-2xl bg-card p-3 shadow-soft">
+        <OrderTimeline order={order} country={order.country} />
       </div>
 
       {mine ? (

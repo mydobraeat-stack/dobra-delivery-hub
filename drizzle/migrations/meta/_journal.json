@@ -15,6 +15,13 @@
       "when": 1792318687639,
       "tag": "0001_admin_order_safeguards",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792682043182,
+      "tag": "0002_order_status_timestamps",
+      "breakpoints": true
     }
   ]
 }

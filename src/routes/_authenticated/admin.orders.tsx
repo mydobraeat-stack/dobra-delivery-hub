@@ -1,3 +1,4 @@
+import { OrderTimeLabel, OrderTimeline } from "@/components/dobra/OrderTimes";
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { refundOrderWithStripe } from "@/lib/payments.functions";
@@ -195,7 +196,7 @@ function OrderRow({ order: o }: { order: AdminOrder }) {
             {o.driverName}
           </p>
           <p className="text-xs text-foreground/50">
-            {formatDate(o.created_at)} · {o.country || "—"}
+            <OrderTimeLabel step="placed" at={o.created_at} country={o.country} /> · {o.country || "—"}
           </p>
           {o.cancel_reason ? (
             <p className="text-xs text-destructive">Cancel reason: {o.cancel_reason}</p>
@@ -349,6 +350,7 @@ function OrderRow({ order: o }: { order: AdminOrder }) {
       {open ? (
         <div className="mt-3 grid gap-3 lg:grid-cols-2">
           <div className="space-y-1 rounded-xl bg-muted/50 p-3 text-sm">
+            <div className="mb-2 border-b border-ink/10 pb-2"><OrderTimeline order={o} country={o.country} /></div>
             {items.isPending ? <p className="text-foreground/60">{t("admin.loading")}</p> : null}
             {(items.data ?? []).map((i) => (
               <div key={i.id} className="flex justify-between gap-3">

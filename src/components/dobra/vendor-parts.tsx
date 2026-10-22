@@ -1,3 +1,4 @@
+import { OrderTimeLabel, OrderTimeline } from "@/components/dobra/OrderTimes";
 import { LocateFixed } from "lucide-react";
 import { ConfirmAction } from "@/components/dobra/ConfirmButton";
 import { locateDevice } from "@/lib/device-location";
@@ -198,12 +199,7 @@ export function OrdersSection({
                     <p className="font-semibold text-foreground">{orderRef(o.id)}</p>
                     <p className="text-xs text-foreground/60">
                       {money(o.total, o.currency)} ·{" "}
-                      {formatDate(o.created_at, {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        day: "numeric",
-                        month: "short",
-                      })}
+                      <OrderTimeLabel step="placed" at={o.created_at} country={o.country} />
                     </p>
                     {o.address ? (
                       <p className="text-xs text-foreground/60">
@@ -253,7 +249,12 @@ export function OrdersSection({
                     </Button>
                   </div>
                 </div>
-                {isOpen ? <OrderItems orderId={o.id} currency={o.currency} /> : null}
+                {isOpen ? (
+                  <>
+                    <OrderTimeline order={o} country={o.country} />
+                    <OrderItems orderId={o.id} currency={o.currency} />
+                  </>
+                ) : null}
               </CardContent>
             </Card>
           );
