@@ -58,6 +58,7 @@ import { Route as AuthenticatedDriverDeliveriesRouteImport } from './routes/_aut
 import { Route as AuthenticatedDriverDocumentsRouteImport } from './routes/_authenticated/driver.documents'
 import { Route as AuthenticatedDriverEarningsRouteImport } from './routes/_authenticated/driver.earnings'
 import { Route as AuthenticatedDriverHelpRouteImport } from './routes/_authenticated/driver.help'
+import { Route as AuthenticatedDriverSettlementsRouteImport } from './routes/_authenticated/driver.settlements'
 import { Route as AuthenticatedOrdersOrderIdRouteImport } from './routes/_authenticated/orders.$orderId'
 import { Route as AuthenticatedProfileIndexRouteImport } from './routes/_authenticated/profile.index'
 import { Route as AuthenticatedProfileAccountRouteImport } from './routes/_authenticated/profile.account'
@@ -343,6 +344,12 @@ const AuthenticatedDriverHelpRoute = AuthenticatedDriverHelpRouteImport.update({
   path: '/help',
   getParentRoute: () => AuthenticatedDriverRoute,
 } as any)
+const AuthenticatedDriverSettlementsRoute =
+  AuthenticatedDriverSettlementsRouteImport.update({
+    id: '/settlements',
+    path: '/settlements',
+    getParentRoute: () => AuthenticatedDriverRoute,
+  } as any)
 const AuthenticatedOrdersOrderIdRoute =
   AuthenticatedOrdersOrderIdRouteImport.update({
     id: '/orders/$orderId',
@@ -498,6 +505,7 @@ export interface FileRoutesByFullPath {
   '/driver/documents': typeof AuthenticatedDriverDocumentsRoute
   '/driver/earnings': typeof AuthenticatedDriverEarningsRoute
   '/driver/help': typeof AuthenticatedDriverHelpRoute
+  '/driver/settlements': typeof AuthenticatedDriverSettlementsRoute
   '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/profile/account': typeof AuthenticatedProfileAccountRoute
   '/profile/delete': typeof AuthenticatedProfileDeleteRoute
@@ -562,6 +570,7 @@ export interface FileRoutesByTo {
   '/driver/documents': typeof AuthenticatedDriverDocumentsRoute
   '/driver/earnings': typeof AuthenticatedDriverEarningsRoute
   '/driver/help': typeof AuthenticatedDriverHelpRoute
+  '/driver/settlements': typeof AuthenticatedDriverSettlementsRoute
   '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/profile/account': typeof AuthenticatedProfileAccountRoute
   '/profile/delete': typeof AuthenticatedProfileDeleteRoute
@@ -633,6 +642,7 @@ export interface FileRoutesById {
   '/_authenticated/driver/documents': typeof AuthenticatedDriverDocumentsRoute
   '/_authenticated/driver/earnings': typeof AuthenticatedDriverEarningsRoute
   '/_authenticated/driver/help': typeof AuthenticatedDriverHelpRoute
+  '/_authenticated/driver/settlements': typeof AuthenticatedDriverSettlementsRoute
   '/_authenticated/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/_authenticated/profile/account': typeof AuthenticatedProfileAccountRoute
   '/_authenticated/profile/delete': typeof AuthenticatedProfileDeleteRoute
@@ -704,6 +714,7 @@ export interface FileRouteTypes {
     | '/driver/documents'
     | '/driver/earnings'
     | '/driver/help'
+    | '/driver/settlements'
     | '/orders/$orderId'
     | '/profile/account'
     | '/profile/delete'
@@ -768,6 +779,7 @@ export interface FileRouteTypes {
     | '/driver/documents'
     | '/driver/earnings'
     | '/driver/help'
+    | '/driver/settlements'
     | '/orders/$orderId'
     | '/profile/account'
     | '/profile/delete'
@@ -838,6 +850,7 @@ export interface FileRouteTypes {
     | '/_authenticated/driver/documents'
     | '/_authenticated/driver/earnings'
     | '/_authenticated/driver/help'
+    | '/_authenticated/driver/settlements'
     | '/_authenticated/orders/$orderId'
     | '/_authenticated/profile/account'
     | '/_authenticated/profile/delete'
@@ -1231,6 +1244,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDriverHelpRouteImport
       parentRoute: typeof AuthenticatedDriverRoute
     }
+    '/_authenticated/driver/settlements': {
+      id: '/_authenticated/driver/settlements'
+      path: '/settlements'
+      fullPath: '/driver/settlements'
+      preLoaderRoute: typeof AuthenticatedDriverSettlementsRouteImport
+      parentRoute: typeof AuthenticatedDriverRoute
+    }
     '/_authenticated/orders/$orderId': {
       id: '/_authenticated/orders/$orderId'
       path: '/orders/$orderId'
@@ -1433,6 +1453,7 @@ interface AuthenticatedDriverRouteChildren {
   AuthenticatedDriverDocumentsRoute: typeof AuthenticatedDriverDocumentsRoute
   AuthenticatedDriverEarningsRoute: typeof AuthenticatedDriverEarningsRoute
   AuthenticatedDriverHelpRoute: typeof AuthenticatedDriverHelpRoute
+  AuthenticatedDriverSettlementsRoute: typeof AuthenticatedDriverSettlementsRoute
   AuthenticatedDriverIndexRoute: typeof AuthenticatedDriverIndexRoute
   AuthenticatedDriverDeliveryOrderIdRoute: typeof AuthenticatedDriverDeliveryOrderIdRoute
 }
@@ -1442,6 +1463,7 @@ const AuthenticatedDriverRouteChildren: AuthenticatedDriverRouteChildren = {
   AuthenticatedDriverDocumentsRoute: AuthenticatedDriverDocumentsRoute,
   AuthenticatedDriverEarningsRoute: AuthenticatedDriverEarningsRoute,
   AuthenticatedDriverHelpRoute: AuthenticatedDriverHelpRoute,
+  AuthenticatedDriverSettlementsRoute: AuthenticatedDriverSettlementsRoute,
   AuthenticatedDriverIndexRoute: AuthenticatedDriverIndexRoute,
   AuthenticatedDriverDeliveryOrderIdRoute:
     AuthenticatedDriverDeliveryOrderIdRoute,

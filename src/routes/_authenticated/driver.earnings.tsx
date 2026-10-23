@@ -1,5 +1,6 @@
 import { usePayout } from "@/lib/payout";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Banknote, ChevronRight } from "lucide-react";
 import { EmptyState, ErrorState, ListSkeleton } from "@/components/dobra/QueryStates";
 import { useQuery } from "@tanstack/react-query";
 import { useI18n } from "@/lib/i18n";
@@ -67,6 +68,20 @@ function DriverEarnings() {
         <Stat label={t("driver.earnings.allTime")} value={formatMoney(total)} />
         <Stat label={t("driver.earnings.deliveriesDone")} value={String(completed.length)} />
       </section>
+
+      <Link to="/driver/settlements" className="block">
+        <Card className="border-ink/10 transition-shadow hover:shadow-soft">
+          <CardContent className="flex items-center justify-between gap-3 py-4">
+            <span className="flex items-center gap-3">
+              <Banknote className="h-5 w-5 text-primary" aria-hidden />
+              <span className="text-sm font-semibold text-foreground">
+                {t("driver.earnings.settlementsLink")}
+              </span>
+            </span>
+            <ChevronRight className="h-4 w-4 text-foreground/40" aria-hidden />
+          </CardContent>
+        </Card>
+      </Link>
 
       <section className="space-y-3">
         <h2 className="text-lg font-bold text-foreground">{t("driver.earnings.paymentHistory")}</h2>
