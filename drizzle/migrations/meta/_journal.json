@@ -43,6 +43,13 @@
       "when": 1792772181261,
       "tag": "0005_cash_settlement",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1792772595872,
+      "tag": "0006_admin_list_reviews_rpc",
+      "breakpoints": true
     }
   ]
 }
