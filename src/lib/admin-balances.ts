@@ -2,10 +2,17 @@ import type { AdminOrder } from "@/lib/admin";
 
 const PAID_LIKE = ["paid", "refunded", "partially_refunded"];
 
-export type BalanceSplit = { currency: string; online: number; cash: number };
+export type BalanceSplit = {
+  currency: string;
+  online: number;
+  cash: number;
+  cashSettled: number;
+  cashOutstanding: number;
+};
 
 // Delivered orders only, refunds subtracted. Online = card/BLIK that Stripe actually
-// confirmed; cash = money the driver collected and still owes to the platform.
+// confirmed; cash = money the driver collected. Cash is split into what drivers have
+// already handed over (settled) and what they still owe (outstanding).
 export function splitBalances(orders: AdminOrder[]): BalanceSplit[] {
   const currencies = [
     ...new Set(orders.filter((o) => o.status === "delivered").map((o) => o.currency)),
@@ -21,9 +28,17 @@ export function splitBalances(orders: AdminOrder[]): BalanceSplit[] {
           ? Number(o.total) - Number(o.refund_amount ?? 0)
           : 0,
     );
-    const cash = sum((o) =>
-      o.payment_method === "cash" ? Number(o.total) - Number(o.refund_amount ?? 0) : 0,
+    const cashNet = (o: AdminOrder) => Number(o.total) - Number(o.refund_amount ?? 0);
+    const cash = sum((o) => (o.payment_method === "cash" ? cashNet(o) : 0));
+    const cashSettled = sum((o) =>
+      o.payment_method === "cash" && o.cash_settled_at ? cashNet(o) : 0,
     );
-    return { currency, online, cash };
+    return {
+      currency,
+      online,
+      cash,
+      cashSettled,
+      cashOutstanding: Math.round((cash - cashSettled) * 100) / 100,
+    };
   });
 }
