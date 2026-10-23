@@ -1236,6 +1236,18 @@ export type Database = {
         Args: { _order: string; _reason: string; _status: string }
         Returns: undefined
       }
+      admin_list_reviews: {
+        Args: never
+        Returns: {
+          comment: string
+          created_at: string
+          customer_id: string
+          driver_rating: number
+          id: string
+          restaurant_id: string
+          restaurant_rating: number
+        }[]
+      }
       admin_reassign_driver: {
         Args: { _driver: string; _order: string }
         Returns: undefined

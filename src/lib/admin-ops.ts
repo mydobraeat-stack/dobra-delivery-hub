@@ -418,11 +418,9 @@ export const customerReviewsQuery = queryOptions({
   queryKey: ["admin", "customer-reviews"],
   queryFn: async () => {
     const [{ data, error }, { data: restaurants }, { data: profiles }] = await Promise.all([
-      supabase
-        .from("reviews")
-        .select("id,restaurant_id,customer_id,restaurant_rating,driver_rating,comment,created_at")
-        .order("created_at", { ascending: false })
-        .limit(300),
+      // customer_id is excluded from the column-level grant on reviews, so staff
+      // read the list through the role-checked admin_list_reviews() RPC instead.
+      supabase.rpc("admin_list_reviews"),
       supabase.from("restaurants").select("id,name"),
       supabase.from("profiles").select("id,full_name,email"),
     ]);
