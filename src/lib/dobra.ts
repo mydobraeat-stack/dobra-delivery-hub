@@ -65,6 +65,7 @@ export type OrderRow = {
   country?: string | null;
   driver_payout?: number | null;
   refund_amount?: number | null;
+  cash_settled_at?: string | null;
   accepted_at?: string | null;
   ready_at?: string | null;
   picked_up_at?: string | null;
@@ -73,7 +74,7 @@ export type OrderRow = {
 };
 
 const ORDER_COLS =
-  "id,status,total,subtotal,delivery_fee,currency,created_at,restaurant_id,driver_id,customer_id,address,note,eta_minutes,dest_lat,dest_lng,kind,pickup_address,pickup_lat,pickup_lng,package_note,payment_method,payment_status,cancel_reason,country,driver_payout,refund_amount,accepted_at,ready_at,picked_up_at,delivered_at,cancelled_at";
+  "id,status,total,subtotal,delivery_fee,currency,created_at,restaurant_id,driver_id,customer_id,address,note,eta_minutes,dest_lat,dest_lng,kind,pickup_address,pickup_lat,pickup_lng,package_note,payment_method,payment_status,cancel_reason,country,driver_payout,refund_amount,accepted_at,ready_at,picked_up_at,delivered_at,cancelled_at,cash_settled_at";
 
 export type Review = {
   id: string;
