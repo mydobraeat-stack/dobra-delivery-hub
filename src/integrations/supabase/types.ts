@@ -673,6 +673,8 @@ export type Database = {
           address: string | null
           cancel_reason: string | null
           cancelled_at: string | null
+          cash_settled_at: string | null
+          cash_settled_by: string | null
           country: string | null
           created_at: string
           currency: string
@@ -712,6 +714,8 @@ export type Database = {
           address?: string | null
           cancel_reason?: string | null
           cancelled_at?: string | null
+          cash_settled_at?: string | null
+          cash_settled_by?: string | null
           country?: string | null
           created_at?: string
           currency?: string
@@ -751,6 +755,8 @@ export type Database = {
           address?: string | null
           cancel_reason?: string | null
           cancelled_at?: string | null
+          cash_settled_at?: string | null
+          cash_settled_by?: string | null
           country?: string | null
           created_at?: string
           currency?: string
@@ -1262,6 +1268,7 @@ export type Database = {
       call_availability: { Args: { _order: string }; Returns: Json }
       can_access_chat_thread: { Args: { _thread_id: string }; Returns: boolean }
       can_view_chat_file: { Args: { _object_name: string }; Returns: boolean }
+      driver_settle_cash: { Args: { _order: string }; Returns: undefined }
       get_call_number: {
         Args: { _order: string; _target: string }
         Returns: string

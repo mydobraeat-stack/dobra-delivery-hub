@@ -21,7 +21,9 @@ describe("splitBalances", () => {
       order({ id: "a", total: 50, payment_method: "card", payment_status: "paid" }),
       order({ id: "b", total: 30, payment_method: "cash", payment_status: null }),
     ]);
-    expect(split).toEqual([{ currency: "PLN", online: 50, cash: 30 }]);
+    expect(split).toEqual([
+      { currency: "PLN", online: 50, cash: 30, cashSettled: 0, cashOutstanding: 30 },
+    ]);
   });
 
   it("excludes unpaid online orders from the online amount", () => {
@@ -29,7 +31,9 @@ describe("splitBalances", () => {
       order({ id: "a", total: 50, payment_status: "pending" }),
       order({ id: "b", total: 50, payment_status: "failed" }),
     ]);
-    expect(split).toEqual([{ currency: "PLN", online: 0, cash: 0 }]);
+    expect(split).toEqual([
+      { currency: "PLN", online: 0, cash: 0, cashSettled: 0, cashOutstanding: 0 },
+    ]);
   });
 
   it("counts refunded and partially refunded online orders, net of refunds", () => {
@@ -37,14 +41,34 @@ describe("splitBalances", () => {
       order({ id: "a", total: 50, payment_status: "partially_refunded", refund_amount: 10 }),
       order({ id: "b", total: 20, payment_status: "refunded", refund_amount: 20 }),
     ]);
-    expect(split).toEqual([{ currency: "PLN", online: 40, cash: 0 }]);
+    expect(split).toEqual([
+      { currency: "PLN", online: 40, cash: 0, cashSettled: 0, cashOutstanding: 0 },
+    ]);
   });
 
   it("nets cash refunds out of the cash amount", () => {
     const split = splitBalances([
       order({ id: "a", payment_method: "cash", payment_status: null, total: 40, refund_amount: 5 }),
     ]);
-    expect(split).toEqual([{ currency: "PLN", online: 0, cash: 35 }]);
+    expect(split).toEqual([
+      { currency: "PLN", online: 0, cash: 35, cashSettled: 0, cashOutstanding: 35 },
+    ]);
+  });
+
+  it("splits cash into settled and outstanding by cash_settled_at", () => {
+    const split = splitBalances([
+      order({
+        id: "a",
+        payment_method: "cash",
+        payment_status: null,
+        total: 40,
+        cash_settled_at: "2026-10-20T10:00:00Z",
+      }),
+      order({ id: "b", payment_method: "cash", payment_status: null, total: 25 }),
+    ]);
+    expect(split).toEqual([
+      { currency: "PLN", online: 0, cash: 65, cashSettled: 40, cashOutstanding: 25 },
+    ]);
   });
 
   it("ignores non-delivered orders", () => {
@@ -61,8 +85,8 @@ describe("splitBalances", () => {
       order({ id: "b", total: 7000, currency: "XAF", payment_method: "cash", payment_status: null }),
     ]);
     expect(split).toEqual([
-      { currency: "PLN", online: 50, cash: 0 },
-      { currency: "XAF", online: 0, cash: 7000 },
+      { currency: "PLN", online: 50, cash: 0, cashSettled: 0, cashOutstanding: 0 },
+      { currency: "XAF", online: 0, cash: 7000, cashSettled: 0, cashOutstanding: 7000 },
     ]);
   });
 });

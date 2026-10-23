@@ -62,6 +62,7 @@ export type AdminOrder = {
   kind?: string;
   refund_amount?: number;
   refund_status?: string | null;
+  cash_settled_at?: string | null;
   cancel_reason?: string | null;
   driver_payout?: number;
   accepted_at?: string | null;
@@ -167,7 +168,7 @@ export const adminOrdersQuery = queryOptions({
         supabase
           .from("orders")
           .select(
-            "id,status,total,currency,country,created_at,customer_id,restaurant_id,driver_id,payment_method,payment_status,kind,refund_amount,refund_status,cancel_reason,address,pickup_address,driver_payout,accepted_at,ready_at,picked_up_at,delivered_at,cancelled_at",
+            "id,status,total,currency,country,created_at,customer_id,restaurant_id,driver_id,payment_method,payment_status,kind,refund_amount,refund_status,cancel_reason,address,pickup_address,driver_payout,accepted_at,ready_at,picked_up_at,delivered_at,cancelled_at,cash_settled_at",
           )
           .order("created_at", { ascending: false })
           .limit(500),
