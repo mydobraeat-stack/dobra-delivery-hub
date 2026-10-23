@@ -103,7 +103,8 @@ export function DashboardCharts({
   const balances = splitBalances(orders);
   const balanceItems = balances.flatMap((b) => [
     { name: `${b.currency} online`, value: formatMoney(b.online, b.currency), color: INFO },
-    { name: `${b.currency} cash`, value: formatMoney(b.cash, b.currency), color: WARN },
+    { name: `${b.currency} cash settled`, value: formatMoney(b.cashSettled, b.currency), color: GOOD },
+    { name: `${b.currency} cash owed by drivers`, value: formatMoney(b.cashOutstanding, b.currency), color: WARN },
   ]);
   const top = (key: (o: AdminOrder) => string, val: (o: AdminOrder) => number) => {
     const m = new Map<string, number>();
@@ -135,7 +136,7 @@ export function DashboardCharts({
 
       <ChartCard
         title="Balances"
-        hint="Delivered orders minus refunds: online (card / BLIK) confirmed by Stripe, and cash collected by drivers that still needs settling."
+        hint="Delivered orders minus refunds: online (card / BLIK) confirmed by Stripe, cash already handed over by drivers, and cash drivers still owe."
       >
         {balanceItems.length === 0 ? (
           <p className="text-sm text-foreground/60">No delivered orders yet.</p>
