@@ -1,5 +1,9 @@
 # Task roadmap
 
+## Driver cash payouts
+- [ ] Add audited Super Admin cash payout records, prevent duplicate/overpayments, and update available cash automatically.
+- [ ] Add payout page, balance links, and tests; verify payment recording and readback.
+
 ## Admin mobile layout
 - [x] Arrange admin navigation, page controls, records, and dialogs for phone and desktop screens.
 - [x] Verify signed-in admin navigation and populated pages on mobile and desktop.
