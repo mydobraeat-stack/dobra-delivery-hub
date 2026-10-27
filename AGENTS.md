@@ -19,4 +19,5 @@
 - Google Maps navigation links and the auto-open setting live only in src/lib/navigation.ts, opened synchronously inside tap handlers; why: browsers block popups opened after an await.
 - Checkout manual address formatting and completeness checks share a browser-safe helper; why: displayed address fields and submitted delivery addresses must stay consistent.
 - Payout math lives only in src/lib/payout.ts; the per-order driver payout is locked by DB trigger at insert from country_pricing; why: rate changes never rewrite past earnings.
+- Cash driver payouts are immutable, audited Super Admin RPC records with currency-scoped locking and idempotency; settled cash already retains the driver's locked earnings, and those retained amounts must never be paid twice. Cash balance summaries use all delivered orders, not the dashboard's limited order list; why: prevent overpayment and inaccurate cash availability.
 - Order status-change times (accepted_at…cancelled_at, delivered_at) are set only by database triggers and shown via src/lib/order-time.ts in the order's country timezone; why: trustworthy timeline, consistent 24h local display.
