@@ -70,6 +70,7 @@ function CashPayouts() {
         <div className="flex flex-wrap items-start justify-between gap-3"><div className="min-w-0"><h3 className="break-words font-semibold">{d.name}</h3><p className="text-sm text-muted-foreground">{d.currency}</p></div><p className="text-xl font-bold">{formatMoney(Number(d.owed), d.currency)} <span className="text-xs font-normal text-muted-foreground">owed</span></p></div>
         <dl className="grid grid-cols-3 gap-3 text-sm">{[["Earned",d.earned],["Kept from cash",d.retained],["Cash paid",d.paid]].map(([label,value]) => <div key={String(label)}><dt className="text-xs text-muted-foreground">{label}</dt><dd className="font-semibold">{formatMoney(Number(value), d.currency)}</dd></div>)}</dl>
         <Button onClick={() => open(d)} disabled={Number(d.owed) <= 0 || Number(data.balances.find(b => b.currency === d.currency)?.cashAvailable ?? 0) <= 0}><Banknote className="size-4" /> Record cash payment</Button>
+        {Number(d.owed) > 0 && Number(data.balances.find(b => b.currency === d.currency)?.cashAvailable ?? 0) <= 0 && <p className="text-xs text-muted-foreground">Awaiting cash handover from drivers.</p>}
       </Card>)}</div>
     </section>
     <section className="space-y-3"><h2 className="text-lg font-bold">Payment history</h2>

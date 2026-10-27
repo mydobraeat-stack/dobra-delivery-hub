@@ -1,11 +1,12 @@
 # Task roadmap
 
 ## Driver cash payouts
-- [ ] Add audited Super Admin cash payout records, prevent duplicate/overpayments, and update available cash automatically.
-- [ ] Add payout page, balance links, and tests; verify payment recording and readback.
+- [x] Add audited Super Admin cash payout records, prevent duplicate/overpayments, and update available cash automatically.
+- [x] Add payout page, balance links, and 24 passing safeguard tests; verify signed-in page and rejection of unearned payouts.
+- [ ] Verify successful cash payment recording and readback — blocked: no settled cash is available; do not invent a real cash handover.
 
 ## Page gradients
-- [ ] Add subtle light-only Dobra gradients to page backgrounds and primary buttons; verify homepage and admin pages.
+- [x] Add subtle light-only Dobra gradients to page backgrounds and primary buttons; verify homepage and admin pages.
 
 ## Admin mobile layout
 - [x] Arrange admin navigation, page controls, records, and dialogs for phone and desktop screens.
