@@ -57,6 +57,13 @@
       "when": 1793072653936,
       "tag": "0007_driver_cash_payout_ledger",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1793072867601,
+      "tag": "0008_prevent_cash_driver_earnings_double_payment",
+      "breakpoints": true
     }
   ]
 }
