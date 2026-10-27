@@ -21,7 +21,7 @@ export const Route = createFileRoute("/_authenticated/admin/payouts")({
     { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" },
     { name: "robots", content: "noindex,nofollow" },
   ] }),
-  errorComponent: ({ error }) => <div role="alert" className="p-5 text-destructive">{error.message}</div>,
+  errorComponent: ({ error }) => <div role="alert" className="p-5 text-destructive">{error instanceof Error ? error.message : "Cash payouts could not be loaded."}</div>,
   component: CashPayouts,
 });
 
