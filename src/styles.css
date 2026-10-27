@@ -2,8 +2,6 @@
 @source "../src";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
-
 /*
  * Design system definition.
  *
@@ -90,6 +88,9 @@
   --popover-foreground: oklch(0.22 0.01 90);
   --sun: oklch(0.88 0.17 96);
   --sun-foreground: oklch(0.22 0.01 90);
+  --page-gradient: linear-gradient(145deg, color-mix(in oklab, var(--sun) 34%, var(--card)) 0%, var(--card) 58%, color-mix(in oklab, var(--brand) 6%, var(--card)) 100%);
+  --sun-gradient: linear-gradient(115deg, var(--sun) 0%, color-mix(in oklab, var(--sun) 70%, var(--card)) 62%, color-mix(in oklab, var(--sun) 42%, var(--card)) 100%);
+  --action-gradient: linear-gradient(120deg, var(--brand), color-mix(in oklab, var(--brand) 86%, var(--ink)));
   --primary: oklch(0.53 0.22 27);
   --primary-foreground: oklch(0.99 0.01 96);
   --secondary: oklch(0.96 0.03 96);
@@ -132,9 +133,26 @@
   body {
     font-family: var(--font-sans);
     background-color: var(--color-background);
+    background-image: var(--page-gradient);
 
     color: var(--color-foreground);
   }
+}
+
+@utility bg-page-gradient {
+  background-image: var(--page-gradient);
+}
+
+@utility bg-sun-gradient {
+  background-image: var(--sun-gradient);
+}
+
+:where(.bg-background) {
+  background-image: var(--page-gradient);
+}
+
+[data-slot="button"].bg-primary {
+  background-image: var(--action-gradient);
 }
 
 /* Staff-only layout: keep record text shrinkable and data scrolling local. */

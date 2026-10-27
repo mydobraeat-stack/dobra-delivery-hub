@@ -4,6 +4,9 @@ import { Card } from "@/components/ui/card";
 import type { AdminOrder } from "@/lib/admin";
 import { splitBalances } from "@/lib/admin-balances";
 import { driverPayout, restaurantEarnings } from "@/lib/payout";
+import { useQuery } from "@tanstack/react-query";
+import { cashPayoutSummaryQuery } from "@/lib/cash-payouts";
+import { Button } from "@/components/ui/button";
 
 const GOOD = "var(--good)";
 const WARN = "var(--warn)";
@@ -100,10 +103,12 @@ export function DashboardCharts({
   const dobraNet = Math.round((collected - restTotal - driverTotal) * 100) / 100;
 
   // Balances: what arrived online (Stripe) vs what drivers collected in cash, per currency.
-  const balances = splitBalances(orders);
+  const cashSummary = useQuery(cashPayoutSummaryQuery);
+  const balances = cashSummary.data?.balances ?? splitBalances(orders);
   const balanceItems = balances.flatMap((b) => [
     { name: `${b.currency} online`, value: formatMoney(b.online, b.currency), color: INFO },
-    { name: `${b.currency} cash settled`, value: formatMoney(b.cashSettled, b.currency), color: GOOD },
+    { name: `${b.currency} cash available`, value: formatMoney(Number("cashAvailable" in b ? b.cashAvailable : b.cashSettled), b.currency), color: GOOD },
+    { name: `${b.currency} paid to drivers`, value: formatMoney(Number("cashPaidOut" in b ? b.cashPaidOut : 0), b.currency), color: INFO },
     { name: `${b.currency} cash owed by drivers`, value: formatMoney(b.cashOutstanding, b.currency), color: WARN },
   ]);
   const top = (key: (o: AdminOrder) => string, val: (o: AdminOrder) => number) => {
@@ -121,7 +126,7 @@ export function DashboardCharts({
       <div className="grid gap-4 sm:grid-cols-3 lg:col-span-2">
         {[
           { label: "Restaurant earnings", to: "/admin/restaurants", value: restTotal, color: GOOD, hint: "Full order totals, minus refunds" },
-          { label: "Driver payouts", to: "/admin/drivers", value: driverTotal, color: INFO, hint: "Fixed amount per delivery" },
+          { label: "Driver payouts", to: "/admin/payouts", value: driverTotal, color: INFO, hint: "Fixed amount per delivery" },
           { label: "Dobra net", to: "/admin/analytics", value: dobraNet, color: dobraNet < 0 ? BAD : GOOD, hint: "Collected − restaurants − drivers" },
         ].map((k) => (
           <Link key={k.label} to={k.to} className="block rounded-xl">
@@ -136,13 +141,15 @@ export function DashboardCharts({
 
       <ChartCard
         title="Balances"
-        hint="Delivered orders minus refunds: online (card / BLIK) confirmed by Stripe, cash already handed over by drivers, and cash drivers still owe."
+        hint="Online receipts, cash available after driver earnings and payouts, and cash still with drivers."
       >
         {balanceItems.length === 0 ? (
           <p className="text-sm text-foreground/60">No delivered orders yet.</p>
         ) : (
           <Legend items={balanceItems} />
         )}
+        {cashSummary.error && <p role="alert" className="text-sm text-destructive">Cash payout balances could not be loaded.</p>}
+        <Button asChild variant="outline" size="sm"><Link to="/admin/payouts">Manage cash payouts</Link></Button>
       </ChartCard>
 
       <ChartCard title="Restaurant earnings (PLN)" hint="Top restaurants by what they receive from delivered orders.">

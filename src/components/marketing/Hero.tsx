@@ -119,7 +119,7 @@ export function Hero() {
   }
 
   return (
-    <section className="bg-sun">
+    <section className="bg-sun bg-sun-gradient">
       <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-6 lg:grid-cols-2 lg:gap-14 lg:px-8 lg:py-20">
         <div className="min-w-0">
           <h1 className="text-4xl font-extrabold leading-tight text-sun-foreground sm:text-5xl lg:text-6xl">
