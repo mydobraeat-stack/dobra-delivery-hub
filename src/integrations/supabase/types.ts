@@ -302,6 +302,47 @@ export type Database = {
         }
         Relationships: []
       }
+      driver_cash_payouts: {
+        Row: {
+          amount: number
+          currency: string
+          driver_id: string
+          id: string
+          paid_at: string
+          paid_by: string
+          reference: string
+          request_id: string
+        }
+        Insert: {
+          amount: number
+          currency: string
+          driver_id: string
+          id?: string
+          paid_at?: string
+          paid_by: string
+          reference: string
+          request_id: string
+        }
+        Update: {
+          amount?: number
+          currency?: string
+          driver_id?: string
+          id?: string
+          paid_at?: string
+          paid_by?: string
+          reference?: string
+          request_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "driver_cash_payouts_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       driver_documents: {
         Row: {
           created_at: string
@@ -1228,6 +1269,7 @@ export type Database = {
         Args: { _order: string; _reason: string }
         Returns: undefined
       }
+      admin_cash_payout_summary: { Args: never; Returns: Json }
       admin_flag_order: {
         Args: { _note: string; _order: string }
         Returns: undefined
@@ -1251,6 +1293,16 @@ export type Database = {
       admin_reassign_driver: {
         Args: { _driver: string; _order: string }
         Returns: undefined
+      }
+      admin_record_driver_cash_payout: {
+        Args: {
+          _amount: number
+          _currency: string
+          _driver: string
+          _reference: string
+          _request: string
+        }
+        Returns: string
       }
       admin_refund_order: {
         Args: { _amount: number; _order: string; _reason: string }
