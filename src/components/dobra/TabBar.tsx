@@ -56,13 +56,13 @@ export function TabBar({ role }: { role: "customer" | "vendor" | "driver" }) {
             <Link
               to={tab.to}
               activeOptions={{ exact: tab.to === "/customer" || tab.to === "/vendor" || tab.to === "/driver" }}
-              className="flex w-full min-w-0 flex-col items-center gap-1 px-1 py-2.5 text-center text-[11px] leading-tight text-foreground/60 sm:text-xs"
+              className="flex w-full min-w-0 flex-col items-center gap-1 px-1 py-2.5 text-center text-[11px] leading-tight text-foreground/80 sm:text-xs"
               activeProps={{ className: "text-foreground font-semibold" }}
             >
               {({ isActive }) => (
                 <>
                   <tab.icon
-                    className={cn("size-5 shrink-0", isActive ? "text-foreground" : "text-foreground/60")}
+                    className={cn("size-5 shrink-0", isActive ? "text-foreground" : "text-foreground/80")}
                     aria-hidden
                   />
                   <span className="w-full truncate">{t(tab.labelKey)}</span>

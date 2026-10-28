@@ -224,7 +224,7 @@ function RestaurantPage() {
             <section className="space-y-3">
               <h2 className="text-lg font-bold text-foreground">{t("customer.restaurant.reviewsTitle")}</h2>
               {reviews.length === 0 ? (
-                <p className="text-sm text-foreground/60">{t("customer.restaurant.noReviews")}</p>
+                <p className="text-sm text-foreground/80">{t("customer.restaurant.noReviews")}</p>
               ) : (
                 reviews.map((review) => (
                   <Card key={review.id} className="border-ink/10">
