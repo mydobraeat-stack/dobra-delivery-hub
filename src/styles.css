@@ -88,9 +88,29 @@
   --popover-foreground: oklch(0.22 0.01 90);
   --sun: oklch(0.88 0.17 96);
   --sun-foreground: oklch(0.22 0.01 90);
-  --page-gradient: linear-gradient(145deg, color-mix(in oklab, var(--sun) 34%, var(--card)) 0%, var(--card) 58%, color-mix(in oklab, var(--brand) 6%, var(--card)) 100%);
+  --page-gradient:
+    radial-gradient(70% 55% at 100% 0%, color-mix(in oklab, var(--brand) 12%, transparent) 0%, transparent 60%),
+    radial-gradient(75% 55% at 0% 100%, color-mix(in oklab, var(--sun) 55%, transparent) 0%, transparent 65%),
+    linear-gradient(160deg, color-mix(in oklab, var(--sun) 32%, var(--card)) 0%, var(--card) 46%, color-mix(in oklab, var(--sun) 20%, var(--card)) 100%);
   --sun-gradient: linear-gradient(115deg, var(--sun) 0%, color-mix(in oklab, var(--sun) 70%, var(--card)) 62%, color-mix(in oklab, var(--sun) 42%, var(--card)) 100%);
   --action-gradient: linear-gradient(120deg, var(--brand), color-mix(in oklab, var(--brand) 86%, var(--ink)));
+  /* Extra brand washes: hero, section bands, content panels and accent chips. */
+  --hero-gradient:
+    radial-gradient(60% 70% at 85% 12%, color-mix(in oklab, var(--brand) 16%, transparent) 0%, transparent 60%),
+    radial-gradient(70% 60% at 4% 92%, color-mix(in oklab, var(--card) 60%, transparent) 0%, transparent 65%),
+    linear-gradient(115deg, var(--sun) 0%, color-mix(in oklab, var(--sun) 62%, var(--card)) 55%, color-mix(in oklab, var(--sun) 34%, var(--card)) 100%);
+  --section-gradient: linear-gradient(180deg, color-mix(in oklab, var(--sun) 30%, var(--card)) 0%, var(--card) 42%, color-mix(in oklab, var(--brand) 8%, var(--card)) 100%);
+  --panel-gradient: linear-gradient(150deg, var(--card) 0%, color-mix(in oklab, var(--sun) 18%, var(--card)) 55%, color-mix(in oklab, var(--brand) 6%, var(--card)) 100%);
+  --brand-gradient: linear-gradient(135deg, color-mix(in oklab, var(--brand) 82%, var(--sun)) 0%, var(--brand) 52%, color-mix(in oklab, var(--brand) 78%, var(--ink)) 100%);
+  --header-gradient: linear-gradient(180deg, color-mix(in oklab, var(--sun) 26%, var(--card)) 0%, var(--card) 100%);
+  --footer-gradient: linear-gradient(180deg, var(--card) 0%, color-mix(in oklab, var(--sun) 28%, var(--card)) 100%);
+  --chip-gradient: linear-gradient(140deg, color-mix(in oklab, var(--sun) 75%, var(--card)) 0%, color-mix(in oklab, var(--brand) 26%, var(--card)) 100%);
+  --ink-gradient: linear-gradient(140deg, color-mix(in oklab, var(--ink) 88%, var(--brand)) 0%, var(--ink) 55%, color-mix(in oklab, var(--ink) 88%, var(--sun)) 100%);
+  --tint-sun-gradient: linear-gradient(150deg, color-mix(in oklab, var(--sun) 40%, var(--card)) 0%, color-mix(in oklab, var(--sun) 14%, var(--card)) 100%);
+  --tint-brand-gradient: linear-gradient(150deg, color-mix(in oklab, var(--brand) 12%, var(--card)) 0%, var(--card) 55%, color-mix(in oklab, var(--sun) 26%, var(--card)) 100%);
+  --glow-sun: radial-gradient(closest-side, color-mix(in oklab, var(--sun) 90%, transparent), transparent);
+  --glow-brand: radial-gradient(closest-side, color-mix(in oklab, var(--brand) 38%, transparent), transparent);
+
   --primary: oklch(0.53 0.22 27);
   --primary-foreground: oklch(0.99 0.01 96);
   --secondary: oklch(0.96 0.03 96);
