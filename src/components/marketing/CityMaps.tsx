@@ -50,7 +50,7 @@ function OsmFallback({ cities, title }: { cities: City[]; title: string }) {
 
 function CountryCard({ title, cities }: { title: string; cities: City[] }) {
   return (
-    <article className="overflow-hidden rounded-3xl border border-ink/10 bg-background/40 shadow-soft">
+    <article className="overflow-hidden rounded-3xl border border-ink/10 bg-panel-gradient shadow-soft">
       <MapView
         points={toPoints(cities)}
         className="h-64 w-full sm:h-72"
@@ -63,7 +63,7 @@ function CountryCard({ title, cities }: { title: string; cities: City[] }) {
           {cities.map((c) => (
             <li
               key={c.name}
-              className="rounded-full bg-sun/40 px-3 py-1 text-sm font-semibold text-ink"
+              className="rounded-full bg-chip-gradient px-3 py-1 text-sm font-semibold text-ink ring-1 ring-primary/15"
             >
               {c.name}
             </li>
@@ -80,7 +80,7 @@ export function CityMaps() {
   const pl = data ? data.filter((c) => c.country === "Poland") : POLAND_CITIES;
   const cm = data ? data.filter((c) => c.country === "Cameroon") : CAMEROON_CITIES;
   return (
-    <section className="bg-card">
+    <section className="bg-section-gradient">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
         <h2 className="text-3xl font-extrabold text-foreground sm:text-4xl">
           {t("marketing.cities.title")}
