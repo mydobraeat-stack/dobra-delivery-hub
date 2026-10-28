@@ -160,6 +160,7 @@ function AuthPage() {
                   onChange={(e) => setFullName(e.target.value)}
                   required
                   autoComplete="name"
+                className="bg-card"
                 />
               </div>
               <div className="space-y-2">
@@ -170,6 +171,7 @@ function AuthPage() {
                   onChange={(e) => setCountry(e.target.value)}
                   required
                   autoComplete="country-name"
+                className="bg-card"
                 />
               </div>
             </>
@@ -184,6 +186,7 @@ function AuthPage() {
               onChange={(e) => setEmail(e.target.value)}
               required
               autoComplete="email"
+            className="bg-card"
             />
           </div>
 
@@ -197,7 +200,7 @@ function AuthPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={6}
-                className="pr-10"
+                className="bg-card pr-10"
                 autoComplete={isSignup ? "new-password" : "current-password"}
               />
               <button
