@@ -130,7 +130,7 @@ function CustomerHome() {
           : t("customer.home.greeting")}
       </h1>
 
-      <div className="flex items-center gap-3 rounded-2xl bg-card px-4 py-2 shadow-soft">
+      <div className="flex items-center gap-3 rounded-2xl bg-panel-gradient px-4 py-2 shadow-soft ring-1 ring-ink/10">
         <Search className="size-5 shrink-0 text-foreground/40" aria-hidden />
         <Input
           value={search}
@@ -160,7 +160,7 @@ function CustomerHome() {
               onClick={() => tapFeedback("tap")}
               className="block transition-transform duration-200 active:scale-[0.98]"
             >
-              <Card className="border-ink/10 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-soft">
+              <Card className="border-ink/10 bg-panel-gradient transition-all duration-200 hover:-translate-y-0.5 hover:shadow-soft">
                 <CardContent className="flex items-center justify-between gap-3 py-4">
                   <div className="min-w-0">
                     <p className="truncate font-semibold text-foreground">
@@ -290,7 +290,7 @@ function CustomerHome() {
                   onClick={() => tapFeedback("tap")}
                   className="block rounded-xl transition-transform duration-200 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                 >
-                  <Card className="h-full overflow-hidden border-ink/10 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-soft">
+                  <Card className="h-full overflow-hidden border-ink/10 bg-panel-gradient transition-all duration-200 hover:-translate-y-0.5 hover:shadow-soft">
                     <StoredImage
                       value={r.logo_url}
                       alt={`${r.name} restaurant`}

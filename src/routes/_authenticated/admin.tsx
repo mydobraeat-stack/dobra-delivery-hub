@@ -85,7 +85,7 @@ function AdminLayout() {
                 className={cn(
                   "flex min-h-11 items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-foreground/70 hover:bg-muted",
                 )}
-                activeProps={{ className: "bg-sun text-sun-foreground font-semibold", "aria-current": "page" }}
+                activeProps={{ className: "bg-sun-gradient text-sun-foreground font-semibold", "aria-current": "page" }}
                 onClick={() => setMenuOpen(false)}
               >
                 <l.icon className="size-4 shrink-0" aria-hidden />
@@ -111,7 +111,7 @@ function AdminLayout() {
   return (
     <div className="min-h-screen bg-background pb-10">
       <AppHeader subtitle={isSuper ? "Super Admin" : "Support Agent"} />
-      <div className="sticky top-0 z-30 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-border bg-card px-4 py-3 lg:hidden">
+      <div className="sticky top-0 z-30 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-border bg-header-gradient px-4 py-3 lg:hidden">
         <p className="min-w-0 truncate font-semibold">{activeLabel}</p>
         <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
           <SheetTrigger asChild>
@@ -128,7 +128,7 @@ function AdminLayout() {
         </Sheet>
       </div>
       <div className="mx-auto grid max-w-[1440px] grid-cols-[minmax(0,1fr)] lg:grid-cols-[224px_minmax(0,1fr)]">
-        <aside className="sticky top-0 hidden max-h-dvh self-start overflow-y-auto border-r border-border bg-card p-4 lg:flex lg:flex-col">
+        <aside className="sticky top-0 hidden max-h-dvh self-start overflow-y-auto border-r border-border bg-panel-gradient p-4 lg:flex lg:flex-col">
           <p className="mb-4 px-3 text-xs font-semibold uppercase text-muted-foreground">{isSuper ? "Super Admin" : "Support Agent"}</p>
           {navigation}
         </aside>

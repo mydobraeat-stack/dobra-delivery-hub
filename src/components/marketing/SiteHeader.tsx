@@ -12,7 +12,7 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-ink/10 bg-background/95 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-ink/10 bg-header-gradient backdrop-blur">
       <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 py-3 sm:px-6 lg:px-8">
         <Link to="/" className="min-w-0" aria-label="Dobra">
           <DobraLogo className="text-3xl sm:text-4xl" />

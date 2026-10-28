@@ -7,6 +7,7 @@
 
 ## Page gradients
 - [x] Add subtle light-only Dobra gradients to page backgrounds and primary buttons; verify homepage and admin pages.
+- [x] Extend the gradient washes to the marketing, legal, sign-in, customer, vendor, driver and admin surfaces; keep checkout panels crisp white with a distinct total panel and verify signed-in.
 
 ## Admin mobile layout
 - [x] Arrange admin navigation, page controls, records, and dialogs for phone and desktop screens.

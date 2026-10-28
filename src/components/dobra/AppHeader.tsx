@@ -13,7 +13,7 @@ export function AppHeader({ subtitle }: { subtitle?: string }) {
   const maxW = useShellMaxWidth();
 
   return (
-    <header className="sticky top-0 z-20 border-b border-ink/10 bg-background/95 backdrop-blur">
+    <header className="sticky top-0 z-20 border-b border-ink/10 bg-header-gradient backdrop-blur">
       <div className={cn("mx-auto flex items-center justify-between gap-4 px-5 py-4", maxW)}>
         <div className="flex items-baseline gap-3">
           <DobraLogo className="text-3xl" />

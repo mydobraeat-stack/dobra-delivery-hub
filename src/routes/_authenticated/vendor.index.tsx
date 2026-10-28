@@ -66,7 +66,7 @@ function VendorOrdersPage() {
       <h1 className="text-2xl font-bold text-foreground">{t("vendor.orders.title")}</h1>
 
       {account?.approvalStatus !== "approved" ? (
-        <Card className="border-ink/10 bg-sun/20">
+        <Card className="border-ink/10 bg-tint-sun-gradient">
           <CardContent className="py-4 text-sm text-foreground">
             {t("vendor.orders.pendingApproval")}
           </CardContent>

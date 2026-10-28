@@ -18,7 +18,7 @@ export function FeaturedRestaurants({ limit, heading = true }: { limit?: number;
     <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
       {heading ? (
         <>
-          <h2 className="text-3xl font-extrabold text-foreground">{c.featuredTitle}</h2>
+          <h2 className="text-3xl font-extrabold text-gradient-brand">{c.featuredTitle}</h2>
           <p className="mt-2 text-foreground/70">{c.featuredSub}</p>
         </>
       ) : null}
@@ -30,7 +30,7 @@ export function FeaturedRestaurants({ limit, heading = true }: { limit?: number;
                 key={r.id}
                 to="/get-started"
                 search={{ mode: "signup" }}
-                className="group overflow-hidden rounded-2xl border border-ink/10 bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
+                className="group overflow-hidden rounded-2xl border border-ink/10 bg-panel-gradient shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
               >
                 <StoredImage value={r.logo_url} alt={r.name} width={600} height={340} className="h-40 w-full object-contain" />
                 <div className="p-4">

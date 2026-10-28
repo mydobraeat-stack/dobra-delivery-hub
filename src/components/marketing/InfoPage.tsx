@@ -12,8 +12,10 @@ export function InfoPage({ titleKey, bodyKey, children }: { titleKey: string; bo
     <div className="flex min-h-screen flex-col bg-background">
       <SiteHeader />
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-14 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-extrabold text-foreground sm:text-4xl">{t(titleKey)}</h1>
-        <p className="mt-4 text-base text-foreground/75">{t(bodyKey)}</p>
+        <div className="rounded-3xl bg-panel-gradient p-6 ring-1 ring-ink/10">
+          <h1 className="text-3xl font-extrabold text-gradient-brand sm:text-4xl">{t(titleKey)}</h1>
+          <p className="mt-4 text-base text-foreground/75">{t(bodyKey)}</p>
+        </div>
         {children}
         <div className="mt-8 flex flex-wrap gap-3">
           <Button asChild>
