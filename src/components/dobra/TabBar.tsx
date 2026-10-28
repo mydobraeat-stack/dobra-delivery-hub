@@ -46,7 +46,7 @@ export function TabBar({ role }: { role: "customer" | "vendor" | "driver" }) {
     <nav
       aria-label={t("common.navAria")}
       className={cn(
-        "fixed bottom-0 left-1/2 z-30 w-full -translate-x-1/2 border-t border-ink/10 bg-card/95 bg-footer-gradient backdrop-blur",
+        "fixed bottom-0 left-1/2 z-30 w-full -translate-x-1/2 border-t border-ink/10 bg-sun/95 backdrop-blur",
         maxW,
       )}
     >
