@@ -41,7 +41,8 @@ export function SiteFooter() {
   const link = "hover:text-primary";
 
   return (
-    <footer className="border-t border-ink/10 bg-card">
+    <footer className="bg-card bg-footer-gradient">
+      <div aria-hidden className="h-1 w-full bg-brand-gradient" />
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="min-w-0 space-y-4">

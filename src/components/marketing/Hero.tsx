@@ -119,7 +119,9 @@ export function Hero() {
   }
 
   return (
-    <section className="bg-sun bg-sun-gradient">
+    <section className="relative overflow-hidden bg-sun bg-hero-gradient">
+      <div aria-hidden className="pointer-events-none absolute -left-24 top-6 size-72 rounded-full bg-glow-brand opacity-45 blur-2xl" />
+      <div aria-hidden className="pointer-events-none absolute -right-20 bottom-0 size-80 rounded-full bg-glow-sun opacity-70 blur-2xl" />
       <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-6 lg:grid-cols-2 lg:gap-14 lg:px-8 lg:py-20">
         <div className="min-w-0">
           <h1 className="text-4xl font-extrabold leading-tight text-sun-foreground sm:text-5xl lg:text-6xl">
@@ -182,7 +184,8 @@ export function Hero() {
         </div>
 
         <div className="min-w-0">
-          <div className="relative aspect-[5/4] w-full overflow-hidden rounded-3xl shadow-soft">
+          <div className="rounded-3xl bg-brand-gradient p-[3px] shadow-soft">
+            <div className="relative aspect-[5/4] w-full overflow-hidden rounded-[1.375rem]">
             {HERO_IMAGES.map((src, i) => (
               <img
                 key={src}
@@ -199,6 +202,7 @@ export function Hero() {
                 }`}
               />
             ))}
+            </div>
           </div>
         </div>
       </div>

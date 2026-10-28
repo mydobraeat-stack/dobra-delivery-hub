@@ -167,6 +167,63 @@
   background-image: var(--sun-gradient);
 }
 
+@utility bg-hero-gradient {
+  background-image: var(--hero-gradient);
+}
+
+@utility bg-section-gradient {
+  background-image: var(--section-gradient);
+}
+
+@utility bg-panel-gradient {
+  background-image: var(--panel-gradient);
+}
+
+@utility bg-brand-gradient {
+  background-image: var(--brand-gradient);
+}
+
+@utility bg-header-gradient {
+  background-image: var(--header-gradient);
+}
+
+@utility bg-footer-gradient {
+  background-image: var(--footer-gradient);
+}
+
+@utility bg-chip-gradient {
+  background-image: var(--chip-gradient);
+}
+
+@utility bg-ink-gradient {
+  background-image: var(--ink-gradient);
+}
+
+@utility bg-tint-sun-gradient {
+  background-image: var(--tint-sun-gradient);
+}
+
+@utility bg-tint-brand-gradient {
+  background-image: var(--tint-brand-gradient);
+}
+
+@utility bg-glow-sun {
+  background-image: var(--glow-sun);
+}
+
+@utility bg-glow-brand {
+  background-image: var(--glow-brand);
+}
+
+/* Gradient headline text: use on large type and drop text-foreground. */
+@utility text-gradient-brand {
+  background-image: linear-gradient(100deg, var(--brand), color-mix(in oklab, var(--brand) 52%, var(--sun)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+
 :where(.bg-background) {
   background-image: var(--page-gradient);
 }

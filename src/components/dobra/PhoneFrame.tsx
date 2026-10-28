@@ -28,7 +28,7 @@ export function PhoneFrame({
       <div className="flex min-h-screen w-full justify-center bg-background bg-page-gradient">
         <div
           className={cn(
-            "@container relative w-full max-w-[430px] bg-background shadow-2xl lg:border-x lg:border-ink/10 lg:min-h-screen",
+            "@container relative w-full max-w-[430px] bg-background bg-page-gradient shadow-2xl lg:border-x lg:border-ink/10 lg:min-h-screen",
             className,
           )}
         >
