@@ -103,7 +103,7 @@
   --panel-gradient: linear-gradient(150deg, var(--card) 0%, color-mix(in oklab, var(--sun) 10%, var(--card)) 62%, color-mix(in oklab, var(--brand) 4%, var(--card)) 100%);
   --brand-gradient: linear-gradient(135deg, color-mix(in oklab, var(--brand) 82%, var(--sun)) 0%, var(--brand) 52%, color-mix(in oklab, var(--brand) 78%, var(--ink)) 100%);
   --header-gradient: linear-gradient(180deg, color-mix(in oklab, var(--sun) 72%, var(--background)) 0%, var(--background) 100%);
-  --footer-gradient: linear-gradient(180deg, var(--card) 0%, color-mix(in oklab, var(--sun) 28%, var(--card)) 100%);
+  --footer-gradient: linear-gradient(180deg, var(--card) 0%, color-mix(in oklab, var(--sun) 45%, var(--card)) 100%);
   --chip-gradient: linear-gradient(140deg, color-mix(in oklab, var(--sun) 75%, var(--card)) 0%, color-mix(in oklab, var(--brand) 26%, var(--card)) 100%);
   --ink-gradient: linear-gradient(140deg, color-mix(in oklab, var(--ink) 88%, var(--brand)) 0%, var(--ink) 55%, color-mix(in oklab, var(--ink) 88%, var(--sun)) 100%);
   --tint-sun-gradient: linear-gradient(150deg, color-mix(in oklab, var(--sun) 40%, var(--card)) 0%, color-mix(in oklab, var(--sun) 14%, var(--card)) 100%);
