@@ -102,6 +102,7 @@ export default {
     Sides: "Sides",
     Desserts: "Desserts",
     Drinks: "Drinks",
+    Snacks: "Snacks",
   },
   profileMenu: {
     orders: "Order history",
