@@ -122,7 +122,7 @@ export function useVendorOrders(restaurantId: string | undefined) {
 
 export function StatCard({ label, value }: { label: string; value: string }) {
   return (
-    <Card className="border-ink/10">
+    <Card className="border-ink/10 bg-panel-gradient">
       <CardContent className="py-4">
         <p className="text-xs text-foreground/60">{label}</p>
         <p className="text-xl font-bold text-foreground">{value}</p>

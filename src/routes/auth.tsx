@@ -137,7 +137,7 @@ function AuthPage() {
         <DobraLogo className="text-5xl" />
       </Link>
 
-      <div className="w-full max-w-md rounded-3xl bg-card p-6 shadow-soft sm:p-8">
+      <div className="w-full max-w-md rounded-3xl bg-panel-gradient p-6 shadow-soft ring-1 ring-ink/10 sm:p-8">
         <h1 className="text-2xl font-bold text-foreground">
           {isSignup
             ? t("auth.signupTitle", { role: t(`common.roles.${role}`) })

@@ -366,7 +366,7 @@ function DriverHome() {
       </section>
 
       {/* Bottom sheet content */}
-      <div className="mx-auto -mt-4 max-w-4xl space-y-5 rounded-t-3xl bg-card px-5 pb-6 pt-5 shadow-[0_-8px_24px_rgba(0,0,0,0.08)]">
+      <div className="mx-auto -mt-4 max-w-4xl space-y-5 rounded-t-3xl bg-panel-gradient px-5 pb-6 pt-5 shadow-[0_-8px_24px_rgba(0,0,0,0.08)]">
         <div className="rounded-2xl bg-background px-4 py-4 ring-1 ring-ink/10">
           <p className="text-sm font-bold text-ink">{t("driver.home.offersTitle")}</p>
           <p className="text-sm text-ink/80">{t("driver.home.offersBody")}</p>
@@ -536,7 +536,7 @@ function StatCard({
   value: string;
 }) {
   return (
-    <Card className="border-ink/10 bg-ink-solid text-ink-solid-foreground">
+    <Card className="border-ink/10 bg-ink-solid bg-ink-gradient text-ink-solid-foreground">
       <CardContent className="space-y-1 py-4">
         <Icon className="size-4 text-ink-solid-foreground" aria-hidden />
         <p className="text-xl font-bold">{value}</p>

@@ -30,7 +30,7 @@ export function FeaturedRestaurants({ limit, heading = true }: { limit?: number;
                 key={r.id}
                 to="/get-started"
                 search={{ mode: "signup" }}
-                className="group overflow-hidden rounded-2xl border border-ink/10 bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
+                className="group overflow-hidden rounded-2xl border border-ink/10 bg-panel-gradient shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
               >
                 <StoredImage value={r.logo_url} alt={r.name} width={600} height={340} className="h-40 w-full object-contain" />
                 <div className="p-4">
