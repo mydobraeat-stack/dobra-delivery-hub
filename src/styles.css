@@ -100,14 +100,14 @@
     radial-gradient(70% 60% at 4% 92%, color-mix(in oklab, var(--card) 60%, transparent) 0%, transparent 65%),
     linear-gradient(115deg, var(--sun) 0%, color-mix(in oklab, var(--sun) 62%, var(--card)) 55%, color-mix(in oklab, var(--sun) 34%, var(--card)) 100%);
   --section-gradient: linear-gradient(180deg, color-mix(in oklab, var(--sun) 30%, var(--card)) 0%, var(--card) 42%, color-mix(in oklab, var(--brand) 8%, var(--card)) 100%);
-  --panel-gradient: linear-gradient(150deg, var(--card) 0%, color-mix(in oklab, var(--sun) 18%, var(--card)) 55%, color-mix(in oklab, var(--brand) 6%, var(--card)) 100%);
+  --panel-gradient: linear-gradient(150deg, var(--card) 0%, color-mix(in oklab, var(--sun) 10%, var(--card)) 62%, color-mix(in oklab, var(--brand) 4%, var(--card)) 100%);
   --brand-gradient: linear-gradient(135deg, color-mix(in oklab, var(--brand) 82%, var(--sun)) 0%, var(--brand) 52%, color-mix(in oklab, var(--brand) 78%, var(--ink)) 100%);
   --header-gradient: linear-gradient(180deg, color-mix(in oklab, var(--sun) 26%, var(--card)) 0%, var(--card) 100%);
   --footer-gradient: linear-gradient(180deg, var(--card) 0%, color-mix(in oklab, var(--sun) 28%, var(--card)) 100%);
   --chip-gradient: linear-gradient(140deg, color-mix(in oklab, var(--sun) 75%, var(--card)) 0%, color-mix(in oklab, var(--brand) 26%, var(--card)) 100%);
   --ink-gradient: linear-gradient(140deg, color-mix(in oklab, var(--ink) 88%, var(--brand)) 0%, var(--ink) 55%, color-mix(in oklab, var(--ink) 88%, var(--sun)) 100%);
   --tint-sun-gradient: linear-gradient(150deg, color-mix(in oklab, var(--sun) 40%, var(--card)) 0%, color-mix(in oklab, var(--sun) 14%, var(--card)) 100%);
-  --tint-brand-gradient: linear-gradient(150deg, color-mix(in oklab, var(--brand) 12%, var(--card)) 0%, var(--card) 55%, color-mix(in oklab, var(--sun) 26%, var(--card)) 100%);
+  --tint-brand-gradient: linear-gradient(150deg, color-mix(in oklab, var(--brand) 16%, var(--card)) 0%, var(--card) 52%, color-mix(in oklab, var(--sun) 34%, var(--card)) 100%);
   --glow-sun: radial-gradient(closest-side, color-mix(in oklab, var(--sun) 90%, transparent), transparent);
   --glow-brand: radial-gradient(closest-side, color-mix(in oklab, var(--brand) 38%, transparent), transparent);
 

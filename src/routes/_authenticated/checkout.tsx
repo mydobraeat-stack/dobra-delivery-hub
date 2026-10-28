@@ -205,7 +205,7 @@ function CheckoutPage() {
           <p className="text-sm text-foreground/60">{t("customer.checkout.basketEmpty")}</p>
         ) : (
           <>
-            <section className="space-y-3 rounded-2xl bg-panel-gradient p-4 text-card-foreground shadow-sm ring-1 ring-ink/10">
+            <section className="space-y-3 rounded-2xl bg-card p-4 text-card-foreground shadow-sm ring-1 ring-ink/10">
                 <p className="font-semibold text-foreground">{cart.restaurantName}</p>
                 {cart.lines.map((line) => (
                   <div key={line.itemId} className="flex items-center gap-3">
@@ -248,7 +248,7 @@ function CheckoutPage() {
                 ))}
             </section>
 
-            <section className="space-y-3 rounded-2xl bg-panel-gradient p-4 text-card-foreground shadow-sm ring-1 ring-ink/10">
+            <section className="space-y-3 rounded-2xl bg-card p-4 text-card-foreground shadow-sm ring-1 ring-ink/10">
                 {manual ? (
                   <div className="grid grid-cols-2 gap-3">
                     {(["street", "building", "apartment", "city"] as const).map((field) => (
@@ -280,7 +280,7 @@ function CheckoutPage() {
                 </details>
             </section>
 
-            <section className="space-y-2 rounded-2xl bg-panel-gradient p-4 text-card-foreground shadow-sm ring-1 ring-ink/10">
+            <section className="space-y-2 rounded-2xl bg-card p-4 text-card-foreground shadow-sm ring-1 ring-ink/10">
                 <p className="font-semibold text-foreground">{t("customer.checkout.paymentTitle")}</p>
                 {isPoland ? <RadioGroup value={choice === "blik" ? "blik" : ""} onValueChange={() => setChoice("blik")} aria-label="BLIK">
                   <Label htmlFor="pay-blik" className={`flex min-h-10 cursor-pointer items-center gap-3 rounded-md px-3 py-2 ${choice === "blik" ? "bg-sun/25" : ""}`}>
@@ -303,7 +303,7 @@ function CheckoutPage() {
 
             </section>
 
-            <section className="space-y-2 rounded-2xl bg-tint-brand-gradient p-4 text-sm text-card-foreground shadow-sm ring-1 ring-ink/10">
+            <section className="space-y-2 rounded-2xl bg-tint-brand-gradient p-4 text-sm text-card-foreground shadow-sm ring-1 ring-primary/25">
                 <div className="flex justify-between">
                   <span className="text-foreground/70">{t("customer.checkout.subtotal")}</span>
                   <span>{formatMoney(subtotal)}</span>
