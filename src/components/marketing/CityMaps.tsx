@@ -82,7 +82,7 @@ export function CityMaps() {
   return (
     <section className="bg-section-gradient">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
-        <h2 className="text-3xl font-extrabold text-foreground sm:text-4xl">
+        <h2 className="text-3xl font-extrabold text-gradient-brand sm:text-4xl">
           {t("marketing.cities.title")}
         </h2>
         <p className="mt-3 max-w-2xl text-base text-foreground/70">

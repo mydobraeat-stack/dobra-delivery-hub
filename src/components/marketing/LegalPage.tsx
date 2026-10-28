@@ -97,7 +97,7 @@ export function LegalPage({ kind }: { kind: "privacy" | "terms" }) {
     <div className="flex min-h-screen flex-col bg-card">
       <SiteHeader />
 
-      <div className="border-b border-border bg-secondary/40">
+      <div className="border-b border-border bg-header-gradient">
         <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
           <button
             type="button"
@@ -115,7 +115,7 @@ export function LegalPage({ kind }: { kind: "privacy" | "terms" }) {
               <FileText className="size-6" aria-hidden />
             </span>
             <div className="min-w-0">
-              <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">{doc.title}</h1>
+              <h1 className="text-3xl font-extrabold tracking-tight text-gradient-brand sm:text-4xl lg:text-5xl">{doc.title}</h1>
               <p className="mt-3 flex flex-wrap gap-2 text-xs font-medium text-foreground/70">
                 {doc.meta.map((m) => (
                   <span key={m} className="rounded-full border border-border bg-card px-3 py-1">
@@ -153,7 +153,7 @@ export function LegalPage({ kind }: { kind: "privacy" | "terms" }) {
             {doc.sections.map((section, i) => (
               <Reveal key={section.heading} id={slug(i)} className="scroll-mt-28">
                 <h2 className="flex items-center gap-3 text-xl font-bold text-foreground sm:text-2xl">
-                  <span aria-hidden className="h-6 w-1.5 shrink-0 rounded-full bg-primary" />
+                  <span aria-hidden className="h-6 w-1.5 shrink-0 rounded-full bg-brand-gradient" />
                   {section.heading}
                 </h2>
                 <div className="mt-2 h-px bg-gradient-to-r from-secondary via-border to-transparent" />
@@ -166,7 +166,7 @@ export function LegalPage({ kind }: { kind: "privacy" | "terms" }) {
                   <ul className="mt-4 max-w-prose space-y-2.5">
                     {fillAll(section.bullets).map((b) => (
                       <li key={b} className="flex gap-3 text-[15px] leading-7 text-foreground/80 sm:text-base">
-                        <span aria-hidden className="mt-2.5 size-1.5 shrink-0 rounded-full bg-primary" />
+                        <span aria-hidden className="mt-2.5 size-1.5 shrink-0 rounded-full bg-brand-gradient" />
                         <span>{b}</span>
                       </li>
                     ))}
@@ -176,7 +176,7 @@ export function LegalPage({ kind }: { kind: "privacy" | "terms" }) {
             ))}
           </div>
 
-          <div className="mt-14 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-border bg-secondary/30 p-6">
+          <div className="mt-14 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-border bg-tint-sun-gradient p-6">
             <p className="text-sm text-foreground/75">
               {[COMPANY.legalName, companyAddress(), COMPANY.email].filter(Boolean).join(" · ")}
             </p>

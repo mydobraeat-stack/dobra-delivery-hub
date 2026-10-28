@@ -18,7 +18,7 @@ export function FeaturedRestaurants({ limit, heading = true }: { limit?: number;
     <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
       {heading ? (
         <>
-          <h2 className="text-3xl font-extrabold text-foreground">{c.featuredTitle}</h2>
+          <h2 className="text-3xl font-extrabold text-gradient-brand">{c.featuredTitle}</h2>
           <p className="mt-2 text-foreground/70">{c.featuredSub}</p>
         </>
       ) : null}
