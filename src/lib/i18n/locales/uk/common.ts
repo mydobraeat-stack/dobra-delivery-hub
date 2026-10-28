@@ -102,6 +102,7 @@ export default {
     Sides: "Гарніри",
     Desserts: "Десерти",
     Drinks: "Напої",
+    Snacks: "Снеки",
   },
   profileMenu: {
     orders: "Історія замовлень",
