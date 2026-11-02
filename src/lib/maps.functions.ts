@@ -3,27 +3,59 @@ import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 const GATEWAY_URL = "https://connector-gateway.lovable.dev/google_maps";
+const GOOGLE_LEGACY = "https://maps.googleapis.com";
+const GOOGLE_PLACES = "https://places.googleapis.com";
+const GOOGLE_ROUTES = "https://routes.googleapis.com";
+const GOOGLE_KEY_HEADER = "X-Goog-Api-Key";
 
 /**
- * Map credentials live in project secrets, never in frontend code.
- * - Server side (this file): GOOGLE_MAPS_API_KEY  → Project Settings → Secrets
- * - Browser side (MapView):  VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY
- * Both are supplied automatically by the connected Google Maps account.
+ * Map credentials. Two working modes, so the app runs both here and elsewhere:
+ *  - Hosted by Lovable: LOVABLE_API_KEY + GOOGLE_MAPS_API_KEY present, so calls
+ *    go through Lovable's connector gateway.
+ *  - Self-hosted: GOOGLE_MAPS_API_KEY alone (your own Google Cloud key with
+ *    Geocoding, Places and Routes enabled) and calls go straight to Google.
  */
-function mapsCredentials() {
-  const lovableKey = process.env["LOVABLE_API_KEY"];
-  const connectionKey = process.env["GOOGLE_MAPS_API_KEY"];
-  if (!lovableKey || !connectionKey) throw new Error("MAPS_NOT_CONFIGURED");
-  return { lovableKey, connectionKey };
+function mapsKey() {
+  const key = process.env["GOOGLE_MAPS_API_KEY"];
+  if (!key) throw new Error("MAPS_NOT_CONFIGURED");
+  return key;
+}
+
+function viaGateway() {
+  return Boolean(process.env["LOVABLE_API_KEY"]);
 }
 
 function gatewayHeaders(extra: Record<string, string> = {}) {
-  const { lovableKey, connectionKey } = mapsCredentials();
   return {
-    Authorization: `Bearer ${lovableKey}`,
-    "X-Connection-Api-Key": connectionKey,
+    Authorization: `Bearer ${process.env["LOVABLE_API_KEY"]}`,
+    "X-Connection-Api-Key": mapsKey(),
     ...extra,
   };
+}
+
+function googleHeaders(extra: Record<string, string> = {}) {
+  return { [GOOGLE_KEY_HEADER]: mapsKey(), ...extra };
+}
+
+/** Legacy Geocoding API: gateway path, or direct with the key as a query param. */
+function geocodeFetch(query: string) {
+  if (viaGateway()) {
+    return fetch(`${GATEWAY_URL}/maps/api/geocode/json?${query}`, { headers: gatewayHeaders() });
+  }
+  return fetch(`${GOOGLE_LEGACY}/maps/api/geocode/json?${query}&key=${encodeURIComponent(mapsKey())}`);
+}
+
+/** Places / Routes APIs: gateway path, or direct with an API-key header. */
+function googleApiFetch(
+  gatewayPath: string,
+  directUrl: string,
+  init: RequestInit,
+  extraHeaders: Record<string, string>,
+) {
+  if (viaGateway()) {
+    return fetch(`${GATEWAY_URL}${gatewayPath}`, { ...init, headers: gatewayHeaders(extraHeaders) });
+  }
+  return fetch(directUrl, { ...init, headers: googleHeaders(extraHeaders) });
 }
 
 async function readOrThrow(response: Response, what: string) {
@@ -40,10 +72,7 @@ export const geocodeAddress = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data) => z.object({ address: z.string().min(3).max(250) }).parse(data))
   .handler(async ({ data }): Promise<{ lat: number; lng: number } | null> => {
-    const response = await fetch(
-      `${GATEWAY_URL}/maps/api/geocode/json?address=${encodeURIComponent(data.address)}`,
-      { headers: gatewayHeaders() },
-    );
+    const response = await geocodeFetch(`address=${encodeURIComponent(data.address)}`);
     const body = (await readOrThrow(response, "Geocoding")) as {
       results?: Array<{ geometry?: { location?: { lat: number; lng: number } } }>;
     };
@@ -60,14 +89,19 @@ export const suggestAddresses = createServerFn({ method: "POST" })
     z.object({ input: z.string().min(3).max(200), country: z.string().max(4).optional() }).parse(data),
   )
   .handler(async ({ data }): Promise<AddressSuggestion[]> => {
-    const response = await fetch(`${GATEWAY_URL}/places/v1/places:autocomplete`, {
-      method: "POST",
-      headers: gatewayHeaders({ "Content-Type": "application/json" }),
-      body: JSON.stringify({
-        input: data.input,
-        ...(data.country ? { includedRegionCodes: [data.country.toUpperCase()] } : {}),
-      }),
-    });
+    const response = await googleApiFetch(
+      "/places/v1/places:autocomplete",
+      `${GOOGLE_PLACES}/v1/places:autocomplete`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          input: data.input,
+          ...(data.country ? { includedRegionCodes: [data.country.toUpperCase()] } : {}),
+        }),
+      },
+      { "Content-Type": "application/json" },
+    );
     const body = (await readOrThrow(response, "Address lookup")) as {
       suggestions?: Array<{ placePrediction?: { placeId?: string; text?: { text?: string } } }>;
     };
@@ -82,9 +116,12 @@ export const resolvePlace = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data) => z.object({ placeId: z.string().min(3).max(300) }).parse(data))
   .handler(async ({ data }): Promise<{ address: string; lat: number; lng: number } | null> => {
-    const response = await fetch(`${GATEWAY_URL}/places/v1/places/${encodeURIComponent(data.placeId)}`, {
-      headers: gatewayHeaders({ "X-Goog-FieldMask": "formattedAddress,location" }),
-    });
+    const response = await googleApiFetch(
+      `/places/v1/places/${encodeURIComponent(data.placeId)}`,
+      `${GOOGLE_PLACES}/v1/places/${encodeURIComponent(data.placeId)}`,
+      { headers: { "X-Goog-FieldMask": "formattedAddress,location" } },
+      { "X-Goog-FieldMask": "formattedAddress,location" },
+    );
     const body = (await readOrThrow(response, "Place lookup")) as {
       formattedAddress?: string;
       location?: { latitude?: number; longitude?: number };
@@ -119,21 +156,27 @@ export const routeBetween = createServerFn({ method: "POST" })
       location: { latLng: { latitude: p.lat, longitude: p.lng } },
     });
     const stops = data.stops;
-    const response = await fetch(`${GATEWAY_URL}/routes/directions/v2:computeRoutes`, {
-      method: "POST",
-      headers: gatewayHeaders({
+    const response = await googleApiFetch(
+      "/routes/directions/v2:computeRoutes",
+      `${GOOGLE_ROUTES}/directions/v2:computeRoutes`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Goog-FieldMask": "routes.polyline.encodedPolyline,routes.distanceMeters,routes.duration",
+        },
+        body: JSON.stringify({
+          origin: point(stops[0]!),
+          destination: point(stops[stops.length - 1]!),
+          ...(stops.length > 2 ? { intermediates: stops.slice(1, -1).map(point) } : {}),
+          travelMode: "DRIVE",
+        }),
+      },
+      {
         "Content-Type": "application/json",
         "X-Goog-FieldMask": "routes.polyline.encodedPolyline,routes.distanceMeters,routes.duration",
-      }),
-      body: JSON.stringify({
-        origin: point(stops[0]!),
-        destination: point(stops[stops.length - 1]!),
-        ...(stops.length > 2
-          ? { intermediates: stops.slice(1, -1).map(point) }
-          : {}),
-        travelMode: "DRIVE",
-      }),
-    });
+      },
+    );
     const body = (await readOrThrow(response, "Directions")) as {
       routes?: Array<{
         polyline?: { encodedPolyline?: string };
@@ -165,10 +208,7 @@ export const reverseGeocodePublic = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }): Promise<string | null> => {
     const latlng = `${data.lat.toFixed(6)},${data.lng.toFixed(6)}`;
-    const response = await fetch(
-      `${GATEWAY_URL}/maps/api/geocode/json?latlng=${encodeURIComponent(latlng)}`,
-      { headers: gatewayHeaders() },
-    );
+    const response = await geocodeFetch(`latlng=${encodeURIComponent(latlng)}`);
     const body = (await readOrThrow(response, "Reverse geocoding")) as {
       results?: Array<{ formatted_address?: string }>;
     };
