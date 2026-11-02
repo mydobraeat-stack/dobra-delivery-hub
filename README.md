@@ -1,78 +1,120 @@
-# Dobra 
+# Dobra
 
-Build the foundation for a food delivery app called "Dobra".
+Food and package delivery platform. Customers order from local restaurants, restaurants run their menu and orders, drivers accept and complete deliveries, and an admin panel runs the whole platform.
 
-BRANDING:
+**Live site:** https://mydobra.pl
 
-- Primary color: yellow (#FFD100 or similar warm golden yellow — use this as the main background/accent color)
+## What it does
 
-- Logo text style: bold red script/cursive wordmark reading "Dobra"
+**Customer**
+- Browse restaurants and menus near a chosen city, search, categories, dish photos
+- Cart and checkout: card, BLIK, Apple Pay / Google Pay (through Stripe) or cash on delivery
+- Promo codes, delivery address with manual formatting, optional package delivery to another person
+- Live order tracking with the driver's position, order timeline, reviews, chat with restaurant/driver
+- In-app notifications and browser (web push) notifications
 
-- Secondary/text color: dark charcoal or black for readability against yellow
+**Restaurant (vendor)**
+- Restaurant profile and logo, opening state, menu with categories, dishes, prices, availability
+- Incoming orders, accept / prepare / hand over, order history
 
-- Clean, modern, friendly delivery-app aesthetic (similar to Uber Eats / Glovo layout patterns)
+**Driver**
+- Approval-gated: driver home unlocks after verification, with ID document upload
+- Timed delivery offers with sound, accept or decline, pickup and drop-off steps
+- One-tap navigation to Google Maps (restaurant, then customer), travel mode by vehicle
+- Cash settlement handover, earnings, payout history
 
-APP STRUCTURE:
+**Admin**
+- Orders (with safeguards and audited manual actions), users, restaurants, drivers
+- Per-city and per-country pricing: commission, service fee, delivery fee, minimums, currency
+- Promo codes, disputes, support tickets, review moderation, feedback
+- Analytics, platform balances (online collected vs cash held), cash payouts to drivers
+- Audit log of every staff action
 
-This is a single app that serves three types of users: Customer, Vendor (restaurant), and Driver.
+**Public site**
+- Marketing pages: home, about, cities, restaurants, partner, deliver, business, get started
+- Legal and help: privacy, terms, refunds, complaints, help, contact
+- Four languages — English (default), Polish, Ukrainian, French
 
-1. Landing/entry screen: 
+## Tech stack
 
-   - Show the Dobra logo and a simple role selector: "I'm a Customer" / "I'm a Vendor" / "I'm a Driver"
+- React 19, TanStack Start (server-side rendering), TanStack Router, TanStack Query
+- Vite 7, Tailwind CSS v4
+- Supabase: Postgres with Row Level Security, Auth, Storage, Realtime
+- react-hook-form + zod, Recharts, Web Push (`@block65/webcrypto-web-push`)
+- Vitest for unit tests
 
-   - Below role selection, standard Sign Up / Log In options
+## Repository layout
 
-2. Auth flow:
+```text
+src/
+  routes/                 public pages: home, auth, about, contact, legal, help, cities…
+    _authenticated/       signed-in pages, split by role:
+                          customer.*, vendor.*, driver.*, admin.*, profile.*, checkout, chat
+    api/public/           server endpoints: stripe-webhook, push dispatch
+  lib/                    business logic: cart, checkout address, pricing, payouts,
+                          phone validation, navigation, company details, admin rules,
+                          server functions for payments and maps, i18n/ (en, pl, uk, fr),
+                          email-templates/
+  components/             dobra/ (app UI), marketing/ (public site), admin/, ui/ (shadcn)
+  integrations/supabase/  generated Supabase client and types
+supabase/migrations/      database migrations, apply in filename order
+drizzle/migrations/       later migrations, apply after the above in date order
+public/                   service worker (sw.js), icons, manifest, robots.txt, sitemap.xml
+```
 
-   - Use Supabase Auth for email/password sign up and login
+## Getting started
 
-   - After signup, store the selected role in a `users` table with fields: id, email, full_name, role (customer/vendor/driver), country, created_at
-
-   - After login, route the user based on their role:
-
-     - customer → Customer Home
-
-     - vendor → Vendor Dashboard (show "pending approval" state if not yet approved)
-
-     - driver → Driver Home (show "pending approval" state if not yet approved)
-
-3. Placeholder home screens for each role (just basic layout for now, we'll build features next):
-
-   - Customer Home: header with logo, search bar placeholder, "Restaurants near you" section placeholder
-
-   - Vendor Dashboard: header, "Your Orders" placeholder, "Menu" placeholder
-
-   - Driver Home: header, "Available Deliveries" placeholder, "My Earnings" placeholder
-
-4. Set up Supabase Row Level Security so:
-
-   - Users can only view/edit their own user record
-
-   - Vendors will later only see their own restaurant's data
-
-   - Drivers will later only see orders assigned to them
-
-Keep the design simple and clean at this stage — we'll build out full functionality screen by screen after this foundation is working.
-
-This project was built with [Lovable](https://lovable.dev).
-
-**Live app**: https://dobra-delivery-hub.lovable.app
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/97c48d84-6cb7-49c1-8422-6dbf9f32e9a0).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+You need Node.js 20+ (or Bun) and access to the project's Supabase backend.
 
 ```sh
-git clone <this-repository-url>
+git clone <repository-url>
 cd <repository-name>
-npm i
+npm install
 npm run dev
 ```
+
+The app is then served at http://localhost:8080.
+
+## Environment variables
+
+Browser-side (prefixed `VITE_`, shipped to visitors — public by design):
+
+| Name | Purpose |
+| --- | --- |
+| `VITE_SUPABASE_URL` | Backend address the app talks to |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | Public API key |
+| `VITE_SUPABASE_PROJECT_ID` | Backend project id |
+| `VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY` | Google Maps browser key (restrict it to your domain) |
+| `VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_TRACKING_ID` | Maps tracking id |
+
+Server-side only (read with `process.env` inside handlers — never expose these):
+
+| Name | Purpose |
+| --- | --- |
+| `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY` | Backend access from the server |
+| `SUPABASE_SERVICE_ROLE_KEY` | Privileged server work only (bypasses row-level security) |
+| `STRIPE_SECRET_KEY` or `STRIPE_RESTRICTED_API_KEY` | Creating checkout sessions and refunds |
+| `STRIPE_WEBHOOK_SECRET` | Verifies Stripe webhook signatures |
+| `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` | Web push — the key pair must match the one existing subscribers were registered with |
+| `PUSH_HOOK_SECRET` | Guards the push dispatch endpoint |
+| `GOOGLE_MAPS_API_KEY` | Server-side Maps requests |
+
+## Commands
+
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Local development server |
+| `npm run build` | Production build |
+| `npm run preview` | Serve the built app locally |
+| `npm run lint` | ESLint over the whole project |
+| `npm run format` | Prettier |
+| `npx vitest run` | Unit tests (pricing, balances, payouts, phone and address validation, navigation, order rules) |
+
+## Self-hosting notes
+
+- The app expects a Supabase-shaped backend: Auth, Storage buckets (`driver-documents`, `profile-photos`, `chat-uploads`, `restaurant-logos`, `menu-images`), and Realtime enabled on `orders`, `notifications`, `driver_locations`, `chat_threads`, `chat_messages`.
+- Both migration folders must be applied in date order before the app is used.
+- Auth emails are rendered from `src/lib/email-templates`; the sender is currently Lovable's managed email service, so switch the sending provider if you host elsewhere.
+- Stripe payments need the webhook endpoint `POST /api/public/stripe-webhook` registered in your Stripe dashboard; the signature is checked against `STRIPE_WEBHOOK_SECRET`.
+- Push notifications run through `public/sw.js` and the guarded dispatch endpoint `/api/public/push/dispatch`.
+- A few `@lovable.dev/*` packages remain in `package.json` (build configuration, email and auth helpers); they are only needed while the app runs on Lovable's hosting and email service.
