@@ -34,7 +34,7 @@ function PendingApprovals() {
       id: string;
       status: "approved" | "rejected";
       role: string;
-      existingCustomer?: boolean;
+      existingCustomer?: boolean | undefined;
     }) => {
       if (!existingCustomer) await setProfileApproval(id, status);
       // Drivers are also gated on their document review state — keep both in step.

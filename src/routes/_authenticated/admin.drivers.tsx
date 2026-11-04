@@ -30,7 +30,7 @@ function AdminDrivers() {
   const decideDriver = useMutation({
     mutationFn: async ({ id, approve }: { id: string; approve: boolean }) => {
       await setDriverDocsStatus(id, approve ? "approved" : "rejected");
-      await setProfileApproval(id, approve ? "approved" : "rejected");
+      if (!data?.find(d => d.id === id)?.existing_customer) await setProfileApproval(id, approve ? "approved" : "rejected");
     },
     onSuccess: (_d, v) => {
       toast.success(v.approve ? t("admin.drivers.driverApproved") : t("admin.drivers.driverRejected"));
@@ -88,7 +88,7 @@ function AdminDrivers() {
             </div>
             <div className="flex flex-col items-end gap-1 text-xs">
               <span className="rounded-full bg-sun/30 px-3 py-1 font-semibold">
-                {t("admin.drivers.docs")}: {DOCS_STATUS_LABEL_KEY[d.docs_status] ? t(DOCS_STATUS_LABEL_KEY[d.docs_status]!) : d.docs_status}
+                {t("admin.drivers.docs")}: {t(DOCS_STATUS_LABEL_KEY[d.docs_status] ?? "driver.documents.status.draft")}
               </span>
               <span className="text-foreground/60">
                 {t("admin.drivers.account")}: {d.profile?.approval_status ?? t("admin.drivers.unknown")}

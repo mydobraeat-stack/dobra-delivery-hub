@@ -391,7 +391,7 @@ export async function setDriverStatus(status: "available" | "offline") {
   const userId = await currentUserId();
   const { error } = await supabase
     .from("drivers")
-    .upsert({ id: userId, status }, { onConflict: "id" });
+    .update({ status }).eq("id", userId).select("id").single();
   if (error) throw error;
 }
 
