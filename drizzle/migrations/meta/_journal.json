@@ -78,6 +78,13 @@
       "when": 1793770385919,
       "tag": "0010_customer_driver_applications",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1793770598266,
+      "tag": "0011_customer_driver_safeguard_completion",
+      "breakpoints": true
     }
   ]
 }
