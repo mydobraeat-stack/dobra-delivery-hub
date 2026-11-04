@@ -11,12 +11,14 @@ export type AdminProfile = {
   approval_status: string;
   created_at: string;
   role: string;
+  roles: string[];
 };
 
 export type AdminDriver = {
   id: string;
   status: string;
   docs_status: string;
+  existing_customer: boolean;
   vehicle_type: string | null;
   vehicle_model: string | null;
   plate: string | null;
@@ -86,10 +88,12 @@ async function loadProfiles() {
   ]);
   if (error) throw error;
   if (rErr) throw rErr;
-  const roleBy = new Map((roles ?? []).map((r) => [r.user_id, r.role as string]));
+  const roleBy = new Map<string, string[]>();
+  for (const r of roles ?? []) roleBy.set(r.user_id, [...(roleBy.get(r.user_id) ?? []), r.role]);
   return (profiles ?? []).map((p) => ({
     ...p,
-    role: roleBy.get(p.id) ?? "customer",
+    role: ["admin", "support_agent", "vendor", "driver", "customer"].find(r => roleBy.get(p.id)?.includes(r)) ?? "customer",
+    roles: roleBy.get(p.id) ?? ["customer"],
   })) as AdminProfile[];
 }
 
@@ -105,7 +109,7 @@ export const adminDriversQuery = queryOptions({
       loadProfiles(),
       supabase
         .from("drivers")
-        .select("id,status,docs_status,vehicle_type,vehicle_model,plate,country,submitted_at"),
+        .select("id,status,docs_status,vehicle_type,vehicle_model,plate,country,submitted_at,existing_customer"),
       supabase
         .from("driver_documents")
         .select("id,driver_id,doc_type,file_path,expires_on,status,review_note"),
@@ -124,6 +128,7 @@ export const adminDriversQuery = queryOptions({
           id: p.id,
           status: "offline",
           docs_status: "draft",
+          existing_customer: false,
           vehicle_type: null,
           vehicle_model: null,
           plate: null,

@@ -87,6 +87,10 @@ export function useNotificationStream() {
             queryClient.invalidateQueries({ queryKey: ["order"] });
             queryClient.invalidateQueries({ queryKey: ["order-items"] });
             queryClient.invalidateQueries({ queryKey: ["admin"] });
+            if (row.type.startsWith("driver_application_")) {
+              queryClient.invalidateQueries({ queryKey: ["driver"] });
+              queryClient.invalidateQueries({ queryKey: ["account"] });
+            }
             if (row.sound) playSound(soundFor(row.type));
             toast(row.title, { description: row.message });
           },
