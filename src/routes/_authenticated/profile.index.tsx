@@ -16,6 +16,8 @@ import {
   Tag,
   Trash2,
   User,
+  Bike,
+  ArrowLeftRight,
 
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -43,6 +45,9 @@ import { useAutoNavigation } from "@/lib/navigation";
 import { toast } from "sonner";
 import { accountQueryOptions } from "@/lib/profile";
 import { myProfileQuery } from "@/lib/my-profile";
+import { myDriverQuery } from "@/lib/dobra";
+import { canApplyAsDriver, canSwitchModes } from "@/lib/account-mode";
+import { switchAccountMode } from "@/lib/driver-application";
 
 const APP_VERSION = "1.0.0";
 
@@ -71,6 +76,26 @@ function ProfileHub() {
   const { data: account } = useQuery(accountQueryOptions);
   const { data: profile } = useQuery(myProfileQuery);
   const role = account?.role ?? "customer";
+  const roles = account?.roles ?? [];
+  const { data: driver } = useQuery({ ...myDriverQuery, enabled: roles.includes("driver") });
+  const [switching, setSwitching] = useState(false);
+
+  async function changeMode() {
+    setSwitching(true);
+    const next = role === "driver" ? "customer" : "driver";
+    try {
+      await switchAccountMode(next);
+      await queryClient.cancelQueries();
+      queryClient.removeQueries({ queryKey: ["orders"] });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["account"] }),
+        queryClient.invalidateQueries({ queryKey: ["driver"] }),
+      ]);
+      await navigate({ to: next === "driver" ? "/driver" : "/customer" });
+    } catch (e) {
+      toast.error(t(e instanceof Error && e.message.includes("active_delivery") ? "driver.application.activeBlock" : "driver.application.error"));
+    } finally { setSwitching(false); }
+  }
   const [privacyOpen, setPrivacyOpen] = useState(false);
   const [savedConsent, setSavedConsent] = useState<Consent | null>(null);
 
@@ -143,6 +168,11 @@ function ProfileHub() {
         <ProfileMenuItem to={ordersTo} icon={Receipt} label={t("common.profileMenu.orders")} />
         <ProfileMenuItem to="/profile/account" icon={User} label={t("common.profileMenu.account")} />
       </ProfileMenuList>
+      {canApplyAsDriver(roles) ? <Button asChild className="h-auto min-h-12 w-full justify-start py-3 text-base"><Link to="/profile/become-driver"><Bike className="size-5 shrink-0" />{t("driver.application.become")}</Link></Button> : null}
+      {canSwitchModes(roles) ? <div className="space-y-3">
+        <ProfileMenuList><ProfileMenuItem to="/driver/documents" icon={ShieldCheck} label={t("driver.application.status", { status: t(`driver.application.${driver?.docs_status ?? "draft"}`) })} /></ProfileMenuList>
+        <Button variant="outline" className="h-auto min-h-12 w-full bg-card py-3" disabled={switching} onClick={changeMode}><ArrowLeftRight className="size-5 shrink-0" />{t(role === "driver" ? "driver.application.toCustomer" : "driver.application.toDriver")}</Button>
+      </div> : null}
       <ConsentDialog
         open={privacyOpen}
         mode="settings"

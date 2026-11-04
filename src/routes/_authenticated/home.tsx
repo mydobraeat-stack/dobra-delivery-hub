@@ -5,6 +5,11 @@ import { accountQueryOptions } from "@/lib/profile";
 import { DobraLogo } from "@/components/dobra/Logo";
 
 export const Route = createFileRoute("/_authenticated/home")({
+  head: () => ({ meta: [
+    { title: "Your Dobra mode" }, { name: "description", content: "Open your saved Dobra customer, driver or partner workspace." },
+    { property: "og:title", content: "Your Dobra mode" }, { property: "og:description", content: "Continue in your preferred Dobra workspace." },
+    { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" },
+  ] }),
   component: RoleRouter,
 });
 

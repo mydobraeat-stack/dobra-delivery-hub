@@ -16,6 +16,11 @@ import { DOCS_STATUS_LABEL_KEY } from "@/lib/driver-docs";
 import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/_authenticated/admin/drivers")({
+  head: () => ({ meta: [
+    { title: "Driver verification — Dobra Admin" }, { name: "description", content: "Review Dobra driver documents and applications." },
+    { property: "og:title", content: "Driver verification — Dobra Admin" }, { property: "og:description", content: "Manage driver verification securely." },
+    { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex,nofollow" },
+  ] }),
   component: AdminDrivers,
 });
 
@@ -30,7 +35,7 @@ function AdminDrivers() {
   const decideDriver = useMutation({
     mutationFn: async ({ id, approve }: { id: string; approve: boolean }) => {
       await setDriverDocsStatus(id, approve ? "approved" : "rejected");
-      await setProfileApproval(id, approve ? "approved" : "rejected");
+      if (!data?.find(d => d.id === id)?.existing_customer) await setProfileApproval(id, approve ? "approved" : "rejected");
     },
     onSuccess: (_d, v) => {
       toast.success(v.approve ? t("admin.drivers.driverApproved") : t("admin.drivers.driverRejected"));
@@ -88,7 +93,7 @@ function AdminDrivers() {
             </div>
             <div className="flex flex-col items-end gap-1 text-xs">
               <span className="rounded-full bg-sun/30 px-3 py-1 font-semibold">
-                {t("admin.drivers.docs")}: {DOCS_STATUS_LABEL_KEY[d.docs_status] ? t(DOCS_STATUS_LABEL_KEY[d.docs_status]!) : d.docs_status}
+                {t("admin.drivers.docs")}: {t(DOCS_STATUS_LABEL_KEY[d.docs_status] ?? "driver.documents.status.draft")}
               </span>
               <span className="text-foreground/60">
                 {t("admin.drivers.account")}: {d.profile?.approval_status ?? t("admin.drivers.unknown")}

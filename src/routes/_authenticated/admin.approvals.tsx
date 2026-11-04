@@ -14,6 +14,14 @@ import {
 import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/_authenticated/admin/approvals")({
+  head: () => ({ meta: [
+    { title: "Pending partner and driver approvals — Dobra Admin" },
+    { name: "description", content: "Review Dobra driver applications and partner approvals." },
+    { property: "og:title", content: "Pending approvals — Dobra Admin" },
+    { property: "og:description", content: "Review driver applications and partner approvals securely." },
+    { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" },
+    { name: "robots", content: "noindex,nofollow" },
+  ] }),
   component: PendingApprovals,
 });
 
@@ -29,12 +37,14 @@ function PendingApprovals() {
       id,
       status,
       role,
+      existingCustomer,
     }: {
       id: string;
       status: "approved" | "rejected";
       role: string;
+      existingCustomer?: boolean | undefined;
     }) => {
-      await setProfileApproval(id, status);
+      if (!existingCustomer) await setProfileApproval(id, status);
       // Drivers are also gated on their document review state — keep both in step.
       if (role === "driver") await setDriverDocsStatus(id, status);
       // Vendors: customers only see restaurants whose own status is approved,
@@ -56,7 +66,7 @@ function PendingApprovals() {
   });
 
   const waiting = (profiles.data ?? []).filter(
-    (p) => p.approval_status === "pending" && (p.role === "vendor" || p.role === "driver"),
+    (p) => (p.approval_status === "pending" && (p.role === "vendor" || p.role === "driver")) || (drivers.data ?? []).some(d => d.id === p.id && d.existing_customer && ["draft", "in_review"].includes(d.docs_status)),
   );
 
   return (
@@ -79,6 +89,7 @@ function PendingApprovals() {
             <div className="admin-record-header flex items-start justify-between gap-3">
               <div className="min-w-0 flex-1">
                 <p className="text-lg font-semibold">{p.full_name || p.email || t("admin.approvals.unnamed")}</p>
+                {driver?.existing_customer ? <span className="text-xs font-semibold text-brand">{t("driver.application.existing")} · {t(`driver.application.${driver.docs_status}`)}</span> : null}
                 <p className="text-sm text-foreground/60">
                   {p.email} · {p.role} · {p.country || t("admin.approvals.noCountry")}
                 </p>
@@ -133,14 +144,14 @@ function PendingApprovals() {
 
             <div className="admin-actions flex flex-wrap gap-2">
               <Button
-                onClick={() => decide.mutate({ id: p.id, status: "approved", role: p.role })}
-                disabled={decide.isPending}
+                onClick={() => decide.mutate({ id: p.id, status: "approved", role: p.role, existingCustomer: driver?.existing_customer })}
+                disabled={decide.isPending || (driver?.existing_customer && driver.docs_status !== "in_review")}
               >
                 {t("admin.approvals.approve")}
               </Button>
               <Button
                 variant="outline"
-                onClick={() => decide.mutate({ id: p.id, status: "rejected", role: p.role })}
+                onClick={() => decide.mutate({ id: p.id, status: "rejected", role: p.role, existingCustomer: driver?.existing_customer })}
                 disabled={decide.isPending}
               >
                 {t("admin.approvals.reject")}

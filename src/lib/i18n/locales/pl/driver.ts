@@ -1,4 +1,16 @@
 export default {
+  application: {
+    become: "Zostań kierowcą", title: "Dostarczaj z Dobra", intro: "Zachowujesz swoje konto klienta. Zgłoś się do dostaw, kiedy będziesz gotowy.",
+    vehicle: "Wybierz środek transportu", vehicleBody: "Rower, rower elektryczny, hulajnoga lub dostawy pieszo wymagają mniej dokumentów. Motocykl i samochód wymagają także prawa jazdy, ubezpieczenia i dowodu rejestracyjnego.",
+    identity: "Selfie i zdjęcie dokumentu tożsamości", identityBody: "Skorzystaj z dostępnego aparatu, aby zrobić selfie i zdjęcie dokumentu. Dodaj zdjęcie torby do dostaw oraz pojazdu, jeśli jest wymagane.",
+    phone: "Numer telefonu", phoneBody: "Wykorzystamy imię i nazwisko oraz numer telefonu z Twojego profilu. Numer możesz poprawić podczas zgłoszenia.",
+    review: "Weryfikacja przez Dobra", reviewBody: "Administrator sprawdzi Twoje zgłoszenie, zanim przejdziesz online i zaczniesz przyjmować dostawy.",
+    start: "Rozpocznij zgłoszenie", status: "Zgłoszenie kierowcy: {status}", draft: "W trakcie wypełniania", in_review: "W trakcie weryfikacji", approved: "Zatwierdzone", rejected: "Odrzucone",
+    toDriver: "Przełącz na tryb kierowcy", toCustomer: "Przełącz na tryb klienta", activeBlock: "Dokończ aktywną dostawę, zanim zmienisz tryb.",
+    error: "Nie udało się wykonać tej czynności. Spróbuj ponownie.", existing: "Obecny klient",
+    terms: "Akceptuję", termsLink: "Regulamin Dobra", termsRequired: "Zaakceptuj regulamin przed wysłaniem zgłoszenia.",
+    locked: "Podczas weryfikacji i po zatwierdzeniu dane pojazdu są zablokowane. Aby je zmienić, skontaktuj się z pomocą.",
+  },
   offer: {
     badge: "Nowa dostawa",
     pickup: "Odbiór",

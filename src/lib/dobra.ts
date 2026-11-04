@@ -319,6 +319,7 @@ export function driverLocationQuery(driverId: string | null | undefined) {
 
 export type DriverRecord = {
   id: string;
+  existing_customer: boolean;
   status: string;
   vehicle_type: string | null;
   vehicle_model: string | null;
@@ -334,7 +335,7 @@ export const myDriverQuery = queryOptions({
     const userId = await currentUserId();
     const { data, error } = await supabase
       .from("drivers")
-      .select("id,status,vehicle_type,vehicle_model,plate,docs_status,country,submitted_at")
+      .select("id,status,vehicle_type,vehicle_model,plate,docs_status,country,submitted_at,existing_customer")
       .eq("id", userId)
       .maybeSingle();
     if (error) throw error;
@@ -390,7 +391,7 @@ export async function setDriverStatus(status: "available" | "offline") {
   const userId = await currentUserId();
   const { error } = await supabase
     .from("drivers")
-    .upsert({ id: userId, status }, { onConflict: "id" });
+    .update({ status }).eq("id", userId).select("id").single();
   if (error) throw error;
 }
 

@@ -63,6 +63,7 @@ import { Route as AuthenticatedDriverSettlementsRouteImport } from './routes/_au
 import { Route as AuthenticatedOrdersOrderIdRouteImport } from './routes/_authenticated/orders.$orderId'
 import { Route as AuthenticatedProfileIndexRouteImport } from './routes/_authenticated/profile.index'
 import { Route as AuthenticatedProfileAccountRouteImport } from './routes/_authenticated/profile.account'
+import { Route as AuthenticatedProfileBecomeDriverRouteImport } from './routes/_authenticated/profile.become-driver'
 import { Route as AuthenticatedProfileDeleteRouteImport } from './routes/_authenticated/profile.delete'
 import { Route as AuthenticatedProfileFaqRouteImport } from './routes/_authenticated/profile.faq'
 import { Route as AuthenticatedProfileLanguageRouteImport } from './routes/_authenticated/profile.language'
@@ -375,6 +376,12 @@ const AuthenticatedProfileAccountRoute =
     path: '/account',
     getParentRoute: () => AuthenticatedProfileRoute,
   } as any)
+const AuthenticatedProfileBecomeDriverRoute =
+  AuthenticatedProfileBecomeDriverRouteImport.update({
+    id: '/become-driver',
+    path: '/become-driver',
+    getParentRoute: () => AuthenticatedProfileRoute,
+  } as any)
 const AuthenticatedProfileDeleteRoute =
   AuthenticatedProfileDeleteRouteImport.update({
     id: '/delete',
@@ -516,6 +523,7 @@ export interface FileRoutesByFullPath {
   '/driver/settlements': typeof AuthenticatedDriverSettlementsRoute
   '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/profile/account': typeof AuthenticatedProfileAccountRoute
+  '/profile/become-driver': typeof AuthenticatedProfileBecomeDriverRoute
   '/profile/delete': typeof AuthenticatedProfileDeleteRoute
   '/profile/faq': typeof AuthenticatedProfileFaqRoute
   '/profile/language': typeof AuthenticatedProfileLanguageRoute
@@ -582,6 +590,7 @@ export interface FileRoutesByTo {
   '/driver/settlements': typeof AuthenticatedDriverSettlementsRoute
   '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/profile/account': typeof AuthenticatedProfileAccountRoute
+  '/profile/become-driver': typeof AuthenticatedProfileBecomeDriverRoute
   '/profile/delete': typeof AuthenticatedProfileDeleteRoute
   '/profile/faq': typeof AuthenticatedProfileFaqRoute
   '/profile/language': typeof AuthenticatedProfileLanguageRoute
@@ -655,6 +664,7 @@ export interface FileRoutesById {
   '/_authenticated/driver/settlements': typeof AuthenticatedDriverSettlementsRoute
   '/_authenticated/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/_authenticated/profile/account': typeof AuthenticatedProfileAccountRoute
+  '/_authenticated/profile/become-driver': typeof AuthenticatedProfileBecomeDriverRoute
   '/_authenticated/profile/delete': typeof AuthenticatedProfileDeleteRoute
   '/_authenticated/profile/faq': typeof AuthenticatedProfileFaqRoute
   '/_authenticated/profile/language': typeof AuthenticatedProfileLanguageRoute
@@ -728,6 +738,7 @@ export interface FileRouteTypes {
     | '/driver/settlements'
     | '/orders/$orderId'
     | '/profile/account'
+    | '/profile/become-driver'
     | '/profile/delete'
     | '/profile/faq'
     | '/profile/language'
@@ -794,6 +805,7 @@ export interface FileRouteTypes {
     | '/driver/settlements'
     | '/orders/$orderId'
     | '/profile/account'
+    | '/profile/become-driver'
     | '/profile/delete'
     | '/profile/faq'
     | '/profile/language'
@@ -866,6 +878,7 @@ export interface FileRouteTypes {
     | '/_authenticated/driver/settlements'
     | '/_authenticated/orders/$orderId'
     | '/_authenticated/profile/account'
+    | '/_authenticated/profile/become-driver'
     | '/_authenticated/profile/delete'
     | '/_authenticated/profile/faq'
     | '/_authenticated/profile/language'
@@ -1292,6 +1305,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProfileAccountRouteImport
       parentRoute: typeof AuthenticatedProfileRoute
     }
+    '/_authenticated/profile/become-driver': {
+      id: '/_authenticated/profile/become-driver'
+      path: '/become-driver'
+      fullPath: '/profile/become-driver'
+      preLoaderRoute: typeof AuthenticatedProfileBecomeDriverRouteImport
+      parentRoute: typeof AuthenticatedProfileRoute
+    }
     '/_authenticated/profile/delete': {
       id: '/_authenticated/profile/delete'
       path: '/delete'
@@ -1496,6 +1516,7 @@ const AuthenticatedDriverRouteWithChildren =
 
 interface AuthenticatedProfileRouteChildren {
   AuthenticatedProfileAccountRoute: typeof AuthenticatedProfileAccountRoute
+  AuthenticatedProfileBecomeDriverRoute: typeof AuthenticatedProfileBecomeDriverRoute
   AuthenticatedProfileDeleteRoute: typeof AuthenticatedProfileDeleteRoute
   AuthenticatedProfileFaqRoute: typeof AuthenticatedProfileFaqRoute
   AuthenticatedProfileLanguageRoute: typeof AuthenticatedProfileLanguageRoute
@@ -1507,6 +1528,7 @@ interface AuthenticatedProfileRouteChildren {
 
 const AuthenticatedProfileRouteChildren: AuthenticatedProfileRouteChildren = {
   AuthenticatedProfileAccountRoute: AuthenticatedProfileAccountRoute,
+  AuthenticatedProfileBecomeDriverRoute: AuthenticatedProfileBecomeDriverRoute,
   AuthenticatedProfileDeleteRoute: AuthenticatedProfileDeleteRoute,
   AuthenticatedProfileFaqRoute: AuthenticatedProfileFaqRoute,
   AuthenticatedProfileLanguageRoute: AuthenticatedProfileLanguageRoute,

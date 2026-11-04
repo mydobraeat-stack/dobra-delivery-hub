@@ -2,7 +2,7 @@ import { DriverPhoneCard } from "@/components/dobra/DriverPhoneCard";
 import { ProfileBackLink } from "@/components/dobra/ProfileMenu";
 import { ListSkeleton } from "@/components/dobra/QueryStates";
 import { useEffect, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2, Clock, Trash2, XCircle } from "lucide-react";
 import { toast } from "sonner";
@@ -17,6 +17,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { myProfileQuery } from "@/lib/my-profile";
 import { myDriverQuery } from "@/lib/dobra";
 import { useT } from "@/lib/i18n";
 import {
@@ -57,6 +59,8 @@ function DriverDocuments() {
   const [vehicleType, setVehicleType] = useState("Bicycle");
   const [vehicleModel, setVehicleModel] = useState("");
   const [plate, setPlate] = useState("");
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const { data: profile } = useQuery(myProfileQuery);
 
   useEffect(() => {
     if (!driver) return;
@@ -67,6 +71,7 @@ function DriverDocuments() {
   }, [driver]);
 
   const docsStatus = ((driver as Record<string, unknown>)?.["docs_status"] as string) ?? "draft";
+  const locked = docsStatus === "in_review" || docsStatus === "approved";
 
   const refresh = () => {
     queryClient.invalidateQueries({ queryKey: ["driver-documents"] });
@@ -107,7 +112,7 @@ function DriverDocuments() {
   });
 
   const submit = useMutation({
-    mutationFn: submitDriverApplication,
+    mutationFn: () => submitDriverApplication(acceptTerms),
     onSuccess: () => {
       toast.success(t("driver.documents.submittedToast"));
       refresh();
@@ -117,7 +122,7 @@ function DriverDocuments() {
 
   const docFor = (id: string) => docs.find((d) => d.doc_type === id);
   const requiredDocs = requiredDocsFor(vehicleType);
-  const requiredMissing = requiredDocs.filter((d) => !docFor(d.id));
+  const requiredMissing = requiredDocs.filter((d) => !docFor(d.id) || docFor(d.id)?.status === "rejected");
 
   return (
     <main className="mx-auto max-w-4xl space-y-6 px-5 py-6">
@@ -125,7 +130,7 @@ function DriverDocuments() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-bold text-foreground">{t("driver.documents.title")}</h1>
         <Badge variant={docsStatus === "approved" ? "default" : "secondary"}>
-          {DOCS_STATUS_LABEL_KEY[docsStatus] ? t(DOCS_STATUS_LABEL_KEY[docsStatus]!) : docsStatus}
+          {t(DOCS_STATUS_LABEL_KEY[docsStatus] ?? "driver.documents.status.draft")}
         </Badge>
       </div>
 
@@ -134,11 +139,13 @@ function DriverDocuments() {
       <Card className="border-ink/10">
         <CardContent className="space-y-4 py-4">
           <h2 className="text-lg font-bold text-foreground">{t("driver.documents.vehicleTitle")}</h2>
+          {locked ? <p className="text-sm text-foreground/80">{t("driver.application.locked")}</p> : null}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
               <Label htmlFor="vehicle-type">{t("driver.documents.type")}</Label>
               <select
                 id="vehicle-type"
+                disabled={locked}
                 value={vehicleType}
                 onChange={(e) => setVehicleType(e.target.value)}
                 className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
@@ -154,6 +161,7 @@ function DriverDocuments() {
               <Label htmlFor="vehicle-model">{t("driver.documents.makeModel")}</Label>
               <Input
                 id="vehicle-model"
+                disabled={locked}
                 value={vehicleModel}
                 onChange={(e) => setVehicleModel(e.target.value)}
                 placeholder="Honda PCX"
@@ -163,13 +171,14 @@ function DriverDocuments() {
               <Label htmlFor="plate">{t("driver.documents.plate")}</Label>
               <Input
                 id="plate"
+                disabled={locked}
                 value={plate}
                 onChange={(e) => setPlate(e.target.value)}
                 placeholder="WX 12345"
               />
             </div>
           </div>
-          <Button size="sm" disabled={saveDetails.isPending} onClick={() => saveDetails.mutate()}>
+          <Button size="sm" disabled={saveDetails.isPending || locked} onClick={() => saveDetails.mutate()}>
             {t("driver.documents.save")}
           </Button>
         </CardContent>
@@ -235,6 +244,7 @@ function DriverDocuments() {
 
       <Card className="border-ink/10 bg-sun/20">
         <CardContent className="flex flex-wrap items-center justify-between gap-3 py-4">
+          <div className="flex w-full items-start gap-3"><Checkbox id="driver-terms" checked={acceptTerms} onCheckedChange={v => setAcceptTerms(v === true)} /><Label htmlFor="driver-terms" className="block text-sm">{t("driver.application.terms")} <Link to="/terms" target="_blank" className="text-brand underline">{t("driver.application.termsLink")}</Link></Label></div>
           <p className="text-sm text-foreground">
             {docsStatus === "approved"
               ? t("driver.documents.approvedNote")
@@ -245,7 +255,7 @@ function DriverDocuments() {
                 : t("driver.documents.allUploadedNote")}
           </p>
           <Button
-            disabled={submit.isPending || requiredMissing.length > 0 || docsStatus === "approved"}
+            disabled={submit.isPending || requiredMissing.length > 0 || !acceptTerms || !profile?.phone || locked}
             onClick={() => submit.mutate()}
           >
             {t("driver.documents.submit")}

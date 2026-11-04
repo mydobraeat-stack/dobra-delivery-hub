@@ -86,6 +86,7 @@ export async function saveDriverDocument(
       file_path: filePath,
       expires_on: expiresOn,
       status: "pending",
+      review_note: null,
     },
     { onConflict: "driver_id,doc_type" },
   );
@@ -109,14 +110,8 @@ export async function saveVehicle(input: VehicleInput) {
   if (error) throw error;
 }
 
-export async function submitDriverApplication() {
-  const id = await currentUserId();
-  const { error } = await supabase
-    .from("drivers")
-    .upsert(
-      { id, docs_status: "in_review", submitted_at: new Date().toISOString() },
-      { onConflict: "id" },
-    );
+export async function submitDriverApplication(acceptTerms: boolean) {
+  const { error } = await supabase.rpc("submit_driver_application", { _accept_terms: acceptTerms });
   if (error) throw error;
 }
 
