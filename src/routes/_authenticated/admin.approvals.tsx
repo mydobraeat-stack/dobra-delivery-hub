@@ -14,6 +14,14 @@ import {
 import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/_authenticated/admin/approvals")({
+  head: () => ({ meta: [
+    { title: "Pending partner and driver approvals — Dobra Admin" },
+    { name: "description", content: "Review Dobra driver applications and partner approvals." },
+    { property: "og:title", content: "Pending approvals — Dobra Admin" },
+    { property: "og:description", content: "Review driver applications and partner approvals securely." },
+    { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" },
+    { name: "robots", content: "noindex,nofollow" },
+  ] }),
   component: PendingApprovals,
 });
 

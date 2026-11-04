@@ -16,6 +16,11 @@ import { DOCS_STATUS_LABEL_KEY } from "@/lib/driver-docs";
 import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/_authenticated/admin/drivers")({
+  head: () => ({ meta: [
+    { title: "Driver verification — Dobra Admin" }, { name: "description", content: "Review Dobra driver documents and applications." },
+    { property: "og:title", content: "Driver verification — Dobra Admin" }, { property: "og:description", content: "Manage driver verification securely." },
+    { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex,nofollow" },
+  ] }),
   component: AdminDrivers,
 });
 

@@ -86,6 +86,7 @@ export async function saveDriverDocument(
       file_path: filePath,
       expires_on: expiresOn,
       status: "pending",
+      review_note: null,
     },
     { onConflict: "driver_id,doc_type" },
   );
