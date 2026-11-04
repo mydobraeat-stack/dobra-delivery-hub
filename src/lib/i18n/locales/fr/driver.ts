@@ -1,4 +1,16 @@
 export default {
+  application: {
+    become: "Devenir chauffeur", title: "Livrez avec Dobra", intro: "Vous conservez votre compte client. Postulez quand vous êtes prêt.",
+    vehicle: "Choisissez votre véhicule", vehicleBody: "Le vélo, vélo électrique, la trottinette et la livraison à pied nécessitent moins de documents. Moto et voiture nécessitent aussi permis, assurance et certificat d’immatriculation.",
+    identity: "Selfie et photo d’identité", identityBody: "Utilisez la capture photo existante pour votre selfie et votre pièce d’identité. Ajoutez une photo du sac de livraison et du véhicule si nécessaire.",
+    phone: "Un numéro de téléphone", phoneBody: "Nous utiliserons le nom et le téléphone de votre profil. Vous pouvez modifier le numéro pendant la candidature.",
+    review: "Vérification par Dobra", reviewBody: "Un administrateur examine votre candidature avant que vous puissiez vous connecter et accepter des livraisons.",
+    start: "Commencer la candidature", status: "Candidature chauffeur : {status}", draft: "En cours", in_review: "En vérification", approved: "Approuvée", rejected: "Refusée",
+    toDriver: "Passer en mode chauffeur", toCustomer: "Passer en mode client", activeBlock: "Terminez votre livraison active avant de changer de mode.",
+    error: "Cette action n’a pas pu être effectuée. Réessayez.", existing: "Client existant",
+    terms: "J’accepte les", termsLink: "Conditions Dobra", termsRequired: "Acceptez les conditions avant d’envoyer votre candidature.",
+    locked: "Le véhicule est verrouillé pendant la vérification et après approbation. Contactez l’assistance pour le modifier.",
+  },
   offer: {
     badge: "Nouvelle livraison",
     pickup: "Retrait",

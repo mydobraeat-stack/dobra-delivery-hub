@@ -1,4 +1,16 @@
 export default {
+  application: {
+    become: "Become a driver", title: "Deliver with Dobra", intro: "Your customer account stays yours. Apply to deliver whenever you’re ready.",
+    vehicle: "Choose your vehicle", vehicleBody: "Bicycle, e-bike, scooter or on foot need fewer documents. Motorbike and car also need a licence, insurance and vehicle registration.",
+    identity: "Selfie and ID photo", identityBody: "Use the existing photo capture to take your selfie and ID photo. Add your delivery bag photo and, if needed, a vehicle photo.",
+    phone: "A phone number", phoneBody: "We’ll use the name and phone number already in your profile. You can update your phone during the application.",
+    review: "Reviewed by Dobra", reviewBody: "An admin reviews your application before you can go online or accept deliveries.",
+    start: "Start application", status: "Driver application: {status}", draft: "In progress", in_review: "Under review", approved: "Approved", rejected: "Rejected",
+    toDriver: "Switch to Driver mode", toCustomer: "Switch to Customer mode", activeBlock: "Finish your active delivery before switching modes.",
+    error: "We couldn’t complete that action. Please try again.", existing: "Existing customer",
+    terms: "I accept the", termsLink: "Dobra Terms", termsRequired: "Accept the Terms before submitting.",
+    locked: "Vehicle details are locked during review and after approval. Contact support to change them.",
+  },
   offer: {
     badge: "New delivery",
     pickup: "Pick-up",
