@@ -1,5 +1,10 @@
 # Task roadmap
 
+## Existing customer driver applications
+- [ ] Add same-account application, localized introduction/status and reuse driver onboarding with terms acceptance.
+- [ ] Enforce approval and mode switching safeguards, admin review tags and notifications.
+- [ ] Test account application, switching, active-delivery blocks and unauthorized access; report verification limits.
+
 ## Driver cash payouts
 - [x] Add audited Super Admin cash payout records, prevent duplicate/overpayments, and update available cash automatically.
 - [x] Add payout page, balance links, and 24 passing safeguard tests; verify signed-in page and rejection of unearned payouts.
