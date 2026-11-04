@@ -71,6 +71,13 @@
       "when": 1793633097005,
       "tag": "0009_push_dispatch_public_url",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1793770385919,
+      "tag": "0010_customer_driver_applications",
+      "breakpoints": true
     }
   ]
 }

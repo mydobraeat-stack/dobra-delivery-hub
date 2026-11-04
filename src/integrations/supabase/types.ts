@@ -421,10 +421,12 @@ export type Database = {
           country: string | null
           created_at: string
           docs_status: string
+          existing_customer: boolean
           id: string
           plate: string | null
           status: string
           submitted_at: string | null
+          terms_accepted_at: string | null
           vehicle_model: string | null
           vehicle_type: string | null
         }
@@ -432,10 +434,12 @@ export type Database = {
           country?: string | null
           created_at?: string
           docs_status?: string
+          existing_customer?: boolean
           id: string
           plate?: string | null
           status?: string
           submitted_at?: string | null
+          terms_accepted_at?: string | null
           vehicle_model?: string | null
           vehicle_type?: string | null
         }
@@ -443,10 +447,12 @@ export type Database = {
           country?: string | null
           created_at?: string
           docs_status?: string
+          existing_customer?: boolean
           id?: string
           plate?: string | null
           status?: string
           submitted_at?: string | null
+          terms_accepted_at?: string | null
           vehicle_model?: string | null
           vehicle_type?: string | null
         }
@@ -932,6 +938,7 @@ export type Database = {
           id: string
           language: string | null
           phone: string | null
+          preferred_mode: string | null
           suspension_reason: string | null
         }
         Insert: {
@@ -946,6 +953,7 @@ export type Database = {
           id: string
           language?: string | null
           phone?: string | null
+          preferred_mode?: string | null
           suspension_reason?: string | null
         }
         Update: {
@@ -960,6 +968,7 @@ export type Database = {
           id?: string
           language?: string | null
           phone?: string | null
+          preferred_mode?: string | null
           suspension_reason?: string | null
         }
         Relationships: []
@@ -1344,6 +1353,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_approved_driver: { Args: { _id: string }; Returns: boolean }
       open_chat_thread: {
         Args: { _kind: string; _order_id?: string }
         Returns: string
@@ -1368,6 +1378,12 @@ export type Database = {
         }[]
       }
       purge_old_call_logs: { Args: never; Returns: undefined }
+      start_driver_application: { Args: never; Returns: undefined }
+      submit_driver_application: {
+        Args: { _accept_terms: boolean }
+        Returns: undefined
+      }
+      switch_account_mode: { Args: { _mode: string }; Returns: undefined }
     }
     Enums: {
       app_role: "customer" | "vendor" | "driver" | "admin" | "support_agent"
