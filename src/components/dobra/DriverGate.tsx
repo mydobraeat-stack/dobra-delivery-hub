@@ -4,7 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DOC_TYPES, driverDocsQuery } from "@/lib/driver-docs";
+import { requiredDocsFor, driverDocsQuery } from "@/lib/driver-docs";
+import { isDriverApproved } from "@/lib/account-mode";
 import { useT } from "@/lib/i18n";
 import type { DriverRecord } from "@/lib/dobra";
 
@@ -15,8 +16,8 @@ export function driverApproval(
   approvalStatus: string | undefined,
   driver: DriverRecord | null | undefined,
 ): DriverApproval {
-  if (approvalStatus === "rejected" || driver?.docs_status === "rejected") return "rejected";
-  if (approvalStatus === "approved" && driver?.docs_status !== "in_review") return "approved";
+  if ((!driver?.existing_customer && approvalStatus === "rejected") || driver?.docs_status === "rejected") return "rejected";
+  if (isDriverApproved(driver?.existing_customer ? "approved" : approvalStatus, driver?.docs_status)) return "approved";
   return "pending";
 }
 
@@ -25,7 +26,7 @@ export function ApplicationUnderReview({ driver }: { driver: DriverRecord | null
   const t = useT();
 
   const rows = [
-    ...DOC_TYPES.map((d) => ({
+    ...requiredDocsFor(driver?.vehicle_type).map((d) => ({
       label: t(d.labelKey),
       done: docs.some((doc) => doc.doc_type === d.id),
     })),
