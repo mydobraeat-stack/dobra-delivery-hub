@@ -1,9 +1,10 @@
 # Task roadmap
 
 ## Existing customer driver applications
-- [ ] Add same-account application, localized introduction/status and reuse driver onboarding with terms acceptance.
-- [ ] Enforce approval and mode switching safeguards, admin review tags and notifications.
-- [ ] Test account application, switching, active-delivery blocks and unauthorized access; report verification limits.
+- [x] Add same-account application, localized introduction/status and reuse driver onboarding with main Terms acceptance.
+- [x] Enforce approval and mode switching safeguards, admin review tags and notifications.
+- [x] Run 21 rule tests, verify phone/desktop introduction and signed-in admin approvals; verify admins cannot start customer applications.
+- [ ] Verify existing-customer application, mode switches, active-delivery block, self-approval denial, private driver reads and online denial end to end — blocked: customer test-account session approval is unavailable; requesting user's available session is an admin.
 
 ## Driver cash payouts
 - [x] Add audited Super Admin cash payout records, prevent duplicate/overpayments, and update available cash automatically.
