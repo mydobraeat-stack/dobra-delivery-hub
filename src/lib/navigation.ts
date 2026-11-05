@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { isNativeShell } from "@/lib/native-shell";
 
 /** Google Maps travel mode for a driver's vehicle. */
 export type TravelMode = "driving" | "bicycling" | "walking";
@@ -69,6 +70,12 @@ export function dropoffDestination(order: Leg): Destination {
  */
 export function openNavigation(url: string | null): boolean {
   if (!url || typeof window === "undefined") return false;
+  // Inside the native app wrapper, new tabs don't exist: hand the link to the phone,
+  // which opens it in the Google Maps app.
+  if (isNativeShell()) {
+    window.location.href = url;
+    return true;
+  }
   try {
     // No "noopener" feature: with it, browsers return null even on success.
     const w = window.open(url, "_blank");
