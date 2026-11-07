@@ -1,6 +1,7 @@
 # Task roadmap
 
 ## Driver Home and delivery history
+- [x] Restore immediate-dismiss offline confirmation with optimistic save/rollback and backdrop/Back cleanup; compact dynamic-height Home and upgrade search animation. Four requested states captured at 360x740, 390x844 and 412x915; simulated save/readback/reload, rollback, backdrop, Back, reduced motion and four-language checks passed, with 14 rule tests and clean build. Real-phone/live driver saving and Google map rendering remain unverified; local map key is not configured.
 - [x] Add direct offline switching, remove the confirmation/close button, compact controls, round the search display and add sound/vibration; eight tests and simulated mobile/desktop write/readback checks passed. Preserve active-delivery safety with localized failure guidance. Real-driver persistence and physical phone feedback remain unverified because the available account is an admin.
 - [x] Add same-button offline confirmation and visible rolling search text in the empty area; simulated mobile/desktop cancel, confirm and reduced-motion checks passed, six rule tests passed and build clean. Real-driver checks remain blocked by account approval below.
 - [x] Make online control green with a pulsing Online indicator and activation beep, slim the horizontal searching strip and hide stats online; simulated mobile/desktop browser checks and audio scheduling passed, six tests passed and build clean. Real-phone audibility remains unverified.

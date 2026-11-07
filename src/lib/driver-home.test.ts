@@ -1,10 +1,26 @@
 import { describe, expect, it } from "vitest";
-import { isDriverWaiting, newestDeliveriesFirst, nextDriverAvailability } from "./driver-home";
+import { driverAvailabilityAction, offlineConfirmationResult, isDriverWaiting, newestDeliveriesFirst, nextDriverAvailability } from "./driver-home";
 
 const waiting = { online: true, ordersReady: true, activeCount: 0, offerVisible: false };
 
-it("requests offline directly when the online button is pressed", () => {
+it("requests offline after confirmation", () => {
   expect(nextDriverAvailability(true)).toBe(false);
+});
+
+it("opens confirmation rather than changing an online driver", () => {
+  expect(driverAvailabilityAction(true)).toBe("confirm-offline");
+});
+
+it("goes online without an offline confirmation", () => {
+  expect(driverAvailabilityAction(false)).toBe("go-online");
+});
+
+it("Go Offline requests offline immediately", () => {
+  expect(offlineConfirmationResult("go-offline")).toBe(false);
+});
+
+it.each(["stay-online", "backdrop", "back"] as const)("%s leaves availability unchanged", (action) => {
+  expect(offlineConfirmationResult(action)).toBeNull();
 });
 
 it("requests online when the offline button is pressed", () => {

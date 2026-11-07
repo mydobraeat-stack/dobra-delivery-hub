@@ -14,7 +14,7 @@ function DriverLayout() {
   const isHome = pathname === "/driver" || pathname === "/driver/";
 
   return (
-    <PhoneFrame className="min-h-screen pb-24">
+    <PhoneFrame className={isHome ? "driver-home-shell min-h-dvh" : "min-h-screen pb-24"}>
       {isHome ? null : <AppHeader subtitle={t("common.roles.driver")} />}
       <Outlet />
       <TabBar role="driver" />
