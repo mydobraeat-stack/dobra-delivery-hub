@@ -232,6 +232,20 @@
   background-image: var(--action-gradient);
 }
 
+/* Two small transform-only animations; reduced motion is completely static. */
+.driver-search-road { animation: driver-road-roll 1.8s linear infinite; }
+.driver-search-scooter { animation: driver-scooter-ride 1.2s ease-in-out infinite; }
+@keyframes driver-road-roll {
+  to { transform: translateX(-50%); }
+}
+@keyframes driver-scooter-ride {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-1px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .driver-search-road, .driver-search-scooter { animation: none; }
+}
+
 /* Staff-only layout: keep record text shrinkable and data scrolling local. */
 .admin-content :where(.border.bg-card, .grid > *, .flex > div) {
   min-width: 0;

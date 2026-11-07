@@ -40,11 +40,13 @@ export function NewDeliveryAlert({
   available,
   restaurantName,
   restaurants = [],
+  onOfferVisibilityChange,
 }: {
   online: boolean;
   available: OrderRow[];
   restaurantName: (id: string | null) => string;
   restaurants?: Restaurant[];
+  onOfferVisibilityChange?: (visible: boolean) => void;
 }) {
   const { data: driver } = useQuery(myDriverQuery);
   const { t, formatMoney } = useI18n();
@@ -72,6 +74,10 @@ export function NewDeliveryAlert({
       return next;
     });
   };
+
+  useEffect(() => {
+    onOfferVisibilityChange?.(Boolean(offer));
+  }, [Boolean(offer), onOfferVisibilityChange]);
 
   // Restart the countdown and ring for each new offer; the ringtone stops as
   // soon as the offer is answered or the popup closes.

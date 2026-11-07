@@ -23,6 +23,7 @@ export default {
     expiredToast: "Offre expirée — proposée à un autre livreur.",
   },
   home: {
+    searching: "Recherche de livraisons…",
     menuAria: "Ouvrir le menu",
     safetyAria: "Centre de sécurité",
     layersAria: "Calques de la carte",
