@@ -23,6 +23,7 @@ export default {
     expiredToast: "Час вийшов — передано іншому водію.",
   },
   home: {
+    online: "Онлайн",
     searching: "Шукаємо замовлення…",
     menuAria: "Відкрити меню",
     safetyAria: "Центр безпеки",

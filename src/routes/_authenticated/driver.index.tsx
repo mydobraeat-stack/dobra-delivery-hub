@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/dialog";
 import { DriverSearchingStrip } from "@/components/dobra/DriverSearchingStrip";
 import { isDriverWaiting } from "@/lib/driver-home";
+import { playSound } from "@/lib/sound";
 import { MapView, type MapPoint } from "@/components/dobra/MapView";
 import { NewDeliveryAlert } from "@/components/dobra/NewDeliveryAlert";
 import { DobraLogo } from "@/components/dobra/Logo";
@@ -141,6 +142,7 @@ function DriverHome() {
     mutationFn: (next: boolean) => setDriverStatus(next ? "available" : "offline"),
     onSuccess: (_d, next) => {
       setOnline(next);
+      if (next) playSound("soft");
       queryClient.invalidateQueries({ queryKey: ["driver", "me"] });
       toast.success(next ? t("driver.home.onlineToast") : t("driver.home.offlineToast"));
     },
@@ -296,13 +298,15 @@ function DriverHome() {
             size="lg"
             disabled={toggle.isPending}
             onClick={handleToggle}
+            aria-label={online ? t("driver.home.goOffline") : t("driver.home.goOnline")}
+            aria-pressed={online}
             className={`h-12 flex-1 rounded-full text-base font-bold shadow-lg ${
               online
-                ? "bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                : "bg-good text-primary-foreground hover:bg-good/90"
+                ? "driver-online-button bg-good text-primary-foreground hover:bg-good/90"
+                : "bg-primary text-primary-foreground hover:bg-primary/90"
             }`}
           >
-            {online ? t("driver.home.goOffline") : t("driver.home.goOnline")}
+            {online ? <><span aria-hidden="true" className="driver-online-dot size-2 rounded-full bg-current" />{t("driver.home.online")}</> : t("driver.home.goOnline")}
           </Button>
 
           <Button
@@ -327,6 +331,7 @@ function DriverHome() {
       ) : null}
 
       {/* Driver statistics */}
+      {!online ? (
       <div className="mx-auto max-w-4xl space-y-5 px-5 pb-6 pt-5">
         <div className="grid grid-cols-2 gap-3">
           <StatCard icon={Trophy} label={t("driver.home.statScore")} value="96%" />
@@ -337,6 +342,7 @@ function DriverHome() {
 
 
       </div>
+      ) : null}
     </div>
   );
 }
