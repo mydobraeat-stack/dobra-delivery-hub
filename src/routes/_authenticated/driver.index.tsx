@@ -1,5 +1,5 @@
 import { usePayout } from "@/lib/payout";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -31,7 +31,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { DriverSearchingStrip } from "@/components/dobra/DriverSearchingStrip";
-import { isDriverWaiting, nextDriverAvailability } from "@/lib/driver-home";
+import { DriverOfflineSheet } from "@/components/dobra/DriverOfflineSheet";
+import { driverAvailabilityAction, offlineConfirmationResult, isDriverWaiting } from "@/lib/driver-home";
 import { tapFeedback } from "@/lib/sound";
 import { MapView, type MapPoint } from "@/components/dobra/MapView";
 import { NewDeliveryAlert } from "@/components/dobra/NewDeliveryAlert";
@@ -79,6 +80,8 @@ function DriverHome() {
   const queryClient = useQueryClient();
 
   const [online, setOnline] = useState(false);
+  const [offlineSheet, setOfflineSheet] = useState(false);
+  const availabilitySaving = useRef(false);
   const [offerVisible, setOfferVisible] = useState(false);
   const [me, setMe] = useState<{ lat: number; lng: number } | null>(null);
   const { data: docs = [] } = useQuery(driverDocsQuery);
@@ -96,7 +99,8 @@ function DriverHome() {
         setGate("phone");
         return;
       }
-      toggle.mutate(nextDriverAvailability(online));
+      if (driverAvailabilityAction(online) === "confirm-offline") setOfflineSheet(true);
+      else toggle.mutate(true);
       return;
     }
     if (approval === "rejected") setGate("rejected");
@@ -105,7 +109,7 @@ function DriverHome() {
   }
 
   useEffect(() => {
-    if (driver) setOnline(driver.status === "available" || driver.status === "busy");
+    if (driver && !availabilitySaving.current) setOnline(driver.status === "available" || driver.status === "busy");
   }, [driver?.status]);
 
   // Read the device location once for the map marker.
@@ -140,19 +144,33 @@ function DriverHome() {
 
   const toggle = useMutation({
     mutationFn: (next: boolean) => setDriverStatus(next ? "available" : "offline"),
-    onMutate: () => queryClient.cancelQueries({ queryKey: myDriverQuery.queryKey }),
+    onMutate: async (next: boolean) => {
+      availabilitySaving.current = true;
+      const previousOnline = online;
+      setOnline(next);
+      await queryClient.cancelQueries({ queryKey: myDriverQuery.queryKey });
+      const previousDriver = queryClient.getQueryData(myDriverQuery.queryKey);
+      queryClient.setQueryData(myDriverQuery.queryKey, (previous: typeof driver) =>
+        previous ? { ...previous, status: next ? "available" : "offline" } : previous,
+      );
+      return { previousOnline, previousDriver };
+    },
     onSuccess: (_d, next) => {
       queryClient.setQueryData(myDriverQuery.queryKey, (previous: typeof driver) =>
         previous ? { ...previous, status: next ? "available" : "offline" } : previous,
       );
       setOnline(next);
       tapFeedback(next ? "soft" : "off", next ? [40, 30, 40] : 60);
-      queryClient.invalidateQueries({ queryKey: ["driver", "me"] });
       toast.success(next ? t("driver.home.onlineToast") : t("driver.home.offlineToast"));
     },
-    onError: (e: Error) => {
+    onError: (e: Error, _next, context) => {
+      setOnline(context?.previousOnline ?? true);
+      if (context?.previousDriver) queryClient.setQueryData(myDriverQuery.queryKey, context.previousDriver);
+      toast.error(e.message.includes("active_delivery") ? t("driver.home.offlineBlocked") : t("driver.home.statusError"));
+    },
+    onSettled: () => {
+      availabilitySaving.current = false;
       void queryClient.invalidateQueries({ queryKey: myDriverQuery.queryKey });
-      toast.error(e.message.includes("active_delivery") ? t("driver.home.offlineBlocked") : e.message);
     },
   });
 
@@ -178,7 +196,12 @@ function DriverHome() {
       : (restaurants.find((r) => r.id === id)?.name ?? t("driver.home.restaurantFallback"));
 
   return (
-    <div className="pb-4">
+    <div className="driver-home flex min-h-0 flex-col">
+      {offlineSheet ? <DriverOfflineSheet onStayOnline={() => setOfflineSheet(false)} onGoOffline={() => {
+        setOfflineSheet(false);
+        const next = offlineConfirmationResult("go-offline");
+        if (next !== null) { setOnline(next); toggle.mutate(next); }
+      }} /> : null}
       <NewDeliveryAlert online={online && active.length === 0} available={available} restaurantName={restaurantName} restaurants={restaurants} onOfferVisibilityChange={setOfferVisible} />
 
       <Dialog open={gate !== null} onOpenChange={(o) => !o && setGate(null)}>
@@ -233,7 +256,7 @@ function DriverHome() {
         </DialogContent>
       </Dialog>
       {/* Map with floating controls */}
-      <section className="relative h-[58vh] min-h-80 w-full overflow-hidden">
+      <section className="relative min-h-48 w-full flex-1 overflow-hidden" aria-label={t("driver.home.centreAria")}>
         {points.length > 0 ? (
           <MapView points={points} className="h-full w-full rounded-none" zoom={15} />
         ) : (
@@ -333,23 +356,21 @@ function DriverHome() {
         </div>
       </section>
 
+      <div className="shrink-0 space-y-2 px-3 pb-3 pt-2">
       {isDriverWaiting({ online, ordersReady, activeCount: active.length, offerVisible }) ? (
         <DriverSearchingStrip label={t("driver.home.searching")} />
       ) : null}
 
       {/* Driver statistics */}
-      {!online ? (
-      <div className="mx-auto max-w-4xl space-y-5 px-5 pb-6 pt-5">
-        <div className="grid grid-cols-2 gap-3">
-          <StatCard icon={Trophy} label={t("driver.home.statScore")} value="96%" />
-          <StatCard icon={Star} label={t("driver.home.statRating")} value="4.9" />
+        <div className="grid grid-cols-2 gap-2">
+          {!online ? <><StatCard icon={Trophy} label={t("driver.home.statScore")} value="96%" />
+          <StatCard icon={Star} label={t("driver.home.statRating")} value="4.9" /></> : null}
           <StatCard icon={Navigation} label={t("driver.home.statAcceptance")} value={`${acceptance}%`} />
           <StatCard icon={Trophy} label={t("driver.home.statTotal")} value={String(done.length)} />
         </div>
 
 
       </div>
-      ) : null}
     </div>
   );
 }
@@ -384,11 +405,11 @@ function StatCard({
   value: string;
 }) {
   return (
-    <Card className="border-ink/10 bg-ink-solid bg-ink-gradient text-ink-solid-foreground">
-      <CardContent className="space-y-1 py-4">
-        <Icon className="size-4 text-ink-solid-foreground" aria-hidden />
-        <p className="text-xl font-bold">{value}</p>
-        <p className="text-xs text-ink-solid-foreground/70">{label}</p>
+    <Card className="rounded-lg border-ink/10 bg-card text-card-foreground">
+      <CardContent className="flex items-center gap-2 px-3 py-2">
+        <Icon className="size-4 shrink-0 text-brand" aria-hidden />
+        <div className="min-w-0"><p className="text-base font-bold">{value}</p>
+        <p className="text-[10px] leading-tight text-muted-foreground">{label}</p></div>
       </CardContent>
     </Card>
   );

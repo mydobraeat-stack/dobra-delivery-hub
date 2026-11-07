@@ -1,4 +1,13 @@
-/** Availability taps request the opposite state without a confirmation step. */
+/** Online drivers confirm before changing availability. */
+export function driverAvailabilityAction(online: boolean): "confirm-offline" | "go-online" {
+  return online ? "confirm-offline" : "go-online";
+}
+
+export function offlineConfirmationResult(action: "go-offline" | "stay-online" | "backdrop" | "back"): false | null {
+  return action === "go-offline" ? false : null;
+}
+
+/** The confirmed availability request is always the opposite state. */
 export function nextDriverAvailability(online: boolean): boolean {
   return !online;
 }

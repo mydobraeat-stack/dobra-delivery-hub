@@ -232,16 +232,29 @@
   background-image: var(--action-gradient);
 }
 
-/* Two small transform-only animations; reduced motion is completely static. */
-.driver-search-road { animation: driver-road-roll 1.8s linear infinite; }
-.driver-search-scooter { animation: driver-scooter-ride 1.2s ease-in-out infinite; }
+/* Home reserves the measured navigation height, including device safe area. */
+.driver-home-shell { --driver-nav-height: 59px; }
+.driver-home { height: calc(100dvh - var(--driver-nav-height) - env(safe-area-inset-bottom, 0px)); }
+.driver-home-shell > nav { padding-bottom: env(safe-area-inset-bottom, 0px); }
+@media (min-width: 640px) { .driver-home-shell { --driver-nav-height: 60px; } }
+/* Small transform-only animations; reduced motion is completely static. */
+.driver-search-road { animation: driver-road-roll 0.8s linear infinite; }
+.driver-search-scooter { animation: driver-scooter-ride 0.6s ease-in-out infinite; }
+.driver-search-wheel { animation: driver-wheel-spin 0.65s linear infinite; }
+.driver-search-wheel-rear { transform-origin: 27px 35px; }
+.driver-search-wheel-front { transform-origin: 70px 35px; }
+.driver-search-speed { animation: driver-speed-dash 0.8s ease-out infinite; }
+.driver-search-ripple { animation: driver-search-ripple 2s ease-in-out infinite; }
+.driver-search-dots > span { animation: driver-dot-bounce 1.2s ease-in-out infinite; }
+.driver-search-dots > span:nth-child(2) { animation-delay: 0.2s; }
+.driver-search-dots > span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes driver-wheel-spin { to { transform: rotate(360deg); } }
+@keyframes driver-speed-dash { 0%, 100% { transform: translateX(0) scaleX(0.6); } 50% { transform: translateX(-5px) scaleX(1); } }
+@keyframes driver-search-ripple { 0%, 100% { transform: scale(0.7); } 50% { transform: scale(1.5); } }
+@keyframes driver-dot-bounce { 0%, 100% { transform: translateY(0) scale(0.7); } 50% { transform: translateY(-3px) scale(1); } }
 .driver-search-progress > span { animation: driver-search-sweep 3s ease-in-out infinite; }
 .driver-online-button { background-image: none; }
 .driver-online-dot { animation: driver-online-pulse 2s ease-in-out infinite; }
-.driver-search-message { animation: driver-message-roll 12s linear infinite; }
-@keyframes driver-message-roll {
-  to { transform: translateX(-50%); }
-}
 @keyframes driver-search-sweep {
   0%, 100% { transform: translateX(0); }
   50% { transform: translateX(300%); }
@@ -255,13 +268,10 @@
 }
 @keyframes driver-scooter-ride {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-1px); }
+  50% { transform: translateY(-3px) rotate(-2deg); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .driver-search-road, .driver-search-scooter, .driver-search-progress > span, .driver-online-dot, .driver-search-message { animation: none; }
-  .driver-search-message { width: 100%; justify-content: center; text-align: center; }
-  .driver-search-message > span { flex-shrink: 1; }
-  .driver-search-message > span:not(:first-child) { display: none; }
+  .driver-search-road, .driver-search-scooter, .driver-search-wheel, .driver-search-speed, .driver-search-ripple, .driver-search-dots > span, .driver-search-progress > span, .driver-online-dot { animation: none; }
 }
 
 /* Staff-only layout: keep record text shrinkable and data scrolling local. */
