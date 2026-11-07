@@ -1,14 +1,17 @@
 import { usePayout } from "@/lib/payout";
 import { OrderTimeLabel } from "@/components/dobra/OrderTimes";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { EmptyState, ErrorState, ListSkeleton } from "@/components/dobra/QueryStates";
 import { useQuery } from "@tanstack/react-query";
 import { useI18n } from "@/lib/i18n";
 import { accountQueryOptions } from "@/lib/profile";
 import { PendingApproval } from "@/components/dobra/PendingApproval";
+import { driverApproval } from "@/components/dobra/DriverGate";
+import { newestDeliveriesFirst } from "@/lib/driver-home";
+import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/dobra/StatusBadge";
 import { Card, CardContent } from "@/components/ui/card";
-import { driverOrdersQuery, isFinished, orderRef, restaurantsQuery } from "@/lib/dobra";
+import { driverOrdersQuery, isFinished, myDriverQuery, orderRef, restaurantsQuery } from "@/lib/dobra";
 
 export const Route = createFileRoute("/_authenticated/driver/deliveries")({
   head: () => ({
@@ -25,10 +28,11 @@ export const Route = createFileRoute("/_authenticated/driver/deliveries")({
 });
 
 function DriverDeliveries() {
-  const { t, formatMoney, formatDate } = useI18n();
+  const { t, formatMoney } = useI18n();
   const pay = usePayout();
   const { data: account } = useQuery(accountQueryOptions);
-  const approved = account?.approvalStatus === "approved";
+  const { data: driver } = useQuery(myDriverQuery);
+  const approved = driverApproval(account?.approvalStatus, driver) === "approved";
   const { data, isLoading, isError, refetch } = useQuery({ ...driverOrdersQuery, enabled: approved });
   const { data: restaurants = [] } = useQuery({ ...restaurantsQuery, enabled: approved });
 
@@ -43,7 +47,7 @@ function DriverDeliveries() {
 
   const mine = data?.mine ?? [];
   const active = mine.filter((o) => !isFinished(o.status));
-  const past = mine.filter((o) => isFinished(o.status));
+  const past = newestDeliveriesFirst(mine.filter((o) => isFinished(o.status)));
   const name = (id: string | null) =>
     !id
       ? t("package.orderLabel")
@@ -53,15 +57,18 @@ function DriverDeliveries() {
     <Card key={o.id} className="border-ink/10">
       <CardContent className="flex flex-wrap items-center justify-between gap-3 py-4">
         <div className="min-w-0">
-          <p className="font-semibold text-foreground">{name(o.restaurant_id)}</p>
+          <p className="break-words font-semibold text-foreground">{o.kind === "package" ? (o.pickup_address ?? t("package.orderLabel")) : name(o.restaurant_id)}</p>
           <p className="text-xs text-foreground/60">
             {orderRef(o.id)} ·{" "}
-            {o.delivered_at ? <OrderTimeLabel step="delivered" at={o.delivered_at} country={o.country} /> : <OrderTimeLabel step="placed" at={o.created_at} country={o.country} />} ·{" "}
-            {formatMoney(pay(o), o.currency)}
+            {o.delivered_at ? <OrderTimeLabel step="delivered" at={o.delivered_at} country={o.country} /> : o.cancelled_at ? <OrderTimeLabel step="cancelled" at={o.cancelled_at} country={o.country} /> : <OrderTimeLabel step="placed" at={o.created_at} country={o.country} />}
           </p>
+          <p className="mt-1 text-sm font-semibold text-brand">{t("driver.delivery.yourPayout")}: {formatMoney(pay(o), o.currency)}</p>
           {o.address ? <p className="text-xs text-foreground/60">{o.address}</p> : null}
         </div>
-        <StatusBadge status={o.status} />
+        <div className="flex shrink-0 flex-wrap items-center gap-2">
+          <StatusBadge status={o.status} />
+          {!isFinished(o.status) ? <Button size="sm" variant="outline" asChild><Link to="/driver/delivery/$orderId" params={{ orderId: o.id }}>{t("driver.home.open")}</Link></Button> : null}
+        </div>
       </CardContent>
     </Card>
   );
