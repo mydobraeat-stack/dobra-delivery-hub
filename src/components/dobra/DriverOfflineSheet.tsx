@@ -1,28 +1,36 @@
-import { useBlocker } from "@tanstack/react-router";
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
 import { useT } from "@/lib/i18n";
 
-/** Mounted only while open: removing the portal also releases the modal scroll lock. */
+/** Mounted only while open: unmounting releases the portal and modal scroll lock. */
 export function DriverOfflineSheet({ onStayOnline, onGoOffline }: {
   onStayOnline: () => void;
   onGoOffline: () => void;
 }) {
   const t = useT();
-  const backTimer = useRef<number | undefined>(undefined);
-  const blocker = useBlocker({
-    withResolver: true,
-    enableBeforeUnload: false,
-    shouldBlockFn: ({ action }) => action === "BACK" || action === "GO",
-  });
-  useEffect(() => {
-    if (blocker.status !== "blocked") return;
-    blocker.reset();
-    // Keep the guard mounted until the router restores the current history entry.
-    backTimer.current = window.setTimeout(onStayOnline, 50);
-  }, [blocker.status, blocker.reset, onStayOnline]);
-  useEffect(() => () => window.clearTimeout(backTimer.current), []);
+  const dismiss = useRef(onStayOnline);
+  dismiss.current = onStayOnline;
+  useLayoutEffect(() => {
+    const marker = "dobraOfflineSheet";
+    let popped = false;
+    let closing = false;
+    // A native same-document entry makes Back dismiss even on a direct app launch.
+    // Bypass the router's push wrapper: this entry is modal state, not navigation.
+    History.prototype.pushState.call(window.history, { ...window.history.state, [marker]: true }, "", window.location.href);
+    const onBack = (event: PopStateEvent) => {
+      event.stopImmediatePropagation();
+      popped = true;
+      window.removeEventListener("popstate", onBack, true);
+      if (!closing) dismiss.current();
+    };
+    window.addEventListener("popstate", onBack, true);
+    return () => {
+      closing = true;
+      if (!popped && window.history.state?.[marker]) window.history.back();
+      else window.removeEventListener("popstate", onBack, true);
+    };
+  }, []);
 
   return <DialogPrimitive.Root open onOpenChange={(open) => { if (!open) onStayOnline(); }}>
     <DialogPrimitive.Portal>
