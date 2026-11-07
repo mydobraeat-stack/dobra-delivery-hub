@@ -148,11 +148,12 @@ function DriverHome() {
       availabilitySaving.current = true;
       const previousOnline = online;
       setOnline(next);
-      await queryClient.cancelQueries({ queryKey: myDriverQuery.queryKey });
       const previousDriver = queryClient.getQueryData(myDriverQuery.queryKey);
+      const cancellation = queryClient.cancelQueries({ queryKey: myDriverQuery.queryKey });
       queryClient.setQueryData(myDriverQuery.queryKey, (previous: typeof driver) =>
         previous ? { ...previous, status: next ? "available" : "offline" } : previous,
       );
+      await cancellation;
       return { previousOnline, previousDriver };
     },
     onSuccess: (_d, next) => {
@@ -326,15 +327,13 @@ function DriverHome() {
 
           <Button
             size="lg"
+            variant="ghost"
             disabled={toggle.isPending}
             onClick={handleToggle}
             aria-label={online ? t("driver.home.goOffline") : t("driver.home.goOnline")}
             aria-pressed={online}
-            className={`h-12 w-auto min-w-36 max-w-[calc(100%-7rem)] whitespace-normal rounded-full px-5 text-sm font-bold shadow-lg ${
-              online
-                ? "driver-online-button bg-good text-primary-foreground hover:bg-good/90"
-                : "bg-primary text-primary-foreground hover:bg-primary/90"
-            }`}
+            data-online={online}
+            className="driver-availability h-12 w-auto min-w-36 max-w-[calc(100%-7rem)] whitespace-normal rounded-full px-5 text-sm font-bold shadow-lg disabled:opacity-100"
           >
             {online ? <><span aria-hidden="true" className="driver-online-dot size-2 rounded-full bg-current" />{t("driver.home.online")}</> : t("driver.home.goOnline")}
           </Button>

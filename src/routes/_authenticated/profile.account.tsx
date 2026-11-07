@@ -495,14 +495,18 @@ function DriverSection({ status }: { status: string | null | undefined }) {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
-            <Stat
-              label={t("common.profile.availability")}
-              value={
-                driver?.status && driver.status !== "offline"
-                  ? t("common.profile.online")
-                  : t("common.profile.offline")
-              }
-            />
+            <div className="min-w-0">
+              <p className="text-xs text-muted-foreground">{t("common.profile.availability")}</p>
+              <span
+                data-online={driver?.status === "available" || driver?.status === "busy"}
+                className="driver-availability mt-1 inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-bold"
+              >
+                {driver?.status === "available" || driver?.status === "busy" ? <>
+                  <span aria-hidden="true" className="driver-online-dot size-2 shrink-0 rounded-full bg-current" />
+                  {t("driver.home.online")}
+                </> : t("driver.home.goOnline")}
+              </span>
+            </div>
             <Stat
               label={t("common.profile.accountStatus")}
               value={
