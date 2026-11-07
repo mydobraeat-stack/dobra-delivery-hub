@@ -1,5 +1,10 @@
 # Task roadmap
 
+## Driver Home and delivery history
+- [ ] Add localized rolling search strip directly below the toggle with offer/active/offline and reduced-motion handling.
+- [ ] Keep delivery lists on Deliveries with newest-first dates, pickup, status, payout and empty states.
+- [ ] Run rule tests and browser checks; disclose any real-driver session or offer verification blockers.
+
 ## Existing customer driver applications
 - [x] Add same-account application, localized introduction/status and reuse driver onboarding with main Terms acceptance.
 - [x] Enforce approval and mode switching safeguards, admin review tags and notifications.

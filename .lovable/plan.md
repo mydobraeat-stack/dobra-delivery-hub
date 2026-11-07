@@ -1,11 +1,11 @@
-# Existing customers can apply to drive
+# Driver Home and delivery history
 
-- Add a branded “Become a driver” profile option for customers without a driver role, followed by a brief four-language introduction with no earnings promises.
-- Start a draft application on the same account. Reuse vehicle-dependent documents, photo capture/examples and the existing profile phone. Record acceptance of the main Terms before submission; no separate driver terms were found.
-- Show application status and remembered Customer/Driver mode switches. Switching to Customer sets the driver offline; any active delivery blocks switching.
-- Add existing-customer tags to Pending Approvals and notify admins/applicants of application events and decisions.
-- Enforce approval, document-review protection, role assignment and switching rules in the database. Test concrete rules and exercise the existing-customer flow in the browser; disclose account-access or live-delivery verification limits.
+- Put a compact yellow/red scooter-and-scrolling-road strip immediately below the Online/Offline controls, outside the map. Translate “Searching for orders…” into English, Polish, Ukrainian and French.
+- Show it only while online, with loaded order data, no active delivery and no visible offer. Restore it after declining or expiry; stop motion for reduced-motion preferences.
+- Keep Home focused on the map, earnings, toggle, search strip and stats. Move delivery lists to Deliveries, preserving access to active delivery details there.
+- Complete Deliveries with newest-first past records, restaurant or package pickup, country-local date/time, status, existing locked payout, and loading/error/empty states.
+- Test visibility and sorting rules, then check mobile/desktop and offer transitions in the browser. Report separately any real-driver checks blocked by account access; do not create live orders merely for screenshots.
 
-## Technical implementation
+## Technical details
 
-Use authenticated, narrow SECURITY DEFINER database RPCs with caller checks and driver-row locking. Keep roles in the existing multi-role user_roles table; application approval stays separate from customer profile approval. Store preferred mode and Terms acceptance durably. Protect driver-only reads/claims and online status with aggregate document approval plus an active account, and preserve existing admin audit triggers.
+Share visible-offer state from the existing offer popup rather than treating declined orders as pending offers. Reuse existing driver approval checks, order timestamps and payout helpers; no database or payment-rule changes.
