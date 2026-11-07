@@ -30,7 +30,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { StatusBadge } from "@/components/dobra/StatusBadge";
+import { DriverSearchingStrip } from "@/components/dobra/DriverSearchingStrip";
+import { isDriverWaiting } from "@/lib/driver-home";
 import { MapView, type MapPoint } from "@/components/dobra/MapView";
 import { NewDeliveryAlert } from "@/components/dobra/NewDeliveryAlert";
 import { DobraLogo } from "@/components/dobra/Logo";
@@ -38,27 +39,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import {
-  claimOrder,
   driverCurrency,
   driverOrdersQuery,
   isFinished,
   myDriverQuery,
-  orderRef,
   restaurantsQuery,
   saveDriverLocation,
   setDriverStatus,
-  updateOrderStatus,
-  type OrderRow,
 } from "@/lib/dobra";
-import {
-  autoNavigationEnabled,
-  directionsUrl,
-  dropoffDestination,
-  markNavigationBlocked,
-  openNavigation,
-  pickupDestination,
-  travelModeFor,
-} from "@/lib/navigation";
 
 export const Route = createFileRoute("/_authenticated/driver/")({
   head: () => ({
@@ -85,11 +73,12 @@ function DriverHome() {
   const approval = driverApproval(account?.approvalStatus, driver);
   const approved = approval === "approved";
 
-  const { data } = useQuery({ ...driverOrdersQuery, enabled: approved });
+  const { data, isSuccess: ordersReady } = useQuery({ ...driverOrdersQuery, enabled: approved });
   const { data: restaurants = [] } = useQuery({ ...restaurantsQuery, enabled: approved });
   const queryClient = useQueryClient();
 
   const [online, setOnline] = useState(false);
+  const [offerVisible, setOfferVisible] = useState(false);
   const [me, setMe] = useState<{ lat: number; lng: number } | null>(null);
   const { data: docs = [] } = useQuery(driverDocsQuery);
   const [gate, setGate] = useState<null | "start" | "finish" | "rejected" | "phone">(null);
@@ -158,38 +147,6 @@ function DriverHome() {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  const invalidate = () => queryClient.invalidateQueries({ queryKey: ["orders"] });
-
-  const claim = useMutation({
-    mutationFn: (id: string) => claimOrder(id),
-    onSuccess: () => {
-      toast.success(t("driver.home.acceptedToast"));
-      invalidate();
-    },
-    onError: (e: Error) => toast.error(e.message),
-  });
-
-  const legUrl = (o: OrderRow, leg: "pickup" | "dropoff") =>
-    directionsUrl(
-      leg === "dropoff" ? dropoffDestination(o) : pickupDestination(o, restaurants.find((r) => r.id === o.restaurant_id)),
-      travelModeFor(driver?.vehicle_type),
-    );
-  /** Synchronous auto-open inside a tap; remembers a block so the delivery screen offers a button. */
-  const autoOpen = (o: OrderRow, leg: "pickup" | "dropoff") => {
-    if (!autoNavigationEnabled()) return;
-    const url = legUrl(o, leg);
-    if (url && !openNavigation(url)) {
-      markNavigationBlocked(o.id, leg);
-      toast(t("driver.nav.blocked"));
-    }
-  };
-
-  const advance = useMutation({
-    mutationFn: ({ id, status }: { id: string; status: string }) => updateOrderStatus(id, status),
-    onSuccess: invalidate,
-    onError: (e: Error) => toast.error(e.message),
-  });
-
   const points = useMemo<MapPoint[]>(() => (me ? [{ ...me, label: "You", kind: "driver" as const }] : []), [me]);
 
 
@@ -213,7 +170,7 @@ function DriverHome() {
 
   return (
     <div className="pb-4">
-      <NewDeliveryAlert online={online} available={available} restaurantName={restaurantName} restaurants={restaurants} />
+      <NewDeliveryAlert online={online && active.length === 0} available={available} restaurantName={restaurantName} restaurants={restaurants} onOfferVisibilityChange={setOfferVisible} />
 
       <Dialog open={gate !== null} onOpenChange={(o) => !o && setGate(null)}>
         <DialogContent className="max-w-sm">
@@ -342,7 +299,7 @@ function DriverHome() {
             className={`h-12 flex-1 rounded-full text-base font-bold shadow-lg ${
               online
                 ? "bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                : "bg-[hsl(145_63%_35%)] text-white hover:bg-[hsl(145_63%_30%)]"
+                : "bg-good text-primary-foreground hover:bg-good/90"
             }`}
           >
             {online ? t("driver.home.goOffline") : t("driver.home.goOnline")}
@@ -365,13 +322,12 @@ function DriverHome() {
         </div>
       </section>
 
-      {/* Bottom sheet content */}
-      <div className="mx-auto -mt-4 max-w-4xl space-y-5 rounded-t-3xl bg-panel-gradient px-5 pb-6 pt-5 shadow-[0_-8px_24px_rgba(0,0,0,0.08)]">
-        <div className="rounded-2xl bg-background px-4 py-4 ring-1 ring-ink/10">
-          <p className="text-sm font-bold text-ink">{t("driver.home.offersTitle")}</p>
-          <p className="text-sm text-ink/80">{t("driver.home.offersBody")}</p>
-        </div>
+      {isDriverWaiting({ online, ordersReady, activeCount: active.length, offerVisible }) ? (
+        <DriverSearchingStrip label={t("driver.home.searching")} />
+      ) : null}
 
+      {/* Driver statistics */}
+      <div className="mx-auto max-w-4xl space-y-5 px-5 pb-6 pt-5">
         <div className="grid grid-cols-2 gap-3">
           <StatCard icon={Trophy} label={t("driver.home.statScore")} value="96%" />
           <StatCard icon={Star} label={t("driver.home.statRating")} value="4.9" />
@@ -379,129 +335,8 @@ function DriverHome() {
           <StatCard icon={Trophy} label={t("driver.home.statTotal")} value={String(done.length)} />
         </div>
 
-        <section className="space-y-3">
-          <h2 className="text-lg font-bold text-foreground">{t("driver.home.myDeliveries")}</h2>
-          {active.length === 0 ? (
-            <p className="text-sm text-foreground/60">{t("driver.home.noneAssigned")}</p>
-          ) : (
-            active.map((o) => (
-              <Card key={o.id} className="border-ink/10">
-                <CardContent className="flex flex-wrap items-center justify-between gap-3 py-4">
-                  <div className="min-w-0">
-                    <p className="font-semibold text-foreground">{restaurantName(o.restaurant_id)}</p>
-                    <p className="text-xs text-foreground/60">
-                      {orderRef(o.id)} · {formatMoney(pay(o), o.currency)} {t("driver.home.payoutSuffix")}
-                    </p>
-                    {o.address ? (
-                      <p className="text-xs text-foreground/60">{t("driver.home.dropOff", { address: o.address })}</p>
-                    ) : null}
-                  </div>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <StatusBadge status={o.status} />
-                    <Button size="sm" variant="outline" asChild>
-                      <Link to="/driver/delivery/$orderId" params={{ orderId: o.id }}>
-                        {t("driver.home.open")}
-                      </Link>
-                    </Button>
-                    {(() => {
-                      const url = legUrl(o, o.status === "picked_up" ? "dropoff" : "pickup");
-                      return url ? (
-                        <Button size="sm" variant="outline" asChild>
-                          <a href={url} target="_blank" rel="noreferrer">
-                            <Navigation className="size-4" aria-hidden /> {t("driver.home.navigate")}
-                          </a>
-                        </Button>
-                      ) : null;
-                    })()}
-                    {o.status === "ready" ? (
-                      <Button
-                        size="sm"
-                        disabled={advance.isPending}
-                        onClick={() => {
-                          autoOpen(o, "dropoff");
-                          advance.mutate({ id: o.id, status: "picked_up" });
-                        }}
-                      >
-                        {t("driver.home.pickedUp")}
-                      </Button>
-                    ) : null}
-                    {o.status === "picked_up" ? (
-                      <Button
-                        size="sm"
-                        disabled={advance.isPending}
-                        onClick={() => advance.mutate({ id: o.id, status: "delivered" })}
-                      >
-                        {t("driver.home.delivered")}
-                      </Button>
-                    ) : null}
-                  </div>
-                </CardContent>
-              </Card>
-            ))
-          )}
-        </section>
 
-        <section className="space-y-3">
-          <h2 className="text-lg font-bold text-foreground">{t("driver.home.availableDeliveries")}</h2>
-          {!online ? (
-            <p className="text-sm text-foreground/60">{t("driver.home.goOnlineToSeeJobs")}</p>
-          ) : available.length === 0 ? (
-            <SearchingPulse label={t("driver.home.noneWaiting")} />
-          ) : (
-            available.map((o) => (
-              <Card key={o.id} className="border-ink/10">
-                <CardContent className="flex flex-wrap items-center justify-between gap-3 py-4">
-                  <div>
-                    <p className="font-semibold text-foreground">{restaurantName(o.restaurant_id)}</p>
-                    <p className="text-xs text-foreground/60">
-                      {orderRef(o.id)} · {t("driver.home.youEarn", { amount: formatMoney(pay(o), o.currency) })}
-                    </p>
-                    {o.address ? (
-                      <p className="text-xs text-foreground/60">{t("driver.home.dropOff", { address: o.address })}</p>
-                    ) : null}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Button size="sm" variant="outline" asChild>
-                      <Link to="/driver/delivery/$orderId" params={{ orderId: o.id }}>
-                        {t("driver.home.view")}
-                      </Link>
-                    </Button>
-                    <Button size="sm" disabled={claim.isPending} onClick={() => {
-                      autoOpen(o, "pickup");
-                      claim.mutate(o.id);
-                    }}>
-                      {t("driver.home.accept")}
-                    </Button>
-                  </div>
-
-                </CardContent>
-              </Card>
-            ))
-          )}
-        </section>
       </div>
-    </div>
-  );
-}
-
-/** Radar-style "searching for orders" animation shown while online with no jobs. */
-function SearchingPulse({ label }: { label: string }) {
-  return (
-    <div role="status" aria-live="polite" className="flex flex-col items-center gap-4 rounded-2xl bg-background py-8 ring-1 ring-ink/10">
-      <div className="relative flex size-28 items-center justify-center">
-        <span className="absolute inset-0 rounded-full bg-primary/25 animate-ping [animation-duration:2s]" />
-        <span className="absolute inset-3 rounded-full bg-primary/20 animate-ping [animation-duration:2s] [animation-delay:0.6s]" />
-        <span className="absolute inset-6 rounded-full bg-sun/40 animate-ping [animation-duration:2s] [animation-delay:1.2s]" />
-        <span className="relative flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg">
-          <Navigation className="size-6 animate-pulse" aria-hidden />
-        </span>
-      </div>
-      <div className="flex items-center gap-1" aria-hidden>
-        {[0, 1, 2].map((i) => (
-          <span key={i} className="size-1.5 rounded-full bg-primary animate-bounce" style={{ animationDelay: `${i * 0.15}s` }} />
-        ))}
-      </div>
-      <p className="px-4 text-center text-sm text-foreground/70">{label}</p>
     </div>
   );
 }
