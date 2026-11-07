@@ -1,9 +1,10 @@
 # Task roadmap
 
 ## Driver Home and delivery history
-- [ ] Add localized rolling search strip directly below the toggle with offer/active/offline and reduced-motion handling.
-- [ ] Keep delivery lists on Deliveries with newest-first dates, pickup, status, payout and empty states.
-- [ ] Run rule tests and browser checks; disclose any real-driver session or offer verification blockers.
+- [x] Add localized rolling search strip directly below the toggle with offer/active/offline and reduced-motion handling.
+- [x] Keep delivery lists on Deliveries with newest-first dates, pickup, status, payout and empty states.
+- [x] Pass 20 focused tests and mobile/desktop simulated browser checks (online, decline/return, offline, active job, reduced motion, populated/empty history); signed-in Home checked, build clean.
+- [ ] Verify online/offer transitions with a real driver account — blocked: driver test-account session approval was declined; simulated checks are not live delivery verification.
 
 ## Existing customer driver applications
 - [x] Add same-account application, localized introduction/status and reuse driver onboarding with main Terms acceptance.
