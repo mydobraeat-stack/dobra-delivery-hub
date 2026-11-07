@@ -21,5 +21,5 @@ it("sorts past deliveries by completion/cancellation date newest first without c
     { id: "cancelled", created_at: "2026-11-03T10:00:00Z", cancelled_at: "2026-11-06T10:00:00Z" },
   ];
   expect(newestDeliveriesFirst(orders).map((o) => o.id)).toEqual(["newest", "cancelled", "older"]);
-  expect(orders[0].id).toBe("older");
+  expect(orders[0]?.id).toBe("older");
 });
