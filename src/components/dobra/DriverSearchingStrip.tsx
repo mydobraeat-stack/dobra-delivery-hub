@@ -1,6 +1,6 @@
 export function DriverSearchingStrip({ label }: { label: string }) {
   return (
-    <div role="status" aria-live="polite" className="driver-search-strip relative flex min-h-11 items-center justify-center gap-2 overflow-hidden border-y border-brand/15 bg-sun px-5 py-1.5">
+    <div role="status" aria-live="polite" className="driver-search-strip relative flex min-h-40 flex-col items-center justify-center gap-4 overflow-hidden border-y border-brand/15 bg-sun py-5">
       <div className="relative h-8 w-16 shrink-0 overflow-hidden text-brand" aria-hidden="true">
         <svg viewBox="0 0 96 48" className="driver-search-scooter relative z-10 h-8 w-16" fill="none">
           <circle cx="27" cy="35" r="7" stroke="currentColor" strokeWidth="3" className="fill-sun" />
@@ -15,7 +15,15 @@ export function DriverSearchingStrip({ label }: { label: string }) {
           {Array.from({ length: 12 }, (_, i) => <span key={i} className="h-0.5 w-2 shrink-0 bg-current" />)}
         </div>
       </div>
-      <p className="min-w-0 text-sm font-bold text-sun-foreground">{label}</p>
+      <p className="sr-only">{label}</p>
+      <div aria-hidden="true" className="w-full overflow-hidden">
+        <div className="driver-search-message flex w-max text-lg font-bold text-sun-foreground">
+          <span className="shrink-0 px-8">{label}</span>
+          <span className="shrink-0 px-8">{label}</span>
+          <span className="shrink-0 px-8">{label}</span>
+          <span className="shrink-0 px-8">{label}</span>
+        </div>
+      </div>
       <span aria-hidden="true" className="driver-search-progress absolute inset-x-0 bottom-0 h-0.5 bg-brand/15"><span className="block h-full w-1/4 bg-brand" /></span>
     </div>
   );

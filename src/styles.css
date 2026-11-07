@@ -238,6 +238,10 @@
 .driver-search-progress > span { animation: driver-search-sweep 3s ease-in-out infinite; }
 .driver-online-button { background-image: none; }
 .driver-online-dot { animation: driver-online-pulse 2s ease-in-out infinite; }
+.driver-search-message { animation: driver-message-roll 12s linear infinite; }
+@keyframes driver-message-roll {
+  to { transform: translateX(-50%); }
+}
 @keyframes driver-search-sweep {
   0%, 100% { transform: translateX(0); }
   50% { transform: translateX(300%); }
@@ -254,7 +258,10 @@
   50% { transform: translateY(-1px); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .driver-search-road, .driver-search-scooter, .driver-search-progress > span, .driver-online-dot { animation: none; }
+  .driver-search-road, .driver-search-scooter, .driver-search-progress > span, .driver-online-dot, .driver-search-message { animation: none; }
+  .driver-search-message { width: 100%; justify-content: center; text-align: center; }
+  .driver-search-message > span { flex-shrink: 1; }
+  .driver-search-message > span:not(:first-child) { display: none; }
 }
 
 /* Staff-only layout: keep record text shrinkable and data scrolling local. */

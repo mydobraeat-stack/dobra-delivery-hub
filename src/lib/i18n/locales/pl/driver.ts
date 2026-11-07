@@ -23,6 +23,9 @@ export default {
     expiredToast: "Czas minął — oferta trafia do innego kierowcy.",
   },
   home: {
+    offlineConfirm: "Czy chcesz przejść offline?",
+    offlineConfirmBody: "Nie będziesz otrzymywać nowych ofert dostaw, dopóki ponownie nie przejdziesz online.",
+    stayOnline: "Pozostań online",
     online: "Online",
     searching: "Szukamy zleceń…",
     menuAria: "Otwórz menu",
