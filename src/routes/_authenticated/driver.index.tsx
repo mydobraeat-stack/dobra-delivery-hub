@@ -31,8 +31,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { DriverSearchingStrip } from "@/components/dobra/DriverSearchingStrip";
-import { isDriverWaiting } from "@/lib/driver-home";
-import { playSound } from "@/lib/sound";
+import { isDriverWaiting, nextDriverAvailability } from "@/lib/driver-home";
+import { tapFeedback } from "@/lib/sound";
 import { MapView, type MapPoint } from "@/components/dobra/MapView";
 import { NewDeliveryAlert } from "@/components/dobra/NewDeliveryAlert";
 import { DobraLogo } from "@/components/dobra/Logo";
@@ -79,7 +79,6 @@ function DriverHome() {
   const queryClient = useQueryClient();
 
   const [online, setOnline] = useState(false);
-  const [confirmOffline, setConfirmOffline] = useState(false);
   const [offerVisible, setOfferVisible] = useState(false);
   const [me, setMe] = useState<{ lat: number; lng: number } | null>(null);
   const { data: docs = [] } = useQuery(driverDocsQuery);
@@ -93,15 +92,11 @@ function DriverHome() {
 
   function handleToggle() {
     if (approved) {
-      if (online) {
-        setConfirmOffline(true);
-        return;
-      }
       if (!online && !hasPhone) {
         setGate("phone");
         return;
       }
-      toggle.mutate(!online);
+      toggle.mutate(nextDriverAvailability(online));
       return;
     }
     if (approval === "rejected") setGate("rejected");
@@ -111,7 +106,7 @@ function DriverHome() {
 
   useEffect(() => {
     if (driver) setOnline(driver.status === "available" || driver.status === "busy");
-  }, [driver]);
+  }, [driver?.status]);
 
   // Read the device location once for the map marker.
   useEffect(() => {
@@ -145,14 +140,20 @@ function DriverHome() {
 
   const toggle = useMutation({
     mutationFn: (next: boolean) => setDriverStatus(next ? "available" : "offline"),
+    onMutate: () => queryClient.cancelQueries({ queryKey: myDriverQuery.queryKey }),
     onSuccess: (_d, next) => {
+      queryClient.setQueryData(myDriverQuery.queryKey, (previous: typeof driver) =>
+        previous ? { ...previous, status: next ? "available" : "offline" } : previous,
+      );
       setOnline(next);
-      setConfirmOffline(false);
-      if (next) playSound("soft");
+      tapFeedback(next ? "soft" : "off", next ? [40, 30, 40] : 60);
       queryClient.invalidateQueries({ queryKey: ["driver", "me"] });
       toast.success(next ? t("driver.home.onlineToast") : t("driver.home.offlineToast"));
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => {
+      void queryClient.invalidateQueries({ queryKey: myDriverQuery.queryKey });
+      toast.error(e.message.includes("active_delivery") ? t("driver.home.offlineBlocked") : e.message);
+    },
   });
 
   const points = useMemo<MapPoint[]>(() => (me ? [{ ...me, label: "You", kind: "driver" as const }] : []), [me]);
@@ -179,19 +180,6 @@ function DriverHome() {
   return (
     <div className="pb-4">
       <NewDeliveryAlert online={online && active.length === 0} available={available} restaurantName={restaurantName} restaurants={restaurants} onOfferVisibilityChange={setOfferVisible} />
-
-      <Dialog open={confirmOffline} onOpenChange={setConfirmOffline}>
-        <DialogContent className="max-w-sm bg-card">
-          <DialogHeader>
-            <DialogTitle>{t("driver.home.offlineConfirm")}</DialogTitle>
-            <DialogDescription>{t("driver.home.offlineConfirmBody")}</DialogDescription>
-          </DialogHeader>
-          <DialogFooter className="gap-2">
-            <Button variant="outline" disabled={toggle.isPending} onClick={() => setConfirmOffline(false)}>{t("driver.home.stayOnline")}</Button>
-            <Button disabled={toggle.isPending} onClick={() => toggle.mutate(false)}>{t("driver.home.goOffline")}</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
 
       <Dialog open={gate !== null} onOpenChange={(o) => !o && setGate(null)}>
         <DialogContent className="max-w-sm">
@@ -302,7 +290,7 @@ function DriverHome() {
         </div>
 
         {/* Online toggle + flanking controls */}
-        <div className="absolute inset-x-0 bottom-0 flex items-center gap-3 p-4">
+        <div className="absolute inset-x-0 bottom-0 flex items-center justify-center gap-3 p-4">
           <Button
             size="icon"
             variant="secondary"
@@ -319,7 +307,7 @@ function DriverHome() {
             onClick={handleToggle}
             aria-label={online ? t("driver.home.goOffline") : t("driver.home.goOnline")}
             aria-pressed={online}
-            className={`h-12 flex-1 rounded-full text-base font-bold shadow-lg ${
+            className={`h-12 w-auto min-w-36 max-w-[calc(100%-7rem)] whitespace-normal rounded-full px-5 text-sm font-bold shadow-lg ${
               online
                 ? "driver-online-button bg-good text-primary-foreground hover:bg-good/90"
                 : "bg-primary text-primary-foreground hover:bg-primary/90"

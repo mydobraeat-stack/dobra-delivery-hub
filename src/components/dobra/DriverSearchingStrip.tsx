@@ -1,6 +1,6 @@
 export function DriverSearchingStrip({ label }: { label: string }) {
   return (
-    <div role="status" aria-live="polite" className="driver-search-strip relative flex min-h-40 flex-col items-center justify-center gap-4 overflow-hidden border-y border-brand/15 bg-sun py-5">
+    <div role="status" aria-live="polite" className="driver-search-strip relative mx-auto mt-4 flex min-h-32 w-[calc(100%-2rem)] max-w-lg flex-col items-center justify-center gap-3 overflow-hidden rounded-2xl border border-brand/15 bg-sun py-4">
       <div className="relative h-8 w-16 shrink-0 overflow-hidden text-brand" aria-hidden="true">
         <svg viewBox="0 0 96 48" className="driver-search-scooter relative z-10 h-8 w-16" fill="none">
           <circle cx="27" cy="35" r="7" stroke="currentColor" strokeWidth="3" className="fill-sun" />

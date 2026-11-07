@@ -23,6 +23,7 @@ export default {
     expiredToast: "Offre expirée — proposée à un autre livreur.",
   },
   home: {
+    offlineBlocked: "Terminez votre livraison active avant de passer hors ligne.",
     offlineConfirm: "Voulez-vous passer hors ligne ?",
     offlineConfirmBody: "Vous ne recevrez plus de nouvelles offres de livraison avant de vous remettre en ligne.",
     stayOnline: "Rester en ligne",
