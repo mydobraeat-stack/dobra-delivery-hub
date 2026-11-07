@@ -31,7 +31,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { DriverSearchingStrip } from "@/components/dobra/DriverSearchingStrip";
-import { isDriverWaiting } from "@/lib/driver-home";
+import { isDriverWaiting, nextDriverAvailability } from "@/lib/driver-home";
 import { tapFeedback } from "@/lib/sound";
 import { MapView, type MapPoint } from "@/components/dobra/MapView";
 import { NewDeliveryAlert } from "@/components/dobra/NewDeliveryAlert";
@@ -96,7 +96,7 @@ function DriverHome() {
         setGate("phone");
         return;
       }
-      toggle.mutate(!online);
+      toggle.mutate(nextDriverAvailability(online));
       return;
     }
     if (approval === "rejected") setGate("rejected");
@@ -150,7 +150,10 @@ function DriverHome() {
       queryClient.invalidateQueries({ queryKey: ["driver", "me"] });
       toast.success(next ? t("driver.home.onlineToast") : t("driver.home.offlineToast"));
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => {
+      void queryClient.invalidateQueries({ queryKey: myDriverQuery.queryKey });
+      toast.error(e.message.includes("active_delivery") ? t("driver.home.offlineBlocked") : e.message);
+    },
   });
 
   const points = useMemo<MapPoint[]>(() => (me ? [{ ...me, label: "You", kind: "driver" as const }] : []), [me]);

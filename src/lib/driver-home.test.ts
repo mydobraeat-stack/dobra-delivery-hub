@@ -1,7 +1,15 @@
 import { describe, expect, it } from "vitest";
-import { isDriverWaiting, newestDeliveriesFirst } from "./driver-home";
+import { isDriverWaiting, newestDeliveriesFirst, nextDriverAvailability } from "./driver-home";
 
 const waiting = { online: true, ordersReady: true, activeCount: 0, offerVisible: false };
+
+it("requests offline directly when the online button is pressed", () => {
+  expect(nextDriverAvailability(true)).toBe(false);
+});
+
+it("requests online when the offline button is pressed", () => {
+  expect(nextDriverAvailability(false)).toBe(true);
+});
 
 describe("driver waiting", () => {
   it("waits online without a job or offer", () => expect(isDriverWaiting(waiting)).toBe(true));

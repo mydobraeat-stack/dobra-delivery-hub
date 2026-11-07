@@ -1,3 +1,8 @@
+/** Availability taps request the opposite state without a confirmation step. */
+export function nextDriverAvailability(online: boolean): boolean {
+  return !online;
+}
+
 /** A driver is waiting only after their current jobs have been read successfully. */
 export function isDriverWaiting(state: {
   online: boolean;
