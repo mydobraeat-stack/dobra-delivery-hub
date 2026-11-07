@@ -23,6 +23,7 @@ export default {
     expiredToast: "Offer expired — passed to another driver.",
   },
   home: {
+    online: "Online",
     searching: "Searching for orders…",
     menuAria: "Open menu",
     safetyAria: "Safety centre",

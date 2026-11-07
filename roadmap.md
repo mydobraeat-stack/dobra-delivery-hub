@@ -1,6 +1,7 @@
 # Task roadmap
 
 ## Driver Home and delivery history
+- [ ] Make online control green with a pulsing Online indicator and activation beep, slim the horizontal searching strip and hide stats online; verify simulated browser behavior.
 - [x] Add localized rolling search strip directly below the toggle with offer/active/offline and reduced-motion handling.
 - [x] Keep delivery lists on Deliveries with newest-first dates, pickup, status, payout and empty states.
 - [x] Pass 20 focused tests and mobile/desktop simulated browser checks (online, decline/return, offline, active job, reduced motion, populated/empty history); signed-in Home checked, build clean.

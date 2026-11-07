@@ -1,8 +1,8 @@
 export function DriverSearchingStrip({ label }: { label: string }) {
   return (
-    <div role="status" aria-live="polite" className="driver-search-strip flex min-h-20 items-center justify-center gap-4 overflow-hidden border-y border-brand/15 bg-sun px-5 py-3">
-      <div className="relative h-12 w-24 shrink-0 overflow-hidden text-brand" aria-hidden="true">
-        <svg viewBox="0 0 96 48" className="driver-search-scooter relative z-10 h-12 w-24" fill="none">
+    <div role="status" aria-live="polite" className="driver-search-strip relative flex min-h-11 items-center justify-center gap-2 overflow-hidden border-y border-brand/15 bg-sun px-5 py-1.5">
+      <div className="relative h-8 w-16 shrink-0 overflow-hidden text-brand" aria-hidden="true">
+        <svg viewBox="0 0 96 48" className="driver-search-scooter relative z-10 h-8 w-16" fill="none">
           <circle cx="27" cy="35" r="7" stroke="currentColor" strokeWidth="3" className="fill-sun" />
           <circle cx="70" cy="35" r="7" stroke="currentColor" strokeWidth="3" className="fill-sun" />
           <path d="M27 34h28l9-8-5-18h9m-9 0-4-4M38 19h13m-5 1v9H29l-5-9" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
@@ -16,6 +16,7 @@ export function DriverSearchingStrip({ label }: { label: string }) {
         </div>
       </div>
       <p className="min-w-0 text-sm font-bold text-sun-foreground">{label}</p>
+      <span aria-hidden="true" className="driver-search-progress absolute inset-x-0 bottom-0 h-0.5 bg-brand/15"><span className="block h-full w-1/4 bg-brand" /></span>
     </div>
   );
 }

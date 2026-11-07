@@ -23,6 +23,7 @@ export default {
     expiredToast: "Czas minął — oferta trafia do innego kierowcy.",
   },
   home: {
+    online: "Online",
     searching: "Szukamy zleceń…",
     menuAria: "Otwórz menu",
     safetyAria: "Centrum bezpieczeństwa",

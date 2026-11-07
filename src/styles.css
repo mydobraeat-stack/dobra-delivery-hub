@@ -235,6 +235,17 @@
 /* Two small transform-only animations; reduced motion is completely static. */
 .driver-search-road { animation: driver-road-roll 1.8s linear infinite; }
 .driver-search-scooter { animation: driver-scooter-ride 1.2s ease-in-out infinite; }
+.driver-search-progress > span { animation: driver-search-sweep 3s ease-in-out infinite; }
+.driver-online-button { background-image: none; }
+.driver-online-dot { animation: driver-online-pulse 2s ease-in-out infinite; }
+@keyframes driver-search-sweep {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(300%); }
+}
+@keyframes driver-online-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.7); }
+}
 @keyframes driver-road-roll {
   to { transform: translateX(-50%); }
 }
@@ -243,7 +254,7 @@
   50% { transform: translateY(-1px); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .driver-search-road, .driver-search-scooter { animation: none; }
+  .driver-search-road, .driver-search-scooter, .driver-search-progress > span, .driver-online-dot { animation: none; }
 }
 
 /* Staff-only layout: keep record text shrinkable and data scrolling local. */
