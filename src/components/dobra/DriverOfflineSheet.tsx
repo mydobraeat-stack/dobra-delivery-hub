@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useBlocker } from "@tanstack/react-router";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
 import { useT } from "@/lib/i18n";
@@ -9,19 +9,13 @@ export function DriverOfflineSheet({ onStayOnline, onGoOffline }: {
   onGoOffline: () => void;
 }) {
   const t = useT();
-  const dismiss = useRef(onStayOnline);
-  dismiss.current = onStayOnline;
-
-  useEffect(() => {
-    const marker = "dobraOfflineSheet";
-    window.history.pushState({ ...window.history.state, [marker]: true }, "", window.location.href);
-    const onBack = () => dismiss.current();
-    window.addEventListener("popstate", onBack);
-    return () => {
-      window.removeEventListener("popstate", onBack);
-      if (window.history.state?.[marker]) window.history.back();
-    };
-  }, []);
+  useBlocker({
+    enableBeforeUnload: false,
+    shouldBlockFn: ({ action }) => {
+      if (action === "BACK" || action === "GO") { onStayOnline(); return true; }
+      return false;
+    },
+  });
 
   return <DialogPrimitive.Root open onOpenChange={(open) => { if (!open) onStayOnline(); }}>
     <DialogPrimitive.Portal>
