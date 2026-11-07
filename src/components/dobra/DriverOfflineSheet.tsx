@@ -10,8 +10,15 @@ export function DriverOfflineSheet({ onStayOnline, onGoOffline }: {
 }) {
   const t = useT();
   const dismiss = useRef(onStayOnline);
+  const historyCleanup = useRef<(() => void) | undefined>(undefined);
+  const cleanupTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   dismiss.current = onStayOnline;
   useLayoutEffect(() => {
+    clearTimeout(cleanupTimer.current);
+    // Strict Mode replays effects; retain the same entry until a real unmount.
+    if (historyCleanup.current) return () => {
+      cleanupTimer.current = setTimeout(() => { historyCleanup.current?.(); historyCleanup.current = undefined; }, 0);
+    };
     const marker = "dobraOfflineSheet";
     let popped = false;
     let closing = false;
@@ -25,10 +32,13 @@ export function DriverOfflineSheet({ onStayOnline, onGoOffline }: {
       if (!closing) dismiss.current();
     };
     window.addEventListener("popstate", onBack, true);
-    return () => {
+    historyCleanup.current = () => {
       closing = true;
       if (!popped && window.history.state?.[marker]) window.history.back();
       else window.removeEventListener("popstate", onBack, true);
+    };
+    return () => {
+      cleanupTimer.current = setTimeout(() => { historyCleanup.current?.(); historyCleanup.current = undefined; }, 0);
     };
   }, []);
 
