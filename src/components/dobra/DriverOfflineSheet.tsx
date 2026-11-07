@@ -1,4 +1,5 @@
 import { useBlocker } from "@tanstack/react-router";
+import { useEffect } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
 import { useT } from "@/lib/i18n";
@@ -9,13 +10,18 @@ export function DriverOfflineSheet({ onStayOnline, onGoOffline }: {
   onGoOffline: () => void;
 }) {
   const t = useT();
-  useBlocker({
+  const blocker = useBlocker({
+    withResolver: true,
     enableBeforeUnload: false,
-    shouldBlockFn: ({ action }) => {
-      if (action === "BACK" || action === "GO") { onStayOnline(); return true; }
-      return false;
-    },
+    shouldBlockFn: ({ action }) => action === "BACK" || action === "GO",
   });
+  useEffect(() => {
+    if (blocker.status !== "blocked") return;
+    blocker.reset();
+    // Keep the guard mounted until the router restores the current history entry.
+    const timer = window.setTimeout(onStayOnline, 50);
+    return () => window.clearTimeout(timer);
+  }, [blocker.status, blocker.reset, onStayOnline]);
 
   return <DialogPrimitive.Root open onOpenChange={(open) => { if (!open) onStayOnline(); }}>
     <DialogPrimitive.Portal>
