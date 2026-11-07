@@ -23,6 +23,9 @@ export default {
     expiredToast: "Offer expired — passed to another driver.",
   },
   home: {
+    offlineConfirm: "Do you want to go offline?",
+    offlineConfirmBody: "You’ll stop receiving new delivery offers until you go online again.",
+    stayOnline: "Stay online",
     online: "Online",
     searching: "Searching for orders…",
     menuAria: "Open menu",

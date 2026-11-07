@@ -79,6 +79,7 @@ function DriverHome() {
   const queryClient = useQueryClient();
 
   const [online, setOnline] = useState(false);
+  const [confirmOffline, setConfirmOffline] = useState(false);
   const [offerVisible, setOfferVisible] = useState(false);
   const [me, setMe] = useState<{ lat: number; lng: number } | null>(null);
   const { data: docs = [] } = useQuery(driverDocsQuery);
@@ -92,6 +93,10 @@ function DriverHome() {
 
   function handleToggle() {
     if (approved) {
+      if (online) {
+        setConfirmOffline(true);
+        return;
+      }
       if (!online && !hasPhone) {
         setGate("phone");
         return;
@@ -142,6 +147,7 @@ function DriverHome() {
     mutationFn: (next: boolean) => setDriverStatus(next ? "available" : "offline"),
     onSuccess: (_d, next) => {
       setOnline(next);
+      setConfirmOffline(false);
       if (next) playSound("soft");
       queryClient.invalidateQueries({ queryKey: ["driver", "me"] });
       toast.success(next ? t("driver.home.onlineToast") : t("driver.home.offlineToast"));
@@ -173,6 +179,19 @@ function DriverHome() {
   return (
     <div className="pb-4">
       <NewDeliveryAlert online={online && active.length === 0} available={available} restaurantName={restaurantName} restaurants={restaurants} onOfferVisibilityChange={setOfferVisible} />
+
+      <Dialog open={confirmOffline} onOpenChange={setConfirmOffline}>
+        <DialogContent className="max-w-sm bg-card">
+          <DialogHeader>
+            <DialogTitle>{t("driver.home.offlineConfirm")}</DialogTitle>
+            <DialogDescription>{t("driver.home.offlineConfirmBody")}</DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2">
+            <Button variant="outline" disabled={toggle.isPending} onClick={() => setConfirmOffline(false)}>{t("driver.home.stayOnline")}</Button>
+            <Button disabled={toggle.isPending} onClick={() => toggle.mutate(false)}>{t("driver.home.goOffline")}</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <Dialog open={gate !== null} onOpenChange={(o) => !o && setGate(null)}>
         <DialogContent className="max-w-sm">
