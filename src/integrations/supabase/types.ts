@@ -416,6 +416,135 @@ export type Database = {
           },
         ]
       }
+      driver_referral_codes: {
+        Row: {
+          code: string
+          created_at: string
+          driver_id: string
+        }
+        Insert: {
+          code?: string
+          created_at?: string
+          driver_id: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          driver_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "driver_referral_codes_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: true
+            referencedRelation: "drivers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      driver_referral_settings: {
+        Row: {
+          bonus: number | null
+          country: string
+          enabled: boolean
+          updated_at: string
+        }
+        Insert: {
+          bonus?: number | null
+          country: string
+          enabled?: boolean
+          updated_at?: string
+        }
+        Update: {
+          bonus?: number | null
+          country?: string
+          enabled?: boolean
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "driver_referral_settings_country_fkey"
+            columns: ["country"]
+            isOneToOne: true
+            referencedRelation: "country_pricing"
+            referencedColumns: ["country"]
+          },
+        ]
+      }
+      driver_referrals: {
+        Row: {
+          bonus: number
+          country: string
+          created_at: string
+          currency: string
+          id: string
+          paid_at: string | null
+          paid_by: string | null
+          payment_reference: string | null
+          qualified_at: string | null
+          qualifying_order_id: string | null
+          referred_id: string
+          referrer_id: string
+        }
+        Insert: {
+          bonus: number
+          country: string
+          created_at?: string
+          currency: string
+          id?: string
+          paid_at?: string | null
+          paid_by?: string | null
+          payment_reference?: string | null
+          qualified_at?: string | null
+          qualifying_order_id?: string | null
+          referred_id: string
+          referrer_id: string
+        }
+        Update: {
+          bonus?: number
+          country?: string
+          created_at?: string
+          currency?: string
+          id?: string
+          paid_at?: string | null
+          paid_by?: string | null
+          payment_reference?: string | null
+          qualified_at?: string | null
+          qualifying_order_id?: string | null
+          referred_id?: string
+          referrer_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "driver_referrals_country_fkey"
+            columns: ["country"]
+            isOneToOne: false
+            referencedRelation: "country_pricing"
+            referencedColumns: ["country"]
+          },
+          {
+            foreignKeyName: "driver_referrals_qualifying_order_id_fkey"
+            columns: ["qualifying_order_id"]
+            isOneToOne: true
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "driver_referrals_referred_id_fkey"
+            columns: ["referred_id"]
+            isOneToOne: true
+            referencedRelation: "drivers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "driver_referrals_referrer_id_fkey"
+            columns: ["referrer_id"]
+            isOneToOne: false
+            referencedRelation: "drivers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       drivers: {
         Row: {
           country: string | null
@@ -1279,6 +1408,7 @@ export type Database = {
         Returns: undefined
       }
       admin_cash_payout_summary: { Args: never; Returns: Json }
+      admin_driver_referrals: { Args: never; Returns: Json }
       admin_flag_order: {
         Args: { _note: string; _order: string }
         Returns: undefined
@@ -1298,6 +1428,10 @@ export type Database = {
           restaurant_id: string
           restaurant_rating: number
         }[]
+      }
+      admin_pay_driver_referral: {
+        Args: { _id: string; _reference: string }
+        Returns: undefined
       }
       admin_reassign_driver: {
         Args: { _driver: string; _order: string }
@@ -1329,6 +1463,10 @@ export type Database = {
         Args: { _reason: string; _status: string; _user: string }
         Returns: undefined
       }
+      admin_set_driver_referral: {
+        Args: { _bonus: number; _country: string; _enabled: boolean }
+        Returns: undefined
+      }
       admin_set_prime: {
         Args: { _active: boolean; _months?: number; _user: string }
         Returns: undefined
@@ -1338,6 +1476,7 @@ export type Database = {
         Returns: undefined
       }
       anonymize_account: { Args: { _user_id: string }; Returns: undefined }
+      apply_driver_referral: { Args: { _code: string }; Returns: undefined }
       call_availability: { Args: { _order: string }; Returns: Json }
       can_access_chat_thread: { Args: { _thread_id: string }; Returns: boolean }
       can_view_chat_file: { Args: { _object_name: string }; Returns: boolean }
@@ -1354,6 +1493,7 @@ export type Database = {
         Returns: boolean
       }
       is_approved_driver: { Args: { _id: string }; Returns: boolean }
+      my_driver_referrals: { Args: never; Returns: Json }
       open_chat_thread: {
         Args: { _kind: string; _order_id?: string }
         Returns: string
