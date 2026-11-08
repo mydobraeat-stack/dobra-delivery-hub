@@ -9,5 +9,6 @@ import admin from "./admin";
 import chat from "./chat";
 import packages from "./packages";
 import calls from "./calls";
+import referrals from "./referrals";
 
-export default { common, landing, marketing, auth, customer, vendor, driver, admin, chat, package: packages, calls };
+export default { common, landing, marketing, auth, customer, vendor, driver, admin, chat, package: packages, calls, referrals };
