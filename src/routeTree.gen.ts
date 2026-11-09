@@ -45,6 +45,7 @@ import { Route as AuthenticatedAdminPayoutsRouteImport } from './routes/_authent
 import { Route as AuthenticatedAdminPlatformRouteImport } from './routes/_authenticated/admin.platform'
 import { Route as AuthenticatedAdminPricingRouteImport } from './routes/_authenticated/admin.pricing'
 import { Route as AuthenticatedAdminPromosRouteImport } from './routes/_authenticated/admin.promos'
+import { Route as AuthenticatedAdminReferralsRouteImport } from './routes/_authenticated/admin.referrals'
 import { Route as AuthenticatedAdminRestaurantsRouteImport } from './routes/_authenticated/admin.restaurants'
 import { Route as AuthenticatedAdminReviewsRouteImport } from './routes/_authenticated/admin.reviews'
 import { Route as AuthenticatedAdminStoreAssetsRouteImport } from './routes/_authenticated/admin.store-assets'
@@ -59,6 +60,7 @@ import { Route as AuthenticatedDriverDeliveriesRouteImport } from './routes/_aut
 import { Route as AuthenticatedDriverDocumentsRouteImport } from './routes/_authenticated/driver.documents'
 import { Route as AuthenticatedDriverEarningsRouteImport } from './routes/_authenticated/driver.earnings'
 import { Route as AuthenticatedDriverHelpRouteImport } from './routes/_authenticated/driver.help'
+import { Route as AuthenticatedDriverReferralsRouteImport } from './routes/_authenticated/driver.referrals'
 import { Route as AuthenticatedDriverSettlementsRouteImport } from './routes/_authenticated/driver.settlements'
 import { Route as AuthenticatedOrdersOrderIdRouteImport } from './routes/_authenticated/orders.$orderId'
 import { Route as AuthenticatedProfileIndexRouteImport } from './routes/_authenticated/profile.index'
@@ -270,6 +272,12 @@ const AuthenticatedAdminPromosRoute =
     path: '/promos',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminReferralsRoute =
+  AuthenticatedAdminReferralsRouteImport.update({
+    id: '/referrals',
+    path: '/referrals',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminRestaurantsRoute =
   AuthenticatedAdminRestaurantsRouteImport.update({
     id: '/restaurants',
@@ -352,6 +360,12 @@ const AuthenticatedDriverHelpRoute = AuthenticatedDriverHelpRouteImport.update({
   path: '/help',
   getParentRoute: () => AuthenticatedDriverRoute,
 } as any)
+const AuthenticatedDriverReferralsRoute =
+  AuthenticatedDriverReferralsRouteImport.update({
+    id: '/referrals',
+    path: '/referrals',
+    getParentRoute: () => AuthenticatedDriverRoute,
+  } as any)
 const AuthenticatedDriverSettlementsRoute =
   AuthenticatedDriverSettlementsRouteImport.update({
     id: '/settlements',
@@ -508,6 +522,7 @@ export interface FileRoutesByFullPath {
   '/admin/platform': typeof AuthenticatedAdminPlatformRoute
   '/admin/pricing': typeof AuthenticatedAdminPricingRoute
   '/admin/promos': typeof AuthenticatedAdminPromosRoute
+  '/admin/referrals': typeof AuthenticatedAdminReferralsRoute
   '/admin/restaurants': typeof AuthenticatedAdminRestaurantsRoute
   '/admin/reviews': typeof AuthenticatedAdminReviewsRoute
   '/admin/store-assets': typeof AuthenticatedAdminStoreAssetsRoute
@@ -520,6 +535,7 @@ export interface FileRoutesByFullPath {
   '/driver/documents': typeof AuthenticatedDriverDocumentsRoute
   '/driver/earnings': typeof AuthenticatedDriverEarningsRoute
   '/driver/help': typeof AuthenticatedDriverHelpRoute
+  '/driver/referrals': typeof AuthenticatedDriverReferralsRoute
   '/driver/settlements': typeof AuthenticatedDriverSettlementsRoute
   '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/profile/account': typeof AuthenticatedProfileAccountRoute
@@ -575,6 +591,7 @@ export interface FileRoutesByTo {
   '/admin/platform': typeof AuthenticatedAdminPlatformRoute
   '/admin/pricing': typeof AuthenticatedAdminPricingRoute
   '/admin/promos': typeof AuthenticatedAdminPromosRoute
+  '/admin/referrals': typeof AuthenticatedAdminReferralsRoute
   '/admin/restaurants': typeof AuthenticatedAdminRestaurantsRoute
   '/admin/reviews': typeof AuthenticatedAdminReviewsRoute
   '/admin/store-assets': typeof AuthenticatedAdminStoreAssetsRoute
@@ -587,6 +604,7 @@ export interface FileRoutesByTo {
   '/driver/documents': typeof AuthenticatedDriverDocumentsRoute
   '/driver/earnings': typeof AuthenticatedDriverEarningsRoute
   '/driver/help': typeof AuthenticatedDriverHelpRoute
+  '/driver/referrals': typeof AuthenticatedDriverReferralsRoute
   '/driver/settlements': typeof AuthenticatedDriverSettlementsRoute
   '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/profile/account': typeof AuthenticatedProfileAccountRoute
@@ -649,6 +667,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/platform': typeof AuthenticatedAdminPlatformRoute
   '/_authenticated/admin/pricing': typeof AuthenticatedAdminPricingRoute
   '/_authenticated/admin/promos': typeof AuthenticatedAdminPromosRoute
+  '/_authenticated/admin/referrals': typeof AuthenticatedAdminReferralsRoute
   '/_authenticated/admin/restaurants': typeof AuthenticatedAdminRestaurantsRoute
   '/_authenticated/admin/reviews': typeof AuthenticatedAdminReviewsRoute
   '/_authenticated/admin/store-assets': typeof AuthenticatedAdminStoreAssetsRoute
@@ -661,6 +680,7 @@ export interface FileRoutesById {
   '/_authenticated/driver/documents': typeof AuthenticatedDriverDocumentsRoute
   '/_authenticated/driver/earnings': typeof AuthenticatedDriverEarningsRoute
   '/_authenticated/driver/help': typeof AuthenticatedDriverHelpRoute
+  '/_authenticated/driver/referrals': typeof AuthenticatedDriverReferralsRoute
   '/_authenticated/driver/settlements': typeof AuthenticatedDriverSettlementsRoute
   '/_authenticated/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
   '/_authenticated/profile/account': typeof AuthenticatedProfileAccountRoute
@@ -723,6 +743,7 @@ export interface FileRouteTypes {
     | '/admin/platform'
     | '/admin/pricing'
     | '/admin/promos'
+    | '/admin/referrals'
     | '/admin/restaurants'
     | '/admin/reviews'
     | '/admin/store-assets'
@@ -735,6 +756,7 @@ export interface FileRouteTypes {
     | '/driver/documents'
     | '/driver/earnings'
     | '/driver/help'
+    | '/driver/referrals'
     | '/driver/settlements'
     | '/orders/$orderId'
     | '/profile/account'
@@ -790,6 +812,7 @@ export interface FileRouteTypes {
     | '/admin/platform'
     | '/admin/pricing'
     | '/admin/promos'
+    | '/admin/referrals'
     | '/admin/restaurants'
     | '/admin/reviews'
     | '/admin/store-assets'
@@ -802,6 +825,7 @@ export interface FileRouteTypes {
     | '/driver/documents'
     | '/driver/earnings'
     | '/driver/help'
+    | '/driver/referrals'
     | '/driver/settlements'
     | '/orders/$orderId'
     | '/profile/account'
@@ -863,6 +887,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/platform'
     | '/_authenticated/admin/pricing'
     | '/_authenticated/admin/promos'
+    | '/_authenticated/admin/referrals'
     | '/_authenticated/admin/restaurants'
     | '/_authenticated/admin/reviews'
     | '/_authenticated/admin/store-assets'
@@ -875,6 +900,7 @@ export interface FileRouteTypes {
     | '/_authenticated/driver/documents'
     | '/_authenticated/driver/earnings'
     | '/_authenticated/driver/help'
+    | '/_authenticated/driver/referrals'
     | '/_authenticated/driver/settlements'
     | '/_authenticated/orders/$orderId'
     | '/_authenticated/profile/account'
@@ -1179,6 +1205,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminPromosRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/referrals': {
+      id: '/_authenticated/admin/referrals'
+      path: '/referrals'
+      fullPath: '/admin/referrals'
+      preLoaderRoute: typeof AuthenticatedAdminReferralsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/restaurants': {
       id: '/_authenticated/admin/restaurants'
       path: '/restaurants'
@@ -1275,6 +1308,13 @@ declare module '@tanstack/react-router' {
       path: '/help'
       fullPath: '/driver/help'
       preLoaderRoute: typeof AuthenticatedDriverHelpRouteImport
+      parentRoute: typeof AuthenticatedDriverRoute
+    }
+    '/_authenticated/driver/referrals': {
+      id: '/_authenticated/driver/referrals'
+      path: '/referrals'
+      fullPath: '/driver/referrals'
+      preLoaderRoute: typeof AuthenticatedDriverReferralsRouteImport
       parentRoute: typeof AuthenticatedDriverRoute
     }
     '/_authenticated/driver/settlements': {
@@ -1439,6 +1479,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminPlatformRoute: typeof AuthenticatedAdminPlatformRoute
   AuthenticatedAdminPricingRoute: typeof AuthenticatedAdminPricingRoute
   AuthenticatedAdminPromosRoute: typeof AuthenticatedAdminPromosRoute
+  AuthenticatedAdminReferralsRoute: typeof AuthenticatedAdminReferralsRoute
   AuthenticatedAdminRestaurantsRoute: typeof AuthenticatedAdminRestaurantsRoute
   AuthenticatedAdminReviewsRoute: typeof AuthenticatedAdminReviewsRoute
   AuthenticatedAdminStoreAssetsRoute: typeof AuthenticatedAdminStoreAssetsRoute
@@ -1459,6 +1500,7 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminPlatformRoute: AuthenticatedAdminPlatformRoute,
   AuthenticatedAdminPricingRoute: AuthenticatedAdminPricingRoute,
   AuthenticatedAdminPromosRoute: AuthenticatedAdminPromosRoute,
+  AuthenticatedAdminReferralsRoute: AuthenticatedAdminReferralsRoute,
   AuthenticatedAdminRestaurantsRoute: AuthenticatedAdminRestaurantsRoute,
   AuthenticatedAdminReviewsRoute: AuthenticatedAdminReviewsRoute,
   AuthenticatedAdminStoreAssetsRoute: AuthenticatedAdminStoreAssetsRoute,
@@ -1495,6 +1537,7 @@ interface AuthenticatedDriverRouteChildren {
   AuthenticatedDriverDocumentsRoute: typeof AuthenticatedDriverDocumentsRoute
   AuthenticatedDriverEarningsRoute: typeof AuthenticatedDriverEarningsRoute
   AuthenticatedDriverHelpRoute: typeof AuthenticatedDriverHelpRoute
+  AuthenticatedDriverReferralsRoute: typeof AuthenticatedDriverReferralsRoute
   AuthenticatedDriverSettlementsRoute: typeof AuthenticatedDriverSettlementsRoute
   AuthenticatedDriverIndexRoute: typeof AuthenticatedDriverIndexRoute
   AuthenticatedDriverDeliveryOrderIdRoute: typeof AuthenticatedDriverDeliveryOrderIdRoute
@@ -1505,6 +1548,7 @@ const AuthenticatedDriverRouteChildren: AuthenticatedDriverRouteChildren = {
   AuthenticatedDriverDocumentsRoute: AuthenticatedDriverDocumentsRoute,
   AuthenticatedDriverEarningsRoute: AuthenticatedDriverEarningsRoute,
   AuthenticatedDriverHelpRoute: AuthenticatedDriverHelpRoute,
+  AuthenticatedDriverReferralsRoute: AuthenticatedDriverReferralsRoute,
   AuthenticatedDriverSettlementsRoute: AuthenticatedDriverSettlementsRoute,
   AuthenticatedDriverIndexRoute: AuthenticatedDriverIndexRoute,
   AuthenticatedDriverDeliveryOrderIdRoute:
