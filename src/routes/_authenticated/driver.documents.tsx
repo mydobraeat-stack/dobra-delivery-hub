@@ -1,4 +1,5 @@
 import { DriverPhoneCard } from "@/components/dobra/DriverPhoneCard";
+import { DriverReferralEntry } from "@/components/dobra/DriverReferralEntry";
 import { ProfileBackLink } from "@/components/dobra/ProfileMenu";
 import { ListSkeleton } from "@/components/dobra/QueryStates";
 import { useEffect, useState } from "react";
@@ -135,6 +136,7 @@ function DriverDocuments() {
       </div>
 
       <DriverPhoneCard />
+      <DriverReferralEntry />
 
       <Card className="border-ink/10">
         <CardContent className="space-y-4 py-4">

@@ -1,7 +1,7 @@
 import { createFileRoute, Outlet, useNavigate, Link, useLocation } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { Menu, LayoutDashboard, ShoppingBag, MessageCircle, ShieldCheck, Users, Store, Bike, FileCheck, SlidersHorizontal, Ticket, Settings, ChartNoAxesCombined, ScrollText, Star, TriangleAlert, Banknote } from "lucide-react";
+import { Menu, LayoutDashboard, ShoppingBag, MessageCircle, ShieldCheck, Users, Store, Bike, FileCheck, SlidersHorizontal, Ticket, Settings, ChartNoAxesCombined, ScrollText, Star, TriangleAlert, Banknote, Gift } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { accountQueryOptions } from "@/lib/profile";
@@ -49,6 +49,7 @@ function AdminLayout() {
     { to: "/admin/restaurants", label: t("admin.nav.restaurants"), icon: Store, superOnly: true },
     { to: "/admin/drivers", label: t("admin.nav.drivers"), icon: Bike, superOnly: true },
     { to: "/admin/payouts", label: "Cash payouts", icon: Banknote, superOnly: true },
+    { to: "/admin/referrals", label: t("referrals.adminTitle"), icon: Gift, superOnly: true },
     { to: "/admin/reviews", label: t("admin.nav.reviews"), icon: FileCheck, superOnly: true },
     { to: "/admin/pricing", label: "Fees & pricing", icon: SlidersHorizontal, superOnly: true },
     { to: "/admin/promos", label: "Promo codes", icon: Ticket, superOnly: true },

@@ -1,9 +1,11 @@
 # Task roadmap
 
 ## Driver referrals
-- [ ] Add private referral codes, driver code submission and first-delivery qualification with duplicate/self-referral safeguards.
-- [ ] Add localized driver referral page and Super Admin bonus settings and referral records.
-- [ ] Test rules and signed-in admin flow; leave activation blocked until bonus amounts are chosen.
+- [x] Add private referral codes, driver code submission and first-delivery qualification with duplicate/self-referral safeguards.
+- [x] Add EN/PL/UK/FR driver referral page and Super Admin bonus settings and separate externally paid bonus records; default recipient is the referring driver.
+- [x] Pass 14 focused rule tests and signed-in admin save/readback/reload; phone layout has no horizontal overflow or runtime errors, build clean.
+- [ ] Activate cash bonuses — blocked: Poland/Cameroon bonus amounts were not supplied.
+- [ ] Verify a real referred driver's first delivery and bonus payment — blocked: program inactive and no real bonus handover; only admin configuration was exercised end to end.
 
 ## Driver Home and delivery history
 - [x] Restore immediate-dismiss offline confirmation with optimistic save/rollback and backdrop/Back cleanup; compact dynamic-height Home and upgrade search animation. Four requested states captured at 360x740, 390x844 and 412x915; simulated save/readback/reload, rollback, backdrop, Back, reduced motion and four-language checks passed, with 14 rule tests and clean build. Real-phone/live driver saving and Google map rendering remain unverified; local map key is not configured.

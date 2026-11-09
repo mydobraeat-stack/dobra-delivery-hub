@@ -26,7 +26,7 @@ export async function applyReferral(code: string) {
   if (error) throw error;
 }
 export async function saveReferralSetting(s: ReferralSetting) {
-  const { error } = await supabase.rpc("admin_set_driver_referral", { _country: s.country, _bonus: s.bonus, _enabled: s.enabled });
+  const { error } = await supabase.rpc("admin_set_driver_referral", { _country: s.country, ...(s.bonus === null ? {} : { _bonus: s.bonus }), _enabled: s.enabled });
   if (error) throw error;
 }
 export async function payReferral(id: string, reference: string) {

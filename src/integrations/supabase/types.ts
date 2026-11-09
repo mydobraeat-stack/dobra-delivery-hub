@@ -1464,7 +1464,7 @@ export type Database = {
         Returns: undefined
       }
       admin_set_driver_referral: {
-        Args: { _bonus: number; _country: string; _enabled: boolean }
+        Args: { _bonus?: number; _country: string; _enabled?: boolean }
         Returns: undefined
       }
       admin_set_prime: {
