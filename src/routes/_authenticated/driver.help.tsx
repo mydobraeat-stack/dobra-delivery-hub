@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { FileText, LifeBuoy, Mail, ShieldCheck } from "lucide-react";
+import { FileText, LifeBuoy, Mail, ShieldCheck, Gift } from "lucide-react";
 import { ChatButton } from "@/components/dobra/ChatButton";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -31,6 +31,7 @@ function DriverHelp() {
       <h1 className="text-2xl font-bold text-foreground">{t("driver.help.title")}</h1>
 
       <div className="grid gap-3 @sm:grid-cols-2">
+        <Button asChild size="lg" className="justify-start"><Link to="/driver/referrals"><Gift className="size-4" />{t("referrals.title")}</Link></Button>
         <ChatButton
           kind="support"
           size="lg"
