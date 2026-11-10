@@ -78,6 +78,10 @@ export default {
     past: "Zakończone dostawy",
     noneInProgress: "Nic w trakcie.",
     noneCompleted: "Brak zakończonych dostaw.",
+    openJobs: "Dostępne zlecenia",
+    noOpenJobs: "Brak dostępnych zleceń.",
+    accept: "Przyjmij",
+    acceptFailed: "Nie udało się przyjąć zlecenia. Mogło zostać już zajęte.",
   },
   delivery: {
     loading: "Wczytywanie dostawy…",
