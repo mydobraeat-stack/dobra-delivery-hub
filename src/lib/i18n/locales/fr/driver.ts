@@ -81,7 +81,7 @@ export default {
     openJobs: "Courses disponibles",
     noOpenJobs: "Aucune course disponible pour le moment.",
     accept: "Accepter",
-    acceptFailed: "Impossible d"accepter cette course. Elle a peut-être déjà été prise.",
+    acceptFailed: "Impossible d'accepter cette course. Elle a peut-être déjà été prise.",
   },
   delivery: {
     loading: "Chargement de la livraison…",
