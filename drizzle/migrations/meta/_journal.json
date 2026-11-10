@@ -106,6 +106,13 @@
       "when": 1794205339590,
       "tag": "0014_referral_optional_bonus",
       "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1794320499685,
+      "tag": "0015_tighten_pricing_settings_shared_images",
+      "breakpoints": true
     }
   ]
 }
