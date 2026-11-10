@@ -77,6 +77,10 @@ export default {
     past: "Past deliveries",
     noneInProgress: "Nothing in progress.",
     noneCompleted: "No completed deliveries yet.",
+    openJobs: "Open jobs",
+    noOpenJobs: "No open jobs right now.",
+    accept: "Accept",
+    acceptFailed: "Could not accept this job. It may already be taken.",
   },
   delivery: {
     loading: "Loading delivery…",
