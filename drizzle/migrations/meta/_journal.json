@@ -113,6 +113,13 @@
       "when": 1794320499685,
       "tag": "0015_tighten_pricing_settings_shared_images",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1794433641291,
+      "tag": "0016_fix_restaurant_image_read_policy",
+      "breakpoints": true
     }
   ]
 }
