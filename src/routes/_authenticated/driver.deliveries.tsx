@@ -2,7 +2,8 @@ import { usePayout } from "@/lib/payout";
 import { OrderTimeLabel } from "@/components/dobra/OrderTimes";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { EmptyState, ErrorState, ListSkeleton } from "@/components/dobra/QueryStates";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { useI18n } from "@/lib/i18n";
 import { accountQueryOptions } from "@/lib/profile";
 import { PendingApproval } from "@/components/dobra/PendingApproval";
@@ -11,7 +12,7 @@ import { newestDeliveriesFirst } from "@/lib/driver-home";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/dobra/StatusBadge";
 import { Card, CardContent } from "@/components/ui/card";
-import { driverOrdersQuery, isFinished, myDriverQuery, orderRef, restaurantsQuery } from "@/lib/dobra";
+import { claimOrder, driverOrdersQuery, isFinished, myDriverQuery, orderRef, restaurantsQuery } from "@/lib/dobra";
 
 export const Route = createFileRoute("/_authenticated/driver/deliveries")({
   head: () => ({
@@ -35,6 +36,12 @@ function DriverDeliveries() {
   const approved = driverApproval(account?.approvalStatus, driver) === "approved";
   const { data, isLoading, isError, refetch } = useQuery({ ...driverOrdersQuery, enabled: approved });
   const { data: restaurants = [] } = useQuery({ ...restaurantsQuery, enabled: approved });
+  const qc = useQueryClient();
+  const claim = useMutation({
+    mutationFn: claimOrder,
+    onSuccess: () => qc.invalidateQueries({ queryKey: driverOrdersQuery.queryKey }),
+    onError: () => toast.error(t("driver.deliveries.acceptFailed")),
+  });
 
   if (!approved) {
     return (
@@ -46,6 +53,7 @@ function DriverDeliveries() {
   }
 
   const mine = data?.mine ?? [];
+  const open = data?.available ?? [];
   const active = mine.filter((o) => !isFinished(o.status));
   const past = newestDeliveriesFirst(mine.filter((o) => isFinished(o.status)));
   const name = (id: string | null) =>
@@ -76,6 +84,30 @@ function DriverDeliveries() {
   return (
     <main className="mx-auto max-w-4xl space-y-6 px-5 py-6">
       <h1 className="text-2xl font-bold text-foreground">{t("driver.deliveries.title")}</h1>
+
+      <section className="space-y-3">
+        <h2 className="text-lg font-bold text-foreground">{t("driver.deliveries.openJobs")}</h2>
+        {isLoading ? (
+          <ListSkeleton rows={2} />
+        ) : isError ? (
+          <ErrorState onRetry={() => refetch()} />
+        ) : open.length === 0 ? (
+          <EmptyState message={t("driver.deliveries.noOpenJobs")} />
+        ) : (
+          open.map((o) => (
+            <Card key={o.id}>
+              <CardContent className="flex flex-wrap items-center justify-between gap-3 p-4">
+                <div className="min-w-0">
+                  <p className="break-words font-semibold text-foreground">{o.kind === "package" ? (o.pickup_address ?? t("package.orderLabel")) : name(o.restaurant_id)}</p>
+                  {o.address ? <p className="break-words text-sm text-muted-foreground">{o.address}</p> : null}
+                  <p className="mt-1 text-sm font-semibold text-brand">{t("driver.delivery.yourPayout")}: {formatMoney(pay(o), o.currency)}</p>
+                </div>
+                <Button size="sm" disabled={claim.isPending} onClick={() => claim.mutate(o.id)}>{t("driver.deliveries.accept")}</Button>
+              </CardContent>
+            </Card>
+          ))
+        )}
+      </section>
 
       <section className="space-y-3">
         <h2 className="text-lg font-bold text-foreground">{t("driver.deliveries.active")}</h2>
