@@ -360,6 +360,17 @@ function DriverHome() {
         <DriverSearchingStrip label={t("driver.home.searching")} />
       ) : null}
 
+      {active.slice(0, 2).map((o) => (
+        <Link key={o.id} to="/driver/delivery/$orderId" params={{ orderId: o.id }} className="flex items-center justify-between gap-2 rounded-2xl border border-ink/10 bg-card px-3 py-2 text-card-foreground shadow-sm">
+          <div className="min-w-0">
+            <p className="text-[10px] font-semibold uppercase tracking-wide text-brand">{t("driver.deliveries.active")}</p>
+            <p className="truncate text-sm font-bold">{restaurantName(o.restaurant_id)}</p>
+            <p className="truncate text-xs text-muted-foreground">{o.address}</p>
+          </div>
+          <span className="shrink-0 text-sm font-bold">{formatMoney(pay(o), o.currency)}</span>
+        </Link>
+      ))}
+
       {/* Driver statistics */}
         <div className="grid grid-cols-2 gap-2">
           {!online ? <><StatCard icon={Trophy} label={t("driver.home.statScore")} value="96%" />
